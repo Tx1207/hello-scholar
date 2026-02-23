@@ -20,11 +20,13 @@
 
 ## News
 
-<details>
-<summary>查看更新日志</summary>
-
+- **2026-02-23**: 新增 `setup.sh` 安装脚本 — 安全合并到已有 `~/.opencode`，自动备份 `opencode.jsonc`
 - **2026-02-22**: 在 `opencode.jsonc` 中添加 Zotero MCP 服务器 — 开箱即用支持文献管理命令（`/zotero-review`、`/zotero-notes`）
 - **2026-02-21**: OpenCode 迁移 — 将整个配置迁移到 OpenCode 格式：hooks→plugins (TypeScript)、agents→opencode.jsonc、CLAUDE.md→AGENTS.md、新增 permission 规则、保留文件式命令
+
+<details>
+<summary>查看历史更新日志</summary>
+
 - **2026-02-20**: 双语配置 — 将 `CLAUDE.md` 翻译为英文以便国际用户阅读
 - **2026-02-15**: Zotero MCP 集成 — 新增 `/zotero-review` 和 `/zotero-notes` 命令
 - **2026-02-14**: Hooks 优化 — `security-guard` 重构为两层系统（Block + Confirm）
@@ -286,7 +288,7 @@ git clone -b opencode https://github.com/Galaxy-Dawn/claude-scholar.git /tmp/cla
 bash /tmp/claude-scholar/scripts/setup.sh
 ```
 
-脚本会将 skills/commands/plugins/scripts/utils 复制到 `~/.opencode`，安装 `opencode.jsonc`（自动备份为 `opencode.jsonc.bak`），并运行 `npm install` 安装插件依赖。
+脚本会将 skills/commands/plugins/scripts/utils 复制到 `~/.opencode`，并安装 `opencode.jsonc`（自动备份为 `opencode.jsonc.bak`）。
 
 **包含**：所有 32 个技能、50+ 命令、14 个代理、5 个插件和项目规则。
 
@@ -304,7 +306,6 @@ cp -r /tmp/claude-scholar/skills/ml-paper-writing ~/.opencode/skills/
 cp -r /tmp/claude-scholar/skills/research-ideation ~/.opencode/skills/
 cp -r /tmp/claude-scholar/skills/git-workflow ~/.opencode/skills/
 
-cd ~/.opencode && npm install
 rm -rf /tmp/claude-scholar
 ```
 
@@ -321,13 +322,12 @@ cp /tmp/claude-scholar/plugins/*.ts ~/.opencode/plugins/
 cp -r /tmp/claude-scholar/skills/architecture-design ~/.opencode/skills/
 ```
 
-**安装后**：复制前请先备份已有的 `opencode.jsonc`。如果复制了 plugins，需运行 `cd ~/.opencode && npm install`。
+**安装后**：复制前请先备份已有的 `opencode.jsonc`。
 
 ### 系统要求
 
 - [OpenCode](https://github.com/sst/opencode) CLI
 - Git
-- Node.js（用于插件）
 - （可选）uv、Python（用于 Python 开发）
 - （可选）[Zotero](https://www.zotero.org/) + [zotero-mcp-server](https://pypi.org/project/zotero-mcp-server/)（用于文献管理）
 

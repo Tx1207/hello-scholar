@@ -4,7 +4,7 @@ set -euo pipefail
 OPENCODE_DIR="$HOME/.opencode"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-COMPONENTS=(skills commands plugins scripts utils AGENTS.md package.json)
+COMPONENTS=(skills commands plugins scripts utils AGENTS.md)
 
 info()  { echo -e "\033[1;34m[INFO]\033[0m $*"; }
 warn()  { echo -e "\033[1;33m[WARN]\033[0m $*"; }
@@ -12,7 +12,6 @@ error() { echo -e "\033[1;31m[ERROR]\033[0m $*"; exit 1; }
 
 check_deps() {
   command -v git  >/dev/null || error "Git is required. Install it first."
-  command -v node >/dev/null || error "Node.js is required (plugins depend on it). Install it first."
 }
 
 copy_components() {
@@ -45,14 +44,6 @@ install_config() {
   info "Installed opencode.jsonc (agents, mcp, permissions)."
 }
 
-install_deps() {
-  if [ -f "$OPENCODE_DIR/package.json" ]; then
-    (cd "$OPENCODE_DIR" && npm install --silent 2>/dev/null) \
-      && info "Installed plugin dependencies (npm)." \
-      || warn "npm install failed. Run 'cd ~/.opencode && npm install' manually."
-  fi
-}
-
 main() {
   echo ""
   echo "╔══════════════════════════════════════╗"
@@ -66,7 +57,6 @@ main() {
   mkdir -p "$OPENCODE_DIR"
   copy_components "$SRC_DIR"
   install_config "$SRC_DIR"
-  install_deps
 
   echo ""
   info "Done! Restart OpenCode CLI to activate."

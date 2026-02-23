@@ -20,11 +20,13 @@
 
 ## News
 
-<details>
-<summary>View changelog</summary>
-
+- **2026-02-23**: Added `setup.sh` installer — safe merge into existing `~/.opencode`, auto-backup `opencode.jsonc`
 - **2026-02-22**: Added Zotero MCP server to `opencode.jsonc` — enables literature management commands (`/zotero-review`, `/zotero-notes`) out of the box
 - **2026-02-21**: OpenCode migration — ported entire configuration to OpenCode format: hooks→plugins (TypeScript), agents→opencode.jsonc, CLAUDE.md→AGENTS.md, added permission rules, file-based commands preserved
+
+<details>
+<summary>View older changelog</summary>
+
 - **2026-02-20**: Bilingual config — translated `CLAUDE.md` to English for international readability
 - **2026-02-15**: Zotero MCP integration — added `/zotero-review` and `/zotero-notes` commands, updated `research-ideation` skill with Zotero integration guide
 - **2026-02-14**: Hooks optimization — restructured `security-guard` to two-tier system (Block + Confirm), `skill-forced-eval` now groups skills into 6 categories with silent scan mode
@@ -327,7 +329,7 @@ git clone -b opencode https://github.com/Galaxy-Dawn/claude-scholar.git /tmp/cla
 bash /tmp/claude-scholar/scripts/setup.sh
 ```
 
-The script copies skills/commands/plugins/scripts/utils into `~/.opencode`, installs `opencode.jsonc` (auto-backup to `opencode.jsonc.bak`), and runs `npm install` for plugin dependencies.
+The script copies skills/commands/plugins/scripts/utils into `~/.opencode` and installs `opencode.jsonc` (auto-backup to `opencode.jsonc.bak`).
 
 **Includes**: All 32 skills, 50+ commands, 14 agents, 5 plugins, and project rules.
 
@@ -348,7 +350,6 @@ cp -r /tmp/claude-scholar/skills/research-ideation ~/.opencode/skills/
 cp -r /tmp/claude-scholar/skills/results-analysis ~/.opencode/skills/
 cp -r /tmp/claude-scholar/skills/git-workflow ~/.opencode/skills/
 
-cd ~/.opencode && npm install
 rm -rf /tmp/claude-scholar
 ```
 
@@ -366,13 +367,12 @@ cp -r /tmp/claude-scholar/skills/architecture-design ~/.opencode/skills/
 cp -r /tmp/claude-scholar/commands/commit.md ~/.opencode/commands/
 ```
 
-**Post-install**: Back up your existing `opencode.jsonc` before copying. Run `cd ~/.opencode && npm install` if you copied plugins.
+**Post-install**: Back up your existing `opencode.jsonc` before copying.
 
 ### Requirements
 
 - [OpenCode](https://github.com/sst/opencode) CLI
 - Git
-- Node.js (for plugins)
 - (Optional) uv, Python (for Python development)
 - (Optional) [Zotero](https://www.zotero.org/) + [zotero-mcp-server](https://pypi.org/project/zotero-mcp-server/) (for literature management)
 
