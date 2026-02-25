@@ -1,8 +1,14 @@
-# OpenCode Scholar 配置
+# Codex Scholar 配置
 
 ## 项目概述
 
-**OpenCode Scholar** - 面向学术研究和软件开发的个人配置系统
+**Codex Scholar** - 面向学术研究和软件开发的个人 Codex CLI 配置系统
+
+**配置路径**:
+- 主配置：`~/.codex/config.toml`
+- Agent 配置：`~/.codex/agents/<name>/`
+- Skills 目录：项目根目录 `skills/`
+- 本文件：项目根目录 `AGENTS.md`（Codex 自动读取）
 
 **Mission**: 覆盖完整的学术研究生命周期（从构思到发表）和软件开发工作流，同时提供插件开发和项目管理能力。
 
@@ -11,7 +17,7 @@
 ## 用户背景
 
 ### 学术背景
-- **学历**: [Your Degree, e.g., Computer Science PhD]
+- **学历**: 计算机科学 PhD
 - **投稿目标**:
   - 顶会：NeurIPS, ICML, ICLR, KDD, ACL, AAAI
   - 高影响期刊：Nature, Science, Cell, PNAS
@@ -261,3 +267,62 @@ For complex problems, use split-role sub-agents:
 ### Dataset Version Tracking
 - Record dataset hash or version tag in experiment logs
 - Document preprocessing steps
+
+---
+
+## Codex CLI 特有配置
+
+### Sandbox 模式
+- 当前配置：`sandbox_mode = "workspace-write"`
+- 限制文件写入范围至工作区目录
+- 提供网络隔离保护
+
+### 配置文件路径
+- 主配置：`~/.codex/config.toml`
+- Agent 配置：`~/.codex/agents/<name>/config.toml`
+- Skills：项目 `skills/` 目录，在 config.toml 中注册
+
+---
+
+## Session Start Protocol
+
+When starting a new session, ALWAYS:
+1. Check git status and display current branch + uncommitted changes
+2. List available skills relevant to the current project context
+3. Show recent TODOs if any exist
+4. Display a brief summary of the project state
+
+---
+
+## Skill Evaluation Protocol
+
+Before responding to ANY user message, evaluate all available skills and invoke the most relevant one. This is mandatory, not optional.
+
+If you think there is even a 1% chance a skill might apply, you MUST check it. Do not rationalize skipping skill evaluation with thoughts like "this is just a simple question" or "I can handle this without a skill."
+
+---
+
+## Session Wrap-Up Protocol
+
+When the user says "wrap up", "总结", "session end", or similar:
+1. Generate a work log summarizing what was accomplished
+2. Check if AGENTS.md needs updates based on changes made
+3. Remind about any temporary files that should be cleaned up
+4. Show git status for uncommitted changes
+
+---
+
+## Security Rules (Sandbox-Enforced)
+
+Two layers of protection:
+
+### Layer 1: Codex Sandbox
+- `sandbox_mode = "workspace-write"` restricts file writes to workspace
+- Network isolation prevents unauthorized external access
+
+### Layer 2: Instruction-Based Rules
+- NEVER hardcode API keys, tokens, or passwords in source code
+- NEVER execute: `rm -rf /`, `dd if=/dev/zero`, `mkfs.*`
+- WARN before: `git push --force`, `git reset --hard`, `chmod 777`, `DROP DATABASE/TABLE`
+- NEVER write to system paths: `/etc/`, `/usr/bin/`, `/sbin/`, `/System/`
+- NEVER commit sensitive files: `.env`, `*.pem`, `*.key`, `credentials.json`, `settings.json`

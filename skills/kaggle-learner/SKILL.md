@@ -1,6 +1,6 @@
 ---
 name: kaggle-learner
-description: This skill should be used when the user asks to "learn from Kaggle", "study Kaggle solutions", "analyze Kaggle competitions", or mentions Kaggle competition URLs. Provides access to extracted knowledge from winning Kaggle solutions across NLP, CV, time series, tabular, and multimodal domains.
+description: This skill should be used when the user asks to "learn from Kaggle", "study Kaggle solutions", "analyze Kaggle competitions", "learn from code", "extract patterns", or mentions Kaggle competition URLs. Also covers extracting reusable patterns from coding sessions.
 version: 0.1.0
 ---
 
@@ -106,3 +106,50 @@ This skill automatically updates its knowledge base when the kaggle-miner agent 
 - **BirdCLEF+ 2025** (`time-series/birdclef-plus-2025.md`) - 包含完整的 Top 14 前排方案详细技术分析
 - **BirdCLEF 2024** (`time-series/birdclef-2024.md`) - 包含 Top 3 方案详细技术分析
 - **AIMO-2** (`nlp/aimo-2-2025.md`) - 包含 Top 12+ 前排方案技术总结
+
+---
+
+## Pattern Learning (from /learn command)
+
+Extract reusable patterns from coding sessions.
+
+### When to Extract
+
+Run pattern learning when you've solved a non-trivial problem during a session.
+
+### What to Extract
+
+1. **Error Resolution Patterns** - Root cause and fix for recurring errors
+2. **Debugging Techniques** - Non-obvious diagnostic steps
+3. **Workarounds** - Library quirks, API limitations, version-specific fixes
+4. **Project-Specific Patterns** - Codebase conventions, architecture decisions
+
+### Output Format
+
+Save extracted patterns to `~/.claude/skills/learned/[pattern-name].md`:
+
+```markdown
+# [Descriptive Pattern Name]
+
+**Extracted:** [Date]
+**Context:** [When this applies]
+
+## Problem
+[What problem this solves]
+
+## Solution
+[The pattern/technique/workaround]
+
+## Example
+[Code example if applicable]
+
+## When to Use
+[Trigger conditions]
+```
+
+### Guidelines
+
+- Don't extract trivial fixes (typos, simple syntax errors)
+- Don't extract one-time issues (specific API outages)
+- Focus on patterns that save time in future sessions
+- Keep skills focused - one pattern per skill

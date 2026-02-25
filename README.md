@@ -16,7 +16,9 @@
 
 > Personal OpenCode configuration for academic research and software development — covering the full research lifecycle from ideation to publication.
 
-> **Note**: This is the **OpenCode edition** of Claude Scholar. For the Claude Code CLI version, see the [`main` branch](https://github.com/Galaxy-Dawn/claude-scholar/tree/main).
+> **Note**: This is the **OpenCode edition** of Claude Scholar. For other versions:
+> - Claude Code CLI: [`main` branch](https://github.com/Galaxy-Dawn/claude-scholar/tree/main)
+> - Codex CLI (OpenAI): [`codex` branch](https://github.com/Galaxy-Dawn/claude-scholar/tree/codex) — see [INSTALL-CODEX.md](INSTALL-CODEX.md)
 
 ## News
 
