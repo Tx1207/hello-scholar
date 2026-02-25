@@ -1,7 +1,7 @@
-# Claude Scholar (OpenCode Edition)
+# Claude Scholar (Codex CLI Edition)
 
 <div align="center">
-  <img src="LOGO.jpeg" alt="Claude Scholar Logo" width="100%"/>
+  <img src="LOGO.png" alt="Claude Scholar Logo" width="100%"/>
 
   <p>
     <a href="https://github.com/Galaxy-Dawn/claude-scholar/stargazers"><img src="https://img.shields.io/github/stars/Galaxy-Dawn/claude-scholar?style=flat-square&color=yellow" alt="Stars"/></a>
@@ -275,7 +275,7 @@ claude-scholar/                  # Codex CLI edition
 ├── utils/                       # Python utilities
 │   └── platform_utils.py
 │
-├── LOGO.jpeg
+├── LOGO.png
 ├── README.md                    # This file
 └── README.zh-CN.md              # Chinese version
 ```
