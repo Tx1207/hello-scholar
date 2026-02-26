@@ -20,6 +20,7 @@
 
 ## News
 
+- **2026-02-26**: Zotero MCP Web API 模式 — 从本地模式切换到 Web API 模式（[Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp)），支持远程访问无需 Zotero 桌面应用；新增 `MCP_SETUP.md` 配置指南
 - **2026-02-25**: Codex CLI 迁移 — 从 OpenCode 迁移到 Codex CLI 格式：TOML 配置、独立 agent 目录、commands 合并入 skills（32→40）、hooks 替换为 AGENTS.md 指令 + sandbox、交互式 `setup.sh` 支持增量合并
 - **2026-02-23**: 新增 `setup.sh` 安装脚本 — 安全合并到已有配置，自动备份
 
@@ -49,7 +50,7 @@ Claude Scholar (Codex 版) 是一个面向 [Codex CLI](https://github.com/openai
 | [核心工作流](#核心工作流) | 论文写作、代码组织、技能进化 |
 | [功能亮点](#功能亮点) | 技能、代理概览 |
 | [安装指南](#安装选项) | 完整安装或手动安装 |
-| [MCP 配置](#mcp-服务器配置可选) | Zotero MCP 文献管理集成 |
+| [MCP 配置](#mcp-服务器配置) | Zotero MCP 文献管理集成 |
 | [迁移说明](#与-opencode-版本的主要区别) | 从 OpenCode 版本的变化 |
 
 ## 核心工作流
@@ -310,31 +311,35 @@ rm -rf /tmp/claude-scholar
 
 - [Codex CLI](https://github.com/openai/codex)（`npm i -g @openai/codex`）
 - Git
-- （可选）uv、Python（用于 Python 开发）
-- （可选）[Zotero](https://www.zotero.org/) + [zotero-mcp-server](https://pypi.org/project/zotero-mcp-server/)（用于文献管理）
+- uv、Python（用于 Python 开发和 MCP 服务器安装）
+- （可选）[Zotero](https://www.zotero.org/) + [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp)（用于文献管理）
 
-### MCP 服务器配置（可选）
+### MCP 服务器配置
 
 如需使用 Zotero 集成的研究工作流，请安装 MCP 服务器：
 
 ```bash
-# 安装 Zotero MCP 服务器
-uv tool install zotero-mcp-server
-
-# 在 Zotero 桌面应用中启用本地 API：
-# 编辑 → 设置 → 高级 → 勾选"允许本计算机上的其他应用程序与 Zotero 通信"
+# 安装 Zotero MCP 服务器（Web API 模式 — 无需 Zotero 桌面应用）
+uv tool install git+https://github.com/Galaxy-Dawn/zotero-mcp.git
 ```
 
-Zotero MCP 已在 `config.toml` 中预配置。如果使用 `setup.sh`，安装时可选择启用，或之后手动设置 `enabled = true`：
+从 [zotero.org/settings/keys](https://www.zotero.org/settings/keys) 获取 API 密钥和库 ID，然后在 `config.toml` 中配置：
 
 ```toml
 [mcp_servers.zotero]
 command = "zotero-mcp"
 args = ["serve"]
 enabled = true
+
 [mcp_servers.zotero.env]
-ZOTERO_LOCAL = "true"
+ZOTERO_API_KEY = "your-api-key"
+ZOTERO_LIBRARY_ID = "your-library-id"
+ZOTERO_LIBRARY_TYPE = "user"
+UNPAYWALL_EMAIL = "your-email@example.com"
+UNSAFE_OPERATIONS = "all"
 ```
+
+详细配置说明（所有平台、可用工具、故障排除），请参阅 [MCP_SETUP.md](MCP_SETUP.md)。
 
 ### 首次运行
 

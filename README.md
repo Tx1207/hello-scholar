@@ -20,6 +20,7 @@
 
 ## News
 
+- **2026-02-26**: Zotero MCP Web API mode — switched from local-only to Web API mode ([Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp)), supports remote access without Zotero desktop app; added `MCP_SETUP.md` setup guide
 - **2026-02-25**: Codex CLI migration — ported from OpenCode to Codex CLI format: TOML config, independent agent directories, commands merged into skills (32→40), hooks replaced by AGENTS.md instructions + sandbox, interactive `setup.sh` with merge support
 - **2026-02-23**: Added `setup.sh` installer — safe merge into existing config, auto-backup
 
@@ -49,7 +50,7 @@ Claude Scholar (Codex Edition) is a configuration system for [Codex CLI](https:/
 | [Core Workflows](#core-workflows) | Paper writing, code organization, skill evolution |
 | [What's Included](#whats-included) | Skills, agents overview |
 | [Installation Guide](#installation-options) | Full install or manual setup |
-| [MCP Setup](#mcp-server-setup-optional) | Zotero MCP for research workflows |
+| [MCP Setup](#mcp-server-setup) | Zotero MCP for research workflows |
 | [Migration Notes](#key-differences-from-opencode-version) | What changed from OpenCode edition |
 
 ## Core Workflows
@@ -327,31 +328,35 @@ rm -rf /tmp/claude-scholar
 
 - [Codex CLI](https://github.com/openai/codex) (`npm i -g @openai/codex`)
 - Git
-- (Optional) uv, Python (for Python development)
-- (Optional) [Zotero](https://www.zotero.org/) + [zotero-mcp-server](https://pypi.org/project/zotero-mcp-server/) (for literature management)
+- uv, Python (for Python development and MCP server installation)
+- (Optional) [Zotero](https://www.zotero.org/) + [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp) (for literature management)
 
-### MCP Server Setup (Optional)
+### MCP Server Setup
 
 For Zotero-integrated research workflows, install the MCP server:
 
 ```bash
-# Install Zotero MCP server
-uv tool install zotero-mcp-server
-
-# Enable Local API in Zotero desktop app:
-# Edit → Settings → Advanced → Check "Allow other applications on this computer to communicate with Zotero"
+# Install Zotero MCP server (Web API mode — no Zotero desktop app required)
+uv tool install git+https://github.com/Galaxy-Dawn/zotero-mcp.git
 ```
 
-The Zotero MCP server is pre-configured in `config.toml`. If you used `setup.sh`, enable it during installation or later by setting `enabled = true`:
+Get your API key and library ID from [zotero.org/settings/keys](https://www.zotero.org/settings/keys), then configure in `config.toml`:
 
 ```toml
 [mcp_servers.zotero]
 command = "zotero-mcp"
 args = ["serve"]
 enabled = true
+
 [mcp_servers.zotero.env]
-ZOTERO_LOCAL = "true"
+ZOTERO_API_KEY = "your-api-key"
+ZOTERO_LIBRARY_ID = "your-library-id"
+ZOTERO_LIBRARY_TYPE = "user"
+UNPAYWALL_EMAIL = "your-email@example.com"
+UNSAFE_OPERATIONS = "all"
 ```
+
+For detailed setup instructions (all platforms, available tools, troubleshooting), see [MCP_SETUP.md](MCP_SETUP.md).
 
 ### First Run
 
