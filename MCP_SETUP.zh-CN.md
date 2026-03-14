@@ -8,7 +8,7 @@ Claude Scholar 依赖 MCP（Model Context Protocol）服务器提供扩展功能
 
 **使用者**: `literature-reviewer` 代理、`research-ideation` skill 及研究工作流技能（通过自然语言触发）
 
-**包**: [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp) — Web API 模式，支持远程访问，无需 Zotero 桌面应用。
+**包**: [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp) — 可自动识别本地 Zotero desktop 与 Web API 模式；远程访问和写操作时需要 Web 凭证。
 
 #### 功能
 
@@ -23,7 +23,9 @@ Claude Scholar 依赖 MCP（Model Context Protocol）服务器提供扩展功能
 #### 前置条件
 
 1. 安装 [Zotero](https://www.zotero.org/)（可选，用于本地模式）
-2. 从 [zotero.org/settings/keys](https://www.zotero.org/settings/keys) 获取 Zotero API 密钥和库 ID
+2. 如需使用 Web API，请打开 [Zotero 设置 -> Security -> Applications](https://www.zotero.org/settings/security#applications)
+3. 点击 `Create new private key` 生成 API key
+4. 同一页面按钮下方显示的 `User ID`，就是个人库场景下应填写的 `ZOTERO_LIBRARY_ID`
 
 #### 安装
 
@@ -48,7 +50,7 @@ enabled = true
 
 [mcp_servers.zotero.env]
 ZOTERO_API_KEY = "your-api-key"
-ZOTERO_LIBRARY_ID = "your-library-id"
+ZOTERO_LIBRARY_ID = "your-user-id"
 ZOTERO_LIBRARY_TYPE = "user"
 UNPAYWALL_EMAIL = "your-email@example.com"
 UNSAFE_OPERATIONS = "all"
@@ -67,7 +69,7 @@ NO_PROXY = "localhost,127.0.0.1"
       "args": ["serve"],
       "env": {
         "ZOTERO_API_KEY": "your-api-key",
-        "ZOTERO_LIBRARY_ID": "your-library-id",
+        "ZOTERO_LIBRARY_ID": "your-user-id",
         "ZOTERO_LIBRARY_TYPE": "user",
         "UNPAYWALL_EMAIL": "your-email@example.com",
         "UNSAFE_OPERATIONS": "all"
@@ -98,7 +100,7 @@ NO_PROXY = "localhost,127.0.0.1"
 ```bash
 # Zotero MCP
 export ZOTERO_API_KEY="your-api-key"
-export ZOTERO_LIBRARY_ID="your-library-id"
+export ZOTERO_LIBRARY_ID="your-user-id"
 export ZOTERO_LIBRARY_TYPE="user"
 export UNPAYWALL_EMAIL="your-email@example.com"
 export UNSAFE_OPERATIONS="all"
@@ -108,12 +110,16 @@ export UNSAFE_OPERATIONS="all"
 
 | 变量 | 必需 | 说明 |
 |------|------|------|
-| `ZOTERO_API_KEY` | 是 | 你的 Zotero API 密钥 |
-| `ZOTERO_LIBRARY_ID` | 是 | 你的库 ID（数字） |
+| `ZOTERO_API_KEY` | 本地只读可不填；Web/写操作必填 | 你的 Zotero API 密钥 |
+| `ZOTERO_LIBRARY_ID` | 本地只读可不填；Web/写操作必填 | 个人库场景下填写 Zotero 页面显示的 `User ID`（数字） |
 | `ZOTERO_LIBRARY_TYPE` | 是 | `user` 或 `group` |
 | `UNPAYWALL_EMAIL` | 否 | 用于 Unpaywall PDF 搜索的邮箱 |
 | `UNSAFE_OPERATIONS` | 否 | `items`（启用 delete_items）、`all`（启用 delete_collection） |
 | `NO_PROXY` | 否 | 绕过 localhost 代理 |
+
+说明：
+- 最小本地配置只需要 `command = "zotero-mcp"` 和 `args = ["serve"]`。
+- 不要把 `your-api-key`、`your-user-id`、`your-email@example.com` 这类占位符直接保留在正式配置里。
 
 #### 可用工具
 

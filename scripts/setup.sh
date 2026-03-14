@@ -310,7 +310,7 @@ configure_mcp() {
     rm -f "$CODEX_HOME/config.toml.tmp"
     info "Zotero MCP enabled"
     if ! command -v zotero-mcp >/dev/null 2>&1; then
-      warn "zotero-mcp not found. Install: uv tool install zotero-mcp-server"
+      warn "zotero-mcp not found. Install: uv tool install git+https://github.com/Galaxy-Dawn/zotero-mcp.git"
     fi
   fi
 }

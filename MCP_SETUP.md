@@ -8,7 +8,7 @@ Claude Scholar relies on MCP (Model Context Protocol) servers for extended capab
 
 **Used by**: `literature-reviewer` agent, `research-ideation` skill, and research workflow skills (triggered via natural language)
 
-**Package**: [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp) — Web API mode, supports remote access without Zotero desktop app.
+**Package**: [Galaxy-Dawn/zotero-mcp](https://github.com/Galaxy-Dawn/zotero-mcp) — auto-detects local Zotero desktop vs Web API mode; Web credentials are required for remote access and write tools.
 
 #### Features
 
@@ -23,7 +23,9 @@ Claude Scholar relies on MCP (Model Context Protocol) servers for extended capab
 #### Prerequisites
 
 1. Install [Zotero](https://www.zotero.org/) (optional, for local mode)
-2. Get Zotero API key and library ID from [zotero.org/settings/keys](https://www.zotero.org/settings/keys)
+2. For Web API access, open [Zotero Settings -> Security -> Applications](https://www.zotero.org/settings/security#applications)
+3. Click `Create new private key` to generate your API key
+4. On the same page, the `User ID` shown below the button is the value to use as `ZOTERO_LIBRARY_ID` for a personal library
 
 #### Installation
 
@@ -48,7 +50,7 @@ enabled = true
 
 [mcp_servers.zotero.env]
 ZOTERO_API_KEY = "your-api-key"
-ZOTERO_LIBRARY_ID = "your-library-id"
+ZOTERO_LIBRARY_ID = "your-user-id"
 ZOTERO_LIBRARY_TYPE = "user"
 UNPAYWALL_EMAIL = "your-email@example.com"
 UNSAFE_OPERATIONS = "all"
@@ -67,7 +69,7 @@ Add to your `~/.claude/settings.json`:
       "args": ["serve"],
       "env": {
         "ZOTERO_API_KEY": "your-api-key",
-        "ZOTERO_LIBRARY_ID": "your-library-id",
+        "ZOTERO_LIBRARY_ID": "your-user-id",
         "ZOTERO_LIBRARY_TYPE": "user",
         "UNPAYWALL_EMAIL": "your-email@example.com",
         "UNSAFE_OPERATIONS": "all"
@@ -98,7 +100,7 @@ Then set environment variables in `~/.zshrc`:
 ```bash
 # Zotero MCP
 export ZOTERO_API_KEY="your-api-key"
-export ZOTERO_LIBRARY_ID="your-library-id"
+export ZOTERO_LIBRARY_ID="your-user-id"
 export ZOTERO_LIBRARY_TYPE="user"
 export UNPAYWALL_EMAIL="your-email@example.com"
 export UNSAFE_OPERATIONS="all"
@@ -108,12 +110,16 @@ export UNSAFE_OPERATIONS="all"
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `ZOTERO_API_KEY` | Yes | Your Zotero API key |
-| `ZOTERO_LIBRARY_ID` | Yes | Your library ID (numeric) |
+| `ZOTERO_API_KEY` | No for local read-only; Yes for Web/write tools | Your Zotero API key |
+| `ZOTERO_LIBRARY_ID` | No for local read-only; Yes for Web/write tools | Your Zotero `User ID` (numeric) for personal libraries |
 | `ZOTERO_LIBRARY_TYPE` | Yes | `user` or `group` |
 | `UNPAYWALL_EMAIL` | No | Email for Unpaywall PDF search |
 | `UNSAFE_OPERATIONS` | No | `items` (delete_items), `all` (delete_collection) |
 | `NO_PROXY` | No | Bypass proxy for localhost |
+
+Notes:
+- The minimal local setup is just `command = "zotero-mcp"` plus `args = ["serve"]`.
+- Do not leave placeholder values such as `your-api-key`, `your-user-id`, or `your-email@example.com` in your live config.
 
 #### Available Tools
 
