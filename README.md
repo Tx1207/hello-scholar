@@ -374,10 +374,10 @@ bash /tmp/claude-scholar/scripts/setup.sh
 ```
 
 The script will:
-- Preserve your existing provider/model choices unless you explicitly reconfigure them
-- Preserve existing API keys, auth files, permissions, and unrelated config fields
-- Merge Scholar-managed sections (features, agents, MCP, skills paths) into the existing config instead of overwriting the whole file
-- Copy or refresh skills, agents, scripts, and utilities under `~/.codex/` with backups for overwritten managed files
+- Silently preserve existing `config.toml` provider/model and existing `auth.json` credentials, and auto-detect common `*_API_KEY` env vars when `auth.json` is absent
+- For fresh installs, choose API provider (OpenAI or custom), model, and a custom API key env var name
+- Reuse an already-exported env var when available, then merge Scholar-specific sections (features, agents, MCP) into config
+- Copy skills, agents, scripts, and utils to `~/.codex/`
 
 **Includes**: All 55 skills, 15 agents, Zotero MCP config, Obsidian knowledge-base skills, and AGENTS.md.
 
