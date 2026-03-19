@@ -19,7 +19,7 @@
 ## Recent News
 
 - **2026-03-18**: **Results reporting, writing memory, and README alignment** — kept the `results-analysis` / `results-report` split for strict statistics plus decision-oriented post-experiment reporting, kept Obsidian write-back in the Codex workflow, removed the old `data-analyst` entrypoint from the product story, wired `paper-miner` output into a shared writing memory used by `ml-paper-writing` and `review-response`, and aligned the Codex README structure with the main branch while preserving Codex-specific usage.
-- **2026-03-17**: **Obsidian project knowledge base** — ported the filesystem-first Obsidian workflow into the Codex edition with project import, repo-bound auto-sync, `Papers / Knowledge / Experiments / Results / Results/Reports / Writing` routing, and no MCP requirement on the Obsidian side.
+- **2026-03-17**: **Obsidian project knowledge base** — ported the filesystem-first Obsidian workflow into the Codex edition with project import, repo-bound auto-sync, durable knowledge routed across `Papers / Knowledge / Experiments / Results / Writing`, with round-level experiment reports stored under `Results/Reports/`, and no MCP requirement on the Obsidian side.
 - **2026-02-26**: **Zotero MCP Web API mode** — remote Zotero access, DOI/arXiv/URL import, collection management, item updates, and Codex-specific setup guidance in `config.toml`.
 
 <details>
@@ -72,7 +72,7 @@ In other words, Claude Scholar is a **semi-automated research assistant**, not a
 - **Ideation**: turn a vague topic into concrete questions, research gaps, and an initial plan.
 - **Literature**: search, import, organize, and read papers through Zotero collections.
 - **Paper notes**: convert papers into structured reading notes and reusable claims.
-- **Knowledge base**: route durable knowledge into Obsidian across `Papers / Knowledge / Experiments / Results / Results/Reports / Writing`.
+- **Knowledge base**: route durable knowledge into Obsidian across `Papers / Knowledge / Experiments / Results / Writing`, with round-level experiment reports stored under `Results/Reports/`.
 - **Experiments**: track hypotheses, experiment lines, run history, findings, and next actions.
 - **Analysis**: generate strict statistics, real scientific figures, and analysis artifacts with `results-analysis`.
 - **Reporting**: produce a complete post-experiment report with `results-report`, then write it back into Obsidian.
@@ -331,7 +331,7 @@ Treat Obsidian as a durable research knowledge sink rather than a pile of discon
 
 **How it works**
 - bind an existing repo to an Obsidian vault,
-- route stable knowledge into `Papers / Knowledge / Experiments / Results / Results/Reports / Writing`,
+- route stable knowledge into `Papers / Knowledge / Experiments / Results / Writing`, with round-level experiment reports stored under `Results/Reports/`,
 - maintain `Daily/` and project memory conservatively,
 - ingest new Markdown into the right canonical note,
 - generate canvases or views only when the workflow actually calls for them.
