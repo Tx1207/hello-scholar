@@ -54,13 +54,13 @@ The first example tells Claude what to do. The second tells the user what will h
 ### Command Locations
 
 **Project commands** (shared with team):
-- Location: `.claude/commands/`
+- Location: `.codex/commands/`
 - Scope: Available in specific project
 - Label: Shown as "(project)" in `/help`
 - Use for: Team workflows, project-specific tasks
 
 **Personal commands** (available everywhere):
-- Location: `~/.opencode/commands/`
+- Location: `~/.codex/commands/`
 - Scope: Available in all projects
 - Label: Shown as "(user)" in `/help`
 - Use for: Personal workflows, cross-project utilities
@@ -78,7 +78,7 @@ The first example tells Claude what to do. The second tells the user what will h
 Commands are Markdown files with `.md` extension:
 
 ```
-.claude/commands/
+.codex/commands/
 ├── review.md           # /review command
 ├── test.md             # /test command
 └── deploy.md           # /deploy command
@@ -332,7 +332,7 @@ For complete syntax, examples, and best practices, see `references/plugin-featur
 Simple organization for small command sets:
 
 ```
-.claude/commands/
+.codex/commands/
 ├── build.md
 ├── test.md
 ├── deploy.md
@@ -347,7 +347,7 @@ Simple organization for small command sets:
 Organize commands in subdirectories:
 
 ```
-.claude/commands/
+.codex/commands/
 ├── ci/
 │   ├── build.md        # /build (project:ci)
 │   ├── test.md         # /test (project:ci)

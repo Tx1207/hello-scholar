@@ -106,7 +106,7 @@ def find_repo_root(cwd: Path) -> Path:
 
 
 def registry_path(repo_root: Path) -> Path:
-    return repo_root / '.claude' / 'project-memory' / 'registry.yaml'
+    return repo_root / '.codex' / 'project-memory' / 'registry.yaml'
 
 
 def load_registry(path: Path) -> dict[str, Any]:
@@ -561,7 +561,7 @@ def bootstrap_project(repo_root: Path, vault_path: Path, project_name: str | Non
     registry['projects'][project_slug] = entry
     save_registry(reg_path, registry)
 
-    memory_path = repo_root / '.claude' / 'project-memory' / f'{project_slug}.md'
+    memory_path = repo_root / '.codex' / 'project-memory' / f'{project_slug}.md'
     if force or not memory_path.exists():
         memory_path.parent.mkdir(parents=True, exist_ok=True)
         memory_path.write_text(project_memory(project_slug, repo_root, project_root, entry['hub_note']), encoding='utf-8')
@@ -602,7 +602,7 @@ def detect(repo_root: Path) -> dict[str, Any]:
 def resolve_binding(repo_root: Path, project_id: str | None = None) -> ProjectBinding:
     registry = load_registry(registry_path(repo_root))
     if not registry.get('projects'):
-        raise SystemExit('No registered projects found in .claude/project-memory/registry.yaml')
+        raise SystemExit('No registered projects found in .codex/project-memory/registry.yaml')
 
     if project_id is None:
         detected = detect(repo_root)
@@ -637,7 +637,7 @@ def lifecycle(repo_root: Path, mode: str, project_id: str | None = None) -> dict
     registry = load_registry(reg_path)
     binding = resolve_binding(repo_root, project_id)
     entry = registry['projects'][binding.project_id]
-    memory_path = repo_root / '.claude' / 'project-memory' / f'{binding.project_id}.md'
+    memory_path = repo_root / '.codex' / 'project-memory' / f'{binding.project_id}.md'
 
     if mode == 'detach':
         entry['auto_sync'] = False
@@ -850,7 +850,7 @@ def search_note_candidates(project_root: Path, kind: str, query: str, limit: int
 def query_context(repo_root: Path, kind: str, query: str | None = None, project_id: str | None = None) -> dict[str, Any]:
     binding = resolve_binding(repo_root, project_id)
     project_root = binding.project_root
-    memory_path = repo_root / '.claude' / 'project-memory' / f'{binding.project_id}.md'
+    memory_path = repo_root / '.codex' / 'project-memory' / f'{binding.project_id}.md'
     today_path = daily_note_path(project_root)
     context_paths: list[Path] = []
 
@@ -909,7 +909,7 @@ def find_canonical_note(repo_root: Path, kind: str, query: str, project_id: str 
 
     recommended_reads: list[str] = []
     for path in [
-        repo_root / '.claude' / 'project-memory' / f'{binding.project_id}.md',
+        repo_root / '.codex' / 'project-memory' / f'{binding.project_id}.md',
         project_root / '00-Hub.md',
         project_root / '01-Plan.md',
         primary,
@@ -1193,7 +1193,7 @@ def topic_note(title: str, note_type: str, project_id: str, summary: list[str], 
 
 
 def build_sync_context(binding: ProjectBinding, scope: str) -> SyncContext:
-    memory_path = binding.repo_root / '.claude' / 'project-memory' / f'{binding.project_id}.md'
+    memory_path = binding.repo_root / '.codex' / 'project-memory' / f'{binding.project_id}.md'
     memory_text = read_text(memory_path)
     frontmatter = parse_frontmatter(memory_text)
     last_synced_head = frontmatter.get('last_synced_head', 'unknown')

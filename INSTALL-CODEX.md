@@ -120,7 +120,7 @@ ZOTERO_LIBRARY_TYPE = "user"
 
 | Aspect | Claude Code (`main`) | Codex CLI (`codex`) |
 |--------|---------------------|---------------------|
-| Config | `~/.claude/settings.json` | `~/.codex/config.toml` |
+| Config | `settings.json` (legacy JSON config) | `~/.codex/config.toml` |
 | Project file | `CLAUDE.md` | `AGENTS.md` |
 | Hooks | JS hooks (5 event hooks) | AGENTS.md instructions + manual skills |
 | Agents | Markdown files | TOML config + AGENTS.md per agent |

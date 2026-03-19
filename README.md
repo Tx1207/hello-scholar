@@ -448,7 +448,7 @@ After installation, run `codex` to start. The Codex CLI will:
 The Codex branch now carries the same filesystem-first Obsidian project knowledge-base direction as the main branch, adapted to Codex conventions:
 
 - no Obsidian MCP or API key requirement
-- repo-bound project memory via `.claude/project-memory/registry.yaml` inside the research repo
+- repo-bound project memory via `.codex/project-memory/registry.yaml` inside the research repo
 - compact vault layout: `Knowledge / Papers / Experiments / Results / Results/Reports / Writing / Daily / Archive`
 - optional official `obsidian` CLI support for navigation only
 - default literature graph artifact: `Maps/literature.canvas`

@@ -545,7 +545,7 @@ Use for: Verifying required plugin files exist
 4. **Hardcoding plugin paths:**
    ```markdown
    # Wrong - breaks on different installations
-   @/home/user/.claude/plugins/my-plugin/config.json
+   @/home/user/.codex/plugins/my-plugin/config.json
 
    # Correct - works everywhere
    @${CLAUDE_PLUGIN_ROOT}/config.json

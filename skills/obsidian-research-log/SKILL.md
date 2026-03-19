@@ -18,7 +18,7 @@ Prefer a small number of durable updates over creating extra planning folders.
 - `Daily/YYYY-MM-DD.md`
 - `01-Plan.md`
 - `00-Hub.md` recent progress block
-- `.claude/project-memory/<project_id>.md`
+- `.codex/project-memory/<project_id>.md`
 
 ## Rules
 

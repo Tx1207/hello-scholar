@@ -89,7 +89,7 @@
 
 ### Obsidian 项目知识库规则
 
-- 若当前仓库包含 `.claude/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
+- 若当前仓库包含 `.codex/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
 - 若仓库尚未绑定但明显像科研项目，则默认启用 `obsidian-project-bootstrap`。
 - 对于实质性的科研回合，至少维护当天 `Daily/` 与 repo-local project memory；只有项目顶层状态变化时才更新 `00-Hub.md`。
 - Obsidian 工作流不依赖 MCP，也不要求额外 API key。

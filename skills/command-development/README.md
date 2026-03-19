@@ -129,8 +129,8 @@ Command prompt content with:
 
 ### Locations
 
-- **Project**: `.claude/commands/` (shared with team)
-- **Personal**: `~/.claude/commands/` (your commands)
+- **Project**: `.codex/commands/` (shared with team)
+- **Personal**: `~/.codex/commands/` (your commands)
 - **Plugin**: `plugin-name/commands/` (plugin-specific)
 
 ### Key Features

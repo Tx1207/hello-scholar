@@ -84,7 +84,7 @@ Check output and error handling.
 
 ---
 
-## Example 2: agent-development (A Grade)
+## Example 2: agent-identifier (A Grade)
 
 Strong skill with good description and organization.
 
@@ -92,7 +92,7 @@ Strong skill with good description and organization.
 
 ```yaml
 ---
-name: agent-development
+name: agent-identifier
 description: This skill should be used when the user asks to "create an agent",
 "add an agent", "write a subagent", "agent frontmatter", "when to use description",
 "agent examples", "agent tools", "agent colors", "autonomous agent", or needs
@@ -110,7 +110,7 @@ version: 0.1.0
 ### Directory Structure
 
 ```
-agent-development/
+agent-identifier/
 ├── SKILL.md (1,438 words)
 ├── references/
 │   ├── agent-generation-prompt.md (500 words)
@@ -368,18 +368,18 @@ For hands-on learning, study these high-quality skills in your environment:
 
 ```bash
 # Explore hook-development structure
-ls -la ~/.claude/plugins/cache/*/skills/hook-development/
+ls -la ~/.codex/skills/hook-development/
 
-# Read agent-development SKILL.md
-cat ~/.claude/skills/agent-development/SKILL.md
+# Read agent-identifier SKILL.md
+cat ~/.codex/skills/agent-identifier/SKILL.md
 
 # Review mcp-integration references
-ls -la ~/.claude/skills/mcp-integration/references/
+ls -la ~/.codex/skills/mcp-integration/references/
 ```
 
 Each demonstrates different strengths:
 - **hook-development**: Progressive disclosure, utilities
-- **agent-development**: Clean examples, focused content
+- **agent-identifier**: Clean examples, focused content
 - **mcp-integration**: Comprehensive references, clear organization
 
 Use these as templates when creating or improving your own skills.

@@ -441,7 +441,7 @@ UNSAFE_OPERATIONS = "all"
 Codex 分支现在也携带了和主分支一致方向的 filesystem-first Obsidian 项目知识库能力，只是入口改成适合 Codex 的自然语言工作流：
 
 - 不需要 Obsidian MCP，也不需要 API key
-- 通过研究仓库内的 `.claude/project-memory/registry.yaml` 进行 repo 绑定 project memory
+- 通过研究仓库内的 `.codex/project-memory/registry.yaml` 进行 repo 绑定 project memory
 - 默认 vault 结构为 `Knowledge / Papers / Experiments / Results / Results/Reports / Writing / Daily / Archive`
 - 官方 `obsidian` CLI 只作为可选导航辅助
 - 默认文献图谱产物为 `Maps/literature.canvas`

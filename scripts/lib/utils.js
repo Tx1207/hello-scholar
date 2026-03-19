@@ -85,12 +85,12 @@ function runCommand(cmd, options = {}) {
 }
 
 /**
- * 获取 Claude 配置目录（跨平台）
- * @returns {string} Claude 配置目录路径
+ * 获取 Codex 配置目录（跨平台）
+ * @returns {string} Codex 配置目录路径
  */
-function getClaudeConfigDir() {
+function getCodexConfigDir() {
   const homeDir = getHomeDir();
-  return path.join(homeDir, '.claude');
+  return path.join(homeDir, '.codex');
 }
 
 /**
@@ -102,7 +102,7 @@ function getProjectRoot(startDir = process.cwd()) {
   let currentDir = startDir;
 
   while (currentDir !== path.parse(currentDir).root) {
-    // 检查是否存在 .claude-plugin 目录
+    // 检查是否存在 .claude-plugin 目录（Claude Code plugin repo）
     const pluginDir = path.join(currentDir, '.claude-plugin');
     if (fs.existsSync(pluginDir)) {
       return currentDir;
@@ -221,7 +221,7 @@ module.exports = {
   ensureDir,
   commandExists,
   runCommand,
-  getClaudeConfigDir,
+  getCodexConfigDir,
   getProjectRoot,
   joinPath,
   resolvePath,

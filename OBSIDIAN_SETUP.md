@@ -44,7 +44,7 @@ Some optional graph-oriented helpers may still exist in the repo, but the defaul
 
 ## Default behavior
 
-When Claude Scholar is running inside a repository that contains `.claude/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
+When Claude Scholar is running inside a repository that contains `.codex/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
 
 If the repository is not yet bound, but it looks like a research project (for example it contains `.git`, `README.md`, `docs/`, `notes/`, `plan/`, `results/`, `outputs/`, `src/`, or `scripts/`), Claude Scholar should bootstrap a project knowledge base automatically.
 
@@ -68,14 +68,14 @@ Key generated files commonly include:
 - `Knowledge/Source-Inventory.md`
 - `Knowledge/Codebase-Overview.md`
 - `Maps/literature.canvas`
-- `.claude/project-memory/<project_id>.md`
+- `.codex/project-memory/<project_id>.md`
 
 ## Repository-local memory binding
 
 Each research repo gets a local binding under:
 
 ```text
-.claude/project-memory/
+.codex/project-memory/
   registry.yaml
   <project_id>.md
 ```
@@ -99,11 +99,11 @@ Codex does not expose slash commands the way Claude Code does. In the Codex edit
 
 ## Minimum bound-repo maintenance
 
-When a repo is already bound through `.claude/project-memory/registry.yaml`, Claude Scholar should keep automatic maintenance conservative:
+When a repo is already bound through `.codex/project-memory/registry.yaml`, Claude Scholar should keep automatic maintenance conservative:
 
 - always verify `Daily/YYYY-MM-DD.md` when the turn changes research state,
 - update `00-Hub.md` only when top-level project status actually changes,
-- update `.claude/project-memory/<project_id>.md` whenever project state changes,
+- update `.codex/project-memory/<project_id>.md` whenever project state changes,
 - keep `Knowledge/`, `Experiments/`, `Results/`, and `Writing/` agent-first rather than automatically rewriting them every turn.
 
 ## Optional Obsidian CLI installation
@@ -164,7 +164,7 @@ obsidian://search?vault=My%20Vault&query=%23experiment
 | Issue | Solution |
 |-------|----------|
 | Bootstrap fails with missing vault path | Set `OBSIDIAN_VAULT_PATH` or pass a vault path explicitly |
-| Project keeps re-importing | Check `.claude/project-memory/registry.yaml` exists and points to the correct repo root |
+| Project keeps re-importing | Check `.codex/project-memory/registry.yaml` exists and points to the correct repo root |
 | The vault still shows `Views/`, `Concepts/`, or `Datasets/` as defaults | Those are from older docs or older project generations; the current default workflow uses the compact structure above and only keeps `Maps/literature.canvas` by default |
 | CLI commands fail | Check that `Settings -> General -> Advanced -> Command line interface` is enabled; otherwise continue with filesystem-only sync |
 | “Remove project knowledge” is too destructive | Use archive or detach; purge is only for permanent deletion |

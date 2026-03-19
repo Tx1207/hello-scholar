@@ -646,7 +646,7 @@ Description of advanced feature.
 
 ## Configuration
 
-Optional configuration file: `.claude/command-name.local.md`
+Optional configuration file: `.codex/command-name.local.md`
 
 \`\`\`markdown
 ---

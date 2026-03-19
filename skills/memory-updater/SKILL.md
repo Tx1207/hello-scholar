@@ -21,14 +21,14 @@ When these source files change, CLAUDE.md needs to be updated accordingly.
 ## Detection Logic
 
 1. **Scan Source File Modification Times**
-   - `~/.claude/skills/**/skill.md`
-   - `~/.claude/commands/**/*.md`
-   - `~/.claude/agents/**/*.md`
-   - `~/.claude/hooks/**/*.{js,json}`
+   - `~/.codex/skills/**/skill.md`
+   - `~/.codex/commands/**/*.md`
+   - `~/.codex/agents/**/*.md`
+   - `~/.codex/hooks/**/*.{js,json}`
 
 2. **Compare Against CLAUDE.md Last Modified Time**
    - If any source file is newer than CLAUDE.md, an update is needed
-   - Track last sync timestamp via `~/.claude/.last-memory-sync`
+   - Track last sync timestamp via `~/.codex/.last-memory-sync`
 
 3. **Generate Report**
    - List all changed source files

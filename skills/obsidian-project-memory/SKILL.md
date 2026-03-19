@@ -8,7 +8,7 @@ description: This skill should be used when the user asks to maintain an Obsidia
 Maintain a **filesystem-first, agent-driven** Obsidian knowledge base for a research project.
 
 Prefer this skill when working inside a repository that:
-- already contains `.claude/project-memory/registry.yaml`, or
+- already contains `.codex/project-memory/registry.yaml`, or
 - clearly looks like a research project and should be bound to an Obsidian vault.
 
 ## Core principles
@@ -72,7 +72,7 @@ For the detailed lifecycle, read [references/WORKFLOW.md](references/WORKFLOW.md
 ### 2. Read the minimum context
 
 Before writing anything, read only the minimum stable context:
-- `.claude/project-memory/<project_id>.md`
+- `.codex/project-memory/<project_id>.md`
 - `00-Hub.md`
 - `01-Plan.md`
 - today's `Daily/YYYY-MM-DD.md` if it exists
@@ -124,7 +124,7 @@ Always keep write-back conservative.
 Write back at least:
 - today's `Daily/YYYY-MM-DD.md` when this turn changes project state,
 - `00-Hub.md` only when recent progress or top-level status truly changes,
-- `.claude/project-memory/<project_id>.md` when project state changes.
+- `.codex/project-memory/<project_id>.md` when project state changes.
 
 Then write only the durable note that matches the bucket:
 - `knowledge` -> `Knowledge/`

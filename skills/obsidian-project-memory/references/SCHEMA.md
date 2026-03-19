@@ -2,8 +2,8 @@
 
 ## Repository-local memory files
 
-- `.claude/project-memory/registry.yaml` — registry keyed by `project_id`
-- `.claude/project-memory/<project_id>.md` — compact project memory snapshot used on project turns
+- `.codex/project-memory/registry.yaml` — registry keyed by `project_id`
+- `.codex/project-memory/<project_id>.md` — compact project memory snapshot used on project turns
 
 ## Vault layout
 
