@@ -15,7 +15,7 @@ from typing import Any
 IGNORE_DIRS = {
     '.git', '.hg', '.svn', '.venv', 'venv', 'node_modules', '__pycache__',
     '.mypy_cache', '.pytest_cache', '.ruff_cache', '.idea', '.vscode',
-    'dist', 'build', 'checkpoints', 'checkpoint', 'cache', '.cache',
+    'dist', 'build', 'checkpoints', 'checkpoint', 'cache', '.cache', '.codex',
     'temp', 'tmp', '.tmp'
 }
 MAX_LIST_ITEMS = 40
@@ -40,8 +40,8 @@ NOTE_KIND_FOLDERS = {
 INDEX_NOTE_REL_PATHS = (
     '00-Hub.md',
     '01-Plan.md',
-    'Knowledge/Project-Overview.md',
-    'Knowledge/Research-Questions.md',
+    'Knowledge/Source-Inventory.md',
+    'Knowledge/Codebase-Overview.md',
     'Results/Figure-and-CSV-Index.md',
 )
 
@@ -402,15 +402,9 @@ updated: {now_iso()}
 ## Core Index
 - [[01-Plan]]
 - [[Daily/{today}|Today's Daily Note]]
-- [[Knowledge/Project-Overview]]
-- [[Knowledge/Research-Questions]]
-- [[Knowledge/Dataset-Protocol]]
-- [[Knowledge/Analysis-Pipeline-Modes]]
-- [[Experiments]]
-- [[Results]]
+- [[Knowledge/Source-Inventory]]
+- [[Knowledge/Codebase-Overview]]
 - `Results/Reports/`
-- [[Papers]]
-- [[Writing]]
 
 ## Recent Progress
 - Project knowledge base initialized at {now_iso()}.
@@ -471,7 +465,7 @@ updated: {now_iso()}
 ## Planned Tasks
 - [ ] Review today's objectives
 - [ ] Log research or engineering progress
-- [ ] Link new findings to [[Experiments]] / [[Results]] / [[Papers]]
+- [ ] Link new findings to `Experiments/`, `Results/`, or `Papers/` when they become durable
 
 ## Notes
 - Initialized automatically from project bootstrap.
@@ -866,8 +860,8 @@ def query_context(repo_root: Path, kind: str, query: str | None = None, project_
     primary: Path | None = None
 
     if kind == 'broad':
-        add(project_root / 'Knowledge' / 'Project-Overview.md')
-        add(project_root / 'Knowledge' / 'Research-Questions.md')
+        add(project_root / 'Knowledge' / 'Source-Inventory.md')
+        add(project_root / 'Knowledge' / 'Codebase-Overview.md')
     elif kind == 'next-step':
         add(today_path)
     elif kind in NOTE_KIND_FOLDERS:
@@ -880,8 +874,8 @@ def query_context(repo_root: Path, kind: str, query: str | None = None, project_
                 primary = candidate_paths[0]
                 add(primary)
         elif kind == 'knowledge':
-            add(project_root / 'Knowledge' / 'Project-Overview.md')
-            add(project_root / 'Knowledge' / 'Research-Questions.md')
+            add(project_root / 'Knowledge' / 'Source-Inventory.md')
+            add(project_root / 'Knowledge' / 'Codebase-Overview.md')
             candidate_paths = [path for path in context_paths if path.parent.name == 'Knowledge']
     else:
         raise SystemExit(f'Unsupported query kind: {kind}')
@@ -1159,9 +1153,9 @@ def repo_change_bullets(categorized: dict[str, list[str]]) -> list[str]:
     if categorized.get('results'):
         bullets.append('- Summarize newly touched analysis/report/result files in `Archive/Auto-Sync/Results-Latest-Sync.md`.')
     if categorized.get('literature') or categorized.get('writing'):
-        bullets.append('- Link writing/literature-related notes into `Writing/Literature-Sync.md`.')
+        bullets.append('- Review writing/literature-related repository notes and promote only stable content into `Writing/` or `Papers/` when needed.')
     if categorized.get('engineering'):
-        bullets.append('- Review engineering-only code changes for any hidden experiment or result impact, then reflect the follow-up in `01-Plan.md` or `Daily/Sync-Queue.md`.')
+        bullets.append('- Review engineering-only code changes for any hidden experiment or result impact, then reflect the follow-up in `01-Plan.md` if needed.')
     if not bullets:
         bullets.append('- No follow-up tasks detected from repository changes.')
     return bullets
@@ -1263,24 +1257,6 @@ def sync_plan(ctx: SyncContext) -> None:
     content = upsert_section(content, 'Sync Queue', render_bullets(repo_change_bullets(ctx.categorized)))
     write_text(plan_path, content)
 
-    tasks_path = ctx.binding.project_root / 'Daily' / 'Sync-Queue.md'
-    write_text(
-        tasks_path,
-        topic_note(
-            title='Sync Queue',
-            note_type='task',
-            project_id=ctx.binding.project_id,
-            summary=[
-                f'- Generated at {ctx.timestamp}.',
-                f'- Scope: `{ctx.scope}`.',
-                f'- Changed files detected: {len(ctx.changed_paths)}.',
-            ],
-            paths=list(ctx.changed_paths),
-            extra_heading='Suggested Follow-ups',
-            extra_lines=repo_change_bullets(ctx.categorized),
-        ),
-    )
-
 
 def sync_experiments(ctx: SyncContext) -> None:
     paths = ctx.categorized.get('experiments', [])
@@ -1321,22 +1297,7 @@ def sync_results(ctx: SyncContext) -> None:
 
 
 def sync_writing(ctx: SyncContext) -> None:
-    paths = sorted(set(ctx.categorized.get('writing', []) + ctx.categorized.get('literature', [])))
-    if not paths:
-        return
-    write_text(
-        ctx.binding.project_root / 'Writing' / 'Literature-Sync.md',
-        topic_note(
-            title='Literature and Writing Sync',
-            note_type='synthesis',
-            project_id=ctx.binding.project_id,
-            summary=[
-                f'- Auto-sync captured {len(paths)} writing/literature-related path(s).',
-                '- Use this note to link repository docs, plans, reading notes, and synthesis outputs back into the project graph.',
-            ],
-            paths=paths,
-        ),
-    )
+    return
 
 
 def sync_project_memory(ctx: SyncContext) -> None:
