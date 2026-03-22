@@ -21,6 +21,14 @@ updated: 2026-03-16T00:00:00Z
 ---
 ```
 
+## Canonical filename
+
+```text
+Papers/{FirstAuthor}-{Year}-{ShortTitle}.md
+```
+
+Use the first author's surname, a 4-digit year, and a stable short title in original keyword order.
+
 ## Recommended frontmatter for knowledge mapping
 
 ```yaml
@@ -55,4 +63,5 @@ linked_knowledge:
 - Prefer one canonical note per paper and keep the schema aligned across the whole covered set.
 - When the user asks to check **all** papers, perform a coverage pass rather than stopping at a representative subset.
 - Use `zotero_key` as the durable join key between Zotero items and Obsidian notes.
+- Keep paper-note filenames stable under `FirstAuthor-Year-ShortTitle`, even if the displayed `title` later changes.
 - Keep `Direct relevance to repo` concrete enough to drive experiments, writing, or review prioritization.

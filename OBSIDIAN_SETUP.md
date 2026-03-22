@@ -83,6 +83,35 @@ Each research repo gets a local binding under:
 - `registry.yaml` stores the repo ↔ vault binding
 - `<project_id>.md` stores the assistant-facing project memory for incremental syncs
 
+## Note language
+
+Generated and synced notes resolve their language with this priority:
+1. project config in `.codex/project-memory/registry.yaml`
+2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
+3. default `en`
+
+Note: the file is currently named `registry.yaml` for historical reasons, but its on-disk format is JSON.
+
+Supported values:
+- `en`
+- `zh-CN`
+
+Per-project example:
+
+```json
+{
+  "projects": {
+    "my-project": {
+      "project_id": "my-project",
+      "vault_root": "/path/to/vault/Research/my-project",
+      "note_language": "zh-CN"
+    }
+  }
+}
+```
+
+Existing English and Chinese headings remain compatible during sync, so changing the configured language does not break older notes.
+
 ## Main workflows
 
 Codex does not expose slash commands the way Claude Code does. In the Codex edition, use the same workflows through natural-language prompts plus the corresponding skills/agents:

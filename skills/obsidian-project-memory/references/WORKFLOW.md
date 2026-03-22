@@ -23,6 +23,19 @@ python3 scripts/project_kb.py bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAU
 
 Bootstrap should create only the compact schema from `SCHEMA.md`, including `Results/Reports/` for internal experiment reports.
 
+To bootstrap Chinese notes explicitly:
+
+```bash
+python3 scripts/project_kb.py bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH" --note-language zh-CN
+```
+
+Language priority for generated/synced notes:
+1. per-project `note_language` in `.codex/project-memory/registry.yaml`
+2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
+3. default `en`
+
+Section updates remain compatible with both English and Chinese headings so older notes can still sync safely after switching the configured language.
+
 ## 3. Daily or repo-driven sync
 
 Use:

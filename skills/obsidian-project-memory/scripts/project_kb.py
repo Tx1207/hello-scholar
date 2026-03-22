@@ -29,7 +29,20 @@ CODE_EXTENSIONS = {
 DOC_EXTENSIONS = {'.md', '.txt', '.rst'}
 RESULT_EXTENSIONS = {'.csv', '.json', '.md', '.txt', '.log'}
 SYNC_TOPICS = ('plan', 'literature', 'experiments', 'results', 'writing', 'meetings')
-DEFAULT_NOTE_LANGUAGE = 'zh-CN'
+DEFAULT_NOTE_LANGUAGE = 'en'
+NOTE_LANGUAGE_ENV_VARS = ('OBSIDIAN_NOTE_LANGUAGE',)
+NOTE_LANGUAGE_ALIASES = {
+    'en': 'en',
+    'en-us': 'en',
+    'en-gb': 'en',
+    'english': 'en',
+    'zh': 'zh-CN',
+    'zh-cn': 'zh-CN',
+    'zh-hans': 'zh-CN',
+    'cn': 'zh-CN',
+    'chinese': 'zh-CN',
+}
+SUPPORTED_NOTE_LANGUAGES = ('en', 'zh-CN')
 NOTE_KIND_FOLDERS = {
     'knowledge': 'Knowledge',
     'paper': 'Papers',
@@ -45,22 +58,175 @@ INDEX_NOTE_REL_PATHS = (
     'Knowledge/Codebase-Overview.md',
     'Results/Figure-and-CSV-Index.md',
 )
-SECTION_ALIASES = {
-    '近期进展': ('Recent Progress',),
-    '当前目标': ('Active Goals',),
-    '当前任务': ('Active Tasks',),
-    '待解决问题': ('Open Questions',),
-    '关注重点': ('Focus',),
-    '计划任务': ('Planned Tasks',),
-    '备注': ('Notes',),
-    '当前问题': ('Current Question',),
-    '研究假设': ('Hypotheses',),
-    '进行中的实验': ('Open Experiments',),
-    '近期结果': ('Recent Results',),
-    '最近同步状态': ('Recent Sync Status',),
-    '仓库信号': ('Repository Signals',),
-    '同步队列': ('Sync Queue',),
-    '同步更新': ('Sync Updates',),
+SECTION_LABELS = {
+    'recent_progress': {'en': 'Recent Progress', 'zh-CN': '近期进展'},
+    'active_goals': {'en': 'Active Goals', 'zh-CN': '当前目标'},
+    'active_tasks': {'en': 'Active Tasks', 'zh-CN': '当前任务'},
+    'open_questions': {'en': 'Open Questions', 'zh-CN': '待解决问题'},
+    'focus': {'en': 'Focus', 'zh-CN': '关注重点'},
+    'planned_tasks': {'en': 'Planned Tasks', 'zh-CN': '计划任务'},
+    'notes': {'en': 'Notes', 'zh-CN': '备注'},
+    'current_question': {'en': 'Current Question', 'zh-CN': '当前问题'},
+    'hypotheses': {'en': 'Hypotheses', 'zh-CN': '研究假设'},
+    'open_experiments': {'en': 'Open Experiments', 'zh-CN': '进行中的实验'},
+    'recent_results': {'en': 'Recent Results', 'zh-CN': '近期结果'},
+    'recent_sync_status': {'en': 'Recent Sync Status', 'zh-CN': '最近同步状态'},
+    'repository_signals': {'en': 'Repository Signals', 'zh-CN': '仓库信号'},
+    'sync_queue': {'en': 'Sync Queue', 'zh-CN': '同步队列'},
+    'sync_updates': {'en': 'Sync Updates', 'zh-CN': '同步更新'},
+}
+TEXT = {
+    'none': {'en': 'None', 'zh-CN': '无'},
+    'none_detected': {'en': 'None detected', 'zh-CN': '未检测到内容'},
+    'source_inventory_title': {'en': 'Source Inventory - {repo_name}', 'zh-CN': '资料清单 - {repo_name}'},
+    'source_inventory_h1': {'en': 'Source Inventory', 'zh-CN': '资料清单'},
+    'source_inventory_imported_from': {'en': 'Imported from `{repo_root}`.', 'zh-CN': '导入来源：`{repo_root}`。'},
+    'markdown_sources': {'en': 'Markdown Sources', 'zh-CN': 'Markdown 资料'},
+    'code_and_config_files': {'en': 'Code and Config Files', 'zh-CN': '代码与配置文件'},
+    'result_and_report_files': {'en': 'Result and Report Files', 'zh-CN': '结果与报告文件'},
+    'codebase_overview_title': {'en': 'Codebase Overview - {repo_name}', 'zh-CN': '代码库概览 - {repo_name}'},
+    'codebase_overview_h1': {'en': 'Codebase Overview', 'zh-CN': '代码库概览'},
+    'repository_root': {'en': 'Repository root', 'zh-CN': '仓库根目录'},
+    'detected_languages': {'en': 'Detected languages', 'zh-CN': '检测到的语言'},
+    'research_project_score': {'en': 'Research-project score', 'zh-CN': '科研项目评分'},
+    'matched_signals': {'en': 'Matched signals', 'zh-CN': '命中的信号'},
+    'top_level_directories': {'en': 'Top-level directories', 'zh-CN': '顶层目录'},
+    'key_entry_files': {'en': 'Key entry files', 'zh-CN': '关键入口文件'},
+    'suggested_knowledge_targets': {'en': 'Suggested knowledge targets', 'zh-CN': '建议沉淀的知识对象'},
+    'suggested_target_1': {
+        'en': 'Link experiment scripts to `Experiments/` notes.',
+        'zh-CN': '将实验脚本关联到 `Experiments/` 笔记。',
+    },
+    'suggested_target_2': {
+        'en': 'Link evaluation scripts and generated reports to canonical `Results/` notes and `Results/Reports/` when a full retrospective exists.',
+        'zh-CN': '将评测脚本和生成报告关联到规范的 `Results/` 与 `Results/Reports/` 笔记。',
+    },
+    'suggested_target_3': {
+        'en': 'Keep planning and TODO updates synchronized with `01-Plan.md` and `Daily/`.',
+        'zh-CN': '将计划与 TODO 的更新同步到 `01-Plan.md` 和 `Daily/`。',
+    },
+    'project_label': {'en': 'Project', 'zh-CN': '项目'},
+    'canvas_description': {
+        'en': 'Use this canvas to connect papers, concepts, experiments, and results.',
+        'zh-CN': '使用这个画布连接论文、概念、实验与结果。',
+    },
+    'today_daily_note': {'en': "Today's Daily Note", 'zh-CN': '今日日志'},
+    'hub_mission_heading': {'en': 'Mission', 'zh-CN': '项目使命'},
+    'hub_mission_body': {
+        'en': 'Keep the project grounded in a small set of research-facing folders: Knowledge, Papers, Experiments, Results, Results/Reports, Writing, and Daily.',
+        'zh-CN': '让项目稳定沉淀在少量研究导向文件夹中：Knowledge、Papers、Experiments、Results、Results/Reports、Writing 和 Daily。',
+    },
+    'hub_core_index': {'en': 'Core Index', 'zh-CN': '核心索引'},
+    'hub_folder_layout': {'en': 'Folder Layout', 'zh-CN': '目录结构'},
+    'hub_initialized': {
+        'en': 'Project knowledge base initialized at {timestamp}.',
+        'zh-CN': '项目知识库已于 {timestamp} 初始化。',
+    },
+    'plan_title_prefix': {'en': 'Plan', 'zh-CN': '计划'},
+    'plan_h1': {'en': 'Plan', 'zh-CN': '计划'},
+    'plan_goal_1': {'en': 'Clarify current research question.', 'zh-CN': '澄清当前研究问题。'},
+    'plan_goal_2': {
+        'en': 'Keep experiments, results, and writing synchronized with the vault.',
+        'zh-CN': '保持实验、结果与写作内容和知识库同步。',
+    },
+    'plan_task_1': {'en': 'Review imported project structure', 'zh-CN': '检查已导入的项目结构'},
+    'plan_task_2': {'en': 'Fill in project hypothesis', 'zh-CN': '补全当前研究假设'},
+    'plan_task_3': {'en': 'Add current experiment queue', 'zh-CN': '添加当前实验队列'},
+    'plan_question_1': {'en': 'What is the current milestone?', 'zh-CN': '当前里程碑是什么？'},
+    'plan_question_2': {'en': 'Which experiments are blocked?', 'zh-CN': '哪些实验处于阻塞状态？'},
+    'plan_question_3': {
+        'en': 'Which papers or notes should be linked next?',
+        'zh-CN': '下一步应该关联哪些论文或笔记？',
+    },
+    'daily_title_prefix': {'en': 'Daily', 'zh-CN': '日志'},
+    'daily_h1_prefix': {'en': 'Daily Log', 'zh-CN': '日志'},
+    'daily_project_label': {'en': 'Project', 'zh-CN': '项目'},
+    'daily_task_1': {'en': "Review today's objectives", 'zh-CN': '检查今天的目标'},
+    'daily_task_2': {'en': 'Log research or engineering progress', 'zh-CN': '记录研究或工程进展'},
+    'daily_task_3': {
+        'en': 'Link new findings to `Experiments/`, `Results/`, or `Papers/` when they become durable',
+        'zh-CN': '当新发现稳定后，将其关联到 `Experiments/`、`Results/` 或 `Papers/`',
+    },
+    'daily_initialized': {
+        'en': 'Initialized automatically from project bootstrap.',
+        'zh-CN': '由项目 bootstrap 自动初始化。',
+    },
+    'project_memory_title_prefix': {'en': 'Project Memory', 'zh-CN': '项目记忆'},
+    'project_memory_task_1': {'en': 'Review imported repository structure.', 'zh-CN': '检查已导入的仓库结构。'},
+    'project_memory_task_2': {'en': 'Populate current experiments and results.', 'zh-CN': '补充当前实验和结果。'},
+    'project_memory_task_3': {
+        'en': 'Start linking papers and durable project knowledge.',
+        'zh-CN': '开始关联论文与可沉淀的项目知识。',
+    },
+    'project_memory_no_experiments': {'en': 'None recorded yet.', 'zh-CN': '暂无记录。'},
+    'project_memory_initialized': {'en': 'Knowledge base initialized.', 'zh-CN': '知识库已初始化。'},
+    'project_memory_bootstrap_completed': {
+        'en': 'Bootstrap completed at {timestamp}.',
+        'zh-CN': '已于 {timestamp} 完成 bootstrap。',
+    },
+    'summary': {'en': 'Summary', 'zh-CN': '摘要'},
+    'changed_paths': {'en': 'Changed Paths', 'zh-CN': '变更路径'},
+    'auto_sync_heading': {'en': 'Auto Sync {timestamp}', 'zh-CN': '自动同步 {timestamp}'},
+    'scope': {'en': 'Scope', 'zh-CN': '范围'},
+    'git_head': {'en': 'Git head', 'zh-CN': 'Git head'},
+    'changed_file_count': {'en': 'Changed files', 'zh-CN': '变更文件数'},
+    'category_summary': {'en': 'Categories', 'zh-CN': '分类'},
+    'sample_paths': {'en': 'Sample paths', 'zh-CN': '样例路径'},
+    'no_trackable_changes': {'en': 'No trackable changes', 'zh-CN': '无可追踪变更'},
+    'sync_hub_bullet': {
+        'en': 'Auto sync `{scope}` at {timestamp} recorded {count} changed files ({summary}). See [[{daily_ref}]].',
+        'zh-CN': '自动同步 `{scope}` 于 {timestamp} 记录了 {count} 个变更文件（{summary}）。详见 [[{daily_ref}]]。',
+    },
+    'sync_time': {'en': 'Recent sync time', 'zh-CN': '最近同步时间'},
+    'check_plan_changes': {
+        'en': 'Review plan/TODO/README changes and synchronize `01-Plan.md`.',
+        'zh-CN': '检查 plan/TODO/README 的变更，并同步更新 `01-Plan.md`。',
+    },
+    'record_experiment_changes': {
+        'en': 'Record new training, inference, and config changes in `Archive/Auto-Sync/Experiments-Latest-Sync.md`.',
+        'zh-CN': '将新的训练、推理和配置变更记录到 `Archive/Auto-Sync/Experiments-Latest-Sync.md`。',
+    },
+    'summarize_result_changes': {
+        'en': 'Summarize new analysis, report, and result files in `Archive/Auto-Sync/Results-Latest-Sync.md`.',
+        'zh-CN': '将新变更的分析、报告和结果文件总结到 `Archive/Auto-Sync/Results-Latest-Sync.md`。',
+    },
+    'review_writing_and_literature': {
+        'en': 'Review writing and literature notes, and only promote stable content into `Writing/` or `Papers/`.',
+        'zh-CN': '检查写作和文献相关笔记，只在内容稳定时再沉淀到 `Writing/` 或 `Papers/`。',
+    },
+    'check_engineering_impact': {
+        'en': 'Check whether engineering-only code changes affect experiments or results, and write follow-up actions into `01-Plan.md` when needed.',
+        'zh-CN': '检查纯工程代码变更是否会影响实验或结果，并在需要时把后续动作写入 `01-Plan.md`。',
+    },
+    'no_follow_up_tasks': {
+        'en': 'Current repository changes do not require follow-up tasks.',
+        'zh-CN': '当前仓库变更未检测到需要跟进的任务。',
+    },
+    'latest_experiment_sync': {'en': 'Latest Experiment Sync', 'zh-CN': '最新实验同步'},
+    'latest_experiment_sync_summary_1': {
+        'en': 'Auto sync captured {count} experiment-related paths.',
+        'zh-CN': '自动同步捕获了 {count} 条与实验相关的路径。',
+    },
+    'latest_experiment_sync_summary_2': {
+        'en': 'Review training, inference, config, or model changes and convert them into durable experiment notes.',
+        'zh-CN': '请检查配置、训练、推理或模型改动，并将其转化为可持续维护的实验笔记。',
+    },
+    'latest_result_sync': {'en': 'Latest Result Sync', 'zh-CN': '最新结果同步'},
+    'latest_result_sync_summary_1': {
+        'en': 'Auto sync captured {count} result-related paths.',
+        'zh-CN': '自动同步捕获了 {count} 条与结果相关的路径。',
+    },
+    'latest_result_sync_summary_2': {
+        'en': 'Review analysis, reports, and outputs, and promote important findings into durable result notes.',
+        'zh-CN': '请检查分析、报告和输出产物，并将重要发现沉淀为稳定的结果笔记。',
+    },
+    'sync_memory_experiment_line': {'en': '{timestamp}: touched `{path}`', 'zh-CN': '{timestamp}：涉及 `{path}`'},
+    'sync_memory_result_line': {'en': '{timestamp}: touched `{path}`', 'zh-CN': '{timestamp}：涉及 `{path}`'},
+    'sync_memory_no_results': {'en': 'No result changes recorded.', 'zh-CN': '暂无结果变更记录。'},
+    'sync_memory_status_line': {
+        'en': '{timestamp}: scope `{scope}`, git head `{head}`, changed files={count} ({summary}).',
+        'zh-CN': '{timestamp}：范围 `{scope}`，git head `{head}`，变更文件数={count}（{summary}）。',
+    },
 }
 
 
@@ -75,6 +241,7 @@ class ProjectBinding:
     status: str
     auto_sync: bool
     archive_root: Path
+    note_language: str
 
 
 @dataclass(frozen=True)
@@ -88,6 +255,55 @@ class SyncContext:
     changed_paths: tuple[str, ...]
     categorized: dict[str, list[str]]
     scope: str
+
+
+def normalize_note_language(value: str | None) -> str | None:
+    if not value:
+        return None
+    return NOTE_LANGUAGE_ALIASES.get(value.strip().lower())
+
+
+def env_note_language() -> str | None:
+    for key in NOTE_LANGUAGE_ENV_VARS:
+        normalized = normalize_note_language(os.environ.get(key))
+        if normalized:
+            return normalized
+    return None
+
+
+def note_language_from_project_memory(repo_root: Path, project_id: str) -> str | None:
+    memory_path = repo_root / '.codex' / 'project-memory' / f'{project_id}.md'
+    frontmatter = parse_frontmatter(read_text(memory_path))
+    return normalize_note_language(frontmatter.get('language'))
+
+
+def resolve_note_language(
+    repo_root: Path,
+    project_id: str | None = None,
+    entry: dict[str, Any] | None = None,
+) -> str:
+    if entry:
+        normalized = normalize_note_language(str(entry.get('note_language', '')))
+        if normalized:
+            return normalized
+    if project_id:
+        normalized = note_language_from_project_memory(repo_root, project_id)
+        if normalized:
+            return normalized
+    return env_note_language() or DEFAULT_NOTE_LANGUAGE
+
+
+def resolve_bootstrap_note_language(value: str | None) -> str:
+    return normalize_note_language(value) or env_note_language() or DEFAULT_NOTE_LANGUAGE
+
+
+def text_value(note_language: str, key: str, **kwargs: Any) -> str:
+    template = TEXT[key][note_language]
+    return template.format(**kwargs)
+
+
+def section_heading(section_key: str, note_language: str) -> str:
+    return SECTION_LABELS[section_key][note_language]
 
 
 def now_iso() -> str:
@@ -279,14 +495,14 @@ def detect_language_hints(repo_root: Path) -> list[str]:
     return hits or ['Unknown']
 
 
-def build_source_inventory(repo_root: Path) -> str:
+def build_source_inventory(repo_root: Path, note_language: str) -> str:
     docs = collect_markdown_sources(repo_root)
     results = collect_result_files(repo_root)
     code = collect_files(repo_root, CODE_EXTENSIONS, MAX_LIST_ITEMS)
 
     def render(paths: list[Path], label: str) -> str:
         if not paths:
-            return f'## {label}\n\n- 未检测到内容\n'
+            return f'## {label}\n\n- {text_value(note_language, "none_detected")}\n'
         lines = [f'## {label}', '']
         for path in paths:
             lines.append(f'- `{path.relative_to(repo_root)}`')
@@ -295,22 +511,28 @@ def build_source_inventory(repo_root: Path) -> str:
     header = [
         '---',
         'type: meta',
-        f'title: 资料清单 - {repo_root.name}',
+        f'title: {text_value(note_language, "source_inventory_title", repo_name=repo_root.name)}',
         f'project: {slugify(repo_root.name)}',
-        f'language: {DEFAULT_NOTE_LANGUAGE}',
+        f'language: {note_language}',
         f'updated: {now_iso()}',
         '---',
         '',
-        '# 资料清单',
+        f'# {text_value(note_language, "source_inventory_h1")}',
         '',
-        f'导入来源：`{repo_root}`。',
+        text_value(note_language, 'source_inventory_imported_from', repo_root=repo_root),
         '',
     ]
-    body = render(docs, 'Markdown 资料') + '\n' + render(code, '代码与配置文件') + '\n' + render(results, '结果与报告文件')
+    body = (
+        render(docs, text_value(note_language, 'markdown_sources'))
+        + '\n'
+        + render(code, text_value(note_language, 'code_and_config_files'))
+        + '\n'
+        + render(results, text_value(note_language, 'result_and_report_files'))
+    )
     return '\n'.join(header) + body
 
 
-def build_codebase_overview(repo_root: Path) -> str:
+def build_codebase_overview(repo_root: Path, note_language: str) -> str:
     dirs = top_level_dirs(repo_root)
     entry_files = key_entry_files(repo_root)
     feature_info = detect_project_features(repo_root)
@@ -318,38 +540,38 @@ def build_codebase_overview(repo_root: Path) -> str:
     lines = [
         '---',
         'type: meta',
-        f'title: 代码库概览 - {repo_root.name}',
+        f'title: {text_value(note_language, "codebase_overview_title", repo_name=repo_root.name)}',
         f'project: {slugify(repo_root.name)}',
-        f'language: {DEFAULT_NOTE_LANGUAGE}',
+        f'language: {note_language}',
         f'updated: {now_iso()}',
         '---',
         '',
-        '# 代码库概览',
+        f'# {text_value(note_language, "codebase_overview_h1")}',
         '',
-        f'- **仓库根目录**: `{repo_root}`',
-        f'- **检测到的语言**: {", ".join(languages)}',
-        f'- **科研项目评分**: {feature_info["score"]}',
-        f'- **命中的信号**: {", ".join(feature_info["matched"] or ["none"])}',
+        f'- **{text_value(note_language, "repository_root")}**: `{repo_root}`',
+        f'- **{text_value(note_language, "detected_languages")}**: {", ".join(languages)}',
+        f'- **{text_value(note_language, "research_project_score")}**: {feature_info["score"]}',
+        f'- **{text_value(note_language, "matched_signals")}**: {", ".join(feature_info["matched"] or [text_value(note_language, "none")])}',
         '',
-        '## 顶层目录',
+        f'## {text_value(note_language, "top_level_directories")}',
         '',
     ]
     if dirs:
         lines.extend(f'- `{name}`' for name in dirs)
     else:
-        lines.append('- None')
-    lines.extend(['', '## 关键入口文件', ''])
+        lines.append(f'- {text_value(note_language, "none")}')
+    lines.extend(['', f'## {text_value(note_language, "key_entry_files")}', ''])
     if entry_files:
         lines.extend(f'- `{name}`' for name in entry_files)
     else:
-        lines.append('- None')
+        lines.append(f'- {text_value(note_language, "none")}')
     lines.extend([
         '',
-        '## 建议沉淀的知识对象',
+        f'## {text_value(note_language, "suggested_knowledge_targets")}',
         '',
-        '- 将实验脚本关联到 `Experiments/` 笔记。',
-        '- 将评测脚本和生成报告关联到规范的 `Results/` 与 `Results/Reports/` 笔记。',
-        '- 将计划与 TODO 的更新同步到 `01-Plan.md` 和 `Daily/`。',
+        f'- {text_value(note_language, "suggested_target_1")}',
+        f'- {text_value(note_language, "suggested_target_2")}',
+        f'- {text_value(note_language, "suggested_target_3")}',
     ])
     return '\n'.join(lines) + '\n'
 
@@ -358,7 +580,7 @@ def base_file(title: str, folder: str, note_type: str) -> str:
     return f'''filters:\n  and:\n    - 'project == "{{{{this.project}}}}"'\n    - 'type == "{note_type}"'\n\nproperties:\n  title:\n    displayName: "标题"\n  status:\n    displayName: "状态"\n  updated:\n    displayName: "更新时间"\n  file.path:\n    displayName: "路径"\n\nviews:\n  - type: table\n    name: "{title}"\n    filters:\n      and:\n        - 'file.inFolder("{folder}")'\n    order:\n      - title\n      - status\n      - updated\n      - file.path\n'''
 
 
-def canvas_file(project_slug: str, title: str) -> str:
+def canvas_file(project_slug: str, title: str, note_language: str) -> str:
     return json.dumps(
         {
             'nodes': [
@@ -369,7 +591,11 @@ def canvas_file(project_slug: str, title: str) -> str:
                     'y': 0,
                     'width': 440,
                     'height': 220,
-                    'text': f'# {title}\n\n项目：[[00-Hub]]\n\n使用这个画布连接论文、概念、实验与结果。'
+                    'text': (
+                        f'# {title}\n\n'
+                        f'{text_value(note_language, "project_label")}: [[00-Hub]]\n\n'
+                        f'{text_value(note_language, "canvas_description")}'
+                    ),
                 },
                 {
                     'id': 'plan-node',
@@ -402,13 +628,13 @@ def daily_note_path(project_root: Path) -> Path:
     return project_root / 'Daily' / (datetime.now().strftime('%Y-%m-%d') + '.md')
 
 
-def hub_note(project_slug: str, project_title: str) -> str:
+def hub_note(project_slug: str, project_title: str, note_language: str) -> str:
     today = datetime.now().strftime('%Y-%m-%d')
     return f'''---
 type: project
 title: {project_title}
 project: {project_slug}
-language: {DEFAULT_NOTE_LANGUAGE}
+language: {note_language}
 status: active
 tags:
   - research/project
@@ -417,20 +643,20 @@ updated: {now_iso()}
 
 # {project_title}
 
-## 项目使命
-- 让项目稳定沉淀在少量研究导向文件夹中：Knowledge、Papers、Experiments、Results、Results/Reports、Writing 和 Daily。
+## {text_value(note_language, 'hub_mission_heading')}
+- {text_value(note_language, 'hub_mission_body')}
 
-## 核心索引
+## {text_value(note_language, 'hub_core_index')}
 - [[01-Plan]]
-- [[Daily/{today}|今日日志]]
+- [[Daily/{today}|{text_value(note_language, 'today_daily_note')}]]
 - [[Knowledge/Source-Inventory]]
 - [[Knowledge/Codebase-Overview]]
 - `Results/Reports/`
 
-## 近期进展
-- 项目知识库已于 {now_iso()} 初始化。
+## {section_heading('recent_progress', note_language)}
+- {text_value(note_language, 'hub_initialized', timestamp=now_iso())}
 
-## 目录结构
+## {text_value(note_language, 'hub_folder_layout')}
 - `Knowledge/`
 - `Papers/`
 - `Experiments/`
@@ -441,95 +667,95 @@ updated: {now_iso()}
 '''
 
 
-def plan_note(project_slug: str, project_title: str) -> str:
+def plan_note(project_slug: str, project_title: str, note_language: str) -> str:
     return f'''---
 type: project
-title: 计划 - {project_title}
+title: {text_value(note_language, 'plan_title_prefix')} - {project_title}
 project: {project_slug}
-language: {DEFAULT_NOTE_LANGUAGE}
+language: {note_language}
 status: active
 updated: {now_iso()}
 ---
 
-# 计划
+# {text_value(note_language, 'plan_h1')}
 
-## 当前目标
-- 澄清当前研究问题。
-- 保持实验、结果与写作内容和知识库同步。
+## {section_heading('active_goals', note_language)}
+- {text_value(note_language, 'plan_goal_1')}
+- {text_value(note_language, 'plan_goal_2')}
 
-## 当前任务
-- [ ] 检查已导入的项目结构
-- [ ] 补全当前研究假设
-- [ ] 添加当前实验队列
+## {section_heading('active_tasks', note_language)}
+- [ ] {text_value(note_language, 'plan_task_1')}
+- [ ] {text_value(note_language, 'plan_task_2')}
+- [ ] {text_value(note_language, 'plan_task_3')}
 
-## 待解决问题
-- 当前里程碑是什么？
-- 哪些实验处于阻塞状态？
-- 下一步应该关联哪些论文或笔记？
+## {section_heading('open_questions', note_language)}
+- {text_value(note_language, 'plan_question_1')}
+- {text_value(note_language, 'plan_question_2')}
+- {text_value(note_language, 'plan_question_3')}
 '''
 
 
-def daily_note(project_slug: str, project_title: str) -> str:
+def daily_note(project_slug: str, project_title: str, note_language: str) -> str:
     today = datetime.now().strftime('%Y-%m-%d')
     return f'''---
 type: daily
-title: 日志 - {today}
+title: {text_value(note_language, 'daily_title_prefix')} - {today}
 project: {project_slug}
-language: {DEFAULT_NOTE_LANGUAGE}
+language: {note_language}
 status: active
 updated: {now_iso()}
 ---
 
-# 日志 - {today}
+# {text_value(note_language, 'daily_h1_prefix')} - {today}
 
-## 关注重点
-- 项目：[[00-Hub|{project_title}]]
+## {section_heading('focus', note_language)}
+- {text_value(note_language, 'daily_project_label')}: [[00-Hub|{project_title}]]
 
-## 计划任务
-- [ ] 检查今天的目标
-- [ ] 记录研究或工程进展
-- [ ] 当新发现稳定后，将其关联到 `Experiments/`、`Results/` 或 `Papers/`
+## {section_heading('planned_tasks', note_language)}
+- [ ] {text_value(note_language, 'daily_task_1')}
+- [ ] {text_value(note_language, 'daily_task_2')}
+- [ ] {text_value(note_language, 'daily_task_3')}
 
-## 备注
-- 由项目 bootstrap 自动初始化。
+## {section_heading('notes', note_language)}
+- {text_value(note_language, 'daily_initialized')}
 '''
 
 
-def project_memory(project_id: str, repo_root: Path, project_root: Path, hub_rel: str) -> str:
+def project_memory(project_id: str, repo_root: Path, project_root: Path, hub_rel: str, note_language: str) -> str:
     head = get_git_head(repo_root)
     return f'''---
 project_id: {project_id}
 repo_root: {repo_root}
 vault_root: {project_root}
 hub_note: {hub_rel}
-language: {DEFAULT_NOTE_LANGUAGE}
+language: {note_language}
 last_sync_at: {now_iso()}
 last_synced_head: {head}
 status: active
 auto_sync: true
 ---
 
-# 项目记忆：{project_id}
+# {text_value(note_language, 'project_memory_title_prefix')}: {project_id}
 
-## 当前问题
+## {section_heading('current_question', note_language)}
 - TODO
 
-## 研究假设
+## {section_heading('hypotheses', note_language)}
 - TODO
 
-## 当前任务
-- 检查已导入的仓库结构。
-- 补充当前实验和结果。
-- 开始关联论文与可沉淀的项目知识。
+## {section_heading('active_tasks', note_language)}
+- {text_value(note_language, 'project_memory_task_1')}
+- {text_value(note_language, 'project_memory_task_2')}
+- {text_value(note_language, 'project_memory_task_3')}
 
-## 进行中的实验
-- 暂无记录。
+## {section_heading('open_experiments', note_language)}
+- {text_value(note_language, 'project_memory_no_experiments')}
 
-## 近期结果
-- 知识库已初始化。
+## {section_heading('recent_results', note_language)}
+- {text_value(note_language, 'project_memory_initialized')}
 
-## 最近同步状态
-- 已于 {now_iso()} 完成 bootstrap。
+## {section_heading('recent_sync_status', note_language)}
+- {text_value(note_language, 'project_memory_bootstrap_completed', timestamp=now_iso())}
 '''
 
 
@@ -547,20 +773,27 @@ def ensure_note(path: Path, content: str) -> None:
         path.write_text(content, encoding='utf-8')
 
 
-def bootstrap_project(repo_root: Path, vault_path: Path, project_name: str | None = None, force: bool = False) -> dict[str, Any]:
+def bootstrap_project(
+    repo_root: Path,
+    vault_path: Path,
+    project_name: str | None = None,
+    force: bool = False,
+    note_language: str | None = None,
+) -> dict[str, Any]:
     project_slug = slugify(project_name or repo_root.name)
     project_title = project_name or titleize_slug(project_slug)
+    resolved_language = resolve_bootstrap_note_language(note_language)
     project_root = vault_path / 'Research' / project_slug
     archive_root = vault_path / 'Archive'
     project_root.mkdir(parents=True, exist_ok=True)
     for rel in ['Knowledge', 'Papers', 'Experiments', 'Results', 'Results/Reports', 'Writing', 'Daily', 'Archive']:
         (project_root / rel).mkdir(parents=True, exist_ok=True)
 
-    ensure_note(project_root / '00-Hub.md', hub_note(project_slug, project_title))
-    ensure_note(project_root / '01-Plan.md', plan_note(project_slug, project_title))
-    ensure_note(daily_note_path(project_root), daily_note(project_slug, project_title))
-    ensure_note(project_root / 'Knowledge' / 'Source-Inventory.md', build_source_inventory(repo_root))
-    ensure_note(project_root / 'Knowledge' / 'Codebase-Overview.md', build_codebase_overview(repo_root))
+    ensure_note(project_root / '00-Hub.md', hub_note(project_slug, project_title, resolved_language))
+    ensure_note(project_root / '01-Plan.md', plan_note(project_slug, project_title, resolved_language))
+    ensure_note(daily_note_path(project_root), daily_note(project_slug, project_title, resolved_language))
+    ensure_note(project_root / 'Knowledge' / 'Source-Inventory.md', build_source_inventory(repo_root, resolved_language))
+    ensure_note(project_root / 'Knowledge' / 'Codebase-Overview.md', build_codebase_overview(repo_root, resolved_language))
 
     reg_path = registry_path(repo_root)
     registry = load_registry(reg_path)
@@ -572,6 +805,7 @@ def bootstrap_project(repo_root: Path, vault_path: Path, project_name: str | Non
         'hub_note': relative_note_path(project_root / '00-Hub.md', vault_path),
         'status': 'active',
         'auto_sync': True,
+        'note_language': resolved_language,
         'created_at': now_iso(),
         'updated_at': now_iso(),
         'archive_root': str(archive_root),
@@ -582,7 +816,10 @@ def bootstrap_project(repo_root: Path, vault_path: Path, project_name: str | Non
     memory_path = repo_root / '.codex' / 'project-memory' / f'{project_slug}.md'
     if force or not memory_path.exists():
         memory_path.parent.mkdir(parents=True, exist_ok=True)
-        memory_path.write_text(project_memory(project_slug, repo_root, project_root, entry['hub_note']), encoding='utf-8')
+        memory_path.write_text(
+            project_memory(project_slug, repo_root, project_root, entry['hub_note'], resolved_language),
+            encoding='utf-8',
+        )
 
     return {
         'project_id': project_slug,
@@ -590,6 +827,7 @@ def bootstrap_project(repo_root: Path, vault_path: Path, project_name: str | Non
         'vault_root': str(project_root),
         'hub_note': entry['hub_note'],
         'memory_file': str(memory_path),
+        'note_language': resolved_language,
     }
 
 
@@ -613,6 +851,11 @@ def detect(repo_root: Path) -> dict[str, Any]:
         'registry_path': str(reg_path),
         'is_registered': matched is not None,
         'project': matched,
+        'resolved_note_language': resolve_note_language(
+            repo_root,
+            matched['project_id'] if matched else None,
+            matched,
+        ),
         'candidate': feature_info,
     }
 
@@ -647,6 +890,7 @@ def resolve_binding(repo_root: Path, project_id: str | None = None) -> ProjectBi
         status=entry.get('status', 'active'),
         auto_sync=bool(entry.get('auto_sync', True)),
         archive_root=Path(entry.get('archive_root') or (vault_path / 'Archive')),
+        note_language=resolve_note_language(repo_root, project_id, entry),
     )
 
 
@@ -740,8 +984,8 @@ def parse_frontmatter(content: str) -> dict[str, str]:
     return data
 
 
-def section_heading_candidates(heading: str) -> list[str]:
-    values = [heading, *SECTION_ALIASES.get(heading, ())]
+def section_heading_candidates(section_key: str) -> list[str]:
+    values = [SECTION_LABELS[section_key][language] for language in SUPPORTED_NOTE_LANGUAGES]
     deduped: list[str] = []
     for value in values:
         if value not in deduped:
@@ -749,45 +993,51 @@ def section_heading_candidates(heading: str) -> list[str]:
     return deduped
 
 
-def section_heading_pattern(heading: str) -> str:
-    return '|'.join(re.escape(item) for item in section_heading_candidates(heading))
+def section_heading_pattern(section_key: str) -> str:
+    return '|'.join(re.escape(item) for item in section_heading_candidates(section_key))
 
 
-def upsert_section(content: str, heading: str, body: str) -> str:
-    section_header = f'## {heading}'
+def upsert_section(content: str, section_key: str, body: str, note_language: str) -> str:
+    section_header = f'## {section_heading(section_key, note_language)}'
     body_text = body.strip() or '- None'
-    pattern = re.compile(rf'(^##\s+(?:{section_heading_pattern(heading)})\s*\n)(.*?)(?=^##\s+|\Z)', re.M | re.S)
+    pattern = re.compile(rf'(^##\s+(?:{section_heading_pattern(section_key)})\s*\n)(.*?)(?=^##\s+|\Z)', re.M | re.S)
     replacement = f'{section_header}\n{body_text}\n\n'
     if pattern.search(content):
         return pattern.sub(replacement, content, count=1).rstrip() + '\n'
     return content.rstrip() + f'\n\n{replacement}'
 
 
-def get_section_body(content: str, heading: str) -> str:
-    pattern = re.compile(rf'^##\s+(?:{section_heading_pattern(heading)})\s*\n(.*?)(?=^##\s+|\Z)', re.M | re.S)
+def get_section_body(content: str, section_key: str) -> str:
+    pattern = re.compile(rf'^##\s+(?:{section_heading_pattern(section_key)})\s*\n(.*?)(?=^##\s+|\Z)', re.M | re.S)
     match = pattern.search(content)
     return match.group(1).strip() if match else ''
 
 
-def bullet_lines_from_section(content: str, heading: str) -> list[str]:
-    section = get_section_body(content, heading)
+def bullet_lines_from_section(content: str, section_key: str) -> list[str]:
+    section = get_section_body(content, section_key)
     return [line.strip() for line in section.splitlines() if line.strip().startswith('- ')]
 
 
-def prepend_bullets(content: str, heading: str, new_lines: list[str], limit: int = RECENT_BULLET_LIMIT) -> str:
-    existing = bullet_lines_from_section(content, heading)
+def prepend_bullets(
+    content: str,
+    section_key: str,
+    new_lines: list[str],
+    note_language: str,
+    limit: int = RECENT_BULLET_LIMIT,
+) -> str:
+    existing = bullet_lines_from_section(content, section_key)
     merged: list[str] = []
     for line in [*new_lines, *existing]:
         if line not in merged:
             merged.append(line)
-    return upsert_section(content, heading, '\n'.join(merged[:limit]))
+    return upsert_section(content, section_key, '\n'.join(merged[:limit]), note_language)
 
 
-def append_block(content: str, heading: str, block: str, limit: int = 4) -> str:
-    existing = get_section_body(content, heading)
+def append_block(content: str, section_key: str, block: str, note_language: str, limit: int = 4) -> str:
+    existing = get_section_body(content, section_key)
     blocks = [piece.strip() for piece in re.split(r'\n(?=###\s+)', existing) if piece.strip()]
     merged = [block.strip(), *blocks]
-    return upsert_section(content, heading, '\n\n'.join(merged[:limit]))
+    return upsert_section(content, section_key, '\n\n'.join(merged[:limit]), note_language)
 
 
 def render_bullets(items: list[str], empty: str = '- None recorded.') -> str:
@@ -1181,41 +1431,50 @@ def selected_topics(scope: str, categorized: dict[str, list[str]]) -> set[str]:
     return auto
 
 
-def repo_change_bullets(categorized: dict[str, list[str]]) -> list[str]:
+def repo_change_bullets(categorized: dict[str, list[str]], note_language: str) -> list[str]:
     bullets: list[str] = []
     if categorized.get('plan'):
-        bullets.append('- 检查 plan/TODO/README 的变更，并同步更新 `01-Plan.md`。')
+        bullets.append(f'- {text_value(note_language, "check_plan_changes")}')
     if categorized.get('experiments'):
-        bullets.append('- 将新的训练、推理和配置变更记录到 `Archive/Auto-Sync/Experiments-Latest-Sync.md`。')
+        bullets.append(f'- {text_value(note_language, "record_experiment_changes")}')
     if categorized.get('results'):
-        bullets.append('- 将新变更的分析、报告和结果文件总结到 `Archive/Auto-Sync/Results-Latest-Sync.md`。')
+        bullets.append(f'- {text_value(note_language, "summarize_result_changes")}')
     if categorized.get('literature') or categorized.get('writing'):
-        bullets.append('- 检查写作和文献相关笔记，只在内容稳定时再沉淀到 `Writing/` 或 `Papers/`。')
+        bullets.append(f'- {text_value(note_language, "review_writing_and_literature")}')
     if categorized.get('engineering'):
-        bullets.append('- 检查纯工程代码变更是否会影响实验或结果，并在需要时把后续动作写入 `01-Plan.md`。')
+        bullets.append(f'- {text_value(note_language, "check_engineering_impact")}')
     if not bullets:
-        bullets.append('- 当前仓库变更未检测到需要跟进的任务。')
+        bullets.append(f'- {text_value(note_language, "no_follow_up_tasks")}')
     return bullets
 
 
-def topic_note(title: str, note_type: str, project_id: str, summary: list[str], paths: list[str], extra_heading: str | None = None, extra_lines: list[str] | None = None) -> str:
+def topic_note(
+    title: str,
+    note_type: str,
+    project_id: str,
+    summary: list[str],
+    paths: list[str],
+    note_language: str,
+    extra_heading: str | None = None,
+    extra_lines: list[str] | None = None,
+) -> str:
     sections = [
         '---',
         f'type: {note_type}',
         f'title: {title}',
         f'project: {project_id}',
-        f'language: {DEFAULT_NOTE_LANGUAGE}',
+        f'language: {note_language}',
         'status: active',
         f'updated: {now_iso()}',
         '---',
         '',
         f'# {title}',
         '',
-        '## 摘要',
+        f'## {text_value(note_language, "summary")}',
         '',
         *summary,
         '',
-        '## 变更路径',
+        f'## {text_value(note_language, "changed_paths")}',
         '',
         *(f'- `{path}`' for path in limited_paths(paths)),
     ]
@@ -1245,54 +1504,76 @@ def build_sync_context(binding: ProjectBinding, scope: str) -> SyncContext:
 
 
 def refresh_meta(ctx: SyncContext) -> None:
-    write_text(ctx.binding.project_root / 'Knowledge' / 'Source-Inventory.md', build_source_inventory(ctx.binding.repo_root))
-    write_text(ctx.binding.project_root / 'Knowledge' / 'Codebase-Overview.md', build_codebase_overview(ctx.binding.repo_root))
+    write_text(
+        ctx.binding.project_root / 'Knowledge' / 'Source-Inventory.md',
+        build_source_inventory(ctx.binding.repo_root, ctx.binding.note_language),
+    )
+    write_text(
+        ctx.binding.project_root / 'Knowledge' / 'Codebase-Overview.md',
+        build_codebase_overview(ctx.binding.repo_root, ctx.binding.note_language),
+    )
 
 
 def sync_daily(ctx: SyncContext) -> Path:
     daily_path = daily_note_path(ctx.binding.project_root)
     if not daily_path.exists():
-        write_text(daily_path, daily_note(ctx.binding.project_id, ctx.project_title))
+        write_text(daily_path, daily_note(ctx.binding.project_id, ctx.project_title, ctx.binding.note_language))
     content = read_text(daily_path)
+    content = set_frontmatter_value(content, 'language', ctx.binding.note_language)
     content = set_frontmatter_value(content, 'updated', ctx.timestamp)
-    category_summary = ', '.join(summarize_categories(ctx.categorized)) or '无'
-    sample_paths = [f'  - `{path}`' for path in limited_paths(list(ctx.changed_paths), 10)] or ['  - 无']
+    category_summary = ', '.join(summarize_categories(ctx.categorized)) or text_value(ctx.binding.note_language, 'none')
+    sample_paths = [f'  - `{path}`' for path in limited_paths(list(ctx.changed_paths), 10)] or [f'  - {text_value(ctx.binding.note_language, "none")}']
     block = '\n'.join([
-        f'### 自动同步 {ctx.timestamp}',
-        f'- 范围：`{ctx.scope}`',
-        f'- Git head：`{ctx.current_head}`',
-        f'- 变更文件数：{len(ctx.changed_paths)}',
-        f'- 分类：{category_summary}',
-        '- 样例路径：',
+        f'### {text_value(ctx.binding.note_language, "auto_sync_heading", timestamp=ctx.timestamp)}',
+        f'- {text_value(ctx.binding.note_language, "scope")}: `{ctx.scope}`',
+        f'- {text_value(ctx.binding.note_language, "git_head")}: `{ctx.current_head}`',
+        f'- {text_value(ctx.binding.note_language, "changed_file_count")}: {len(ctx.changed_paths)}',
+        f'- {text_value(ctx.binding.note_language, "category_summary")}: {category_summary}',
+        f'- {text_value(ctx.binding.note_language, "sample_paths")}:',
         *sample_paths,
     ])
-    content = append_block(content, '同步更新', block)
+    content = append_block(content, 'sync_updates', block, ctx.binding.note_language)
     write_text(daily_path, content)
     return daily_path
 
 
 def sync_hub(ctx: SyncContext, daily_path: Path) -> None:
     hub_path = ctx.binding.project_root / '00-Hub.md'
-    content = read_text(hub_path, hub_note(ctx.binding.project_id, ctx.project_title))
+    content = read_text(hub_path, hub_note(ctx.binding.project_id, ctx.project_title, ctx.binding.note_language))
+    content = set_frontmatter_value(content, 'language', ctx.binding.note_language)
     content = set_frontmatter_value(content, 'updated', ctx.timestamp)
-    summary = ', '.join(summarize_categories(ctx.categorized)) or '无可追踪变更'
-    bullet = f'- 自动同步 `{ctx.scope}` 于 {ctx.timestamp} 记录了 {len(ctx.changed_paths)} 个变更文件（{summary}）。详见 [[{daily_path.relative_to(ctx.binding.project_root).as_posix()}]]。'
-    content = prepend_bullets(content, '近期进展', [bullet])
+    summary = ', '.join(summarize_categories(ctx.categorized)) or text_value(ctx.binding.note_language, 'no_trackable_changes')
+    bullet = '- ' + text_value(
+        ctx.binding.note_language,
+        'sync_hub_bullet',
+        scope=ctx.scope,
+        timestamp=ctx.timestamp,
+        count=len(ctx.changed_paths),
+        summary=summary,
+        daily_ref=daily_path.relative_to(ctx.binding.project_root).as_posix(),
+    )
+    content = prepend_bullets(content, 'recent_progress', [bullet], ctx.binding.note_language)
     write_text(hub_path, content)
 
 
 def sync_plan(ctx: SyncContext) -> None:
     plan_path = ctx.binding.project_root / '01-Plan.md'
-    content = read_text(plan_path, plan_note(ctx.binding.project_id, ctx.project_title))
+    content = read_text(plan_path, plan_note(ctx.binding.project_id, ctx.project_title, ctx.binding.note_language))
+    content = set_frontmatter_value(content, 'language', ctx.binding.note_language)
     content = set_frontmatter_value(content, 'updated', ctx.timestamp)
     signal_lines = [
-        f'- 最近同步时间：{ctx.timestamp}',
-        f'- Git head：`{ctx.current_head}`',
-        f'- 变更文件数：{len(ctx.changed_paths)}',
-        f'- 分类：{", ".join(summarize_categories(ctx.categorized)) or "无"}',
+        f'- {text_value(ctx.binding.note_language, "sync_time")}: {ctx.timestamp}',
+        f'- {text_value(ctx.binding.note_language, "git_head")}: `{ctx.current_head}`',
+        f'- {text_value(ctx.binding.note_language, "changed_file_count")}: {len(ctx.changed_paths)}',
+        f'- {text_value(ctx.binding.note_language, "category_summary")}: {", ".join(summarize_categories(ctx.categorized)) or text_value(ctx.binding.note_language, "none")}',
     ]
-    content = upsert_section(content, '仓库信号', '\n'.join(signal_lines))
-    content = upsert_section(content, '同步队列', render_bullets(repo_change_bullets(ctx.categorized)))
+    content = upsert_section(content, 'repository_signals', '\n'.join(signal_lines), ctx.binding.note_language)
+    content = upsert_section(
+        content,
+        'sync_queue',
+        render_bullets(repo_change_bullets(ctx.categorized, ctx.binding.note_language)),
+        ctx.binding.note_language,
+    )
     write_text(plan_path, content)
 
 
@@ -1303,14 +1584,15 @@ def sync_experiments(ctx: SyncContext) -> None:
     write_text(
         ctx.binding.project_root / 'Archive' / 'Auto-Sync' / 'Experiments-Latest-Sync.md',
         topic_note(
-            title='最新实验同步',
+            title=text_value(ctx.binding.note_language, 'latest_experiment_sync'),
             note_type='experiment',
             project_id=ctx.binding.project_id,
             summary=[
-                f'- 自动同步捕获了 {len(paths)} 条与实验相关的路径。',
-                '- 请检查配置、训练、推理或模型改动，并将其转化为可持续维护的实验笔记。',
+                f'- {text_value(ctx.binding.note_language, "latest_experiment_sync_summary_1", count=len(paths))}',
+                f'- {text_value(ctx.binding.note_language, "latest_experiment_sync_summary_2")}',
             ],
             paths=paths,
+            note_language=ctx.binding.note_language,
         ),
     )
 
@@ -1322,14 +1604,15 @@ def sync_results(ctx: SyncContext) -> None:
     write_text(
         ctx.binding.project_root / 'Archive' / 'Auto-Sync' / 'Results-Latest-Sync.md',
         topic_note(
-            title='最新结果同步',
+            title=text_value(ctx.binding.note_language, 'latest_result_sync'),
             note_type='result',
             project_id=ctx.binding.project_id,
             summary=[
-                f'- 自动同步捕获了 {len(paths)} 条与结果相关的路径。',
-                '- 请检查分析、报告和输出产物，并将重要发现沉淀为稳定的结果笔记。',
+                f'- {text_value(ctx.binding.note_language, "latest_result_sync_summary_1", count=len(paths))}',
+                f'- {text_value(ctx.binding.note_language, "latest_result_sync_summary_2")}',
             ],
             paths=paths,
+            note_language=ctx.binding.note_language,
         ),
     )
 
@@ -1339,11 +1622,21 @@ def sync_writing(ctx: SyncContext) -> None:
 
 
 def sync_project_memory(ctx: SyncContext) -> None:
-    content = read_text(ctx.memory_path, project_memory(ctx.binding.project_id, ctx.binding.repo_root, ctx.binding.project_root, ctx.binding.hub_note))
+    content = read_text(
+        ctx.memory_path,
+        project_memory(
+            ctx.binding.project_id,
+            ctx.binding.repo_root,
+            ctx.binding.project_root,
+            ctx.binding.hub_note,
+            ctx.binding.note_language,
+        ),
+    )
     for key, value in {
         'repo_root': ctx.binding.repo_root,
         'vault_root': ctx.binding.project_root,
         'hub_note': ctx.binding.hub_note,
+        'language': ctx.binding.note_language,
         'last_sync_at': ctx.timestamp,
         'last_synced_head': ctx.current_head,
         'status': 'active',
@@ -1351,22 +1644,51 @@ def sync_project_memory(ctx: SyncContext) -> None:
     }.items():
         content = set_frontmatter_value(content, key, value)
 
-    existing_tasks = bullet_lines_from_section(content, '当前任务')
-    generated_tasks = [line.replace('- [ ] ', '- ').replace('- ', '- ') for line in repo_change_bullets(ctx.categorized)]
+    existing_tasks = bullet_lines_from_section(content, 'active_tasks')
+    generated_tasks = [line.replace('- [ ] ', '- ').replace('- ', '- ') for line in repo_change_bullets(ctx.categorized, ctx.binding.note_language)]
     merged_tasks: list[str] = []
     for line in [*existing_tasks, *generated_tasks]:
         if line not in merged_tasks:
             merged_tasks.append(line)
-    content = upsert_section(content, '当前任务', render_bullets(merged_tasks[:RECENT_BULLET_LIMIT]))
+    content = upsert_section(
+        content,
+        'active_tasks',
+        render_bullets(merged_tasks[:RECENT_BULLET_LIMIT]),
+        ctx.binding.note_language,
+    )
 
-    experiment_lines = [f'- {ctx.timestamp}：涉及 `{path}`' for path in limited_paths(ctx.categorized.get('experiments', []), 8)]
-    result_lines = [f'- {ctx.timestamp}：涉及 `{path}`' for path in limited_paths(ctx.categorized.get('results', []), 8)]
-    content = upsert_section(content, '进行中的实验', render_bullets(experiment_lines, '- 暂无记录。'))
-    content = upsert_section(content, '近期结果', render_bullets(result_lines, '- 暂无结果变更记录。'))
+    experiment_lines = [
+        f'- {text_value(ctx.binding.note_language, "sync_memory_experiment_line", timestamp=ctx.timestamp, path=path)}'
+        for path in limited_paths(ctx.categorized.get('experiments', []), 8)
+    ]
+    result_lines = [
+        f'- {text_value(ctx.binding.note_language, "sync_memory_result_line", timestamp=ctx.timestamp, path=path)}'
+        for path in limited_paths(ctx.categorized.get('results', []), 8)
+    ]
+    content = upsert_section(
+        content,
+        'open_experiments',
+        render_bullets(experiment_lines, f'- {text_value(ctx.binding.note_language, "project_memory_no_experiments")}'),
+        ctx.binding.note_language,
+    )
+    content = upsert_section(
+        content,
+        'recent_results',
+        render_bullets(result_lines, f'- {text_value(ctx.binding.note_language, "sync_memory_no_results")}'),
+        ctx.binding.note_language,
+    )
 
-    summary = ', '.join(summarize_categories(ctx.categorized)) or '无可追踪变更'
-    sync_line = f'- {ctx.timestamp}：范围 `{ctx.scope}`，git head `{ctx.current_head}`，变更文件数={len(ctx.changed_paths)}（{summary}）。'
-    content = prepend_bullets(content, '最近同步状态', [sync_line])
+    summary = ', '.join(summarize_categories(ctx.categorized)) or text_value(ctx.binding.note_language, 'no_trackable_changes')
+    sync_line = '- ' + text_value(
+        ctx.binding.note_language,
+        'sync_memory_status_line',
+        timestamp=ctx.timestamp,
+        scope=ctx.scope,
+        head=ctx.current_head,
+        count=len(ctx.changed_paths),
+        summary=summary,
+    )
+    content = prepend_bullets(content, 'recent_sync_status', [sync_line], ctx.binding.note_language)
     write_text(ctx.memory_path, content)
 
 
@@ -1425,6 +1747,7 @@ def parse_args() -> argparse.Namespace:
     boot_parser.add_argument('--cwd', default='.')
     boot_parser.add_argument('--vault-path', default=os.environ.get('OBSIDIAN_VAULT_PATH', ''))
     boot_parser.add_argument('--project-name', default='')
+    boot_parser.add_argument('--note-language', default='')
     boot_parser.add_argument('--force', action='store_true')
 
     life_parser = sub.add_parser('lifecycle')
@@ -1470,7 +1793,13 @@ def main() -> None:
     if args.cmd == 'bootstrap':
         if not args.vault_path:
             raise SystemExit('Missing vault path. Pass --vault-path or set OBSIDIAN_VAULT_PATH.')
-        result = bootstrap_project(repo_root, Path(args.vault_path).expanduser().resolve(), args.project_name or None, args.force)
+        result = bootstrap_project(
+            repo_root,
+            Path(args.vault_path).expanduser().resolve(),
+            args.project_name or None,
+            args.force,
+            args.note_language or None,
+        )
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return
 

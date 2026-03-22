@@ -17,9 +17,9 @@ updated: 2026-03-18T00:00:00Z
 ## Item Mapping
 | Zotero Key | Item Title | Canonical Note | Status |
 |---|---|---|---|
-| ABCDEFGH | Shared Latent Geometry for Cross-Subject Speech Decoding | Papers/Shared-Latent-Geometry.md | covered |
-| HGFEDCBA | Domain Adapters for Neural Transfer | Papers/Domain-Adapters.md | covered |
-| ZXCVBNML | Contrastive Transfer under Low Resource Conditions | Papers/Contrastive-Transfer.md | covered |
+| ABCDEFGH | Shared Latent Geometry for Cross-Subject Speech Decoding | Papers/Wang-2026-Shared-Latent-Geometry.md | covered |
+| HGFEDCBA | Domain Adapters for Neural Transfer | Papers/Lee-2025-Domain-Adapters-Neural-Transfer.md | covered |
+| ZXCVBNML | Contrastive Transfer under Low Resource Conditions | Papers/Chen-2024-Contrastive-Transfer-Low-Resource-Conditions.md | covered |
 
 ## Triage
 - fully covered: 3

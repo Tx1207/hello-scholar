@@ -337,6 +337,31 @@ Treat Obsidian as a durable research knowledge sink rather than a pile of discon
 - ingest new Markdown into the right canonical note,
 - generate canvases or views only when the workflow actually calls for them.
 
+**Note language configuration**
+
+Generated and synced Obsidian notes now resolve their language with this priority:
+1. project config: `.codex/project-memory/registry.yaml` -> `note_language`
+2. environment variable: `OBSIDIAN_NOTE_LANGUAGE`
+3. default: `en`
+
+Note: the file is currently named `registry.yaml` for historical reasons, but its on-disk format is JSON.
+
+Per-project example:
+
+```json
+{
+  "projects": {
+    "my-project": {
+      "project_id": "my-project",
+      "vault_root": "/path/to/vault/Research/my-project",
+      "note_language": "zh-CN"
+    }
+  }
+}
+```
+
+English and Chinese section headings remain mutually compatible during sync, so older notes in either language can still be updated safely after switching configuration.
+
 ### Codex Session Discipline and Hook Emulation
 
 Codex does not expose native Claude Code hooks, so this branch emulates the highest-value behaviors through AGENTS discipline and local helper scripts.

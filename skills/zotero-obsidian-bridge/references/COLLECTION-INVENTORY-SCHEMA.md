@@ -34,7 +34,7 @@ updated: 2026-03-18T00:00:00Z
 ## Item Mapping
 | Zotero Key | Item Title | Canonical Note | Status |
 |---|---|---|---|
-| ABCDEFGH | Example title | Papers/Example-Paper.md | covered |
+| ABCDEFGH | Example title | Papers/Wang-2026-Example-Paper.md | covered |
 
 ## Triage
 - fully covered
@@ -45,5 +45,6 @@ updated: 2026-03-18T00:00:00Z
 ## Rules
 - Keep one durable inventory note per collection slug.
 - `Canonical Note` should use project-relative note paths.
+- `Canonical Note` should normally follow `Papers/{FirstAuthor}-{Year}-{ShortTitle}.md`.
 - `Status` should use a small vocabulary such as `covered`, `bridge-only`, `skipped`, `needs-review`.
 - Update coverage counts whenever the collection is batch-processed again.

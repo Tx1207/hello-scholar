@@ -5,6 +5,16 @@
 - `.codex/project-memory/registry.yaml` — registry keyed by `project_id`
 - `.codex/project-memory/<project_id>.md` — compact project memory snapshot used on project turns
 
+Note: `registry.yaml` is currently JSON-formatted on disk for historical compatibility.
+
+Optional per-project registry fields:
+- `note_language` — note language for generated/synced notes. Supported values: `en`, `zh-CN`.
+
+Language resolution priority:
+1. project config in `.codex/project-memory/registry.yaml`
+2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
+3. default `en`
+
 ## Vault layout
 
 ```text

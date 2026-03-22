@@ -24,6 +24,7 @@ Use this skill when the user wants to:
 - Prefer **filesystem-first Obsidian notes**; do not require Obsidian MCP.
 - Use this as an **explicit, agent-first skill** for Zotero ingestion.
 - Prefer **`Papers/` + `Knowledge/`** as the default bridge targets.
+- Prefer the canonical paper-note filename pattern `Papers/{FirstAuthor}-{Year}-{ShortTitle}.md`.
 - Prefer **`Maps/literature.canvas`** as the default graph artifact.
 - Prefer a strong review schema inside each canonical paper note:
   - `Claim`
@@ -107,6 +108,7 @@ Load only what is needed:
 - `references/COLLECTION-INVENTORY-SCHEMA.md` - canonical inventory note naming and mapping contract
 - `references/LOCAL-ZOTERO-FALLBACK.md` - local fallback runbook when MCP transport fails
 - `examples/example-collection-inventory.md` - example inventory note
+- `scripts/canonicalize_paper_note_filenames.py` - bulk rename existing paper notes and update note links
 - `scripts/verify_paper_notes.py` - deterministic schema, zotero-key, and inventory consistency check
 - `../obsidian-literature-workflow/references/PAPER-NOTE-SCHEMA.md` - shared note schema
 - `../obsidian-literature-workflow/references/CANVAS-WORKFLOW.md` - default literature canvas refresh rules

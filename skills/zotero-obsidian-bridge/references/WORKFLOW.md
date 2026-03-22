@@ -21,7 +21,13 @@ Treat some Zotero `webpage` items as valid literature entries when they still ex
 ## 3. Create/update the canonical paper note
 
 Canonical destination:
-- `Papers/{normalized-title-or-citekey}.md`
+- `Papers/{FirstAuthor}-{Year}-{ShortTitle}.md`
+
+Filename rules:
+- `FirstAuthor` uses the first author's surname.
+- `Year` uses the 4-digit publication year.
+- `ShortTitle` prefers the stable title prefix before a colon; otherwise keep the main content words in order.
+- Keep the filename stable once created, even if the display `title` is later rewritten for readability.
 
 Update instead of duplicating when the note already exists.
 
@@ -78,6 +84,7 @@ Recommended verification command:
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/zotero-obsidian-bridge/scripts/verify_paper_notes.py" \
   --papers-dir "/absolute/path/to/Papers" \
+  --filename-scheme "first-author-year-short-title" \
   --expected-zotero-keys "KEY1,KEY2,KEY3" \
   --inventory-note "/absolute/path/to/Knowledge/Zotero-Collection-collection-slug-Inventory.md"
 ```
