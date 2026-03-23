@@ -1,10 +1,30 @@
 # Note Templates
 
-默认使用中文撰写 note；只有用户明确要求其他语言时才切换。
+Templates should follow the project's configured `note_language`; if no note language is configured, default to English.
 
-Keep templates lightweight. Use only the sections that are useful.
+The examples below are provided in both English and Chinese so agents can mirror the active note language while keeping a stable note shape.
 
 ## Project Overview
+
+### English
+
+```markdown
+# Project Overview
+
+## What this project studies
+- ...
+
+## Why this problem is hard
+- ...
+
+## Current project positioning
+- ...
+
+## Most mature research direction so far
+- ...
+```
+
+### 中文
 
 ```markdown
 # 项目概览
@@ -24,6 +44,20 @@ Keep templates lightweight. Use only the sections that are useful.
 
 ## Research Questions
 
+### English
+
+```markdown
+# Research Questions
+
+## Question 1
+- ...
+
+## Question 2
+- ...
+```
+
+### 中文
+
 ```markdown
 # 研究问题
 
@@ -35,6 +69,38 @@ Keep templates lightweight. Use only the sections that are useful.
 ```
 
 ## Experiment Note
+
+### English
+
+```markdown
+# Experiment Name
+
+## Goal
+- ...
+
+## Motivation from papers or prior results
+- ...
+
+## Setup
+- ...
+
+## Main steps
+- ...
+
+## Updates
+- ...
+
+## Findings
+- ...
+
+## Promotion criteria for Results
+- ...
+
+## Next steps
+- ...
+```
+
+### 中文
 
 ```markdown
 # 实验名称
@@ -66,6 +132,29 @@ Keep templates lightweight. Use only the sections that are useful.
 
 ## Result Note
 
+### English
+
+```markdown
+# Result Name
+
+## Core conclusion
+- ...
+
+## Evidence
+- ...
+
+## Interpretation
+- ...
+
+## Reusable writing points
+- ...
+
+## Why it matters
+- ...
+```
+
+### 中文
+
 ```markdown
 # 结果名称
 
@@ -86,6 +175,59 @@ Keep templates lightweight. Use only the sections that are useful.
 ```
 
 ## Results Report Note
+
+### English
+
+```markdown
+---
+type: results-report
+date: YYYY-MM-DD
+experiment_line: example-line
+round: 1
+purpose: transfer-summary
+status: active
+source_artifacts:
+  - analysis-output/analysis-report.md
+linked_experiments:
+  - Experiments/Example.md
+linked_results:
+  - Results/Example-Result.md
+---
+
+# Example Experiment Line / Round 1 / transfer-summary / YYYY-MM-DD
+
+## Executive summary
+- ...
+
+## Experiment identity and decision context
+- ...
+
+## Setup and evaluation protocol
+- ...
+
+## Main findings
+- ...
+
+## Statistical validation
+- ...
+
+## Figure-by-figure interpretation
+- ...
+
+## Failures / negative results / limitations
+- ...
+
+## Which evidence changed the decision
+- ...
+
+## Next actions
+- ...
+
+## Artifact and reproduction index
+- ...
+```
+
+### 中文
 
 ```markdown
 ---
@@ -138,6 +280,35 @@ linked_results:
 
 ## Paper Note
 
+### English
+
+```markdown
+# Paper Title
+
+## Citation
+- ...
+
+## Core claims
+- ...
+
+## Method
+- ...
+
+## Evidence
+- ...
+
+## Limitations
+- ...
+
+## Direct relevance to this repository
+- ...
+
+## Relation to other papers
+- ...
+```
+
+### 中文
+
 ```markdown
 # 论文标题
 
@@ -165,6 +336,26 @@ linked_results:
 
 ## Daily Note
 
+### English
+
+```markdown
+# Daily Note - YYYY-MM-DD
+
+## Focus
+- ...
+
+## Progress
+- ...
+
+## Follow-up knowledge to promote
+- ...
+
+## Next steps
+- ...
+```
+
+### 中文
+
 ```markdown
 # 日志 - YYYY-MM-DD
 
@@ -183,6 +374,29 @@ linked_results:
 
 
 ## Writing Note
+
+### English
+
+```markdown
+# Writing Item Name
+
+## Purpose
+- ...
+
+## Supporting results
+- ...
+
+## Paper background or comparisons
+- ...
+
+## Draft argument
+- ...
+
+## What is still missing before publication use
+- ...
+```
+
+### 中文
 
 ```markdown
 # 写作对象名称
