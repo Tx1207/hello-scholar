@@ -124,7 +124,7 @@
 
 ### 插件开发 (8)
 - **skill-development / skill-improver / skill-quality-reviewer**: Skill 开发三件套
-- **command-development / command-name**: 命令开发
+- **command-development / plugin-structure**: 命令开发
 - **agent-identifier**: Agent 开发配置
 - **hook-development**: Hook 开发
 - **mcp-integration**: MCP 服务器集成
