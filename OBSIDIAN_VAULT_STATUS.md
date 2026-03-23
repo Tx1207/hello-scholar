@@ -1,20 +1,20 @@
 # Obsidian Vault Status
 
-Current primary vault:
+Recommended primary vault layout:
 
-- Windows: `D:\Obsidian\claude-scholar-vault`
-- WSL: `/mnt/d/Obsidian/claude-scholar-vault`
+- Windows: `<windows-vault-path>`
+- WSL: `<wsl-mounted-vault-path>`
 
-Current active project path:
+Recommended active project path:
 
-- `/mnt/d/Obsidian/claude-scholar-vault/Research/claude-scholar`
+- `<vault-root>/Research/<project-slug>`
 
 Backup copy kept in repo:
 
-- `/home/circle/claude-scholar/obsidian-vault`
+- `<repo-root>/obsidian-vault`
 
 Notes:
 
-- The repo-local binding in `.codex/project-memory/registry.yaml` points to the Windows-primary vault.
-- The in-repo `obsidian-vault/` directory is no longer the source of truth.
-- Keep using Windows Obsidian for normal editing to avoid WSLg window issues.
+- The repo-local binding in `.codex/project-memory/registry.yaml` should point to your configured external vault.
+- The in-repo `obsidian-vault/` directory is optional and should not be treated as the default source of truth.
+- Prefer opening the vault from your native desktop environment if cross-OS windowing is unreliable.
