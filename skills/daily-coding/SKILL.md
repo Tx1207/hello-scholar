@@ -1,17 +1,6 @@
 ---
 name: daily-coding
-description: |
-  Daily coding assistant that auto-triggers when writing/modifying code, providing a core checklist.
-
-  ✅ Trigger scenarios:
-  - Implementing new features, adding code, modifying existing code
-  - User requests "write a...", "implement...", "add...", "modify..."
-  - Any coding task involving Edit/Write tools
-
-  ❌ Does not trigger:
-  - Pure reading/understanding code (no modification intent)
-  - Already covered by specialized skills (bug-detective, architecture-design, tdd-guide)
-  - Configuration file changes, documentation writing
+description: Use for everyday coding tasks that involve writing or modifying source code.
 version: 1.0.0
 tags: [Coding, Daily, Checklist]
 ---
@@ -19,6 +8,22 @@ tags: [Coding, Daily, Checklist]
 # Daily Coding Checklist
 
 A minimal coding quality assurance checklist ensuring every code modification follows best practices.
+
+## When to Use
+
+Use this skill for:
+- Implementing new features
+- Adding code or modifying existing code
+- User requests like "write a...", "implement...", "add...", or "modify..."
+- Any coding task that involves Edit or Write tools
+
+## When Not to Use
+
+Do not use this skill for:
+- Pure reading or understanding tasks with no modification intent
+- Work already covered by specialized skills such as `bug-detective`, `architecture-design`, or `tdd-guide`
+- Configuration-only changes
+- Documentation-only writing
 
 ## Core Checklist
 

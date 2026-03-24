@@ -1,25 +1,6 @@
 ---
 name: architecture-design
-description: |
-  Use ONLY when creating NEW registrable components in ML projects that require Factory/Registry patterns.
-
-  ✅ USE when:
-  - Creating a new Dataset class (needs @register_dataset)
-  - Creating a new Model class (needs @register_model)
-  - Creating a new module directory with __init__.py factory
-  - Initializing a new ML project structure from scratch
-  - Adding new component types (Augmentation, CollateFunction, Metrics)
-
-  ❌ DO NOT USE when:
-  - Modifying existing functions or methods
-  - Fixing bugs in existing code
-  - Adding helper functions or utilities
-  - Refactoring without adding new registrable components
-  - Simple code changes to a single file
-  - Modifying configuration files
-  - Reading or understanding existing code
-
-  Key indicator: Does the task require @register_* decorator or Factory pattern? If no, skip this skill.
+description: Use only when creating new registrable ML components that require Factory or Registry patterns.
 version: 1.2.0
 ---
 
@@ -30,6 +11,28 @@ This skill defines the standard code architecture for machine learning projects 
 ## Overview
 
 The project follows a modular, extensible architecture with clear separation of concerns. Each module (data, model, trainer, analysis) is independently organized using factory and registry patterns for maximum flexibility.
+
+## When to Use
+
+Use this skill when:
+- Creating a new Dataset class that needs `@register_dataset`
+- Creating a new Model class that needs `@register_model`
+- Creating a new module directory with `__init__.py` factory wiring
+- Initializing a new ML project structure from scratch
+- Adding new component types such as Augmentation, CollateFunction, or Metrics
+
+## When Not to Use
+
+Do not use this skill when:
+- Modifying existing functions or methods
+- Fixing bugs in existing code
+- Adding helper functions or utilities
+- Refactoring without adding new registrable components
+- Making simple code changes to a single file
+- Modifying configuration files
+- Reading or understanding existing code
+
+Key indicator: if the task does not require a `@register_*` decorator or a Factory pattern, skip this skill.
 
 ## Core Design Patterns
 
