@@ -114,6 +114,8 @@ bash /tmp/claude-scholar/scripts/setup.sh
 - 在增量更新路径下保留现有 provider / model / API key
 - 可选启用模板中已经存在的 Zotero MCP 配置块
 
+**重要 AGENTS 说明**：如果你原来就有自己的 `~/.codex/AGENTS.md`，安装后请查看 `~/.codex/AGENTS.scholar.md`，并将其中你需要的 Claude Scholar 内容按需 merge 到你自己的 `AGENTS.md` 里；不要假设这个 sidecar 文件会自动生效。
+
 以后做增量更新时：
 
 ```bash
@@ -142,7 +144,7 @@ cp -r /tmp/claude-scholar/agents/paper-miner ~/.codex/agents/
 cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 ```
 
-**安装后**：最小化/手动安装**不会自动合并** `config.toml`；请根据需要手动复制仓库配置与 setup 文档里的相关 section。
+**安装后**：最小化/手动安装**不会自动合并** `config.toml`；请根据需要手动复制仓库配置与 setup 文档里的相关 section。如果你已经有自己的 `~/.codex/AGENTS.md`，也请把仓库 `AGENTS.md` 中相关内容按需 merge 到你的文件里，而不是直接覆盖。
 
 ### 选项 3：选择性安装
 
@@ -154,6 +156,8 @@ cp -r /tmp/claude-scholar/skills/<skill-name> ~/.codex/skills/
 cp -r /tmp/claude-scholar/agents/<agent-name> ~/.codex/agents/
 cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 ```
+
+**安装后**：选择性/手动安装不仅不会自动合并 `config.toml`，如果你已经有自己的 `~/.codex/AGENTS.md`，也请把仓库 `AGENTS.md` 中相关内容按需 merge 到你的文件里，而不是直接覆盖。
 
 **Codex 使用说明**：
 - Codex **不会**在 `/...` 菜单里列出自定义 skills。

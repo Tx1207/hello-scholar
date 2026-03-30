@@ -114,6 +114,8 @@ The installer is **backup-aware and incremental-update friendly**:
 - preserves your existing provider/model/API key when you choose the incremental-update path,
 - optionally enables the Zotero MCP block already present in the template config.
 
+**Important AGENTS note**: if you already maintain your own `~/.codex/AGENTS.md`, review `~/.codex/AGENTS.scholar.md` after installation and manually merge the Claude Scholar sections you want into your own `AGENTS.md`. Do not assume the sidecar file is applied automatically.
+
 To update later:
 
 ```bash
@@ -142,7 +144,7 @@ cp -r /tmp/claude-scholar/agents/paper-miner ~/.codex/agents/
 cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 ```
 
-**Post-install**: minimal/manual install does **not** auto-merge your `config.toml`; copy only the sections you need from the repository config and setup guides.
+**Post-install**: minimal/manual install does **not** auto-merge your `config.toml`; copy only the sections you need from the repository config and setup guides. If you already have your own `~/.codex/AGENTS.md`, merge the relevant sections from this repo's `AGENTS.md` into your file instead of blindly overwriting it.
 
 ### Option 3: Selective Installation
 
@@ -154,6 +156,8 @@ cp -r /tmp/claude-scholar/skills/<skill-name> ~/.codex/skills/
 cp -r /tmp/claude-scholar/agents/<agent-name> ~/.codex/agents/
 cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 ```
+
+**Post-install**: selective/manual install does **not** auto-merge your `config.toml`, and if you already have your own `~/.codex/AGENTS.md`, merge the relevant sections from this repo's `AGENTS.md` into your file instead of blindly overwriting it.
 
 **Important Codex note**:
 - Codex does **not** show custom skills in `/...` menus.
