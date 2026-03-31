@@ -14,11 +14,11 @@ Claude Scholar 依赖 MCP（Model Context Protocol）服务器提供扩展功能
 
 | 类别 | 工具 |
 |------|------|
-| **导入** | `zotero_add_items_by_doi`、`zotero_add_items_by_arxiv`、`zotero_add_item_by_url` |
+| **导入** | `zotero_add_items_by_identifier`、`zotero_add_items_by_doi`、`zotero_add_items_by_arxiv`、`zotero_add_item_by_url` |
 | **读取** | `zotero_get_collections`、`zotero_get_collection_items`、`zotero_search_items`、`zotero_semantic_search` |
-| **更新** | `zotero_update_item`、`zotero_update_note`、`zotero_create_collection`、`zotero_move_items_to_collection` |
+| **更新** | `zotero_update_item`、`zotero_update_note`、`zotero_create_collection`、`zotero_move_items_to_collection`、`zotero_reconcile_collection_duplicates` |
 | **删除** | `zotero_delete_items`（移至回收站）、`zotero_delete_collection` |
-| **PDF** | `zotero_find_and_attach_pdfs`（通过 Unpaywall）、`zotero_add_linked_url_attachment` |
+| **PDF** | `zotero_find_and_attach_pdfs`（基于来源感知的 PDF cascade）、`zotero_add_linked_url_attachment` |
 
 #### 前置条件
 
@@ -136,6 +136,7 @@ export UNSAFE_OPERATIONS="all"
 | `zotero_get_notes` | 获取笔记 |
 | `zotero_semantic_search` | 语义搜索（使用嵌入） |
 | `zotero_advanced_search` | 高级搜索 |
+| `zotero_add_items_by_identifier` | 通过 DOI、arXiv、落地页或直链 PDF 智能导入论文；若 Web 上传撞到存储配额且本地 Zotero Desktop 正在运行，可回退为本地 connector copy（`pdf_source=local_zotero_copy`），或复用已有本地副本（`pdf_source=local_zotero_existing_copy`），并在可用时返回 `local_item_key=...` |
 | `zotero_add_items_by_doi` | 通过 DOI 导入论文 |
 | `zotero_add_items_by_arxiv` | 通过 arXiv ID 导入预印本 |
 | `zotero_add_item_by_url` | 保存网页为条目 |
@@ -146,8 +147,11 @@ export UNSAFE_OPERATIONS="all"
 | `zotero_update_collection` | 重命名集合 |
 | `zotero_delete_collection` | 删除集合 |
 | `zotero_delete_items` | 将条目移至回收站 |
-| `zotero_find_and_attach_pdfs` | 查找并附加开放获取 PDF |
+| `zotero_find_and_attach_pdfs` | 为已有条目重新运行来源感知 PDF cascade |
+| `zotero_reconcile_collection_duplicates` | 导入后的去重与 collection 级清理 |
 | `zotero_add_linked_url_attachment` | 添加链接 URL 附件 |
+
+工作流说明：Claude Scholar 当前默认使用 `zotero_add_items_by_identifier` 做论文导入，并使用 `zotero_reconcile_collection_duplicates` 作为标准导入后清理步骤。import ledger 与 local-copy reconcile 属于内部诊断能力，不是默认公开 MCP tools。
 
 ### 2. 浏览器自动化 MCP（可选）
 

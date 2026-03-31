@@ -14,11 +14,11 @@ Claude Scholar relies on MCP (Model Context Protocol) servers for extended capab
 
 | Category | Tools |
 |----------|-------|
-| **Import** | `zotero_add_items_by_doi`, `zotero_add_items_by_arxiv`, `zotero_add_item_by_url` |
+| **Import** | `zotero_add_items_by_identifier`, `zotero_add_items_by_doi`, `zotero_add_items_by_arxiv`, `zotero_add_item_by_url` |
 | **Read** | `zotero_get_collections`, `zotero_get_collection_items`, `zotero_search_items`, `zotero_semantic_search` |
-| **Update** | `zotero_update_item`, `zotero_update_note`, `zotero_create_collection`, `zotero_move_items_to_collection` |
+| **Update** | `zotero_update_item`, `zotero_update_note`, `zotero_create_collection`, `zotero_move_items_to_collection`, `zotero_reconcile_collection_duplicates` |
 | **Delete** | `zotero_delete_items` (to trash), `zotero_delete_collection` |
-| **PDF** | `zotero_find_and_attach_pdfs` (via Unpaywall), `zotero_add_linked_url_attachment` |
+| **PDF** | `zotero_find_and_attach_pdfs` (source-aware PDF cascade), `zotero_add_linked_url_attachment` |
 
 #### Prerequisites
 
@@ -136,6 +136,7 @@ Notes:
 | `zotero_get_notes` | Get notes |
 | `zotero_semantic_search` | Semantic search (uses embeddings) |
 | `zotero_advanced_search` | Advanced search |
+| `zotero_add_items_by_identifier` | Smart paper import from DOI, arXiv, landing pages, or direct PDF URLs; when web upload hits storage quota and Zotero Desktop is running, it can fall back to a local connector copy (`pdf_source=local_zotero_copy`) or reuse an existing local copy (`pdf_source=local_zotero_existing_copy`), exposing `local_item_key=...` when available |
 | `zotero_add_items_by_doi` | Import papers by DOI |
 | `zotero_add_items_by_arxiv` | Import preprints by arXiv ID |
 | `zotero_add_item_by_url` | Save webpage as item |
@@ -146,8 +147,11 @@ Notes:
 | `zotero_update_collection` | Rename collection |
 | `zotero_delete_collection` | Delete collection |
 | `zotero_delete_items` | Move items to trash |
-| `zotero_find_and_attach_pdfs` | Find and attach OA PDFs |
+| `zotero_find_and_attach_pdfs` | Re-run the source-aware PDF cascade for existing items |
+| `zotero_reconcile_collection_duplicates` | Post-import dedupe and collection-level cleanup |
 | `zotero_add_linked_url_attachment` | Add linked URL attachment |
+
+Workflow note: Claude Scholar's current research startup path prefers `zotero_add_items_by_identifier` for import, then `zotero_reconcile_collection_duplicates` as the standard post-import cleanup. Import ledger and local-copy reconcile remain internal diagnostics rather than default public MCP tools.
 
 ### 2. Browser Automation MCP (Optional)
 

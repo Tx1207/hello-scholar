@@ -125,11 +125,11 @@ cat:cs.LG AND (transformer OR attention) AND (interpretability OR explainability
 
 **集成工具**：
 - **Zotero**（主要工具，已通过 MCP 集成）
-  - 通过 `add_items_by_doi` 自动添加论文，获取完整元数据
-  - 通过 `create_collection` 自动创建和组织集合
-  - 通过 `find_and_attach_pdfs` 自动附加 OA PDF
-  - 通过 `get_item_fulltext` 读取 PDF 全文进行分析
-  - 通过 `search_library` 搜索已有论文避免重复导入
+  - 通过 `zotero_add_items_by_identifier` 智能导入论文，优先落成 paper/preprint
+  - 通过 `zotero_create_collection` 自动创建和组织集合
+  - 通过 PDF cascade（页面显式 PDF → direct PDF → Unpaywall）尽可能补齐 PDF
+  - 通过 `zotero_get_item_fulltext` 读取 PDF 全文进行分析
+  - 通过 `zotero_search_items` 搜索已有论文避免重复导入
 - Mendeley - 社交功能，PDF 标注（备选）
 - Papers - Mac 专用，界面优雅（备选）
 
@@ -175,11 +175,13 @@ cat:cs.LG AND (transformer OR attention) AND (interpretability OR explainability
 ```
 WebSearch 搜索论文
     ↓
-从搜索结果中提取 DOI
+从搜索结果中提取 DOI / arXiv ID / landing-page URL
     ↓
-add_items_by_doi 批量添加到 Zotero
+add_items_by_identifier 批量导入到 Zotero
     ↓
-find_and_attach_pdfs 自动附加 OA PDF
+工具内部自动执行 PDF cascade
+    ↓
+必要时用 `zotero_reconcile_collection_duplicates` 做导入后去重清理
     ↓
 get_item_fulltext 读取全文进行分析
 ```
@@ -188,14 +190,14 @@ get_item_fulltext 读取全文进行分析
 
 1. 使用 WebSearch 搜索 `"transformer interpretability" site:arxiv.org OR site:doi.org`
 2. 从结果中收集 DOI 列表
-3. 调用 `add_items_by_doi` 批量导入（建议每批不超过 10 篇，避免 API 速率限制）
-4. 调用 `find_and_attach_pdfs` 为导入的论文附加 PDF
-5. 使用 `get_item_fulltext` 阅读关键论文全文
+3. 调用 `zotero_add_items_by_identifier(..., attach_pdf=true)` 批量导入（建议每批不超过 10 篇，避免 API 速率限制）
+4. 仅对仍然缺 PDF 的条目，再调用 `zotero_find_and_attach_pdfs` 做补挂
+5. 使用 `zotero_get_item_fulltext` 阅读关键论文全文
 
 ### 5.3 无 DOI 论文处理
 
 部分论文可能没有标准 DOI：
 - **arXiv 预印本**：使用 `10.48550/arXiv.{id}` 格式
 - **会议论文集**：尝试从出版商页面获取 DOI
-- **无法获取 DOI**：使用 `add_web_item` 保存网页链接，或使用 `import_pdf_to_zotero` 直接导入 PDF
+- **无法获取 DOI**：优先识别 arXiv ID、页面中的 `citation_doi` / `citation_pdf_url`；只有都失败时才保存为 `webpage`。如果关键论文仍缺 PDF，请在 Zotero Desktop 中手动附加。
 
