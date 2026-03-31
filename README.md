@@ -18,9 +18,10 @@
 
 ## Recent News
 
-- **2026-03-18**: **Results reporting, writing memory, and README alignment** — kept the `results-analysis` / `results-report` split for strict statistics plus decision-oriented post-experiment reporting, kept Obsidian write-back in the Codex workflow, removed the old `data-analyst` entrypoint from the product story, wired `paper-miner` output into a shared writing memory used by `ml-paper-writing` and `review-response`, and aligned the Codex README structure with the main branch while preserving Codex-specific usage.
-- **2026-03-17**: **Obsidian project knowledge base** — ported the filesystem-first Obsidian workflow into the Codex edition with project import, repo-bound auto-sync, durable knowledge routed across `Papers / Knowledge / Experiments / Results / Writing`, with round-level experiment reports stored under `Results/Reports/`, and no MCP requirement on the Obsidian side.
-- **2026-02-26**: **Zotero MCP Web API mode** — remote Zotero access, DOI/arXiv/URL import, collection management, item updates, and Codex-specific setup guidance in `config.toml`.
+- **2026-03-31**: **Zotero smart-import workflow docs aligned** — updated Claude Scholar's research-facing docs around the latest `zotero-mcp` public surface: `zotero_add_items_by_identifier` is now the default paper-import path, `zotero_reconcile_collection_duplicates` is the standard post-import cleanup step, source-aware PDF cascade behavior is documented more accurately, and public vs internal diagnostics are now clearly separated.
+- **2026-03-31**: **README onboarding refreshed** — clarified that Claude Scholar is especially well-suited to computer science and AI researchers, added practical getting-started scenarios after installation, improved prerequisite and branch guidance, and made the “existing local md files must be manually merged” expectation much more explicit.
+- **2026-03-31**: **Installer and hook behavior tightened** — the installer now preserves existing local `AGENTS.md` while installing the repo-managed version as `AGENTS.scholar.md`, and the default hook summaries were trimmed to reduce noisy temp-file / uncommitted-file output while keeping safer write-guard behavior.
+- **2026-03-31**: **Japanese documentation added** — added Japanese docs for the main README plus `AGENTS`, `MCP_SETUP`, and `OBSIDIAN_SETUP`, so the Codex branch now has a more complete multilingual documentation surface.
 
 <details>
 <summary>View older changelog</summary>
@@ -42,6 +43,7 @@
 | [Why Claude Scholar](#why-claude-scholar) | Understand the project positioning and target use cases. |
 | [Core Workflow](#core-workflow) | See the staged research pipeline from ideation to publication. |
 | [Quick Start](#quick-start) | Install Claude Scholar safely into an existing `~/.codex` setup. |
+| [Getting Started Scenarios](#getting-started-scenarios) | See a few realistic first-use scenarios after installation. |
 | [Platform Scope](#platform-scope) | See what this branch covers and where the other editions live. |
 | [Integrations](#integrations) | Learn how Zotero and Obsidian fit into the Codex workflow. |
 | [Primary Workflows](#primary-workflows) | Browse the main research and development workflows. |
@@ -126,7 +128,6 @@ bash scripts/setup.sh
 
 **Windows**: please use Git Bash or WSL to run the installer.
 
-
 ### Option 2: Minimal Installation
 
 Install only a small research-focused subset:
@@ -162,6 +163,59 @@ cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 **Important Codex note**:
 - Codex does **not** show custom skills in `/...` menus.
 - Use natural language prompts, or explicitly invoke a skill as `$skill-name` when needed.
+
+## Getting Started Scenarios
+
+After installation, the simplest way to begin is to describe your task in natural language. You do not need to memorize the whole system first, and Codex does not require slash-menu discovery for these workflows. Below are a few realistic starting points.
+
+### 1. Start a New Research Topic
+**You can say:**
+> Help me start research on [your topic]. I want a literature-grounded plan, the key open questions, and the next concrete steps.
+
+**What Claude Scholar will typically help with:**
+- clarify the topic and narrow the research question,
+- identify promising literature directions,
+- suggest an initial plan or hypothesis list,
+- optionally route the work into Zotero or Obsidian if you use them.
+
+### 2. Review a Zotero Collection
+**You can say:**
+> Review my Zotero collection on brain foundation models and summarize the main directions, gaps, and promising next steps.
+
+**Typical output:**
+- paper grouping by theme,
+- a short literature synthesis,
+- gap analysis,
+- candidate research directions worth pursuing next.
+
+### 3. Analyze Finished Experiment Results
+**You can say:**
+> Analyze the results in this experiment folder, check what changed across runs, and write a decision-oriented summary.
+
+**Typical output:**
+- metric comparison,
+- ablation or error-analysis suggestions,
+- a result summary that highlights what is solid, what is weak, and what to run next.
+
+### 4. Draft a Paper or Rebuttal Section
+**You can say:**
+> Help me draft the related work section for this project based on the current findings and paper notes.
+
+or:
+
+> Help me write a rebuttal draft for these reviewer comments.
+
+**Typical output:**
+- a structured section draft,
+- improved argument flow,
+- clearer claims and evidence mapping,
+- follow-up points that still need support or verification.
+
+### Practical Notes
+- Start with one concrete task, not a vague request for "everything."
+- In Codex, natural-language prompts are the default entrypoint; use `$skill-name` only when you want to force a specific skill.
+- If you already maintain your own local `AGENTS.md`, merge the Claude Scholar sections you want from `AGENTS.scholar.md` instead of assuming sidecar files apply automatically.
+- Zotero and Obsidian are optional, but they become much more useful when you want durable literature notes or project memory rather than one-off chat output.
 
 ## Platform Scope
 

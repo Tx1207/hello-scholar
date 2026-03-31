@@ -18,9 +18,10 @@
 
 ## 最新动态
 
-- **2026-03-18**: **实验结果报告、写作记忆与 README 对齐** — 保留了 `results-analysis` / `results-report` 的双层职责划分：前者负责严格统计与真实科研图，后者负责面向决策的实验后总结报告；继续保留 Obsidian 写回；从产品叙事中移除了旧的 `data-analyst` 入口；把 `paper-miner` 的输出沉淀到共享写作记忆，并让 `ml-paper-writing` 与 `review-response` 统一读取；同时把 Codex 分支 README 的结构向主分支主线对齐，但保留 Codex 专有用法说明。
-- **2026-03-17**: **Obsidian 项目知识库** — 已将以文件系统为核心的 Obsidian 工作流迁入 Codex 版，支持项目导入、repo 绑定后的自动同步，将稳定知识路由到 `Papers / Knowledge / Experiments / Results / Writing`，并将具体轮次的实验报告存放在 `Results/Reports/` 下，且 Obsidian 侧不依赖 MCP。
-- **2026-02-26**: **Zotero MCP Web API 模式** — 支持远程 Zotero 访问、DOI/arXiv/URL 导入、集合管理、条目更新，并补充了 Codex `config.toml` 配置说明。
+- **2026-03-31**: **Zotero smart-import 工作流文档完成对齐** — 围绕最新 `zotero-mcp` 的公开能力，系统更新了 Claude Scholar 的研究工作流文档：将 `zotero_add_items_by_identifier` 明确为默认论文导入入口，把 `zotero_reconcile_collection_duplicates` 设为标准导入后清理步骤，更准确地说明了来源感知 PDF cascade，同时把公开工具与内部诊断能力的边界重新讲清楚了。
+- **2026-03-31**: **README 上手路径完成刷新** — 明确了 Claude Scholar 尤其适合计算机科学与 AI 研究者，在安装说明后补充了更贴近真实使用的上手场景，进一步收紧了 prerequisite / 分支说明，并把“如果用户本地已有 md 文件，需要手动 merge”这件事写得更明确。
+- **2026-03-31**: **安装器与 hooks 行为进一步收口** — 安装器现在会保留已有的本地 `AGENTS.md`，并把仓库版本作为 `AGENTS.scholar.md` sidecar 文件安装；同时默认 hooks 的摘要输出进一步降噪，减少 temp files / uncommitted files 的噪声，同时保留更安全的写入守卫边界。
+- **2026-03-31**: **日文文档补齐** — 为主 README 以及 `AGENTS`、`MCP_SETUP`、`OBSIDIAN_SETUP` 补充了日文文档，使 Codex 分支的多语言文档入口更完整。
 
 <details>
 <summary>查看历史更新日志</summary>
@@ -42,6 +43,7 @@
 | [为什么使用 Claude Scholar](#为什么使用-claude-scholar) | 快速理解项目定位与适用场景。 |
 | [核心工作流](#核心工作流) | 查看从研究构思到发表的分阶段主链路。 |
 | [快速开始](#快速开始) | 安全地安装到现有 `~/.codex` 环境。 |
+| [上手场景](#上手场景) | 查看安装完成后几种最常见的上手场景。 |
 | [平台范围](#平台范围) | 了解这个分支覆盖什么，以及其他版本在哪。 |
 | [集成能力](#集成能力) | 了解 Zotero 和 Obsidian 如何接入 Codex 工作流。 |
 | [主要工作流](#主要工作流) | 浏览核心研究与开发工作流。 |
@@ -126,7 +128,6 @@ bash scripts/setup.sh
 
 **Windows**：请使用 Git Bash / WSL 运行安装脚本。
 
-
 ### 选项 2：最小化安装
 
 只安装较小的一组研究工作流子集：
@@ -162,6 +163,59 @@ cp /tmp/claude-scholar/AGENTS.md ~/.codex/AGENTS.md
 **Codex 使用说明**：
 - Codex **不会**在 `/...` 菜单里列出自定义 skills。
 - 优先使用自然语言触发；必要时可显式写 `$skill-name`。
+
+## 上手场景
+
+安装完成后，最简单的上手方式就是直接用自然语言描述你的任务，不需要先把整套系统全部背下来；在 Codex 里，这些工作流也不依赖你先去记 slash 菜单。下面给几种最常见、也最实用的起步场景。
+
+### 1. 启动一个新的研究主题
+**你可以这样说：**
+> 帮我围绕[你的研究主题]启动研究。我想先得到一个基于文献的初步计划、关键开放问题，以及接下来最具体的推进步骤。
+
+**Claude Scholar 通常会帮助你：**
+- 澄清主题并收敛研究问题，
+- 给出值得优先看的文献方向，
+- 形成初始研究计划或假设列表，
+- 如果你在用 Zotero / Obsidian，还可以把工作进一步路由进去。
+
+### 2. 回顾一个 Zotero 文献集合
+**你可以这样说：**
+> 帮我回顾我在 Zotero 里关于 brain foundation models 的文献集合，并总结其中的主要方向、研究空白，以及最值得继续推进的下一步。
+
+**典型输出包括：**
+- 按主题分组的论文图景，
+- 一段简明文献综合，
+- research gap 分析，
+- 值得继续推进的候选研究方向。
+
+### 3. 分析已经完成的实验结果
+**你可以这样说：**
+> 帮我分析这个实验目录里的结果，看看不同 runs 之间到底变了什么，并输出一份面向决策的总结。
+
+**典型输出包括：**
+- 指标对比，
+- ablation 或 error analysis 建议，
+- 一份结果总结，说明哪些结论比较稳、哪些还不够稳、下一步该跑什么。
+
+### 4. 起草论文段落或 rebuttal 回复
+**你可以这样说：**
+> 请基于这个项目当前已有的发现和论文笔记，帮我起草相关工作这一节。
+
+或者：
+
+> 请根据这些审稿人意见，帮我起草一版 rebuttal。
+
+**典型输出包括：**
+- 结构化的段落草稿，
+- 更清楚的论证链条，
+- claims 与 evidence 的对应关系，
+- 还需要补验证或补材料的点。
+
+### 使用建议
+- 先从一个具体任务开始，而不是一上来让系统“把所有事情都做了”。
+- 在 Codex 里，自然语言是默认入口；只有当你想强制调用某个 skill 时，才需要显式写 `$skill-name`。
+- 如果你已经有自己的本地 `AGENTS.md` 文件，请把你需要的 Claude Scholar 内容从 `AGENTS.scholar.md` 里按需 merge 进去，不要假设 sidecar 文件会自动生效。
+- Zotero 和 Obsidian 都不是强制的，但如果你希望得到 durable literature notes 或 project memory，而不是一次性聊天输出，它们会非常有帮助。
 
 ## 平台范围
 
