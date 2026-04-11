@@ -36,7 +36,7 @@
 - ✅ Skill structure intact
 
 ## Backup
-Original files backed up to: `~/.codex/skills/backup/example-skill-20250125-143000/`
+Original files backed up to: `.scholaragents/cache/skill-backups/example-skill-20250125-143000/`
 
 ## Notes
 - All high priority changes applied successfully

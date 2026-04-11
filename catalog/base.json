@@ -1,0 +1,17 @@
+{
+  "defaultSkills": [
+    "planning-with-files",
+    "daily-coding",
+    "bug-detective",
+    "verification-loop",
+    "git-workflow",
+    "codex-hook-emulation",
+    "session-wrap-up"
+  ],
+  "defaultAgents": [],
+  "dependencyHubs": [
+    "codex-hook-emulation",
+    "verification-loop",
+    "git-workflow"
+  ]
+}

@@ -1,8 +1,8 @@
-# Codex Scholar 配置
+# ScholarAGENTS 配置
 
 ## 项目概述
 
-**Codex Scholar** - 面向学术研究和软件开发的 semi-automated research assistant（Codex CLI 版）
+**ScholarAGENTS** - 面向学术研究和软件开发的 semi-automated research assistant（Codex CLI 版）
 
 **配置路径**:
 - 主配置：`~/.codex/config.toml`
@@ -21,12 +21,12 @@
 - **投稿目标**:
   - 顶会：NeurIPS, ICML, ICLR, KDD, ACL, AAAI
   - 高影响期刊：Nature, Science, Cell, PNAS
-- **关注点**: 学术写作质量、逻辑连贯性、自然表达
+- **关注点**: 学术写作质量、逻辑连贯性、自然表达、代码简洁、模型高效
 
 ### 技术栈偏好
 
 **Python 生态**:
-- **包管理**: `uv` - 现代化 Python 包管理器
+- **包管理**: `uv` - 现代化 Python 包管理器 or `conda`
 - **配置管理**: Hydra + OmegaConf（配置组合、覆盖、类型安全）
 - **模型训练**: Transformers Trainer
 

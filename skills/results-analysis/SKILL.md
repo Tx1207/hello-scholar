@@ -146,7 +146,7 @@ For each figure, record:
 - interpretation checklist,
 - known caveats.
 
-### 6. Final QA gate
+### 6. Final QA 
 
 Do not finish until all are true:
 - [ ] the primary comparison question is explicit,

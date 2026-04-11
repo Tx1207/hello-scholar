@@ -3,21 +3,27 @@
 # Part of skill-improver
 
 # Usage: ./backup-skill.sh <skill-path>
-# Example: ./backup-skill.sh ~/.codex/skills/git-workflow
+# Example: ./backup-skill.sh ./.scholaragents/skills/git-workflow
 
 set -euo pipefail
 
 # Check if path provided
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <skill-path>"
-    echo "Example: $0 ~/.codex/skills/git-workflow"
+    echo "Example: $0 ./.scholaragents/skills/git-workflow"
     exit 1
 fi
 
 SKILL_PATH="$1"
 SKILL_NAME=$(basename "$SKILL_PATH")
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-BACKUP_DIR="$HOME/.codex/skills/backup/${SKILL_NAME}-${TIMESTAMP}"
+if [[ "$SKILL_PATH" == *"/.scholaragents/skills/"* ]]; then
+    PROJECT_ROOT="${SKILL_PATH%%/.scholaragents/skills/*}"
+    BACKUP_BASE="${PROJECT_ROOT}/.scholaragents/cache/skill-backups"
+else
+    BACKUP_BASE="${HOME}/.scholaragents/cache/skill-backups"
+fi
+BACKUP_DIR="${BACKUP_BASE}/${SKILL_NAME}-${TIMESTAMP}"
 
 # Check if skill path exists
 if [ ! -d "$SKILL_PATH" ]; then

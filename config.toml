@@ -1,9 +1,13 @@
-# Codex Scholar - Main Configuration
-# Run: bash scripts/setup.sh to configure interactively
+# ScholarAGENTS sample Codex configuration
+#
+# Runtime-managed sections are injected by:
+#   node cli.mjs install codex --standby ...
+#   node cli.mjs install codex --global ...
+#
+# The generated ScholarAGENTS block in ~/.codex/config.toml owns:
+# - selected agent registrations
+# - the local plugin enable flag in global mode
 
-# ============================================================
-# Model & Provider (configured by setup.sh)
-# ============================================================
 model = "__MODEL__"
 model_provider = "__PROVIDER_NAME__"
 model_reasoning_effort = "medium"
@@ -15,98 +19,14 @@ base_url = "__PROVIDER_URL__"
 wire_api = "responses"
 requires_openai_auth = true
 
-# ============================================================
-# Sandbox & Instructions
-# ============================================================
 sandbox_mode = "workspace-write"
 
-# ============================================================
-# Features
-# ============================================================
 [features]
 multi_agent = true
 memories = true
 
-# ============================================================
-# MCP Servers (optional, enable after installing zotero-mcp)
-# ============================================================
+# Example optional MCP server
 [mcp_servers.zotero]
 command = "zotero-mcp"
 args = ["serve"]
 enabled = false
-[mcp_servers.zotero.env]
-ZOTERO_API_KEY = "your-api-key"
-ZOTERO_LIBRARY_ID = "your-library-id"
-ZOTERO_LIBRARY_TYPE = "user"
-UNPAYWALL_EMAIL = "your-email@example.com"
-UNSAFE_OPERATIONS = "all"
-
-# ============================================================
-# Agents
-# ============================================================
-
-# --- Research Workflow ---
-
-[agents.literature-reviewer]
-description = "Literature search, classification, and trend analysis with Zotero MCP integration"
-config_file = "~/.codex/agents/literature-reviewer/config.toml"
-
-[agents.literature-reviewer-obsidian]
-description = "Obsidian literature review specialist for project-linked paper notes and synthesis"
-config_file = "~/.codex/agents/literature-reviewer-obsidian/config.toml"
-
-[agents.rebuttal-writer]
-description = "Systematic rebuttal writing with tone optimization"
-config_file = "~/.codex/agents/rebuttal-writer/config.toml"
-
-[agents.paper-miner]
-description = "Extract writing knowledge from successful papers"
-config_file = "~/.codex/agents/paper-miner/config.toml"
-
-[agents.kaggle-miner]
-description = "Extract engineering practices from Kaggle solutions"
-config_file = "~/.codex/agents/kaggle-miner/config.toml"
-
-[agents.research-knowledge-curator-obsidian]
-description = "Default Obsidian knowledge curator for bound research repositories"
-config_file = "~/.codex/agents/research-knowledge-curator-obsidian/config.toml"
-
-# --- Development Workflow ---
-
-[agents.architect]
-description = "ML project architecture specialist for code structure and design patterns"
-config_file = "~/.codex/agents/architect/config.toml"
-
-[agents.bug-analyzer]
-description = "Deep code execution flow analysis and root cause investigation"
-config_file = "~/.codex/agents/bug-analyzer/config.toml"
-
-[agents.build-error-resolver]
-description = "Fix build and type errors with minimal diffs"
-config_file = "~/.codex/agents/build-error-resolver/config.toml"
-
-[agents.code-reviewer]
-description = "Expert code review for quality, security, and maintainability"
-config_file = "~/.codex/agents/code-reviewer/config.toml"
-
-[agents.dev-planner]
-description = "Implementation planning and task breakdown"
-config_file = "~/.codex/agents/dev-planner/config.toml"
-
-[agents.refactor-cleaner]
-description = "Dead code cleanup and consolidation specialist"
-config_file = "~/.codex/agents/refactor-cleaner/config.toml"
-
-[agents.tdd-guide]
-description = "Test-driven development workflow guidance"
-config_file = "~/.codex/agents/tdd-guide/config.toml"
-
-# --- Design & Content ---
-
-[agents.ui-sketcher]
-description = "UI blueprint design and interaction specification"
-config_file = "~/.codex/agents/ui-sketcher/config.toml"
-
-[agents.story-generator]
-description = "User story and narrative generation"
-config_file = "~/.codex/agents/story-generator/config.toml"

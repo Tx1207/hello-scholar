@@ -1,0 +1,183 @@
+[
+  {
+    "id": "architect",
+    "name": "architect",
+    "description": "ML project architecture specialist for code structure and design patterns",
+    "path": "agents/architect",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "bug-analyzer",
+    "name": "bug-analyzer",
+    "description": "Deep code execution flow analysis and root cause investigation",
+    "path": "agents/bug-analyzer",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "build-error-resolver",
+    "name": "build-error-resolver",
+    "description": "Fix build and type errors with minimal diffs",
+    "path": "agents/build-error-resolver",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "code-reviewer",
+    "name": "code-reviewer",
+    "description": "Expert code review for quality, security, and maintainability",
+    "path": "agents/code-reviewer",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "dev-planner",
+    "name": "dev-planner",
+    "description": "Implementation planning and task breakdown",
+    "path": "agents/dev-planner",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "kaggle-miner",
+    "name": "kaggle-miner",
+    "description": "Extract engineering practices from Kaggle solutions",
+    "path": "agents/kaggle-miner",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "literature-reviewer",
+    "name": "literature-reviewer",
+    "description": "Literature search, classification, and trend analysis with Zotero MCP integration",
+    "path": "agents/literature-reviewer",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "literature-reviewer-obsidian",
+    "name": "literature-reviewer-obsidian",
+    "description": "Obsidian literature review specialist for project-linked paper notes and synthesis",
+    "path": "agents/literature-reviewer-obsidian",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "paper-miner",
+    "name": "paper-miner",
+    "description": "Extract writing knowledge from successful papers",
+    "path": "agents/paper-miner",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "rebuttal-writer",
+    "name": "rebuttal-writer",
+    "description": "Systematic rebuttal writing with tone optimization",
+    "path": "agents/rebuttal-writer",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "refactor-cleaner",
+    "name": "refactor-cleaner",
+    "description": "Dead code cleanup and consolidation specialist",
+    "path": "agents/refactor-cleaner",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "research-knowledge-curator-obsidian",
+    "name": "research-knowledge-curator-obsidian",
+    "description": "Default Obsidian knowledge curator for bound research repositories",
+    "path": "agents/research-knowledge-curator-obsidian",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "story-generator",
+    "name": "story-generator",
+    "description": "User story and narrative generation",
+    "path": "agents/story-generator",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "tdd-guide",
+    "name": "tdd-guide",
+    "description": "Test-driven development workflow guidance",
+    "path": "agents/tdd-guide",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "ui-sketcher",
+    "name": "ui-sketcher",
+    "description": "UI blueprint design and interaction specification",
+    "path": "agents/ui-sketcher",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core",
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  }
+]

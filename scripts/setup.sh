@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# Claude Scholar — Codex CLI Installer
+# ScholarAGENTS — Codex CLI Installer
 # ============================================================
 # Usage: bash scripts/setup.sh
 # Supports fresh install and safer incremental updates.
@@ -518,7 +518,7 @@ PY
 main() {
   echo ""
   echo "╔══════════════════════════════════════╗"
-  echo "║   Claude Scholar Installer (Codex)   ║"
+  echo "║   ScholarAGENTS Installer (Codex)    ║"
   echo "╚══════════════════════════════════════╝"
   echo ""
 

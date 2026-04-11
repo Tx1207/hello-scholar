@@ -1,6 +1,6 @@
 # Obsidian Project Knowledge Base Setup
 
-Claude Scholar ships with a built-in Obsidian research knowledge-base workflow. It does **not** require MCP or an API key.
+ScholarAGENTS ships with a built-in Obsidian research knowledge-base workflow. It does **not** require MCP or an API key.
 
 ## What this provides
 
@@ -26,7 +26,7 @@ Obsidian is treated as the default knowledge base for a research project, not ju
 
 ## Built-in skills
 
-Claude Scholar includes official Obsidian-oriented skills plus project-focused wrappers.
+ScholarAGENTS includes official Obsidian-oriented skills plus project-focused wrappers.
 
 Most relevant for the default workflow:
 
@@ -44,9 +44,9 @@ Some optional graph-oriented helpers may still exist in the repo, but the defaul
 
 ## Default behavior
 
-When Claude Scholar is running inside a repository that contains `.codex/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
+When ScholarAGENTS is running inside a repository that contains `.codex/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
 
-If the repository is not yet bound, but it looks like a research project (for example it contains `.git`, `README.md`, `docs/`, `notes/`, `plan/`, `results/`, `outputs/`, `src/`, or `scripts/`), Claude Scholar should bootstrap a project knowledge base automatically.
+If the repository is not yet bound, but it looks like a research project (for example it contains `.git`, `README.md`, `docs/`, `notes/`, `plan/`, `results/`, `outputs/`, `src/`, or `scripts/`), ScholarAGENTS should bootstrap a project knowledge base automatically.
 
 ## Project structure in the vault
 
@@ -128,7 +128,7 @@ Codex does not expose slash commands the way Claude Code does. In the Codex edit
 
 ## Minimum bound-repo maintenance
 
-When a repo is already bound through `.codex/project-memory/registry.yaml`, Claude Scholar should keep automatic maintenance conservative:
+When a repo is already bound through `.codex/project-memory/registry.yaml`, ScholarAGENTS should keep automatic maintenance conservative:
 
 - always verify `Daily/YYYY-MM-DD.md` when the turn changes research state,
 - update `00-Hub.md` only when top-level project status actually changes,
@@ -170,7 +170,7 @@ If you see `Command line interface is not enabled`, the shell path is fine but t
 
 ## Optional CLI and URI usage
 
-Claude Scholar can optionally use the official Obsidian CLI and URI scheme:
+ScholarAGENTS can optionally use the official Obsidian CLI and URI scheme:
 
 - CLI docs: <https://help.obsidian.md/cli>
 - URI docs: <https://help.obsidian.md/uri>

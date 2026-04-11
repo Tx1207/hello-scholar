@@ -86,7 +86,7 @@ When the rebuttal task involves:
 
 read this file before drafting:
 
-- `~/.codex/skills/ml-paper-writing/references/knowledge/paper-miner-writing-memory.md`
+- `.scholaragents/skills/ml-paper-writing/references/knowledge/paper-miner-writing-memory.md`
 
 ### Default read order for rebuttal work
 

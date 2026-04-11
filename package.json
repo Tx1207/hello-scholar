@@ -1,0 +1,31 @@
+{
+  "name": "scholaragents",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "ScholarAGENTS - selective Codex research and development modules with base and bundle installs.",
+  "license": "MIT",
+  "bin": {
+    "scholaragents": "cli.mjs"
+  },
+  "scripts": {
+    "build:catalog": "node scripts/build-catalog.mjs",
+    "test": "node --test",
+    "postinstall": "node cli.mjs postinstall"
+  },
+  "files": [
+    "cli.mjs",
+    "AGENTS.md",
+    ".codex-plugin/",
+    "catalog/",
+    "scripts/",
+    "skills/",
+    "agents/",
+    "config.toml",
+    "README.md",
+    "README.zh-CN.md",
+    "README.ja-JP.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,746 @@
+[
+  {
+    "id": "agent-identifier",
+    "name": "agent-identifier",
+    "description": "Use when creating or configuring Claude Code agents and their frontmatter.",
+    "path": "skills/agent-identifier",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "architecture-design",
+    "name": "architecture-design",
+    "description": "Use only when creating new registrable ML components that require Factory or Registry patterns.",
+    "path": "skills/architecture-design",
+    "layer": "bundle",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "bug-detective",
+    "name": "bug-detective",
+    "description": "This skill should be used when the user asks to \"debug this\", \"fix this error\", \"investigate this bug\", \"troubleshoot this issue\", \"find the problem\", \"something is broken\", \"this isn't working\", \"why is this failing\", or reports errors/exceptions/bugs. Provides systematic debugging workflow and common error patterns.",
+    "path": "skills/bug-detective",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "build-fixer",
+    "name": "build-fixer",
+    "description": "Incrementally fixes Python type and lint errors using mypy, ruff, and pytest with a safe one-at-a-time approach.",
+    "path": "skills/build-fixer",
+    "layer": "bundle",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "checkpoint-manager",
+    "name": "checkpoint-manager",
+    "description": "Creates, verifies, and lists workflow checkpoints for tracking development progress via git snapshots.",
+    "path": "skills/checkpoint-manager",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "citation-verification",
+    "name": "citation-verification",
+    "description": "This skill provides reference guidance for citation verification in academic writing. Use when the user asks about \"citation verification best practices\", \"how to verify references\", \"preventing fake citations\", or needs guidance on citation accuracy. This skill supports ml-paper-writing by providing detailed verification principles and common error patterns.",
+    "path": "skills/citation-verification",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "ml-paper-writing"
+    ]
+  },
+  {
+    "id": "code-review-excellence",
+    "name": "code-review-excellence",
+    "description": "This skill should be used when the user asks to review a diff or pull request, write review comments, audit code quality, establish review standards, or improve how a team performs code review.",
+    "path": "skills/code-review-excellence",
+    "layer": "bundle",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "codex-hook-emulation",
+    "name": "codex-hook-emulation",
+    "description": "This skill should be used when the user wants Codex CLI to approximate Claude Code hook behavior, emulate SessionStart or SessionEnd checks, add preflight guards before dangerous actions, trigger post-edit verification automatically, or maximize Claude Code hook-like workflow safety in Codex.",
+    "path": "skills/codex-hook-emulation",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "command-development",
+    "name": "command-development",
+    "description": "This skill should be used when the user asks to \"create a slash command\", \"add a command\", \"write a custom command\", \"define command arguments\", \"use command frontmatter\", \"organize commands\", \"create command with file references\", \"interactive command\", \"use AskUserQuestion in command\", or needs guidance on slash command structure, YAML frontmatter fields, dynamic arguments, bash execution in commands, user interaction patterns, or command development best practices for Claude Code.",
+    "path": "skills/command-development",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "daily-coding",
+    "name": "daily-coding",
+    "description": "Use for everyday coding tasks that involve writing or modifying source code.",
+    "path": "skills/daily-coding",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "daily-paper-generator",
+    "name": "daily-paper-generator",
+    "description": "Use when the user asks to \"generate daily paper\", \"search arXiv for EEG papers\", \"find EEG decoding papers\", \"review brain-computer interface papers\", or wants to create paper summaries for EEG/brain decoding/speech decoding research. This skill automates searching arXiv for recent papers on EEG decoding, EEG speech decoding, or brain foundation models, reviewing paper quality, and generating structured Chinese/English summaries.",
+    "path": "skills/daily-paper-generator",
+    "layer": "bundle",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "defuddle",
+    "name": "defuddle",
+    "description": "Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page.",
+    "path": "skills/defuddle",
+    "layer": "bundle",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "doc-coauthoring",
+    "name": "doc-coauthoring",
+    "description": "This skill should be used when the user asks to co-author documentation, draft a proposal, write a technical spec, create a decision doc or RFC, or structure a substantial document through iterative collaboration and reader testing.",
+    "path": "skills/doc-coauthoring",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "frontend-design",
+    "name": "frontend-design",
+    "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.",
+    "path": "skills/frontend-design",
+    "layer": "bundle",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "git-commit",
+    "name": "git-commit",
+    "description": "Stages and commits changes using Conventional Commits format (local only, no push).",
+    "path": "skills/git-commit",
+    "layer": "bundle",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "git-push",
+    "name": "git-push",
+    "description": "Commits and pushes changes to GitHub remote repository using Conventional Commits format.",
+    "path": "skills/git-push",
+    "layer": "bundle",
+    "category": "dev-core",
+    "bundleIds": [
+      "dev-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "git-workflow",
+    "name": "git-workflow",
+    "description": "This skill should be used when the user asks to \"create git commit\", \"manage branches\", \"follow git workflow\", \"use Conventional Commits\", \"handle merge conflicts\", or asks about git branching strategies, version control best practices, pull request workflows. Provides comprehensive Git workflow guidance for team collaboration.",
+    "path": "skills/git-workflow",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "hook-development",
+    "name": "hook-development",
+    "description": "This skill should be used when the user asks to \"create a hook\", \"add a PreToolUse/PostToolUse/Stop hook\", \"validate tool use\", \"implement prompt-based hooks\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"set up event-driven automation\", \"block dangerous commands\", or mentions hook events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, PreCompact, Notification). Provides comprehensive guidance for creating and implementing Claude Code plugin hooks with focus on advanced prompt-based hooks API.",
+    "path": "skills/hook-development",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "json-canvas",
+    "name": "json-canvas",
+    "description": "Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian.",
+    "path": "skills/json-canvas",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "kaggle-learner",
+    "name": "kaggle-learner",
+    "description": "This skill should be used when the user asks to \"learn from Kaggle\", \"study Kaggle solutions\", \"analyze Kaggle competitions\", \"learn from code\", \"extract patterns\", or mentions Kaggle competition URLs. Also covers extracting reusable patterns from coding sessions.",
+    "path": "skills/kaggle-learner",
+    "layer": "bundle",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "latex-conference-template-organizer",
+    "name": "latex-conference-template-organizer",
+    "description": "Organize messy conference LaTeX template .zip files into clean Overleaf-ready structure. Use when the user asks to \"organize LaTeX template\", \"clean up .zip template\", or \"prepare Overleaf submission template\".",
+    "path": "skills/latex-conference-template-organizer",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "mcp-integration",
+    "name": "mcp-integration",
+    "description": "This skill should be used when the user asks to \"add MCP server\", \"integrate MCP\", \"configure MCP in plugin\", \"use .mcp.json\", \"set up Model Context Protocol\", \"connect external service\", mentions \"${CLAUDE_PLUGIN_ROOT} with MCP\", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.",
+    "path": "skills/mcp-integration",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "memory-updater",
+    "name": "memory-updater",
+    "description": "Checks and updates CLAUDE.md memory file to stay in sync with changes to skills, commands, agents, and hooks.",
+    "path": "skills/memory-updater",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "ml-paper-writing",
+    "name": "ml-paper-writing",
+    "description": "Write publication-ready ML/AI papers for NeurIPS, ICML, ICLR, ACL, AAAI, COLM. Use when drafting papers from research repos, conducting literature reviews, finding related work, verifying citations, or preparing camera-ready submissions. Includes LaTeX templates, citation verification workflows, and paper discovery/evaluation criteria.",
+    "path": "skills/ml-paper-writing",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "paper-miner"
+    ]
+  },
+  {
+    "id": "obsidian-bases",
+    "name": "obsidian-bases",
+    "description": "Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.",
+    "path": "skills/obsidian-bases",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-cli",
+    "name": "obsidian-cli",
+    "description": "Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.",
+    "path": "skills/obsidian-cli",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-experiment-log",
+    "name": "obsidian-experiment-log",
+    "description": "Use this skill when the user discusses experiment design, ablations, training runs, evaluation, baselines, metrics, failures, or result interpretation that should be logged into Obsidian experiment and result notes.",
+    "path": "skills/obsidian-experiment-log",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-link-graph",
+    "name": "obsidian-link-graph",
+    "description": "Use this skill when the user wants to repair or strengthen Obsidian wikilinks among existing canonical project notes, especially across papers, knowledge notes, experiments, results, and writing.",
+    "path": "skills/obsidian-link-graph",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-literature-workflow",
+    "name": "obsidian-literature-workflow",
+    "description": "Use this skill when the user keeps paper notes inside an Obsidian project knowledge base and wants filesystem-first literature review, explicit agent-first Zotero ingestion, `Papers/` plus `Knowledge/` synthesis, collection-wide normalization, and a default literature canvas without Obsidian MCP.",
+    "path": "skills/obsidian-literature-workflow",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory",
+      "obsidian-markdown"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-markdown",
+    "name": "obsidian-markdown",
+    "description": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.",
+    "path": "skills/obsidian-markdown",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-project-bootstrap",
+    "name": "obsidian-project-bootstrap",
+    "description": "This skill should be used when the user asks to start a new research project, import an existing code-plus-Markdown repository into Obsidian, or bind the current repository to a compact research knowledge base for future syncing.",
+    "path": "skills/obsidian-project-bootstrap",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-project-lifecycle",
+    "name": "obsidian-project-lifecycle",
+    "description": "Use this skill when the user wants to detach, archive, purge, or otherwise change the lifecycle state of an Obsidian project knowledge base.",
+    "path": "skills/obsidian-project-lifecycle",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-project-memory",
+    "name": "obsidian-project-memory",
+    "description": "This skill should be used when the user asks to maintain an Obsidian knowledge base for a research project, import an existing research repository into Obsidian, keep project memory or daily notes synchronized, summarize project context into durable notes, or update experiments, results, papers, writing, and plans in an Obsidian vault without requiring MCP.",
+    "path": "skills/obsidian-project-memory",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-research-log",
+    "name": "obsidian-research-log",
+    "description": "Use this skill when the user is discussing daily research work, TODOs, plans, standups, meetings, milestones, or general project progress that should be reflected in Obsidian daily notes, plan notes, and hub updates.",
+    "path": "skills/obsidian-research-log",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "obsidian-synthesis-map",
+    "name": "obsidian-synthesis-map",
+    "description": "Use this skill when generating higher-level synthesis notes such as literature reviews, comparison matrices, project summaries, or other cross-note summaries inside the project knowledge base.",
+    "path": "skills/obsidian-synthesis-map",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "paper-self-review",
+    "name": "paper-self-review",
+    "description": "This skill should be used when the user asks to \"review paper quality\", \"check paper completeness\", \"validate paper structure\", \"self-review before submission\", or mentions systematic paper quality checking. Provides comprehensive quality assurance checklist for academic papers.",
+    "path": "skills/paper-self-review",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "ml-paper-writing"
+    ]
+  },
+  {
+    "id": "planning-with-files",
+    "name": "planning-with-files",
+    "description": "Transforms workflow to use Manus-style persistent markdown files for planning, progress tracking, and knowledge storage. Use when starting complex tasks, multi-step projects, research tasks, or when the user mentions planning, organizing work, tracking progress, or wants structured output.",
+    "path": "skills/planning-with-files",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "plugin-structure",
+    "name": "plugin-structure",
+    "description": "This skill should be used when the user asks to \"create a plugin\", \"scaffold a plugin\", \"understand plugin structure\", \"organize plugin components\", \"set up plugin.json\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"add commands/agents/skills/hooks\", \"configure auto-discovery\", or needs guidance on plugin directory layout, manifest configuration, component organization, file naming conventions, or Claude Code plugin architecture best practices.",
+    "path": "skills/plugin-structure",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "post-acceptance",
+    "name": "post-acceptance",
+    "description": "This skill should be used when the user asks to \"prepare conference presentation\", \"create presentation slides\", \"design poster\", \"make academic poster\", \"write promotion content\", \"create Twitter thread\", or mentions post-acceptance conference preparation. Provides comprehensive workflow for presentation, poster, and promotion content creation.",
+    "path": "skills/post-acceptance",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "project-creator",
+    "name": "project-creator",
+    "description": "Creates a new project from a template with uv package management and Git initialization, including GitHub remote setup.",
+    "path": "skills/project-creator",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "uv-package-manager",
+      "git-workflow"
+    ]
+  },
+  {
+    "id": "readme-updater",
+    "name": "readme-updater",
+    "description": "Updates README.md with latest project information by analyzing recent code changes and documentation gaps.",
+    "path": "skills/readme-updater",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "git-push"
+    ]
+  },
+  {
+    "id": "research-ideation",
+    "name": "research-ideation",
+    "description": "This skill should be used when the user asks to \"brainstorm research ideas\", \"use 5W1H framework\", \"identify research gaps\", \"conduct gap analysis\", \"start research project\", \"conduct literature review\", \"define research question\", \"select research method\", \"plan research\", or mentions research project initiation phase. Provides comprehensive guidance for research startup workflow from idea generation to planning.",
+    "path": "skills/research-ideation",
+    "layer": "bundle",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "results-analysis",
+    "name": "results-analysis",
+    "description": "This skill should be used when the user asks to \"analyze experimental results\", \"run strict statistical analysis\", \"compare model performance\", \"generate scientific figures\", \"check significance\", \"do ablation analysis\", or mentions interpreting experiment data with rigorous statistics and visualization. It focuses on strict analysis bundles, not Results-section prose.",
+    "path": "skills/results-analysis",
+    "layer": "bundle",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "results-report",
+    "name": "results-report",
+    "description": "This skill should be used when the user asks to \"write an experiment report\", \"summarize experimental results\", \"do experiment retrospection\", \"write a results report\", \"写实验总结报告\", \"写实验复盘\", or mentions turning completed experiment artifacts into a structured, decision-oriented research report. It assumes strict analysis should come from `results-analysis` first.",
+    "path": "skills/results-report",
+    "layer": "bundle",
+    "category": "research-core",
+    "bundleIds": [
+      "research-core"
+    ],
+    "dependencies": [
+      "results-analysis"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "review-response",
+    "name": "review-response",
+    "description": "Systematic review response workflow from comment analysis to professional rebuttal writing. Use when the user asks to \"write rebuttal\", \"respond to reviewers\", \"draft review response\", or \"analyze review comments\". Improves paper acceptance rates.",
+    "path": "skills/review-response",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": [
+      "paper-self-review"
+    ]
+  },
+  {
+    "id": "session-wrap-up",
+    "name": "session-wrap-up",
+    "description": "Generate session work log, check for AGENTS.md updates, and clean up temporary files. Replaces session-summary and stop-summary hooks.",
+    "path": "skills/session-wrap-up",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "skill-development",
+    "name": "skill-development",
+    "description": "This skill should be used when the user asks to create a new skill, repair an existing skill, improve trigger descriptions, reorganize skill structure, or make a Claude skill more reusable and internally consistent.",
+    "path": "skills/skill-development",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "skill-improver",
+    "name": "skill-improver",
+    "description": "This skill should be used when the user asks to \"apply skill improvements\", \"update skill from plan\", \"execute improvement plan\", \"fix skill issues\", \"implement skill recommendations\", or mentions applying improvements from quality review reports. Reads improvement-plan-{name}.md files generated by skill-quality-reviewer and intelligently merges and executes the suggested changes to improve Claude Skills quality.",
+    "path": "skills/skill-improver",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [
+      "skill-quality-reviewer"
+    ],
+    "optionalDependencies": []
+  },
+  {
+    "id": "skill-quality-reviewer",
+    "name": "skill-quality-reviewer",
+    "description": "This skill should be used when the user asks to \"analyze skill quality\", \"evaluate this skill\", \"review skill quality\", \"check my skill\", or \"generate quality report\". Evaluates local skills across description quality, content organization, writing style, and structural integrity.",
+    "path": "skills/skill-quality-reviewer",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "ui-ux-pro-max",
+    "name": "ui-ux-pro-max",
+    "description": "This skill should be used when the user asks to design or review a UI, create a landing page or dashboard, choose colors or typography, improve accessibility, or implement polished frontend interfaces with a clear design system.",
+    "path": "skills/ui-ux-pro-max",
+    "layer": "bundle",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "uv-package-manager",
+    "name": "uv-package-manager",
+    "description": "Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, configuring package managers, or optimizing Python development workflows with uv. Also triggered by \"setup package manager\" or \"configure pm\".",
+    "path": "skills/uv-package-manager",
+    "layer": "bundle",
+    "category": "meta-builder",
+    "bundleIds": [
+      "meta-builder"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "verification-loop",
+    "name": "verification-loop",
+    "description": "This skill should be used when the user asks to \"verify code\", \"run verification\", \"check quality\", \"validate changes\", or before creating a PR. Provides comprehensive verification including build, type check, lint, tests, security scan, and diff review.",
+    "path": "skills/verification-loop",
+    "layer": "base",
+    "category": "base",
+    "bundleIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "web-design-reviewer",
+    "name": "web-design-reviewer",
+    "description": "This skill enables visual inspection of websites running locally or remotely to identify and fix design issues. Triggers on requests like \"review website design\", \"check the UI\", \"fix the layout\", \"find design problems\". Detects issues with responsive design, accessibility, visual consistency, and layout breakage, then performs fixes at the source code level.",
+    "path": "skills/web-design-reviewer",
+    "layer": "bundle",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "webapp-testing",
+    "name": "webapp-testing",
+    "description": "Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.",
+    "path": "skills/webapp-testing",
+    "layer": "bundle",
+    "category": "ui-content",
+    "bundleIds": [
+      "ui-content"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "writing-anti-ai",
+    "name": "writing-anti-ai",
+    "description": "This skill should be used when the user asks to \"remove AI writing patterns\", \"humanize this text\", \"make this sound more natural\", \"remove AI-generated traces\", \"fix robotic writing\", or needs to eliminate AI writing patterns from prose. Supports both English and Chinese text. Based on Wikipedia's \"Signs of AI writing\" guide, detects and fixes inflated symbolism, promotional language, superficial -ing analyses, vague attributions, AI vocabulary, negative parallelisms, and excessive conjunctive phrases.",
+    "path": "skills/writing-anti-ai",
+    "layer": "bundle",
+    "category": "writing-core",
+    "bundleIds": [
+      "writing-core"
+    ],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
+    "id": "zotero-obsidian-bridge",
+    "name": "zotero-obsidian-bridge",
+    "description": "Use this skill when papers are collected in Zotero but the user wants detailed reading notes, project-linked literature synthesis, collection-wide paper-note coverage checks, and a connected knowledge map inside the bound Obsidian project knowledge base.",
+    "path": "skills/zotero-obsidian-bridge",
+    "layer": "bundle",
+    "category": "obsidian-core",
+    "bundleIds": [
+      "obsidian-core"
+    ],
+    "dependencies": [
+      "obsidian-project-memory"
+    ],
+    "optionalDependencies": []
+  }
+]

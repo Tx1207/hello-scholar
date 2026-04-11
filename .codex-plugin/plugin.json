@@ -1,0 +1,17 @@
+{
+  "name": "scholaragents",
+  "version": "0.1.0",
+  "description": "Selective Codex research and development modules with base and bundle installs.",
+  "license": "MIT",
+  "skills": "./skills",
+  "interface": {
+    "displayName": "ScholarAGENTS",
+    "shortDescription": "Selective research and development modules for Codex",
+    "longDescription": "ScholarAGENTS provides a Codex-oriented runtime for selectively installing base capabilities and workflow bundles across research, writing, development, Obsidian, meta-builder, and UI workflows.",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Write",
+      "Interactive"
+    ]
+  }
+}

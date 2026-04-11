@@ -23,7 +23,7 @@ When these source files change, CLAUDE.md needs to be updated accordingly.
 1. **Scan Source File Modification Times**
    - `~/.codex/skills/**/skill.md`
    - `~/.codex/commands/**/*.md`
-   - `~/.codex/agents/**/*.md`
+   - `.scholaragents/agents/**/*.md`
    - `~/.codex/hooks/**/*.{js,json}`
 
 2. **Compare Against CLAUDE.md Last Modified Time**
