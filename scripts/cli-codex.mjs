@@ -37,6 +37,7 @@ const GLOBAL_RUNTIME_ENTRIES = [
   'README.ja-JP.md',
   'catalog',
   'scripts',
+  'templates',
 ]
 
 export function installCodex(runtime, selection, mode, installState, cwd = process.cwd()) {
@@ -226,6 +227,7 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd()) 
   ensureDir(paths.projectStateRoot)
   ensureDir(paths.projectSkillsRoot)
   ensureDir(paths.projectAgentsRoot)
+  copyEntries(runtime.pkgRoot, paths.projectStateRoot, ['scripts', 'templates'])
 
   const bootstrap = renderManagedBootstrapPrompt({ runtime, selection, mode: 'standby' })
 

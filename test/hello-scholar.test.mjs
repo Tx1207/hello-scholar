@@ -132,6 +132,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assertPathExists(join(projectScholarRoot, 'agents', 'paper-miner'))
     assertPathExists(join(projectScholarRoot, 'active-prompt.md'))
     assertPathExists(join(projectScholarRoot, 'install-state.json'))
+    assertPathExists(join(projectScholarRoot, 'scripts', 'change-tracker.mjs'))
+    assertPathExists(join(projectScholarRoot, 'templates', 'change-record.md'))
     assertPathMissing(join(projectScholarRoot, 'hello-scholar.json'))
     assertPathMissing(join(projectScholarRoot, 'STATE.md'))
     assertPathMissing(join(fixture.globalScholarRoot, 'install-state.json'))

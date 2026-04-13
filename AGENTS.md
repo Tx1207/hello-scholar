@@ -60,6 +60,40 @@
 - **沟通方式**: 不确定时主动询问，重要操作前先确认
 - **代码风格**: Python 遵循 PEP 8，注释使用英文，命名使用英文
 
+### 项目资产目录约定
+- `.hello-scholar/` 只用于 `standby` 运行时安装目录，不承载项目记录资产
+- `hello-scholar/` 用于项目级资产，至少可包含：
+  - `hello-scholar/changes/`
+  - `hello-scholar/state/`
+  - `hello-scholar/plans/`
+  - `hello-scholar/evidence/`
+  - `hello-scholar/research/`
+- 项目产生的长期记录优先写入 `hello-scholar/`，避免混入运行时目录
+
+### ROUTE / TIER 执行路由
+
+每次实质性请求先做两步判断，再决定调用哪些 skills：
+
+1. **TIER**
+   - `T0`: 探索、澄清、收集上下文
+   - `T1`: 规划、方案设计、任务拆解
+   - `T2`: 实现、编辑、构建
+   - `T3`: 验证、交付、收尾
+2. **ROUTE**
+   - `~idea`: 只探索，不产生副作用
+   - `~plan`: 生成方案包、任务拆解、风险清单
+   - `~build`: 实施变更
+   - `~verify`: 跑验证、整理证据、检查交付门槛
+   - `~prd`: 面向文档/交付物收束
+   - `~auto`: 无法稳定归类时的保守默认
+
+执行原则：
+
+- 先判断 `TIER` 和 `ROUTE`，再决定 skill 组合
+- `~idea` 默认零副作用，不写项目文件、不改代码
+- 从 `~plan` 进入 `~build` 前，要明确任务范围与涉及文件
+- 从 `~build` 进入 `~verify` 前，要先记录已做出的真实修改
+
 ---
 
 ## 核心工作流
@@ -93,6 +127,46 @@
 - 若仓库尚未绑定但明显像科研项目，则默认启用 `obsidian-project-bootstrap`。
 - 对于实质性的科研回合，至少维护当天 `Daily/` 与 repo-local project memory；只有项目顶层状态变化时才更新 `00-Hub.md`。
 - Obsidian 工作流不依赖 MCP，也不要求额外 API key。
+
+### 项目级变更追踪协议
+
+对“会影响项目内容、代码、实验、文档或配置”的请求，默认启用项目级变更追踪。
+
+记录目标：
+
+- 记录用户提出的修改
+- 记录 AI 实际完成的修改
+- 记录验证结果与下一步
+- 让记录以人类可读的 Markdown 为主，同时保留机器可解析的 frontmatter
+
+默认目录：
+
+- `hello-scholar/changes/INDEX.md`
+- `hello-scholar/changes/*.md`
+- `hello-scholar/state/STATE.md`
+
+默认调用时机：
+
+1. 用户提出实质性修改请求后：
+   - 运行 `track-intent`
+2. 发生真实编辑并形成可描述变更后：
+   - 运行 `track-change`
+3. 阶段结束或任务关闭时：
+   - 运行 `track-closeout`
+
+新建 / 追加判断原则：
+
+- 主目标不变、涉及文件高度重合、用户在继续补充时，优先追加到当前 change file
+- 主目标切换、涉及文件明显变化、用户明确说“新任务 / 另一个问题”时，创建新的 change file
+- 当前 change 已 `done / closed` 时，不再继续追加
+
+记录格式要求：
+
+- 每个变更主题一个 `*.md`
+- 必须包含 `User Requests`
+- 必须包含 `Actual Changes`
+- 需要时补 `Verification`、`Result`、`Next Step`
+- `STATE.md` 只维护当前活跃主题摘要，不替代明细记录
 
 ---
 
@@ -329,6 +403,10 @@ Because Codex does not expose native Claude Code hooks, emulate the highest-valu
 
 1. **SessionStart surrogate**
    - Use the current-mode hook helper with `session-start --cwd "$PWD"` at the first substantive repo turn.
+2. **Intent tracking surrogate**
+   - For substantial project changes, run:
+     - `track-intent --cwd "$PWD" --request "<user request>"`
+   - Add `--title`, `--route`, `--tier`, and `--file` when those facts are already clear.
 2. **PreToolUse surrogate**
    - Before dangerous or irreversible operations, run:
      - current-mode hook helper + `preflight "<command>"`
@@ -339,8 +417,12 @@ Because Codex does not expose native Claude Code hooks, emulate the highest-valu
 3. **PostToolUse surrogate**
    - After meaningful edits, run:
      - current-mode hook helper + `post-edit --cwd "$PWD"`
+   - Then, for substantial project changes, run:
+     - `track-change --cwd "$PWD" --summary "<actual change summary>"`
    - Use the output to decide verification and minimum Obsidian write-back.
 4. **Stop / SessionEnd surrogate**
+   - Before closeout, for substantial tracked work, run:
+     - `track-closeout --cwd "$PWD" --status done`
    - Before closeout, run:
      - current-mode hook helper + `session-end --cwd "$PWD"`
    - Then apply `session-wrap-up`.

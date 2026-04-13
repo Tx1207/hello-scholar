@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import asdict, dataclass
@@ -327,6 +328,33 @@ def changed_files(cwd: Path) -> list[str]:
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
+def change_tracker_script() -> Path:
+    return Path(__file__).resolve().parents[3] / "scripts" / "change-tracker.mjs"
+
+
+def run_change_tracker(command_name: str, cwd: Path, extra_args: list[str], as_json: bool) -> int:
+    script_path = change_tracker_script()
+    if not script_path.exists():
+        message = f"change-tracker script is missing: {script_path}"
+        if as_json:
+            print(json.dumps({"ok": False, "error": message}, ensure_ascii=False, indent=2))
+        else:
+            print(f"== Codex Change Tracker ==\n- Error: {message}")
+        return 1
+
+    node_bin = shutil.which("node") or "node"
+    cmd = [node_bin, str(script_path), command_name, "--cwd", str(cwd)]
+    if as_json:
+        cmd.append("--json")
+    cmd.extend(extra_args)
+    proc = subprocess.run(cmd, text=True, capture_output=True)
+    if proc.stdout:
+        print(proc.stdout.rstrip())
+    if proc.stderr:
+        print(proc.stderr.rstrip(), file=sys.stderr)
+    return proc.returncode
+
+
 def session_start(cwd: Path, as_json: bool) -> int:
     root = repo_root(cwd)
     status = git_status(cwd)
@@ -479,6 +507,59 @@ def session_end(cwd: Path, as_json: bool) -> int:
     return 0
 
 
+def track_intent(cwd: Path, args: argparse.Namespace) -> int:
+    extra_args: list[str] = ["--request", args.request]
+    if args.title:
+        extra_args.extend(["--title", args.title])
+    if args.route:
+        extra_args.extend(["--route", args.route])
+    if args.tier:
+        extra_args.extend(["--tier", args.tier])
+    if args.change_id:
+        extra_args.extend(["--change-id", args.change_id])
+    if args.force_new:
+        extra_args.append("--force-new")
+    for file_path in args.file or []:
+        extra_args.extend(["--file", file_path])
+    return run_change_tracker("track-intent", cwd, extra_args, args.json)
+
+
+def track_change(cwd: Path, args: argparse.Namespace) -> int:
+    extra_args: list[str] = ["--summary", args.summary]
+    if args.change_id:
+        extra_args.extend(["--change-id", args.change_id])
+    if args.status:
+        extra_args.extend(["--status", args.status])
+    if args.result:
+        extra_args.extend(["--result", args.result])
+    if args.next_step:
+        extra_args.extend(["--next-step", args.next_step])
+    for file_path in args.file or []:
+        extra_args.extend(["--file", file_path])
+    for item in args.verification or []:
+        extra_args.extend(["--verification", item])
+    return run_change_tracker("track-change", cwd, extra_args, args.json)
+
+
+def track_closeout(cwd: Path, args: argparse.Namespace) -> int:
+    extra_args: list[str] = []
+    if args.change_id:
+        extra_args.extend(["--change-id", args.change_id])
+    if args.summary:
+        extra_args.extend(["--summary", args.summary])
+    if args.result:
+        extra_args.extend(["--result", args.result])
+    if args.next_step:
+        extra_args.extend(["--next-step", args.next_step])
+    if args.status:
+        extra_args.extend(["--status", args.status])
+    return run_change_tracker("track-closeout", cwd, extra_args, args.json)
+
+
+def refresh_index(cwd: Path, as_json: bool) -> int:
+    return run_change_tracker("refresh-index", cwd, [], as_json)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Codex hook-emulation helper")
     sub = parser.add_subparsers(dest="command_name", required=True)
@@ -493,6 +574,41 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("preflight")
     p.add_argument("--json", action="store_true")
     p.add_argument("command", help="shell command or high-risk action description to classify")
+
+    p = sub.add_parser("track-intent")
+    p.add_argument("--cwd", default=os.getcwd())
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--title", default="")
+    p.add_argument("--route", default="")
+    p.add_argument("--tier", default="")
+    p.add_argument("--change-id", default="")
+    p.add_argument("--force-new", action="store_true")
+    p.add_argument("--file", action="append")
+    p.add_argument("--request", required=True)
+
+    p = sub.add_parser("track-change")
+    p.add_argument("--cwd", default=os.getcwd())
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--change-id", default="")
+    p.add_argument("--status", default="active")
+    p.add_argument("--result", default="")
+    p.add_argument("--next-step", default="")
+    p.add_argument("--file", action="append")
+    p.add_argument("--verification", action="append")
+    p.add_argument("--summary", required=True)
+
+    p = sub.add_parser("track-closeout")
+    p.add_argument("--cwd", default=os.getcwd())
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--change-id", default="")
+    p.add_argument("--summary", default="")
+    p.add_argument("--result", default="")
+    p.add_argument("--next-step", default="")
+    p.add_argument("--status", default="done")
+
+    p = sub.add_parser("refresh-index")
+    p.add_argument("--cwd", default=os.getcwd())
+    p.add_argument("--json", action="store_true")
     return parser
 
 
@@ -507,6 +623,14 @@ def main() -> int:
         return post_edit(Path(args.cwd).resolve(), args.files, args.json)
     if args.command_name == "session-end":
         return session_end(Path(args.cwd).resolve(), args.json)
+    if args.command_name == "track-intent":
+        return track_intent(Path(args.cwd).resolve(), args)
+    if args.command_name == "track-change":
+        return track_change(Path(args.cwd).resolve(), args)
+    if args.command_name == "track-closeout":
+        return track_closeout(Path(args.cwd).resolve(), args)
+    if args.command_name == "refresh-index":
+        return refresh_index(Path(args.cwd).resolve(), args.json)
     parser.error(f"unknown command: {args.command_name}")
     return 1
 

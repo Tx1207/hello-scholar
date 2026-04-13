@@ -14,6 +14,7 @@ Emulate the **highest-value parts of Claude Code hooks** inside Codex using:
 
 This skill maps Claude Code hook intent onto Codex-native substitutes:
 - `SessionStart` -> deterministic session-start summary
+- `Intent tracking` -> project-level change record creation / continuation
 - `PreToolUse` -> dangerous-action preflight guard
 - `PostToolUse` -> post-edit verification suggestions
 - `Stop` / `SessionEnd` -> deterministic closeout summary + `session-wrap-up`
@@ -59,6 +60,32 @@ Interpret the result like this:
 - exit `3` -> ask / confirm first
 - exit `2` -> block unless the user explicitly overrides with clear intent
 
+### 2.5 Project change tracking surrogate
+
+For substantial project work, record the user request before editing:
+
+```bash
+python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" track-intent --cwd "$PWD" --title "Fix training config" --request "修复训练配置加载问题" --route ~build --tier T2 --file src/train.py
+```
+
+After real edits, record what actually changed:
+
+```bash
+python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" track-change --cwd "$PWD" --summary "Adjusted config load order" --file src/config/loaders.py --verification "pytest tests/test_config_loader.py"
+```
+
+At phase closeout or task completion:
+
+```bash
+python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" track-closeout --cwd "$PWD" --status done --result "Validated the fix manually"
+```
+
+These commands maintain:
+
+- `hello-scholar/changes/*.md`
+- `hello-scholar/changes/INDEX.md`
+- `hello-scholar/state/STATE.md`
+
 ### 3. Post-edit verification surrogate
 
 After meaningful file edits, run:
@@ -94,8 +121,10 @@ Then apply `session-wrap-up` for the final human-readable summary.
 ## Behavioral rules
 
 - Prefer this skill in Codex whenever you would normally rely on Claude Code hooks for workflow discipline.
+- For substantial project work, use `track-intent` before editing and `track-change` after editing.
 - Use `preflight` before `git push --force`, `git reset --hard`, dangerous deletes, risky chmods, or sensitive config writes.
 - Use `post-edit` after code, skill, config, or Obsidian workflow changes.
+- Use `track-closeout` when a tracked change reaches `done` or `closed`.
 - In bound research repos, treat the post-edit result as a reminder to consider minimum Obsidian write-back.
 
 ## Resources

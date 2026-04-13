@@ -84,6 +84,13 @@ hello-scholar cleanup codex --global
 - `.hello-scholar/install-state.json`
 - `.hello-scholar/skills/`
 - `.hello-scholar/agents/`
+- `.hello-scholar/scripts/`
+- `.hello-scholar/templates/`
+
+项目级记录资产默认写到可见目录 `hello-scholar/`，例如：
+
+- `hello-scholar/changes/`
+- `hello-scholar/state/`
 
 全局模式：
 

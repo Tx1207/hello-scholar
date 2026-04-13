@@ -18,6 +18,7 @@
     ".codex-plugin/",
     "catalog/",
     "scripts/",
+    "templates/",
     "skills/",
     "agents/",
     "config.toml",

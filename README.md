@@ -84,6 +84,13 @@ Project mode:
 - `.hello-scholar/install-state.json`
 - `.hello-scholar/skills/`
 - `.hello-scholar/agents/`
+- `.hello-scholar/scripts/`
+- `.hello-scholar/templates/`
+
+Project artifacts should default to the visible `hello-scholar/` tree, for example:
+
+- `hello-scholar/changes/`
+- `hello-scholar/state/`
 
 Global mode:
 
