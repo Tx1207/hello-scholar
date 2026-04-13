@@ -55,6 +55,12 @@ Before destructive or irreversible operations, run:
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" preflight "git push --force origin main"
 ```
 
+When the current route is `~idea`, pass it explicitly so the helper can block side effects:
+
+```bash
+python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" preflight --route ~idea "git commit -m test"
+```
+
 Interpret the result like this:
 - exit `0` -> allow
 - exit `3` -> ask / confirm first

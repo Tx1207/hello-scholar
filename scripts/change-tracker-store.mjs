@@ -3,6 +3,7 @@ import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { ensureDir, pathExists, readText, writeText } from './cli-utils.mjs'
+import { resolveProjectStorage } from './project-storage.mjs'
 import {
   extractSections,
   formatDate,
@@ -32,9 +33,11 @@ export const SECTION_NAMES = [
 ]
 
 export function getPaths(cwd) {
-  const recordRoot = join(cwd, 'hello-scholar')
+  const storage = resolveProjectStorage(cwd)
+  const recordRoot = storage.rootPath
   return {
     cwd,
+    storage,
     recordRoot,
     changesRoot: join(recordRoot, 'changes'),
     archiveRoot: join(recordRoot, 'changes', 'archive'),

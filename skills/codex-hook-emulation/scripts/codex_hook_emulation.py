@@ -17,6 +17,8 @@ BLOCK_PATTERNS = [
     re.compile(r"\bdd\s+if=/dev/zero\b"),
     re.compile(r"\bmkfs(\.|\s)"),
     re.compile(r":\(\)\s*\{\s*:\|:\s*&\s*\};:"),
+    re.compile(r"\bdel\s+/[sq]\b.*\\", re.IGNORECASE),
+    re.compile(r"\bremove-item\b.*-recurse\b.*-force\b", re.IGNORECASE),
 ]
 
 CONFIRM_PATTERNS = [
@@ -25,6 +27,8 @@ CONFIRM_PATTERNS = [
     (re.compile(r"\bchmod\s+777\b"), "chmod 777 is overly permissive"),
     (re.compile(r"\b(drop|truncate)\b", re.IGNORECASE), "destructive SQL operation"),
     (re.compile(r"\bdelete\s+from\b", re.IGNORECASE), "SQL delete operation"),
+    (re.compile(r"\b(set-content|out-file|copy-item|move-item|rename-item)\b", re.IGNORECASE), "command mutates project files"),
+    (re.compile(r">\s*[^>]", re.IGNORECASE), "shell redirection writes a file"),
 ]
 
 SENSITIVE_PATH_MARKERS = (
@@ -298,6 +302,42 @@ def classify_command(command: str) -> tuple[str, list[str]]:
     return "allow", ["no dangerous pattern detected"]
 
 
+def classify_command_with_route(command: str, route: str) -> tuple[str, list[str]]:
+    decision, reasons = classify_command(command)
+    if route.strip() == "~idea" and appears_mutating(command):
+        return "block", ["~idea route must stay side-effect free"]
+    return decision, reasons
+
+
+def appears_mutating(command: str) -> bool:
+    normalized = " ".join(command.split()).lower()
+    markers = (
+        "git commit",
+        "git add",
+        "git apply",
+        "git checkout",
+        "git restore",
+        "git reset",
+        "remove-item",
+        "del ",
+        "copy-item",
+        "move-item",
+        "rename-item",
+        "set-content",
+        "out-file",
+        "npm install",
+        "pnpm install",
+        "pip install",
+        "uv add",
+        "mkdir ",
+        "touch ",
+        "new-item",
+    )
+    if any(marker in normalized for marker in markers):
+        return True
+    return bool(re.search(r">\s*[^>]", normalized))
+
+
 def infer_verifications(files: Iterable[str]) -> list[str]:
     files = list(files)
     suggestions: list[str] = []
@@ -316,6 +356,15 @@ def infer_verifications(files: Iterable[str]) -> list[str]:
     if not suggestions:
         suggestions.append("Do a focused manual review; no strong file-type-specific verification was inferred.")
     return suggestions
+
+
+def suspicious_files(files: Iterable[str]) -> list[str]:
+    findings: list[str] = []
+    for path in files:
+        lowered = path.lower()
+        if any(marker in lowered for marker in (".env", "credentials.json", "settings.json", ".pem", ".key")):
+            findings.append(f"sensitive file path detected: {path}")
+    return findings
 
 
 def changed_files(cwd: Path) -> list[str]:
@@ -418,6 +467,21 @@ def preflight(command: str, as_json: bool) -> int:
     return {"allow": 0, "confirm": 3, "block": 2}[decision]
 
 
+def preflight_with_route(command: str, route: str, as_json: bool) -> int:
+    decision, reasons = classify_command_with_route(command, route)
+    payload = {"command": command, "route": route, "decision": decision, "reasons": reasons}
+    if as_json:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        print("== Codex Preflight ==")
+        print(f"- Command: {command}")
+        print(f"- Route: {route}")
+        print(f"- Decision: {decision}")
+        for reason in reasons:
+            print(f"  - {reason}")
+    return {"allow": 0, "confirm": 3, "block": 2}[decision]
+
+
 def post_edit(cwd: Path, files: list[str], as_json: bool) -> int:
     files = files or changed_files(cwd)
     binding = bound_project_memory(repo_root(cwd))
@@ -431,6 +495,7 @@ def post_edit(cwd: Path, files: list[str], as_json: bool) -> int:
         "research_candidate": candidate,
         "research_relevant": research_relevant,
         "obsidian_maintenance": minimum_obsidian_maintenance(binding) if research_relevant else [],
+        "suspicious_files": suspicious_files(files),
     }
     if as_json:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -445,6 +510,10 @@ def post_edit(cwd: Path, files: list[str], as_json: bool) -> int:
     print("- Recommended verification:")
     for item in payload["verifications"]:
         print(f"  - {item}")
+    if payload["suspicious_files"]:
+        print("- Guard findings:")
+        for item in payload["suspicious_files"]:
+            print(f"  - {item}")
     pm = payload["project_memory"]
     if research_relevant and pm["bound"]:
         print("- Obsidian-aware reminder:")
@@ -573,6 +642,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("preflight")
     p.add_argument("--json", action="store_true")
+    p.add_argument("--route", default="")
     p.add_argument("command", help="shell command or high-risk action description to classify")
 
     p = sub.add_parser("track-intent")
@@ -618,6 +688,8 @@ def main() -> int:
     if args.command_name == "session-start":
         return session_start(Path(args.cwd).resolve(), args.json)
     if args.command_name == "preflight":
+        if args.route:
+            return preflight_with_route(args.command, args.route, args.json)
         return preflight(args.command, args.json)
     if args.command_name == "post-edit":
         return post_edit(Path(args.cwd).resolve(), args.files, args.json)

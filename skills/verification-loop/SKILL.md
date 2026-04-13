@@ -20,6 +20,20 @@ Invoke this skill:
 
 Choose the commands adaptively for the current project instead of running every example blindly. Use the stack-appropriate command from `references/STACK-DETECTION.md` when the repo does not match the default examples below.
 
+For hello-scholar project assets, prefer an **evidence-driven loop**:
+
+1. Create a plan package with `contract.json`
+2. Record verification evidence into `hello-scholar/evidence/<target-id>/`
+3. Run a delivery gate before closeout
+
+Suggested commands:
+
+```bash
+node .hello-scholar/scripts/plan-package.mjs create --cwd "$PWD" --title "Implement evidence loop" --verify-mode evidence-driven
+node .hello-scholar/scripts/evidence-store.mjs record --cwd "$PWD" --target-id "<plan-id>" --kind test --status pass --summary "Ran targeted tests"
+node .hello-scholar/scripts/delivery-gate.mjs check --cwd "$PWD" --target-id "<plan-id>" --plan-id "<plan-id>"
+```
+
 
 ### Phase 1: Build Verification
 ```bash
@@ -120,6 +134,13 @@ Issues to Fix:
 1. ...
 2. ...
 ```
+
+When using the evidence-driven loop, also persist:
+
+- `hello-scholar/evidence/<target-id>/index.json`
+- `hello-scholar/evidence/<target-id>/README.md`
+- `hello-scholar/evidence/<target-id>/delivery-gate.json`
+- `hello-scholar/evidence/<target-id>/closeout.md`
 
 ## Continuous Mode
 

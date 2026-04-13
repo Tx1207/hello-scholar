@@ -144,13 +144,21 @@
 - `hello-scholar/changes/INDEX.md`
 - `hello-scholar/changes/*.md`
 - `hello-scholar/state/STATE.md`
+- `hello-scholar/plans/<plan-id>/`
+- `hello-scholar/evidence/<target-id>/`
 
 默认调用时机：
 
 1. 用户提出实质性修改请求后：
    - 运行 `track-intent`
+2. 进入规划阶段并需要持久方案时：
+   - 创建 `hello-scholar/plans/<plan-id>/`
+   - 写入 `requirements.md / plan.md / tasks.md / contract.json`
 2. 发生真实编辑并形成可描述变更后：
    - 运行 `track-change`
+3. 跑验证并形成证据时：
+   - 写入 `hello-scholar/evidence/<target-id>/`
+   - 用 delivery gate 检查是否满足交付条件
 3. 阶段结束或任务关闭时：
    - 运行 `track-closeout`
 
