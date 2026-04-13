@@ -135,6 +135,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assertPathExists(join(projectScholarRoot, 'scripts', 'change-tracker.mjs'))
     assertPathExists(join(projectScholarRoot, 'scripts', 'plan-package.mjs'))
     assertPathExists(join(projectScholarRoot, 'scripts', 'delivery-gate.mjs'))
+    assertPathExists(join(projectScholarRoot, 'scripts', 'research-store.mjs'))
+    assertPathExists(join(projectScholarRoot, 'scripts', 'capability-registry.mjs'))
     assertPathExists(join(projectScholarRoot, 'templates', 'change-record.md'))
     assertPathExists(join(projectScholarRoot, 'templates', 'plan-requirements.md'))
     assertPathMissing(join(projectScholarRoot, 'hello-scholar.json'))

@@ -86,11 +86,15 @@ Project mode:
 - `.hello-scholar/agents/`
 - `.hello-scholar/scripts/`
 - `.hello-scholar/templates/`
+- `.hello-scholar/project-storage.json` (optional repo-shared storage config)
 
 Project artifacts should default to the visible `hello-scholar/` tree, for example:
 
 - `hello-scholar/changes/`
 - `hello-scholar/state/`
+- `hello-scholar/plans/`
+- `hello-scholar/evidence/`
+- `hello-scholar/research/`
 
 Global mode:
 

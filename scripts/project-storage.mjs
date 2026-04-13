@@ -1,4 +1,5 @@
 import { dirname, isAbsolute, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { ensureDir, parseArgv, pathExists, readJson, writeJson } from './cli-utils.mjs'
 
@@ -8,7 +9,7 @@ const CONFIG_PATH = ['.hello-scholar', 'project-storage.json']
 main()
 
 function main() {
-  if (process.argv[1] !== new URL(import.meta.url).pathname) return
+  if (process.argv[1] !== fileURLToPath(import.meta.url)) return
   const args = parseArgv(process.argv.slice(2))
   const [command = 'status'] = args.positionals
   const cwd = resolve(String(args.getFlag('--cwd', process.cwd())))

@@ -62,6 +62,7 @@
 
 ### 项目资产目录约定
 - `.hello-scholar/` 只用于 `standby` 运行时安装目录，不承载项目记录资产
+- `.hello-scholar/project-storage.json` 可作为少量项目级存储配置入口，用于切换 repo-local / shared 存储
 - `hello-scholar/` 用于项目级资产，至少可包含：
   - `hello-scholar/changes/`
   - `hello-scholar/state/`
@@ -146,6 +147,10 @@
 - `hello-scholar/state/STATE.md`
 - `hello-scholar/plans/<plan-id>/`
 - `hello-scholar/evidence/<target-id>/`
+- `hello-scholar/research/project.json`
+- `hello-scholar/research/current.json`
+- `hello-scholar/research/runs/*.json`
+- `hello-scholar/research/hypotheses/*.json`
 
 默认调用时机：
 
@@ -159,6 +164,9 @@
 3. 跑验证并形成证据时：
    - 写入 `hello-scholar/evidence/<target-id>/`
    - 用 delivery gate 检查是否满足交付条件
+4. 进入实验/科研真相维护时：
+   - 写入 `hello-scholar/research/`
+   - 维护 `reference run / hypothesis / current status`
 3. 阶段结束或任务关闭时：
    - 运行 `track-closeout`
 

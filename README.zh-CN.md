@@ -86,11 +86,15 @@ hello-scholar cleanup codex --global
 - `.hello-scholar/agents/`
 - `.hello-scholar/scripts/`
 - `.hello-scholar/templates/`
+- `.hello-scholar/project-storage.json`（可选，用于 repo-shared 配置）
 
 项目级记录资产默认写到可见目录 `hello-scholar/`，例如：
 
 - `hello-scholar/changes/`
 - `hello-scholar/state/`
+- `hello-scholar/plans/`
+- `hello-scholar/evidence/`
+- `hello-scholar/research/`
 
 全局模式：
 
