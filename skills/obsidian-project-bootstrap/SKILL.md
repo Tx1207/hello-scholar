@@ -28,27 +28,27 @@ Resolve the vault path from one of:
 ## Codex-native script path rule
 
 Use the helper path that matches the current mode:
-- `standby`: `python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" ...`
-- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
+- `standby`: `python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
 
 ## Procedure
 
 1. Identify the repository root.
 2. Run a preflight detect step first:
    ```bash
-   python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
+   python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
    ```
 3. Only if the repo is unbound and should be imported, run bootstrap:
    ```bash
-   python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
+   python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
    ```
    If the current mode is `global`, replace the helper path in the examples above with:
    ```bash
-   $HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py
+   $HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py
    ```
 4. Verify that bootstrap created at least:
-   - `scholaragents/project-memory/registry.yaml`
-   - `scholaragents/project-memory/<project_id>.md`
+   - `hello-scholar/project-memory/registry.yaml`
+   - `hello-scholar/project-memory/<project_id>.md`
    - `Research/{project-slug}/00-Hub.md`
    - `Research/{project-slug}/01-Plan.md`
    - `Research/{project-slug}/Knowledge/Source-Inventory.md`

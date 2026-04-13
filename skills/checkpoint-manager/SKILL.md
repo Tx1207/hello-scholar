@@ -16,10 +16,10 @@ When creating a checkpoint:
 
 1. Run a quick verification to ensure current state is clean
 2. Create a git stash or commit with checkpoint name
-3. Log checkpoint to `scholaragents/checkpoints.log`:
+3. Log checkpoint to `hello-scholar/checkpoints.log`:
    ```bash
-   mkdir -p scholaragents
-   echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> scholaragents/checkpoints.log
+   mkdir -p hello-scholar
+   echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> hello-scholar/checkpoints.log
    ```
 4. Report checkpoint created
 

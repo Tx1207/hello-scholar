@@ -1,6 +1,6 @@
 # MCP 服务器配置指南
 
-ScholarAGENTS 依赖 MCP（Model Context Protocol）服务器提供扩展功能。MCP 服务器**不包含**在本仓库中 — 用户需自行安装和配置。
+hello-scholar 依赖 MCP（Model Context Protocol）服务器提供扩展功能。MCP 服务器**不包含**在本仓库中 — 用户需自行安装和配置。
 
 ## 必需的 MCP 服务器
 
@@ -151,7 +151,7 @@ export UNSAFE_OPERATIONS="all"
 | `zotero_reconcile_collection_duplicates` | 导入后的去重与 collection 级清理 |
 | `zotero_add_linked_url_attachment` | 添加链接 URL 附件 |
 
-工作流说明：ScholarAGENTS 当前默认使用 `zotero_add_items_by_identifier` 做论文导入，并使用 `zotero_reconcile_collection_duplicates` 作为标准导入后清理步骤。import ledger 与 local-copy reconcile 属于内部诊断能力，不是默认公开 MCP tools。
+工作流说明：hello-scholar 当前默认使用 `zotero_add_items_by_identifier` 做论文导入，并使用 `zotero_reconcile_collection_duplicates` 作为标准导入后清理步骤。import ledger 与 local-copy reconcile 属于内部诊断能力，不是默认公开 MCP tools。
 
 ### 2. 浏览器自动化 MCP（可选）
 

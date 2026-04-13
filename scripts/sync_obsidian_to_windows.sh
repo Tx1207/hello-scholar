@@ -9,10 +9,10 @@ SOURCE_VAULT_DEFAULT="$REPO_ROOT/obsidian-vault"
 usage() {
   cat <<'EOF'
 Usage:
-  bash scripts/sync_obsidian_to_windows.sh --windows-path /mnt/c/Users/<You>/Documents/Obsidian/claude-scholar-vault
+  bash scripts/sync_obsidian_to_windows.sh --windows-path /mnt/c/Users/<You>/Documents/Obsidian/hello-scholar-vault
 
 Options:
-  --windows-path PATH   Windows-local vault path mounted in WSL, e.g. /mnt/c/Users/Alice/Documents/Obsidian/claude-scholar-vault
+  --windows-path PATH   Windows-local vault path mounted in WSL, e.g. /mnt/c/Users/Alice/Documents/Obsidian/hello-scholar-vault
   --source-path PATH    Source vault path inside WSL. Default: ./obsidian-vault
   --dry-run             Show what would change without copying
   --no-delete           Do not delete files in the Windows mirror that no longer exist in the source
@@ -82,7 +82,7 @@ fi
 case "$WINDOWS_PATH" in
   /mnt/[a-zA-Z]/*) ;;
   *)
-    echo "Target must be a Windows-local path mounted in WSL, for example /mnt/c/Users/<You>/Documents/Obsidian/claude-scholar-vault" >&2
+    echo "Target must be a Windows-local path mounted in WSL, for example /mnt/c/Users/<You>/Documents/Obsidian/hello-scholar-vault" >&2
     echo "Received: $WINDOWS_PATH" >&2
     exit 1
     ;;

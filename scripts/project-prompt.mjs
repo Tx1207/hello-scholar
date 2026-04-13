@@ -2,8 +2,8 @@ import { join } from 'node:path'
 
 import { readText, removePath, writeText } from './cli-utils.mjs'
 
-export const PROJECT_ACTIVE_START = '<!-- SCHOLARAGENTS ACTIVE START -->'
-export const PROJECT_ACTIVE_END = '<!-- SCHOLARAGENTS ACTIVE END -->'
+export const PROJECT_ACTIVE_START = '<!-- HELLO_SCHOLAR ACTIVE START -->'
+export const PROJECT_ACTIVE_END = '<!-- HELLO_SCHOLAR ACTIVE END -->'
 
 const SOURCE_PROMPT_FILE = 'AGENTS.md'
 
@@ -87,8 +87,8 @@ export function renderManagedBootstrapPrompt({ runtime, selection, mode }) {
   const skillSection = extractTopLevelSection(template, '## 技能目录（55 skills）')
 
   let prompt = template
-    .replace(/^# Codex Scholar 配置/m, '# ScholarAGENTS 配置')
-    .replace(/\*\*Codex Scholar\*\*/g, '**ScholarAGENTS**')
+    .replace(/^# hello-scholar 配置/m, '# hello-scholar 配置')
+    .replace(/\*\*hello-scholar\*\*/g, '**hello-scholar**')
 
   prompt = replaceListBlock(prompt, '**配置路径**:', buildOverviewPathLines(mode))
   prompt = replaceTopLevelSection(
@@ -109,8 +109,8 @@ export function renderManagedBootstrapPrompt({ runtime, selection, mode }) {
 }
 
 export function writeProjectActivationPrompt({ runtime, selection, mode, cwd = process.cwd() }) {
-  const projectStateRoot = join(cwd, '.scholaragents')
-  const hostActivePromptPath = join(runtime.codexHome, 'scholaragents-active-prompt.md')
+  const projectStateRoot = join(cwd, '.hello-scholar')
+  const hostActivePromptPath = join(runtime.codexHome, 'hello-scholar-active-prompt.md')
   const projectActivePromptPath = join(projectStateRoot, 'active-prompt.md')
   const activePromptPath = mode === 'global' ? hostActivePromptPath : projectActivePromptPath
   const otherActivePromptPath = mode === 'global' ? projectActivePromptPath : hostActivePromptPath
@@ -131,7 +131,7 @@ function renderWorkflowSection(sourceSection, selection, mode) {
     '',
     '### 当前激活覆盖',
     `- 当前模式：\`${mode}\``,
-    '- 当前项目激活文件：项目根 `.scholaragents/modules.json`',
+    '- 当前项目激活文件：项目根 `.hello-scholar/modules.json`',
     `- 当前 bundles：${formatCodeList(selection.bundles)}`,
     `- 当前 skills：${selection.skills.length}`,
     `- 当前 agents：${selection.agents.length}`,
@@ -190,30 +190,30 @@ function annotateSkillCatalog(sectionBody, selection) {
 function buildOverviewPathLines(mode) {
   if (mode === 'global') {
     return [
-      '- 全局状态目录：`~/.codex/.scholaragents/`',
-      '- 全局提示入口：`~/.codex/AGENTS.md` 中的 ScholarAGENTS 受管块',
-      '- 全局插件源：`~/plugins/scholaragents/`',
-      '- 全局插件缓存：`~/.codex/plugins/cache/local-plugins/scholaragents/local/`',
-      '- 项目覆盖清单（若存在则优先）：项目根 `.scholaragents/modules.json`',
+      '- 全局状态目录：`~/.codex/.hello-scholar/`',
+      '- 全局提示入口：`~/.codex/AGENTS.md` 中的 hello-scholar 受管块',
+      '- 全局插件源：`~/plugins/hello-scholar/`',
+      '- 全局插件缓存：`~/.codex/plugins/cache/local-plugins/hello-scholar/local/`',
+      '- 项目覆盖清单（若存在则优先）：项目根 `.hello-scholar/modules.json`',
     ]
   }
 
   return [
-    '- 项目激活清单：项目根 `.scholaragents/modules.json`',
-    '- 项目 Skill 目录：项目根 `.scholaragents/skills/`',
-    '- 项目 Agent 目录：项目根 `.scholaragents/agents/`',
-    '- 项目提示入口：项目根 `AGENTS.md` 中的 ScholarAGENTS 受管块',
+    '- 项目激活清单：项目根 `.hello-scholar/modules.json`',
+    '- 项目 Skill 目录：项目根 `.hello-scholar/skills/`',
+    '- 项目 Agent 目录：项目根 `.hello-scholar/agents/`',
+    '- 项目提示入口：项目根 `AGENTS.md` 中的 hello-scholar 受管块',
   ]
 }
 
 function buildGlobalCliPathLines() {
   return [
     '- 主配置：`~/.codex/config.toml`',
-    '- 全局状态目录：`~/.codex/.scholaragents/`',
-    '- Global 插件源：`~/plugins/scholaragents/`',
-    '- Global 插件缓存：`~/.codex/plugins/cache/local-plugins/scholaragents/local/`',
-    '- Agent 配置由 `~/.codex/config.toml` 中的 `[agents.*]` 指向 `~/plugins/scholaragents/agents/<name>/config.toml`',
-    '- 若项目根存在 `.scholaragents/modules.json`，当前仓库优先读取项目激活清单，再回退到 global。',
+    '- 全局状态目录：`~/.codex/.hello-scholar/`',
+    '- Global 插件源：`~/plugins/hello-scholar/`',
+    '- Global 插件缓存：`~/.codex/plugins/cache/local-plugins/hello-scholar/local/`',
+    '- Agent 配置由 `~/.codex/config.toml` 中的 `[agents.*]` 指向 `~/plugins/hello-scholar/agents/<name>/config.toml`',
+    '- 若项目根存在 `.hello-scholar/modules.json`，当前仓库优先读取项目激活清单，再回退到 global。',
   ]
 }
 

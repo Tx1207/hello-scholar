@@ -72,7 +72,7 @@ RESEARCH_PATH_HINTS = (
     "rebuttal",
     "claim",
     "method",
-    "scholaragents/project-memory",
+    "hello-scholar/project-memory",
 )
 
 
@@ -170,7 +170,7 @@ def bound_project_memory(root: Path | None) -> dict[str, object]:
                 memory_path=None,
             )
         ) | {"reason": "not a git repo"}
-    project_memory_root = root / "scholaragents" / "project-memory"
+    project_memory_root = root / "hello-scholar" / "project-memory"
     registry = project_memory_root / "registry.yaml"
     if registry.exists():
         try:
@@ -225,7 +225,7 @@ def bound_project_memory(root: Path | None) -> dict[str, object]:
             hub_note=None,
             memory_path=None,
         )
-    ) | {"reason": "no scholaragents/project-memory/registry.yaml"}
+    ) | {"reason": "no hello-scholar/project-memory/registry.yaml"}
 
 
 def detect_research_project(root: Path | None) -> dict[str, object]:
@@ -244,7 +244,7 @@ def research_related_files(files: Iterable[str]) -> bool:
 def minimum_obsidian_maintenance(binding: dict[str, object]) -> list[str]:
     if not binding.get("bound"):
         return []
-    memory_path = str(binding.get("memory_path") or "scholaragents/project-memory/<project_id>.md")
+    memory_path = str(binding.get("memory_path") or "hello-scholar/project-memory/<project_id>.md")
     return [
         "Daily/YYYY-MM-DD.md",
         memory_path,
@@ -308,7 +308,7 @@ def infer_verifications(files: Iterable[str]) -> list[str]:
         suggestions.append("Check cross-doc wording consistency and path correctness.")
     if any("skills/" in path for path in files):
         suggestions.append("Run a skill integrity pass: verify referenced local files and trigger wording.")
-    if any("obsidian" in path.lower() or "scholaragents/project-memory" in path for path in files):
+    if any("obsidian" in path.lower() or "hello-scholar/project-memory" in path for path in files):
         suggestions.append("Verify Obsidian repo-local memory paths and bound-repo workflow examples.")
     if any(path.endswith((".toml", ".json", ".jsonc", ".yaml", ".yml")) for path in files):
         suggestions.append("Validate config syntax and confirm no unsupported keys remain.")

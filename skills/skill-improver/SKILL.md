@@ -108,7 +108,7 @@ Order changes by priority within each file.
 
 ### Step 5: Backup and Execute
 
-**Backup location:** `scholaragents/skill-backups/{skill-name}-{timestamp}/`
+**Backup location:** `hello-scholar/skill-backups/{skill-name}-{timestamp}/`
 
 ```bash
 # Use backup script

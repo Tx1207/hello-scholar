@@ -1,11 +1,11 @@
 {
-  "name": "scholaragents",
+  "name": "hello-scholar",
   "version": "0.1.0",
   "type": "module",
-  "description": "ScholarAGENTS - selective Codex research and development modules with base and bundle installs.",
+  "description": "hello-scholar - selective Codex research and development modules with base and bundle installs.",
   "license": "MIT",
   "bin": {
-    "scholaragents": "cli.mjs"
+    "hello-scholar": "cli.mjs"
   },
   "scripts": {
     "build:catalog": "node scripts/build-catalog.mjs",

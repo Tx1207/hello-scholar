@@ -304,12 +304,12 @@ For detailed literature research guidance:
 
 This skill consumes a **single canonical writing memory** maintained by `paper-miner`:
 
-- `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+- `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 
 This memory is **global**, not project-specific.
 
 Even when `paper-miner` is invoked while working inside a specific repository, it still writes mined writing knowledge only into this one global memory. It does **not** maintain project-local writing memory.
-The writable store lives outside the installed skill tree so uninstalling ScholarAGENTS does not delete accumulated writing knowledge.
+The writable store lives outside the installed skill tree so uninstalling hello-scholar does not delete accumulated writing knowledge.
 
 ### Canonical memory structure
 
@@ -335,7 +335,7 @@ paper-miner analyzes the paper
 ↓
 Extracts reusable writing signals
 ↓
-Updates `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+Updates `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 ↓
 ml-paper-writing reuses that memory later
 ```
@@ -360,7 +360,7 @@ When drafting or revising with `ml-paper-writing`, read this memory **before** w
 - venue-facing polishing.
 
 Use this read order:
-1. `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+1. `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 2. repo-local evidence and experiment artifacts
 3. cited papers or notes if needed
 4. venue template and formatting constraints

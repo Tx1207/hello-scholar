@@ -20,12 +20,12 @@ import {
   renderManagedBootstrapPrompt,
 } from './project-prompt.mjs'
 
-const AGENTS_START = '<!-- SCHOLARAGENTS START -->'
-const AGENTS_END = '<!-- SCHOLARAGENTS END -->'
-const CONFIG_START = '# SCHOLARAGENTS START'
-const CONFIG_END = '# SCHOLARAGENTS END'
-const MANAGED_FILE = '.scholaragents-managed.json'
-const PLUGIN_NAME = 'scholaragents'
+const AGENTS_START = '<!-- HELLO_SCHOLAR START -->'
+const AGENTS_END = '<!-- HELLO_SCHOLAR END -->'
+const CONFIG_START = '# HELLO_SCHOLAR START'
+const CONFIG_END = '# HELLO_SCHOLAR END'
+const MANAGED_FILE = '.hello-scholar-managed.json'
+const PLUGIN_NAME = 'hello-scholar'
 const MARKETPLACE_NAME = 'local-plugins'
 const PLUGIN_KEY = `${PLUGIN_NAME}@${MARKETPLACE_NAME}`
 const PLUGIN_SECTION_HEADER = `[plugins."${PLUGIN_KEY}"]`
@@ -355,7 +355,7 @@ function installCodexGlobal(runtime, selection) {
 function getCodexPaths(runtime, cwd = process.cwd()) {
   const pluginRoot = join(runtime.hostHome, 'plugins', PLUGIN_NAME)
   const pluginCachePackageRoot = join(runtime.codexHome, 'plugins', 'cache', MARKETPLACE_NAME, PLUGIN_NAME)
-  const projectStateRoot = join(cwd, '.scholaragents')
+  const projectStateRoot = join(cwd, '.hello-scholar')
   const globalStateRoot = runtime.scholarHome
   return {
     projectDir: cwd,
@@ -366,7 +366,7 @@ function getCodexPaths(runtime, cwd = process.cwd()) {
     globalStateRoot,
     globalModulesPath: join(globalStateRoot, 'modules.json'),
     globalInstallStatePath: join(globalStateRoot, 'install-state.json'),
-    homeActivePromptPath: join(runtime.codexHome, 'scholaragents-active-prompt.md'),
+    homeActivePromptPath: join(runtime.codexHome, 'hello-scholar-active-prompt.md'),
     projectSkillsRoot: join(projectStateRoot, 'skills'),
     projectAgentsRoot: join(projectStateRoot, 'agents'),
     projectAgentsPath: join(cwd, 'AGENTS.md'),

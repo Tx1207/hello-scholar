@@ -17,17 +17,17 @@ fi
 SKILL_PATH="$1"
 SKILL_NAME=$(basename "$SKILL_PATH")
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-if [[ "$SKILL_PATH" == *"/scholaragents/skills/"* ]]; then
-    PROJECT_ROOT="${SKILL_PATH%%/scholaragents/skills/*}"
-    BACKUP_BASE="${PROJECT_ROOT}/scholaragents/skill-backups"
-elif [[ "$SKILL_PATH" == *"/.scholaragents/skills/"* ]]; then
-    PROJECT_ROOT="${SKILL_PATH%%/.scholaragents/skills/*}"
-    BACKUP_BASE="${PROJECT_ROOT}/scholaragents/skill-backups"
+if [[ "$SKILL_PATH" == *"/hello-scholar/skills/"* ]]; then
+    PROJECT_ROOT="${SKILL_PATH%%/hello-scholar/skills/*}"
+    BACKUP_BASE="${PROJECT_ROOT}/hello-scholar/skill-backups"
+elif [[ "$SKILL_PATH" == *"/.hello-scholar/skills/"* ]]; then
+    PROJECT_ROOT="${SKILL_PATH%%/.hello-scholar/skills/*}"
+    BACKUP_BASE="${PROJECT_ROOT}/hello-scholar/skill-backups"
 elif [[ "$SKILL_PATH" == *"/skills/"* ]]; then
     PROJECT_ROOT="${SKILL_PATH%%/skills/*}"
-    BACKUP_BASE="${PROJECT_ROOT}/scholaragents/skill-backups"
+    BACKUP_BASE="${PROJECT_ROOT}/hello-scholar/skill-backups"
 else
-    BACKUP_BASE="${PWD}/scholaragents/skill-backups"
+    BACKUP_BASE="${PWD}/hello-scholar/skill-backups"
 fi
 BACKUP_DIR="${BACKUP_BASE}/${SKILL_NAME}-${TIMESTAMP}"
 

@@ -22,7 +22,7 @@ export async function promptSelection(kind, catalog, state) {
 export function buildSelectionModel(kind, catalog, state) {
   if (kind === 'bundles') {
     return {
-      title: 'ScholarAGENTS Bundles',
+      title: 'hello-scholar Bundles',
       items: catalog.bundles.map((bundle) => ({
         id: bundle.id,
         description: bundle.description,
@@ -35,7 +35,7 @@ export function buildSelectionModel(kind, catalog, state) {
 
   if (kind === 'skills') {
     return {
-      title: 'ScholarAGENTS Skills',
+      title: 'hello-scholar Skills',
       items: catalog.skills.map((entry) => {
         const isExplicit = state.explicitSkills.includes(entry.id)
         const isInherited = state.skills.includes(entry.id) && !isExplicit
@@ -52,7 +52,7 @@ export function buildSelectionModel(kind, catalog, state) {
 
   if (kind === 'agents') {
     return {
-      title: 'ScholarAGENTS Agents',
+      title: 'hello-scholar Agents',
       items: catalog.agents.map((entry) => {
         const isExplicit = state.explicitAgents.includes(entry.id)
         const isInherited = state.agents.includes(entry.id) && !isExplicit
@@ -199,7 +199,7 @@ export function applySelectionOperation(kind, catalog, state, focusIndex) {
 
 export function formatInstallSummary(hostState, selection, mode, cwd = process.cwd()) {
   return [
-    'ScholarAGENTS Install',
+    'hello-scholar Install',
     '',
     `- Mode: ${mode}`,
     `- Bundles: ${formatInlineList(selection.bundles)}`,
@@ -217,7 +217,7 @@ export function formatInstallSummary(hostState, selection, mode, cwd = process.c
 export function formatStatus(status) {
   if (status.scope === 'global') {
     return [
-      'ScholarAGENTS Status',
+      'hello-scholar Status',
       '',
       '- Scope: global',
       `- Installed: ${status.installed ? 'yes' : 'no'}`,
@@ -234,7 +234,7 @@ export function formatStatus(status) {
   }
 
   return [
-    'ScholarAGENTS Status',
+    'hello-scholar Status',
     '',
     '- Scope: standby',
     `- Installed: ${status.installed ? 'yes' : 'no'}`,
@@ -250,7 +250,7 @@ export function formatStatus(status) {
 
 export function formatDoctor(checks) {
   return [
-    'ScholarAGENTS Doctor',
+    'hello-scholar Doctor',
     '',
     ...checks.map((entry) => `${entry.pass ? '[PASS]' : '[FAIL]'} ${entry.check}`),
   ].join('\n')
@@ -268,11 +268,11 @@ export function formatCleanupSummary({
 }) {
   if (scope === 'global') {
     return [
-      'ScholarAGENTS Cleanup',
+      'hello-scholar Cleanup',
       '',
       `- Project: ${cwd}`,
       '- Scope: global',
-      `- Removed ~/.codex/.scholaragents: ${removedScopedState ? 'yes' : 'no'}`,
+      `- Removed ~/.codex/.hello-scholar: ${removedScopedState ? 'yes' : 'no'}`,
       `- Removed home AGENTS Scholar block: ${removedScopedAgentsBlock ? 'yes' : 'no'}`,
       `- Removed home config Scholar block: ${removedScopedConfigBlock ? 'yes' : 'no'}`,
       `- Removed global plugin root: ${removedGlobalPluginRoot ? 'yes' : 'no'}`,
@@ -282,11 +282,11 @@ export function formatCleanupSummary({
   }
 
   return [
-    'ScholarAGENTS Cleanup',
+    'hello-scholar Cleanup',
     '',
     `- Project: ${cwd}`,
     '- Scope: standby',
-    `- Removed .scholaragents: ${removedScopedState ? 'yes' : 'no'}`,
+    `- Removed .hello-scholar: ${removedScopedState ? 'yes' : 'no'}`,
     `- Removed project AGENTS Scholar block: ${removedScopedAgentsBlock ? 'yes' : 'no'}`,
   ].join('\n')
 }

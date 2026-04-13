@@ -1,93 +1,112 @@
-# ScholarAGENTS
+# hello-scholar
 
-ScholarAGENTS is the Codex-oriented runtime in this repository. During migration, repository content can remain under `claude-scholar`, but the outward-facing CLI, bootstrap, config, and docs use the `scholaragents` name.
+`hello-scholar` is a Codex-oriented CLI runtime for selectively installing research, writing, development, Obsidian, and meta-builder workflows.
 
-## What It Ships
+## Requirements
 
-- `base` layer: default lower-layer skills shared by multiple workflows
-- `bundle` layer: opt-in workflow groups so users do not install everything at once
-- `standby` mode: stores selected modules under the current project's `.scholaragents/` and injects the managed ScholarAGENTS block into the current project's `AGENTS.md`
-- `global` mode: installs ScholarAGENTS as a local Codex plugin chain and mirrors selected modules into the plugin cache
-- project activation: `.scholaragents/modules.json`
+- Node.js 18+
+- npm
+- Codex CLI available on your machine if you want to install into Codex
 
-## Runtime Carriers
+## Install
 
-- runtime prompt rendering now uses `AGENTS.md` in this repository as the source template
-- the bundle-sensitive sections are rendered dynamically from `.scholaragents/modules.json` during install
-- project-level module activation is driven by `.scholaragents/modules.json`
-- base modules stay as shared infrastructure; bundle modules stay opt-in and do not duplicate base dependency hubs
+If `hello-scholar` has already been published to npm:
 
-## Base Modules
+```bash
+npm install -g hello-scholar
+```
 
-Default base install keeps the dependency hubs that multiple bundles rely on:
-
-- `planning-with-files`
-- `daily-coding`
-- `bug-detective`
-- `verification-loop`
-- `git-workflow`
-- `codex-hook-emulation`
-- `session-wrap-up`
-
-Bundle-specific skills such as `obsidian-project-memory`, `plugin-structure`, `skill-development`, and `skill-quality-reviewer` now live in their own bundles instead of base.
-
-## Bundles
-
-- `research-core`: ideation, experiment analysis, literature review
-- `writing-core`: paper drafting, citation checks, rebuttal, post-acceptance
-- `dev-core`: code review, architecture, build repair, git helpers
-- `obsidian-core`: full Obsidian project memory and literature workflow, including `obsidian-project-memory`
-- `meta-builder`: plugin/skill/command/agent authoring and maintenance, including `plugin-structure`, `skill-development`, and `skill-quality-reviewer`
-- `ui-content`: UI generation, review, and browser testing
-
-## Quick Start
+If you are installing from this repository source:
 
 ```bash
 npm install
-node scripts/build-catalog.mjs
-node cli.mjs list bundles
-node cli.mjs install codex --standby
+npm run build:catalog
+npm install -g .
 ```
 
-`list bundles|skills|agents` opens the interactive selector in a TTY terminal.
-
-Install standby mode with the current saved selection:
+After a global install, the `hello-scholar` command is available directly in your terminal:
 
 ```bash
-node cli.mjs install codex --standby
+hello-scholar --help
 ```
 
-Install global mode with the current saved selection:
+Important note:
+
+- `npm install` inside the repo only installs dependencies for local development.
+- To run `hello-scholar` directly from any terminal, use `npm install -g hello-scholar` or `npm install -g .`.
+
+## Quick Start
+
+List available workflow bundles:
 
 ```bash
-node cli.mjs install codex --global
+hello-scholar list bundles
 ```
 
-Inspect or clean the installation:
+Install the selected modules into the current project in `standby` mode:
 
 ```bash
-node cli.mjs status
-node cli.mjs doctor
-node cli.mjs cleanup codex
+hello-scholar install codex --standby
 ```
 
-## Selection Model
+Install the selected modules into your Codex global environment:
 
-- Base modules are included by default unless `--no-base` is passed.
-- `--bundle` adds categorized workflow clusters.
-- `--skills` and `--agents` add individual modules.
-- Skill dependencies are expanded automatically.
-- Base dependency hubs stay in `base`; bundles reference them through `dependsOnBase`.
+```bash
+hello-scholar install codex --global
+```
 
-## Global Mode Layout
+Check runtime state:
 
-`install codex --global` now creates the real Codex local-plugin chain:
+```bash
+hello-scholar status
+hello-scholar doctor
+```
 
-- `~/plugins/scholaragents/`
-- `~/.agents/plugins/marketplace.json`
-- `~/.codex/plugins/cache/local-plugins/scholaragents/local/`
-- `~/.codex/AGENTS.md` managed bootstrap block
-- `~/.codex/config.toml` managed plugin and agent block
+Clean up an installation:
+
+```bash
+hello-scholar cleanup codex --standby
+hello-scholar cleanup codex --global
+```
+
+## How It Works
+
+- `base` modules are shared foundations installed by default unless `--no-base` is used.
+- `bundles` are opt-in workflow groups such as `research-core`, `writing-core`, `dev-core`, `obsidian-core`, and `meta-builder`.
+- `standby` mode writes the active runtime into the current project's `.hello-scholar/`.
+- `global` mode installs `hello-scholar` as a local Codex plugin chain under your home directory.
+
+## Runtime Layout
+
+Project mode:
+
+- `.hello-scholar/modules.json`
+- `.hello-scholar/install-state.json`
+- `.hello-scholar/skills/`
+- `.hello-scholar/agents/`
+
+Global mode:
+
+- `~/.codex/.hello-scholar/`
+- `~/plugins/hello-scholar/`
+- `~/.codex/plugins/cache/local-plugins/hello-scholar/local/`
+- `~/.codex/AGENTS.md`
+- `~/.codex/config.toml`
+
+## Common Commands
+
+```bash
+hello-scholar list bundles
+hello-scholar list skills
+hello-scholar list agents
+
+hello-scholar install codex --standby
+hello-scholar install codex --global
+
+hello-scholar status
+hello-scholar doctor
+hello-scholar cleanup codex
+```
 
 ## Development
 
@@ -95,4 +114,4 @@ node cli.mjs cleanup codex
 npm test
 ```
 
-Tests cover catalog dependency resolution, standby install/activate/cleanup, and global plugin installation.
+Tests cover catalog resolution, selection persistence, standby install/cleanup, and global plugin installation flow.

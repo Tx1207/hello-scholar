@@ -1,10 +1,10 @@
-# ScholarAGENTS sample Codex configuration
+# hello-scholar sample Codex configuration
 #
 # Runtime-managed sections are injected by:
 #   node cli.mjs install codex --standby ...
 #   node cli.mjs install codex --global ...
 #
-# The generated ScholarAGENTS block in ~/.codex/config.toml owns:
+# The generated hello-scholar block in ~/.codex/config.toml owns:
 # - selected agent registrations
 # - the local plugin enable flag in global mode
 

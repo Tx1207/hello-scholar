@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# ScholarAGENTS — Codex CLI Installer
+# hello-scholar — Codex CLI Installer
 # ============================================================
 # Usage: bash scripts/setup.sh
 # Supports fresh install and safer incremental updates.
@@ -10,8 +10,8 @@ set -euo pipefail
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-AGENTS_MD_SIDECAR="AGENTS.scholar.md"
-BACKUP_ROOT="$CODEX_HOME/.codex-scholar-backups"
+AGENTS_MD_SIDECAR="AGENTS.hello-scholar.md"
+BACKUP_ROOT="$CODEX_HOME/.hello-scholar-backups"
 BACKUP_STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="$BACKUP_ROOT/$BACKUP_STAMP"
 BACKUP_READY=0
@@ -518,7 +518,7 @@ PY
 main() {
   echo ""
   echo "╔══════════════════════════════════════╗"
-  echo "║   ScholarAGENTS Installer (Codex)    ║"
+  echo "║   hello-scholar Installer (Codex)    ║"
   echo "╚══════════════════════════════════════╝"
   echo ""
 

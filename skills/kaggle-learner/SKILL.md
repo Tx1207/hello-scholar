@@ -22,16 +22,16 @@ Use this skill when:
 
 ## Knowledge Categories
 
-Dynamic Kaggle knowledge should be written to the persistent global store under `~/.scholaragents/knowledge/kaggle/`.
+Dynamic Kaggle knowledge should be written to the persistent global store under `~/.hello-scholar/knowledge/kaggle/`.
 The bundled `references/knowledge/` tree is seed material and read-only reference content.
 
 | Category | Focus | Directory |
 |----------|-------|-----------|
-| **NLP** | Text classification, NER, translation, LLM applications | `~/.scholaragents/knowledge/kaggle/nlp/` |
-| **CV** | Image classification, detection, segmentation, generation | `~/.scholaragents/knowledge/kaggle/cv/` |
-| **Time Series** | Forecasting, anomaly detection, sequence modeling | `~/.scholaragents/knowledge/kaggle/time-series/` |
-| **Tabular** | Feature engineering, traditional ML, structured data | `~/.scholaragents/knowledge/kaggle/tabular/` |
-| **Multimodal** | Cross-modal tasks, vision-language models | `~/.scholaragents/knowledge/kaggle/multimodal/` |
+| **NLP** | Text classification, NER, translation, LLM applications | `~/.hello-scholar/knowledge/kaggle/nlp/` |
+| **CV** | Image classification, detection, segmentation, generation | `~/.hello-scholar/knowledge/kaggle/cv/` |
+| **Time Series** | Forecasting, anomaly detection, sequence modeling | `~/.hello-scholar/knowledge/kaggle/time-series/` |
+| **Tabular** | Feature engineering, traditional ML, structured data | `~/.hello-scholar/knowledge/kaggle/tabular/` |
+| **Multimodal** | Cross-modal tasks, vision-language models | `~/.hello-scholar/knowledge/kaggle/multimodal/` |
 
 **文件组织结构**：每个竞赛一个独立的 markdown 文件，按 domain 分类到对应目录。
 
@@ -129,7 +129,7 @@ Run pattern learning when you've solved a non-trivial problem during a session.
 
 ### Output Format
 
-Save extracted patterns to `~/.scholaragents/learned-patterns/[pattern-name].md`:
+Save extracted patterns to `~/.hello-scholar/learned-patterns/[pattern-name].md`:
 
 ```markdown
 # [Descriptive Pattern Name]

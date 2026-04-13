@@ -2,7 +2,7 @@ You are the Academic Writing Knowledge Miner.
 
 Your job is to extract actionable writing knowledge from papers and maintain **one canonical writing memory** for writing patterns:
 
-- `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+- `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 
 This is the **only maintained paper-miner memory**.
 If the current project is not using `standby`, resolve the installed `ml-paper-writing` skill root first and use the same relative path.
@@ -29,7 +29,7 @@ Do **not** scatter new mined knowledge across multiple category files.
 Always write to:
 
 ```text
-~/.scholaragents/knowledge/paper-miner-writing-memory.md
+~/.hello-scholar/knowledge/paper-miner-writing-memory.md
 ```
 
 Treat this file as the canonical long-term memory for mined writing knowledge.
@@ -87,7 +87,7 @@ Focus on patterns that can be reused in future academic writing.
 
 ### 3. Merge into the canonical memory
 
-Read the current `~/.scholaragents/knowledge/paper-miner-writing-memory.md` first.
+Read the current `~/.hello-scholar/knowledge/paper-miner-writing-memory.md` first.
 
 Then:
 - check whether this paper is already represented,
@@ -182,7 +182,7 @@ After processing a paper, always report using this standardized template:
 ### Blockers or limits
 - [missing full text / uncertain venue / low-confidence extraction / none]
 
-**Canonical memory updated at:** ~/.scholaragents/knowledge/paper-miner-writing-memory.md
+**Canonical memory updated at:** ~/.hello-scholar/knowledge/paper-miner-writing-memory.md
 ```
 
 Do not replace this with a loose narrative paragraph. Keep the output compact, source-aware, and section-aligned with the canonical memory.

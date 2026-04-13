@@ -10,7 +10,7 @@ Maintain a **filesystem-first, agent-driven** Obsidian knowledge base for a rese
 Default note output language follows the project's configured `note_language`; if no note language is configured, default to **English**. Keep technical terms, paper titles, and established folder names in their original form when that is clearer. Only switch note prose to another language when the user explicitly asks.
 
 Prefer this skill when working inside a repository that:
-- already contains `scholaragents/project-memory/registry.yaml`, or
+- already contains `hello-scholar/project-memory/registry.yaml`, or
 - clearly looks like a research project and should be bound to an Obsidian vault.
 
 ## Core principles
@@ -45,20 +45,20 @@ Read [references/SCHEMA.md](references/SCHEMA.md) for the exact structure and no
 ## Deterministic helper script
 
 Use the `project_kb.py` helper that matches the current mode:
-- `standby`: `python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" ...`
-- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
+- `standby`: `python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
 
 Use it only for low-freedom operations such as detect, bootstrap, sync, and lifecycle management:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" sync --cwd "$PWD" --scope auto
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind broad
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind experiment --query freezing
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" find-canonical-note --cwd "$PWD" --kind experiment --query freezing
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" sync --cwd "$PWD" --scope auto
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind broad
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind experiment --query freezing
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" find-canonical-note --cwd "$PWD" --kind experiment --query freezing
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
 ```
 
 Do **not** expect the script to understand project meaning. It manages state; it does not replace synthesis.
@@ -78,7 +78,7 @@ For the detailed lifecycle, read [references/WORKFLOW.md](references/WORKFLOW.md
 ### 2. Read the minimum context
 
 Before writing anything, read only the minimum stable context:
-- `scholaragents/project-memory/<project_id>.md`
+- `hello-scholar/project-memory/<project_id>.md`
 - `00-Hub.md`
 - `01-Plan.md`
 - today's `Daily/YYYY-MM-DD.md` if it exists
@@ -130,7 +130,7 @@ Always keep write-back conservative.
 Write back at least:
 - today's `Daily/YYYY-MM-DD.md` when this turn changes project state,
 - `00-Hub.md` only when recent progress or top-level status truly changes,
-- `scholaragents/project-memory/<project_id>.md` when project state changes.
+- `hello-scholar/project-memory/<project_id>.md` when project state changes.
 
 Then write only the durable note that matches the bucket:
 - `knowledge` -> `Knowledge/`

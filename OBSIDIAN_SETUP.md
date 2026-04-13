@@ -1,6 +1,6 @@
 # Obsidian Project Knowledge Base Setup
 
-ScholarAGENTS ships with a built-in Obsidian research knowledge-base workflow. It does **not** require MCP or an API key.
+hello-scholar ships with a built-in Obsidian research knowledge-base workflow. It does **not** require MCP or an API key.
 
 ## What this provides
 
@@ -26,7 +26,7 @@ Obsidian is treated as the default knowledge base for a research project, not ju
 
 ## Built-in skills
 
-ScholarAGENTS includes official Obsidian-oriented skills plus project-focused wrappers.
+hello-scholar includes official Obsidian-oriented skills plus project-focused wrappers.
 
 Most relevant for the default workflow:
 
@@ -44,9 +44,9 @@ Some optional graph-oriented helpers may still exist in the repo, but the defaul
 
 ## Default behavior
 
-When ScholarAGENTS is running inside a repository that contains `scholaragents/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
+When hello-scholar is running inside a repository that contains `hello-scholar/project-memory/registry.yaml`, it should treat the repository as bound to an Obsidian project knowledge base and update it by default.
 
-If the repository is not yet bound, but it looks like a research project (for example it contains `.git`, `README.md`, `docs/`, `notes/`, `plan/`, `results/`, `outputs/`, `src/`, or `scripts/`), ScholarAGENTS should bootstrap a project knowledge base automatically.
+If the repository is not yet bound, but it looks like a research project (for example it contains `.git`, `README.md`, `docs/`, `notes/`, `plan/`, `results/`, `outputs/`, `src/`, or `scripts/`), hello-scholar should bootstrap a project knowledge base automatically.
 
 ## Project structure in the vault
 
@@ -68,14 +68,14 @@ Key generated files commonly include:
 - `Knowledge/Source-Inventory.md`
 - `Knowledge/Codebase-Overview.md`
 - `Maps/literature.canvas`
-- `scholaragents/project-memory/<project_id>.md`
+- `hello-scholar/project-memory/<project_id>.md`
 
 ## Repository-local memory binding
 
 Each research repo gets a local binding under:
 
 ```text
-scholaragents/project-memory/
+hello-scholar/project-memory/
   registry.yaml
   <project_id>.md
 ```
@@ -86,7 +86,7 @@ scholaragents/project-memory/
 ## Note language
 
 Generated and synced notes resolve their language with this priority:
-1. project config in `scholaragents/project-memory/registry.yaml`
+1. project config in `hello-scholar/project-memory/registry.yaml`
 2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
 3. default `en`
 
@@ -128,11 +128,11 @@ Codex does not expose slash commands the way Claude Code does. In the Codex edit
 
 ## Minimum bound-repo maintenance
 
-When a repo is already bound through `scholaragents/project-memory/registry.yaml`, ScholarAGENTS should keep automatic maintenance conservative:
+When a repo is already bound through `hello-scholar/project-memory/registry.yaml`, hello-scholar should keep automatic maintenance conservative:
 
 - always verify `Daily/YYYY-MM-DD.md` when the turn changes research state,
 - update `00-Hub.md` only when top-level project status actually changes,
-- update `scholaragents/project-memory/<project_id>.md` whenever project state changes,
+- update `hello-scholar/project-memory/<project_id>.md` whenever project state changes,
 - keep `Knowledge/`, `Experiments/`, `Results/`, and `Writing/` agent-first rather than automatically rewriting them every turn.
 
 ## Optional Obsidian CLI installation
@@ -170,7 +170,7 @@ If you see `Command line interface is not enabled`, the shell path is fine but t
 
 ## Optional CLI and URI usage
 
-ScholarAGENTS can optionally use the official Obsidian CLI and URI scheme:
+hello-scholar can optionally use the official Obsidian CLI and URI scheme:
 
 - CLI docs: <https://help.obsidian.md/cli>
 - URI docs: <https://help.obsidian.md/uri>
@@ -193,7 +193,7 @@ obsidian://search?vault=My%20Vault&query=%23experiment
 | Issue | Solution |
 |-------|----------|
 | Bootstrap fails with missing vault path | Set `OBSIDIAN_VAULT_PATH` or pass a vault path explicitly |
-| Project keeps re-importing | Check `scholaragents/project-memory/registry.yaml` exists and points to the correct repo root |
+| Project keeps re-importing | Check `hello-scholar/project-memory/registry.yaml` exists and points to the correct repo root |
 | The vault still shows `Views/`, `Concepts/`, or `Datasets/` as defaults | Those are from older docs or older project generations; the current default workflow uses the compact structure above and only keeps `Maps/literature.canvas` by default |
 | CLI commands fail | Check that `Settings -> General -> Advanced -> Command line interface` is enabled; otherwise continue with filesystem-only sync |
 | “Remove project knowledge” is too destructive | Use archive or detach; purge is only for permanent deletion |

@@ -15,7 +15,7 @@ from typing import Any
 IGNORE_DIRS = {
     '.git', '.hg', '.svn', '.venv', 'venv', 'node_modules', '__pycache__',
     '.mypy_cache', '.pytest_cache', '.ruff_cache', '.idea', '.vscode',
-    'dist', 'build', 'checkpoints', 'checkpoint', 'cache', '.cache', '.codex', '.scholaragents', 'scholaragents',
+    'dist', 'build', 'checkpoints', 'checkpoint', 'cache', '.cache', '.codex', '.hello-scholar', 'hello-scholar',
     'temp', 'tmp', '.tmp'
 }
 MAX_LIST_ITEMS = 40
@@ -344,7 +344,7 @@ def registry_path(repo_root: Path) -> Path:
 
 
 def project_memory_dir(repo_root: Path) -> Path:
-    return repo_root / 'scholaragents' / 'project-memory'
+    return repo_root / 'hello-scholar' / 'project-memory'
 
 
 def load_registry(path: Path) -> dict[str, Any]:
@@ -867,7 +867,7 @@ def detect(repo_root: Path) -> dict[str, Any]:
 def resolve_binding(repo_root: Path, project_id: str | None = None) -> ProjectBinding:
     registry = load_registry(registry_path(repo_root))
     if not registry.get('projects'):
-        raise SystemExit('No registered projects found in scholaragents/project-memory/registry.yaml')
+        raise SystemExit('No registered projects found in hello-scholar/project-memory/registry.yaml')
 
     if project_id is None:
         detected = detect(repo_root)

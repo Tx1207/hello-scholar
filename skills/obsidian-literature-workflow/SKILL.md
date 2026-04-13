@@ -23,7 +23,7 @@ Use it when the user says things like:
 
 ## Assumptions
 
-- The project is already bound through `scholaragents/project-memory/registry.yaml`, or can be imported with `obsidian-project-bootstrap`
+- The project is already bound through `hello-scholar/project-memory/registry.yaml`, or can be imported with `obsidian-project-bootstrap`
 - Durable paper notes live under `Papers/` inside `Research/{project-slug}/`
 - Obsidian note writing is done through the filesystem; no Obsidian MCP is required
 - Zotero may still be used as the source of metadata/full text; use `$zotero-obsidian-bridge` when the source corpus is in Zotero

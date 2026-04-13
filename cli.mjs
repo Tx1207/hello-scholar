@@ -42,7 +42,7 @@ async function main() {
   try {
     if (command === 'postinstall') {
       const stateInfo = ensureGlobalStateRoot(runtime)
-      console.log(`ScholarAGENTS installed. State root: ${stateInfo.stateRoot}`)
+      console.log(`hello-scholar installed. State root: ${stateInfo.stateRoot}`)
       process.exit(0)
     }
 
@@ -240,21 +240,21 @@ async function main() {
 
     throw new Error(`Unknown command: ${command}`)
   } catch (error) {
-    console.error(`ScholarAGENTS error: ${error.message}`)
+    console.error(`hello-scholar error: ${error.message}`)
     process.exitCode = 1
   }
 }
 
 function printHelp() {
   console.log(`
-ScholarAGENTS
+hello-scholar
 
 Usage:
-  scholaragents list bundles|skills|agents [--standby|--global]
-  scholaragents install codex [--standby|--global]
-  scholaragents cleanup codex [--standby|--global]
-  scholaragents status [--standby|--global]
-  scholaragents doctor [--standby|--global]
+  hello-scholar list bundles|skills|agents [--standby|--global]
+  hello-scholar install codex [--standby|--global]
+  hello-scholar cleanup codex [--standby|--global]
+  hello-scholar status [--standby|--global]
+  hello-scholar doctor [--standby|--global]
 
 Notes:
   - \`list ...\` 会在交互终端中直接让你选择或取消

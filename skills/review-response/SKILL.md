@@ -86,12 +86,12 @@ When the rebuttal task involves:
 
 read this file before drafting:
 
-- `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+- `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 
 ### Default read order for rebuttal work
 
 1. reviewer comments and paper context
-2. `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
+2. `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 3. `references/response-strategies.md`
 4. `references/rebuttal-templates.md`
 5. `references/tone-guidelines.md`

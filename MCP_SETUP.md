@@ -1,6 +1,6 @@
 # MCP Server Setup Guide
 
-ScholarAGENTS relies on MCP (Model Context Protocol) servers for extended capabilities. MCP servers are **not included** in this repository — users must install and configure them separately.
+hello-scholar relies on MCP (Model Context Protocol) servers for extended capabilities. MCP servers are **not included** in this repository — users must install and configure them separately.
 
 ## Required MCP Servers
 
@@ -151,7 +151,7 @@ Notes:
 | `zotero_reconcile_collection_duplicates` | Post-import dedupe and collection-level cleanup |
 | `zotero_add_linked_url_attachment` | Add linked URL attachment |
 
-Workflow note: ScholarAGENTS' current research startup path prefers `zotero_add_items_by_identifier` for import, then `zotero_reconcile_collection_duplicates` as the standard post-import cleanup. Import ledger and local-copy reconcile remain internal diagnostics rather than default public MCP tools.
+Workflow note: hello-scholar' current research startup path prefers `zotero_add_items_by_identifier` for import, then `zotero_reconcile_collection_duplicates` as the standard post-import cleanup. Import ledger and local-copy reconcile remain internal diagnostics rather than default public MCP tools.
 
 ### 2. Browser Automation MCP (Optional)
 

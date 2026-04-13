@@ -74,7 +74,7 @@ export function saveSelectionState(catalog, nextState, runtime, options = {}) {
 
   ensureDir(stateRoot)
   writeJson(modulesPath, {
-    runtime: 'scholaragents',
+    runtime: 'hello-scholar',
     mode: finalized.mode,
     includeBase: finalized.includeBase,
     bundles: finalized.bundles,

@@ -1,6 +1,6 @@
 # MCPサーバー セットアップガイド
 
-ScholarAGENTSは拡張機能のためにMCP（Model Context Protocol）サーバーを利用します。MCPサーバーはこのリポジトリには**含まれていません** — ユーザーが個別にインストールおよび設定する必要があります。
+hello-scholarは拡張機能のためにMCP（Model Context Protocol）サーバーを利用します。MCPサーバーはこのリポジトリには**含まれていません** — ユーザーが個別にインストールおよび設定する必要があります。
 
 ## 必須MCPサーバー
 
@@ -152,7 +152,7 @@ export UNSAFE_OPERATIONS="all"
 | `zotero_reconcile_collection_duplicates` | インポート後の重複排除とコレクション単位のクリーンアップ |
 | `zotero_add_linked_url_attachment` | リンクURL添付ファイルを追加 |
 
-ワークフローメモ: ScholarAGENTS の現在の研究立ち上げ経路では、インポートに `zotero_add_items_by_identifier` を優先し、その後の標準クリーンアップとして `zotero_reconcile_collection_duplicates` を使います。import ledger と local-copy reconcile は、既定の公開 MCP ツールではなく内部診断に留まります。
+ワークフローメモ: hello-scholar の現在の研究立ち上げ経路では、インポートに `zotero_add_items_by_identifier` を優先し、その後の標準クリーンアップとして `zotero_reconcile_collection_duplicates` を使います。import ledger と local-copy reconcile は、既定の公開 MCP ツールではなく内部診断に留まります。
 
 ### 2. ブラウザオートメーションMCP（任意）
 

@@ -20,13 +20,13 @@ Trigger this skill when:
 If available in the current repo, first run:
 
 ```bash
-python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
+python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
 ```
 
 If the current mode is `global`, replace the helper path with:
 
 ```bash
-python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
+python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
 ```
 
 Use that output as the deterministic Codex substitute for a `SessionEnd` / `Stop` hook before writing the final human-readable summary.

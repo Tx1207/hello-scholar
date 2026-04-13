@@ -1,8 +1,8 @@
-# ScholarAGENTS 配置
+# hello-scholar 配置
 
 ## 项目概述
 
-**ScholarAGENTS** - 面向学术研究和软件开发的 semi-automated research assistant（Codex CLI 版）
+**hello-scholar** - 面向学术研究和软件开发的 semi-automated research assistant（Codex CLI 版）
 
 **配置路径**:
 - 主配置：`~/.codex/config.toml`
@@ -89,7 +89,7 @@
 
 ### Obsidian 项目知识库规则
 
-- 若当前仓库包含 `scholaragents/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
+- 若当前仓库包含 `hello-scholar/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
 - 若仓库尚未绑定但明显像科研项目，则默认启用 `obsidian-project-bootstrap`。
 - 对于实质性的科研回合，至少维护当天 `Daily/` 与 repo-local project memory；只有项目顶层状态变化时才更新 `00-Hub.md`。
 - Obsidian 工作流不依赖 MCP，也不要求额外 API key。
@@ -311,8 +311,8 @@ For complex problems, use split-role sub-agents:
 ## Session Start Protocol
 
 For hook emulation, use the helper path that matches the current mode:
-- `standby`: `python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
-- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+- `standby`: `python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
 
 When starting a new session, ALWAYS:
 1. Run the current-mode hook helper with `session-start --cwd "$PWD"` when available

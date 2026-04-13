@@ -7,8 +7,8 @@
 3. If the repo is not research-like, stop and ask for confirmation instead of forcing bootstrap.
 4. If `OBSIDIAN_VAULT_PATH` is missing, request it explicitly.
 5. In Codex, use the mode-matched `project_kb.py` helper path:
-   - `standby`: `.scholaragents/skills/obsidian-project-memory/scripts/project_kb.py`
-   - `global`: `$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py`
+   - `standby`: `.hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py`
+   - `global`: `$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py`
 
 ## Common failure modes
 
@@ -20,8 +20,8 @@
 ## Post-bootstrap verification
 
 Check for these minimum artifacts:
-- `scholaragents/project-memory/registry.yaml`
-- `scholaragents/project-memory/<project_id>.md`
+- `hello-scholar/project-memory/registry.yaml`
+- `hello-scholar/project-memory/<project_id>.md`
 - `Research/{project-slug}/00-Hub.md`
 - `Research/{project-slug}/01-Plan.md`
 - `Research/{project-slug}/Knowledge/Source-Inventory.md`

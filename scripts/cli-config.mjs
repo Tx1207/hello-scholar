@@ -11,8 +11,8 @@ export const DEFAULTS = {
 
 export function getRuntimeContext(pkgRoot) {
   const codexHome = process.env.CODEX_HOME || join(homedir(), '.codex')
-  const scholarHome = process.env.SCHOLARAGENTS_HOME || join(codexHome, '.scholaragents')
-  const hostHome = process.env.SCHOLARAGENTS_HOST_HOME || dirname(codexHome)
+  const scholarHome = process.env.HELLO_SCHOLAR_HOME || join(codexHome, '.hello-scholar')
+  const hostHome = process.env.HELLO_SCHOLAR_HOST_HOME || dirname(codexHome)
   return {
     pkgRoot: resolve(pkgRoot),
     scholarHome: resolve(scholarHome),
@@ -23,7 +23,7 @@ export function getRuntimeContext(pkgRoot) {
 }
 
 export function getScopedStatePaths(runtime, cwd = process.cwd()) {
-  const projectStateRoot = join(cwd, '.scholaragents')
+  const projectStateRoot = join(cwd, '.hello-scholar')
   return {
     projectStateRoot,
     projectInstallStatePath: join(projectStateRoot, 'install-state.json'),

@@ -5,7 +5,7 @@
 Run:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
 ```
 
 Use this to decide whether the repo:
@@ -18,7 +18,7 @@ Use this to decide whether the repo:
 Bootstrap only when the repository is a strong research-project candidate and no binding exists yet.
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
 ```
 
 Bootstrap should create only the compact schema from `SCHEMA.md`, including `Results/Reports/` for internal experiment reports.
@@ -26,17 +26,17 @@ Bootstrap should create only the compact schema from `SCHEMA.md`, including `Res
 To bootstrap Chinese notes explicitly:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH" --note-language zh-CN
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH" --note-language zh-CN
 ```
 
 If the current mode is `global`, replace the helper path in the examples above and below with:
 
 ```bash
-$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py
+$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py
 ```
 
 Language priority for generated/synced notes:
-1. per-project `note_language` in `scholaragents/project-memory/registry.yaml`
+1. per-project `note_language` in `hello-scholar/project-memory/registry.yaml`
 2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
 3. default `en`
 
@@ -47,7 +47,7 @@ Section updates remain compatible with both English and Chinese headings so olde
 Use:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" sync --cwd "$PWD" --scope auto
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" sync --cwd "$PWD" --scope auto
 ```
 
 Use sync for deterministic state maintenance only:
@@ -62,10 +62,10 @@ Do not rely on sync to derive project meaning from raw files.
 For read-side assistance or single-note lifecycle operations, use:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind broad
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind result --query "syllable-channel"
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" find-canonical-note --cwd "$PWD" --kind experiment --query "freezing S7 speaking"
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind broad
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind result --query "syllable-channel"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" find-canonical-note --cwd "$PWD" --kind experiment --query "freezing S7 speaking"
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
 ```
 
 ## 4. Agent-first import or synthesis
@@ -139,7 +139,7 @@ When archiving or purging, repair direct links in `00-Hub.md`, `01-Plan.md`, and
 Default removal behavior is archive:
 
 ```bash
-python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
+python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
 ```
 
 Only purge when the user explicitly asks for permanent deletion.
