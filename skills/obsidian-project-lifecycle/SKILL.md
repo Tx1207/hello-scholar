@@ -16,17 +16,23 @@ Use it for project-level state changes and, when needed, note-level removal or r
 ## Project-level commands
 
 ```bash
-python3 ../obsidian-project-memory/scripts/project_kb.py lifecycle --cwd "$PWD" --mode detach
-python3 ../obsidian-project-memory/scripts/project_kb.py lifecycle --cwd "$PWD" --mode archive
-python3 ../obsidian-project-memory/scripts/project_kb.py lifecycle --cwd "$PWD" --mode purge
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode detach
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode purge
 ```
 
 ## Note-level command
 
 ```bash
-python3 ../obsidian-project-memory/scripts/project_kb.py note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
-python3 ../obsidian-project-memory/scripts/project_kb.py note-lifecycle --cwd "$PWD" --mode purge --note "Results/Old-Result.md"
-python3 ../obsidian-project-memory/scripts/project_kb.py note-lifecycle --cwd "$PWD" --mode rename --note "Experiments/Old-Name.md" --dest "Experiments/New-Name.md"
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode purge --note "Results/Old-Result.md"
+python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode rename --note "Experiments/Old-Name.md" --dest "Experiments/New-Name.md"
+```
+
+If the current mode is `global`, replace the helper path in the examples above with:
+
+```bash
+$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py
 ```
 
 ## Policy

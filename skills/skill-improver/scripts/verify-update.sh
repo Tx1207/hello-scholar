@@ -3,14 +3,14 @@
 # Part of skill-improver
 
 # Usage: ./verify-update.sh <skill-path>
-# Example: ./verify-update.sh ./.scholaragents/skills/git-workflow
+# Example: ./verify-update.sh ./skills/git-workflow
 
 set -euo pipefail
 
 # Check if path provided
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <skill-path>"
-    echo "Example: $0 ./.scholaragents/skills/git-workflow"
+    echo "Example: $0 ./skills/git-workflow"
     exit 1
 fi
 

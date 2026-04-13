@@ -72,7 +72,7 @@ RESEARCH_PATH_HINTS = (
     "rebuttal",
     "claim",
     "method",
-    ".codex/project-memory",
+    "scholaragents/project-memory",
 )
 
 
@@ -170,9 +170,9 @@ def bound_project_memory(root: Path | None) -> dict[str, object]:
                 memory_path=None,
             )
         ) | {"reason": "not a git repo"}
-    registry = root / ".codex" / "project-memory" / "registry.yaml"
+    project_memory_root = root / "scholaragents" / "project-memory"
+    registry = project_memory_root / "registry.yaml"
     if registry.exists():
-        project_memory_dir = root / ".codex" / "project-memory"
         try:
             data = json.loads(registry.read_text(encoding="utf-8"))
         except Exception:
@@ -194,11 +194,11 @@ def bound_project_memory(root: Path | None) -> dict[str, object]:
                 matched_id, matched = next(iter(projects.items()))
         memory_path = None
         if matched_id:
-            candidate = project_memory_dir / f"{matched_id}.md"
+            candidate = project_memory_root / f"{matched_id}.md"
             if candidate.exists():
                 memory_path = str(candidate)
-        if memory_path is None and project_memory_dir.exists():
-            md_files = sorted(project_memory_dir.glob("*.md"))
+        if memory_path is None and project_memory_root.exists():
+            md_files = sorted(project_memory_root.glob("*.md"))
             if md_files:
                 memory_path = str(md_files[0])
         binding = ProjectMemoryBinding(
@@ -225,7 +225,7 @@ def bound_project_memory(root: Path | None) -> dict[str, object]:
             hub_note=None,
             memory_path=None,
         )
-    ) | {"reason": "no .codex/project-memory/registry.yaml"}
+    ) | {"reason": "no scholaragents/project-memory/registry.yaml"}
 
 
 def detect_research_project(root: Path | None) -> dict[str, object]:
@@ -244,7 +244,7 @@ def research_related_files(files: Iterable[str]) -> bool:
 def minimum_obsidian_maintenance(binding: dict[str, object]) -> list[str]:
     if not binding.get("bound"):
         return []
-    memory_path = str(binding.get("memory_path") or ".codex/project-memory/<project_id>.md")
+    memory_path = str(binding.get("memory_path") or "scholaragents/project-memory/<project_id>.md")
     return [
         "Daily/YYYY-MM-DD.md",
         memory_path,
@@ -308,7 +308,7 @@ def infer_verifications(files: Iterable[str]) -> list[str]:
         suggestions.append("Check cross-doc wording consistency and path correctness.")
     if any("skills/" in path for path in files):
         suggestions.append("Run a skill integrity pass: verify referenced local files and trigger wording.")
-    if any("obsidian" in path.lower() or ".codex/project-memory" in path for path in files):
+    if any("obsidian" in path.lower() or "scholaragents/project-memory" in path for path in files):
         suggestions.append("Verify Obsidian repo-local memory paths and bound-repo workflow examples.")
     if any(path.endswith((".toml", ".json", ".jsonc", ".yaml", ".yml")) for path in files):
         suggestions.append("Validate config syntax and confirm no unsupported keys remain.")

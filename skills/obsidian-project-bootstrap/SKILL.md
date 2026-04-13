@@ -27,37 +27,28 @@ Resolve the vault path from one of:
 
 ## Codex-native script path rule
 
-Codex does **not** provide `${CLAUDE_PLUGIN_ROOT}`.
-
-Resolve `project_kb.py` from one of these locations instead:
-
-1. installed Codex skill tree:
-   ```bash
-   ${CODEX_HOME:-$HOME/.codex}/skills/obsidian-project-memory/scripts/project_kb.py
-   ```
-2. a checked-out Claude Scholar repository:
-   ```bash
-   <claude-scholar-repo>/skills/obsidian-project-memory/scripts/project_kb.py
-   ```
-
-If you are running inside a normal research repo rather than inside the Claude Scholar repo itself, prefer the installed Codex path.
+Use the helper path that matches the current mode:
+- `standby`: `python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
 
 ## Procedure
 
 1. Identify the repository root.
 2. Run a preflight detect step first:
    ```bash
-   PROJECT_KB_SCRIPT="${CODEX_HOME:-$HOME/.codex}/skills/obsidian-project-memory/scripts/project_kb.py"
-   python3 "$PROJECT_KB_SCRIPT" detect --cwd "$PWD"
+   python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
    ```
 3. Only if the repo is unbound and should be imported, run bootstrap:
    ```bash
-   PROJECT_KB_SCRIPT="${CODEX_HOME:-$HOME/.codex}/skills/obsidian-project-memory/scripts/project_kb.py"
-   python3 "$PROJECT_KB_SCRIPT" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
+   python3 ".scholaragents/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
+   ```
+   If the current mode is `global`, replace the helper path in the examples above with:
+   ```bash
+   $HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/obsidian-project-memory/scripts/project_kb.py
    ```
 4. Verify that bootstrap created at least:
-   - `.codex/project-memory/registry.yaml`
-   - `.codex/project-memory/<project_id>.md`
+   - `scholaragents/project-memory/registry.yaml`
+   - `scholaragents/project-memory/<project_id>.md`
    - `Research/{project-slug}/00-Hub.md`
    - `Research/{project-slug}/01-Plan.md`
    - `Research/{project-slug}/Knowledge/Source-Inventory.md`
@@ -74,7 +65,6 @@ If you are running inside a normal research repo rather than inside the Claude S
 - Ignore `.git`, `.venv`, `node_modules`, caches, checkpoints, binaries, and other heavy artifacts.
 - The default vault is compact: `00-Hub.md`, `01-Plan.md`, `Knowledge/`, `Papers/`, `Experiments/`, `Results/`, `Writing/`, `Daily/`, `Archive/`.
 - If `python3` is unavailable in the current shell, use the system Python interpreter that can run `project_kb.py` and say so explicitly.
-- If the installed Codex path does not exist, point `PROJECT_KB_SCRIPT` at the checked-out Claude Scholar repo explicitly rather than using `${CLAUDE_PLUGIN_ROOT}`.
 
 ## References
 

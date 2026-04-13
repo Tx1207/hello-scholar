@@ -282,7 +282,7 @@
   {
     "id": "memory-updater",
     "name": "memory-updater",
-    "description": "Checks and updates CLAUDE.md memory file to stay in sync with changes to skills, commands, agents, and hooks.",
+    "description": "Checks and updates the ScholarAGENTS global memory file to stay in sync with changes to skills, commands, agents, and hooks.",
     "path": "skills/memory-updater",
     "layer": "bundle",
     "category": "meta-builder",

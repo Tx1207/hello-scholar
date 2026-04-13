@@ -6,7 +6,7 @@ This knowledge base contains reusable academic writing knowledge mined from pape
 
 The canonical paper-miner memory is:
 
-- `paper-miner-writing-memory.md`
+- `~/.scholaragents/knowledge/paper-miner-writing-memory.md`
 
 This is the **only maintained paper-miner writing memory**.
 
@@ -20,7 +20,7 @@ It stores:
 
 ## Maintenance rule
 
-`paper-miner` always writes mined writing knowledge into `paper-miner-writing-memory.md`.
+`paper-miner` always writes mined writing knowledge into `~/.scholaragents/knowledge/paper-miner-writing-memory.md`.
 
 This memory is:
 - **global**,
@@ -30,6 +30,8 @@ This memory is:
 If `paper-miner` is invoked inside a project, it may use project context to understand relevance, but it still writes only to the global memory.
 
 ## Legacy files
+
+Bundled files in this directory are seed material and historical references only.
 
 Older files such as:
 - `structure.md`
@@ -52,7 +54,7 @@ Use this knowledge base when:
 
 When `paper-miner` analyzes a new paper:
 1. extract actionable writing knowledge,
-2. merge it into `paper-miner-writing-memory.md`,
+2. merge it into `~/.scholaragents/knowledge/paper-miner-writing-memory.md`,
 3. preserve source attribution,
 4. avoid duplicate patterns,
 5. keep the memory compact and reusable.

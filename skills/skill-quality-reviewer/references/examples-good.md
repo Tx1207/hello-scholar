@@ -368,13 +368,13 @@ For hands-on learning, study these high-quality skills in your environment:
 
 ```bash
 # Explore hook-development structure
-ls -la ./.scholaragents/skills/hook-development/
+ls -la ./skills/hook-development/
 
 # Read agent-identifier SKILL.md
-cat ./.scholaragents/skills/agent-identifier/SKILL.md
+cat ./skills/agent-identifier/SKILL.md
 
 # Review mcp-integration references
-ls -la ./.scholaragents/skills/mcp-integration/references/
+ls -la ./skills/mcp-integration/references/
 ```
 
 Each demonstrates different strengths:

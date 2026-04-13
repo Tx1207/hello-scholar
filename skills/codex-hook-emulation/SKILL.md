@@ -32,12 +32,16 @@ When the current repo is bound to Obsidian project memory, the helper should als
 
 ## Default workflow
 
+Use the helper path that matches the current mode:
+- `standby`: `python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+
 ### 1. Session start surrogate
 
 At the start of a substantive repo session, run:
 
 ```bash
-python3 scripts/codex_hook_emulation.py session-start --cwd "$PWD"
+python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-start --cwd "$PWD"
 ```
 
 Use this as the Codex substitute for `SessionStart`.
@@ -47,7 +51,7 @@ Use this as the Codex substitute for `SessionStart`.
 Before destructive or irreversible operations, run:
 
 ```bash
-python3 scripts/codex_hook_emulation.py preflight "git push --force origin main"
+python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" preflight "git push --force origin main"
 ```
 
 Interpret the result like this:
@@ -60,13 +64,13 @@ Interpret the result like this:
 After meaningful file edits, run:
 
 ```bash
-python3 scripts/codex_hook_emulation.py post-edit --cwd "$PWD"
+python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" post-edit --cwd "$PWD"
 ```
 
 Or pass touched files explicitly:
 
 ```bash
-python3 scripts/codex_hook_emulation.py post-edit --cwd "$PWD" README.md scripts/setup.sh
+python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" post-edit --cwd "$PWD" README.md scripts/setup.sh
 ```
 
 Use this as the Codex substitute for `PostToolUse`.
@@ -76,7 +80,13 @@ Use this as the Codex substitute for `PostToolUse`.
 Before closeout or when the user says `wrap up`, run:
 
 ```bash
-python3 scripts/codex_hook_emulation.py session-end --cwd "$PWD"
+python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
+```
+
+If the current mode is `global`, replace the helper path in the examples above with:
+
+```bash
+$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py
 ```
 
 Then apply `session-wrap-up` for the final human-readable summary.
@@ -93,4 +103,4 @@ Then apply `session-wrap-up` for the final human-readable summary.
 - `references/HOOK-MAPPING.md` - mapping from Claude hook events to Codex substitutes
 - `references/USAGE.md` - recommended invocation patterns and return codes
 - `examples/example-session-start.txt` - example output shape
-- `../../scripts/codex_hook_emulation.py` - deterministic helper script
+- `scripts/codex_hook_emulation.py` - deterministic helper script

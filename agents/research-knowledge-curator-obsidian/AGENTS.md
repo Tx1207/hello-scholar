@@ -27,7 +27,7 @@ You are the default Obsidian knowledge curator for research projects.
 
 Keep automatic maintenance lightweight by default. Every substantial project turn should update at least:
 - today's daily note
-- `.codex/project-memory/<project_id>.md`
+- `scholaragents/project-memory/<project_id>.md`
 
 Update `00-Hub.md` only when top-level project status really changes. Only when the turn clearly changes plans, experiments, results, literature, writing, or stable project understanding should you update the corresponding canonical vault notes as well.
 

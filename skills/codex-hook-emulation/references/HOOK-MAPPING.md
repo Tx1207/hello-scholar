@@ -11,10 +11,10 @@ Codex has no native hook runtime, so emulate hooks through:
 
 | Claude Code hook | Codex substitute | Trigger point |
 |---|---|---|
-| `SessionStart` | `scripts/codex_hook_emulation.py session-start` | first substantive turn in a repo |
-| `PreToolUse` | `scripts/codex_hook_emulation.py preflight ...` | before destructive or high-risk operations |
-| `PostToolUse` | `scripts/codex_hook_emulation.py post-edit ...` | after meaningful edits |
-| `Stop` | `scripts/codex_hook_emulation.py session-end` | before ending a task or session |
+| `SessionStart` | `python3 "<current-mode-helper>" session-start` | first substantive turn in a repo |
+| `PreToolUse` | `python3 "<current-mode-helper>" preflight ...` | before destructive or high-risk operations |
+| `PostToolUse` | `python3 "<current-mode-helper>" post-edit ...` | after meaningful edits |
+| `Stop` | `python3 "<current-mode-helper>" session-end` | before ending a task or session |
 | `SessionEnd` | `session-end` + `session-wrap-up` | explicit wrap-up or closeout |
 
 ## Recommended scope

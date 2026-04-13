@@ -89,7 +89,7 @@
 
 ### Obsidian 项目知识库规则
 
-- 若当前仓库包含 `.codex/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
+- 若当前仓库包含 `scholaragents/project-memory/registry.yaml`，默认启用 `obsidian-project-memory`，把 Obsidian 作为该项目的默认知识库。
 - 若仓库尚未绑定但明显像科研项目，则默认启用 `obsidian-project-bootstrap`。
 - 对于实质性的科研回合，至少维护当天 `Daily/` 与 repo-local project memory；只有项目顶层状态变化时才更新 `00-Hub.md`。
 - Obsidian 工作流不依赖 MCP，也不要求额外 API key。
@@ -310,8 +310,12 @@ For complex problems, use split-role sub-agents:
 
 ## Session Start Protocol
 
+For hook emulation, use the helper path that matches the current mode:
+- `standby`: `python3 ".scholaragents/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+- `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/scholaragents/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
+
 When starting a new session, ALWAYS:
-1. Run `python3 scripts/codex_hook_emulation.py session-start --cwd "$PWD"` when inside a repo that contains the helper script
+1. Run the current-mode hook helper with `session-start --cwd "$PWD"` when available
 2. Check git status and display current branch + uncommitted changes
 3. List available skills relevant to the current project context
 4. Show recent TODOs if any exist
@@ -324,21 +328,21 @@ When starting a new session, ALWAYS:
 Because Codex does not expose native Claude Code hooks, emulate the highest-value hook behavior through `codex-hook-emulation` plus AGENTS discipline:
 
 1. **SessionStart surrogate**
-   - Use `scripts/codex_hook_emulation.py session-start --cwd "$PWD"` at the first substantive repo turn.
+   - Use the current-mode hook helper with `session-start --cwd "$PWD"` at the first substantive repo turn.
 2. **PreToolUse surrogate**
    - Before dangerous or irreversible operations, run:
-     - `python3 scripts/codex_hook_emulation.py preflight "<command>"`
+     - current-mode hook helper + `preflight "<command>"`
    - Interpret exit codes:
      - `0` allow
      - `3` confirm with user first
      - `2` block by default
 3. **PostToolUse surrogate**
    - After meaningful edits, run:
-     - `python3 scripts/codex_hook_emulation.py post-edit --cwd "$PWD"`
+     - current-mode hook helper + `post-edit --cwd "$PWD"`
    - Use the output to decide verification and minimum Obsidian write-back.
 4. **Stop / SessionEnd surrogate**
    - Before closeout, run:
-     - `python3 scripts/codex_hook_emulation.py session-end --cwd "$PWD"`
+     - current-mode hook helper + `session-end --cwd "$PWD"`
    - Then apply `session-wrap-up`.
 
 ---
@@ -354,7 +358,7 @@ If you think there is even a 1% chance a skill might apply, you MUST check it. D
 ## Session Wrap-Up Protocol
 
 When the user says "wrap up", "总结", "session end", or similar:
-1. Run `python3 scripts/codex_hook_emulation.py session-end --cwd "$PWD"` when available
+1. Run the current-mode hook helper with `session-end --cwd "$PWD"` when available
 2. Generate a work log summarizing what was accomplished
 3. Check if AGENTS.md needs updates based on changes made
 4. Remind about any temporary files that should be cleaned up
@@ -376,4 +380,4 @@ Two layers of protection:
 - WARN before: `git push --force`, `git reset --hard`, `chmod 777`, `DROP DATABASE/TABLE`
 - NEVER write to system paths: `/etc/`, `/usr/bin/`, `/sbin/`, `/System/`
 - NEVER commit sensitive files: `.env`, `*.pem`, `*.key`, `credentials.json`, `settings.json`
-- Prefer `python3 scripts/codex_hook_emulation.py preflight "<command>"` before high-risk shell actions
+- Prefer the current-mode hook helper with `preflight "<command>"` before high-risk shell actions

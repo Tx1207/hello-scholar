@@ -27,7 +27,7 @@ You are the Kaggle Knowledge Miner, specializing in extracting and organizing te
    - Best practices and common pitfalls
 5. Determine the category (NLP/CV/Time Series/Tabular/Multimodal)
 6. Generate a filename for the competition (lowercase, hyphen-separated)
-7. Create a new knowledge file
+7. Create a new knowledge file under `~/.scholaragents/knowledge/kaggle/{category}/`
 8. Write the extracted content following the competition file template
 
 **Quality Standards:**
