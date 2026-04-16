@@ -46,8 +46,8 @@ async function main() {
       process.exit(0)
     }
 
-    const catalog = loadCatalog(pkgRoot)
     const cwd = process.cwd()
+    const catalog = loadCatalog(pkgRoot, { dynamic: true, cwd, runtime })
 
     if (command === 'help') {
       printHelp()
@@ -80,7 +80,7 @@ async function main() {
       }
       if (interaction.changed) {
         const savedSelection = saveSelectionState(catalog, interaction.nextState, runtime, { cwd, scope: state.storageScope })
-        const syncResult = syncInstalledSelection(runtime, installStateResult, savedSelection, cwd)
+        const syncResult = syncInstalledSelection(runtime, installStateResult, savedSelection, cwd, catalog)
         if (syncResult) {
           saveInstallState(runtime, syncResult.nextInstallState, syncResult.mode, cwd)
           writeProjectActivationPrompt({
@@ -195,7 +195,7 @@ async function main() {
         storageScope: scope,
       }, runtime, { cwd, scope })
 
-      const hostState = installCodex(runtime, savedSelection, mode, installState, cwd)
+      const hostState = installCodex(runtime, savedSelection, mode, installState, cwd, catalog)
       const nextInstallState = {
         ...installState,
         install_mode: mode,

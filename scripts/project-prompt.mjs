@@ -75,7 +75,7 @@ const SUPPORT_WORKFLOWS = [
   },
 ]
 
-export function renderManagedBootstrapPrompt({ runtime, selection, mode }) {
+export function renderManagedBootstrapPrompt({ runtime, catalog = null, selection, mode }) {
   const template = readText(join(runtime.pkgRoot, SOURCE_PROMPT_FILE))
     .replace(/\r\n/g, '\n')
     .trimEnd()
@@ -99,7 +99,7 @@ export function renderManagedBootstrapPrompt({ runtime, selection, mode }) {
   prompt = replaceTopLevelSection(
     prompt,
     '## 技能目录（55 skills）',
-    renderSkillCatalogSection(skillSection, selection, mode),
+    renderSkillCatalogSection(skillSection, selection, mode, catalog),
   )
   if (mode === 'global') {
     prompt = replaceListBlock(prompt, '### 配置文件路径', buildGlobalCliPathLines())
@@ -108,13 +108,13 @@ export function renderManagedBootstrapPrompt({ runtime, selection, mode }) {
   return prompt.trimEnd()
 }
 
-export function writeProjectActivationPrompt({ runtime, selection, mode, cwd = process.cwd() }) {
+export function writeProjectActivationPrompt({ runtime, catalog = null, selection, mode, cwd = process.cwd() }) {
   const projectStateRoot = join(cwd, '.hello-scholar')
   const hostActivePromptPath = join(runtime.codexHome, 'hello-scholar-active-prompt.md')
   const projectActivePromptPath = join(projectStateRoot, 'active-prompt.md')
   const activePromptPath = mode === 'global' ? hostActivePromptPath : projectActivePromptPath
   const otherActivePromptPath = mode === 'global' ? projectActivePromptPath : hostActivePromptPath
-  const prompt = renderManagedBootstrapPrompt({ runtime, selection, mode })
+  const prompt = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode })
 
   writeText(activePromptPath, `${prompt}\n`)
   removePath(otherActivePromptPath)
@@ -149,8 +149,9 @@ function renderWorkflowSection(sourceSection, selection, mode) {
   return lines.join('\n').trimEnd()
 }
 
-function renderSkillCatalogSection(sourceSection, selection, mode) {
+function renderSkillCatalogSection(sourceSection, selection, mode, catalog) {
   const body = stripTopLevelHeading(sourceSection)
+  const dynamicSkillSection = renderDynamicSkillSection(selection, catalog)
   const lines = [
     '## 技能目录（55 skills）',
     '',
@@ -162,9 +163,11 @@ function renderSkillCatalogSection(sourceSection, selection, mode) {
     '- 说明：目录结构保持原样；每个 skill 条目后的“当前”状态对应本项目当前激活集；遵循热加载原则。',
     '',
     annotateSkillCatalog(body, selection),
+    dynamicSkillSection ? '' : null,
+    dynamicSkillSection,
   ]
 
-  return lines.join('\n').trimEnd()
+  return lines.filter(Boolean).join('\n').trimEnd()
 }
 
 function annotateSkillCatalog(sectionBody, selection) {
@@ -191,6 +194,7 @@ function buildOverviewPathLines(mode) {
   if (mode === 'global') {
     return [
       '- 全局状态目录：`~/.codex/.hello-scholar/`',
+      '- 用户 Overlay Skill 目录：`~/.hello-scholar/overlays/skills/`',
       '- 全局提示入口：`~/.codex/AGENTS.md` 中的 hello-scholar 受管块',
       '- 全局插件源：`~/plugins/hello-scholar/`',
       '- 全局插件缓存：`~/.codex/plugins/cache/local-plugins/hello-scholar/local/`',
@@ -202,6 +206,7 @@ function buildOverviewPathLines(mode) {
     '- 项目激活清单：项目根 `.hello-scholar/modules.json`',
     '- 项目 Skill 目录：项目根 `.hello-scholar/skills/`',
     '- 项目 Agent 目录：项目根 `.hello-scholar/agents/`',
+    '- 用户 Overlay Skill 目录：`~/.hello-scholar/overlays/skills/`',
     '- 项目提示入口：项目根 `AGENTS.md` 中的 hello-scholar 受管块',
   ]
 }
@@ -254,6 +259,21 @@ function formatCodeList(values) {
   return values.length > 0
     ? values.map((value) => `\`${value}\``).join('、')
     : '(none)'
+}
+
+function renderDynamicSkillSection(selection, catalog) {
+  if (!catalog) return ''
+  const entries = selection.skills
+    .map((skillId) => catalog.skillMap.get(skillId))
+    .filter((entry) => entry?.dynamic)
+
+  if (entries.length === 0) return ''
+
+  return [
+    '### 当前动态 Skills',
+    '',
+    ...entries.map((entry) => `- \`${entry.id}\` | \`${entry.sourceLayer}\` | ${entry.description || 'No description'}`),
+  ].join('\n')
 }
 
 function extractTopLevelSection(text, heading) {

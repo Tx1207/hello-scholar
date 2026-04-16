@@ -40,20 +40,20 @@ const GLOBAL_RUNTIME_ENTRIES = [
   'templates',
 ]
 
-export function installCodex(runtime, selection, mode, installState, cwd = process.cwd()) {
+export function installCodex(runtime, selection, mode, installState, cwd = process.cwd(), catalog = null) {
   const previous = installState.hosts?.codex || null
   return mode === 'global'
-    ? installCodexGlobal(runtime, selection)
-    : installCodexStandby(runtime, selection, previous, cwd)
+    ? installCodexGlobal(runtime, selection, catalog)
+    : installCodexStandby(runtime, selection, previous, cwd, catalog)
 }
 
-export function syncInstalledSelection(runtime, installState, selection, cwd = process.cwd()) {
+export function syncInstalledSelection(runtime, installState, selection, cwd = process.cwd(), catalog = null) {
   const normalized = normalizeInstallStateResult(installState)
   const previous = normalized.state.hosts?.codex || null
   if (!previous?.mode) return null
 
   const mode = previous.mode === 'global' ? 'global' : 'standby'
-  const hostState = installCodex(runtime, selection, mode, normalized.state, cwd)
+  const hostState = installCodex(runtime, selection, mode, normalized.state, cwd, catalog)
   return {
     scope: normalized.scope,
     mode,
@@ -222,24 +222,24 @@ export function readCodexDoctor(runtime, installState, cwd = process.cwd()) {
   return checks
 }
 
-function installCodexStandby(runtime, selection, previous, cwd = process.cwd()) {
+function installCodexStandby(runtime, selection, previous, cwd = process.cwd(), catalog = null) {
   const paths = getCodexPaths(runtime, cwd)
   ensureDir(paths.projectStateRoot)
   ensureDir(paths.projectSkillsRoot)
   ensureDir(paths.projectAgentsRoot)
   copyEntries(runtime.pkgRoot, paths.projectStateRoot, ['scripts', 'templates'])
 
-  const bootstrap = renderManagedBootstrapPrompt({ runtime, selection, mode: 'standby' })
+  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'standby' })
 
   upsertMarkedBlock(paths.projectAgentsPath, AGENTS_START, AGENTS_END, bootstrap)
   removeMarkedBlock(paths.projectAgentsPath, PROJECT_ACTIVE_START, PROJECT_ACTIVE_END)
 
   const skillSync = syncModules({
     kind: 'skill',
-    sourceRoot: join(runtime.pkgRoot, 'skills'),
     targetRoot: paths.projectSkillsRoot,
     selectedIds: selection.skills,
     previousIds: previous?.managedSkills || [],
+    sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
 
   const agentSync = syncModules({
@@ -266,7 +266,7 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd()) 
   return standbyState
 }
 
-function installCodexGlobal(runtime, selection) {
+function installCodexGlobal(runtime, selection, catalog = null) {
   const paths = getCodexPaths(runtime)
   ensureDir(runtime.codexHome)
   ensureDir(join(runtime.hostHome, 'plugins'))
@@ -289,10 +289,10 @@ function installCodexGlobal(runtime, selection) {
 
   const skillSync = syncModules({
     kind: 'skill',
-    sourceRoot: join(runtime.pkgRoot, 'skills'),
     targetRoot: join(paths.pluginRoot, 'skills'),
     selectedIds: selection.skills,
     previousIds: [],
+    sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
 
   const agentSync = syncModules({
@@ -305,10 +305,10 @@ function installCodexGlobal(runtime, selection) {
 
   syncModules({
     kind: 'skill',
-    sourceRoot: join(runtime.pkgRoot, 'skills'),
     targetRoot: join(paths.pluginCacheRoot, 'skills'),
     selectedIds: selection.skills,
     previousIds: [],
+    sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
 
   syncModules({
@@ -322,7 +322,7 @@ function installCodexGlobal(runtime, selection) {
   writeManagedRootMarker(paths.pluginRoot, 'global-runtime', selection)
   writeManagedRootMarker(paths.pluginCachePackageRoot, 'global-cache', selection)
 
-  const bootstrap = renderManagedBootstrapPrompt({ runtime, selection, mode: 'global' })
+  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'global' })
   writeText(join(paths.pluginRoot, 'AGENTS.md'), bootstrap ? `${bootstrap}\n` : '')
   writeText(join(paths.pluginCacheRoot, 'AGENTS.md'), bootstrap ? `${bootstrap}\n` : '')
   upsertMarkedBlock(paths.agentsFile, AGENTS_START, AGENTS_END, bootstrap)
@@ -383,7 +383,7 @@ function getCodexPaths(runtime, cwd = process.cwd()) {
   }
 }
 
-function syncModules({ kind, sourceRoot, targetRoot, selectedIds, previousIds }) {
+function syncModules({ kind, sourceRoot, targetRoot, selectedIds, previousIds, sourcePathForId = null }) {
   const installed = []
   const skipped = []
 
@@ -394,7 +394,7 @@ function syncModules({ kind, sourceRoot, targetRoot, selectedIds, previousIds })
   }
 
   for (const moduleId of selectedIds) {
-    const sourcePath = join(sourceRoot, moduleId)
+    const sourcePath = sourcePathForId ? sourcePathForId(moduleId) : join(sourceRoot, moduleId)
     const targetPath = join(targetRoot, moduleId)
     const managedPath = join(targetPath, MANAGED_FILE)
     const alreadyManaged = pathExists(managedPath)
@@ -564,6 +564,10 @@ function isEmptyDirectory(rootPath) {
 
 function normalizePath(filePath) {
   return filePath.replace(/\\/g, '/')
+}
+
+function resolveSkillSourcePath(catalog, pkgRoot, skillId) {
+  return catalog?.skillMap.get(skillId)?.sourceRoot || join(pkgRoot, 'skills', skillId)
 }
 
 function escapeTomlString(value = '') {

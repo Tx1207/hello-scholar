@@ -233,7 +233,7 @@ function resolveSelection(cwd) {
   const scope = detectInstalledScope(runtime, cwd)
   const userConfig = loadUserConfig(runtime, cwd, scope)
   const installState = loadInstallState(runtime, cwd, scope).state
-  const catalog = loadCatalog(pkgRoot)
+  const catalog = loadCatalog(pkgRoot, { dynamic: true, cwd, runtime })
   const selection = loadSelectionState(catalog, installState, userConfig, runtime, { cwd, scope })
   const modulesPath = scope === 'global'
     ? join(runtime.scholarHome, 'modules.json')

@@ -134,6 +134,51 @@ test('apply command creates a new overlay skill for create candidates', () => {
   }
 })
 
+test('apply command activates the evolved overlay skill for the next standby turn', () => {
+  const fixture = createFixture()
+  try {
+    installStandby(fixture, ['meta-builder'])
+    writeCandidateFixture(fixture, {
+      id: 'skill-evo-20260416-001',
+      status: 'proposed',
+      decision: {
+        action: 'create',
+        targetSkillId: 'local-overlay-skill',
+        confidence: 0.77,
+        reason: ['No existing skill matches this local workflow.'],
+      },
+      extractedWorkflow: [
+        'Create a local overlay skill for project-specific but reusable guidance.',
+      ],
+    })
+
+    const output = runJson(fixture, [
+      join(pkgRoot, 'scripts', 'skill-evolution-apply.mjs'),
+      'apply',
+      '--cwd',
+      fixture.projectDir,
+      '--candidate-id',
+      'skill-evo-20260416-001',
+      '--approve',
+      '--json',
+    ])
+
+    assert.equal(output.ok, true)
+
+    const modules = JSON.parse(readFileSync(join(fixture.projectDir, '.hello-scholar', 'modules.json'), 'utf-8'))
+    const installedSkillPath = join(fixture.projectDir, '.hello-scholar', 'skills', 'local-overlay-skill', 'SKILL.md')
+    const promptPath = join(fixture.projectDir, '.hello-scholar', 'active-prompt.md')
+
+    assert(modules.explicitSkills.includes('local-overlay-skill'))
+    assertPathExists(installedSkillPath)
+    assertPathExists(promptPath)
+    assert(readFileSync(promptPath, 'utf-8').includes('local-overlay-skill'))
+    assert(readFileSync(promptPath, 'utf-8').includes('当前动态 Skills'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
 function createFixture() {
   const root = mkdtempSync(join(tmpdir(), 'hello-scholar-apply-'))
   const hostHome = join(root, 'home')
@@ -210,4 +255,19 @@ function runJson(fixture, args) {
 
 function assertPathExists(filePath) {
   assert.equal(existsSync(filePath), true, filePath)
+}
+
+function installStandby(fixture, bundles) {
+  const result = spawnSync(process.execPath, [
+    join(pkgRoot, 'cli.mjs'),
+    'install',
+    'codex',
+    '--standby',
+    ...bundles.flatMap((bundle) => ['--bundle', bundle]),
+  ], {
+    cwd: fixture.projectDir,
+    env: fixture.env,
+    encoding: 'utf-8',
+  })
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
 }

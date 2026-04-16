@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { getOverlayPaths, getRuntimeContext } from './cli-config.mjs'
 import { parseFrontmatter, renderBullets } from './change-tracker-utils.mjs'
 import { copyTree, ensureDir, parseArgv, pathExists, readText, writeText } from './cli-utils.mjs'
+import { activateEvolvedSkill } from './skill-evolution-runtime.mjs'
 import { getEvolutionPaths, readCandidate, writeCandidate } from './skill-evolution-store.mjs'
 
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -91,6 +92,10 @@ export function applySkillEvolution(cwd, args, options = {}) {
     patchPlanText,
     applyReportText,
   })
+  const activation = activateEvolvedSkill(cwd, context.candidate.decision.targetSkillId, {
+    pkgRoot: context.pkgRoot,
+    runtime: context.runtime,
+  })
 
   return {
     ok: true,
@@ -100,6 +105,9 @@ export function applySkillEvolution(cwd, args, options = {}) {
       `Source layer: ${applyResult.sourceLayer}`,
       `Touched files: ${applyResult.touchedFiles.join(', ')}`,
       `Apply report: ${saved.applyReportFile}`,
+      activation.activated
+        ? `Selection refreshed in ${activation.scope} scope (${activation.mode})`
+        : `Selection refresh skipped: ${activation.reason}`,
     ],
   }
 }

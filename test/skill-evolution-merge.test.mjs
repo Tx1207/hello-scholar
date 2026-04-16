@@ -1,17 +1,24 @@
 import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { test } from 'node:test'
 
 import { parseArgv } from '../scripts/cli-utils.mjs'
 import { mergeOverlaySkill } from '../scripts/skill-evolution-merge.mjs'
 
+const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
+
 test('mergeOverlaySkill copies overlay skill into repo source and updates candidate state', () => {
   const fixture = createFixture()
   const previousHostHome = process.env.HELLO_SCHOLAR_HOST_HOME
+  const previousCodexHome = process.env.CODEX_HOME
   try {
     process.env.HELLO_SCHOLAR_HOST_HOME = fixture.hostHome
+    process.env.CODEX_HOME = fixture.codexHome
+    installStandby(fixture, ['meta-builder'])
     const overlaySkillRoot = join(fixture.hostHome, '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
     mkdirSync(join(overlaySkillRoot, 'references'), { recursive: true })
     writeFileSync(join(overlaySkillRoot, 'SKILL.md'), [
@@ -77,7 +84,8 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
 
     const args = parseArgv(['--candidate-id', 'skill-evo-20260416-001', '--approve'])
     const result = mergeOverlaySkill(fixture.projectDir, args, {
-      pkgRoot: fixture.repoRoot,
+      pkgRoot,
+      repoRoot: fixture.repoRoot,
     })
 
     assert.equal(result.ok, true)
@@ -89,11 +97,23 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
     assert.equal(candidate.status, 'merged')
     assert.equal(candidate.merge.status, 'merged')
     assert.equal(existsSync(join(candidateRoot, 'merge-report.md')), true)
+
+    const modules = JSON.parse(readFileSync(join(fixture.projectDir, '.hello-scholar', 'modules.json'), 'utf-8'))
+    const installedSkillPath = join(fixture.projectDir, '.hello-scholar', 'skills', 'overlay-skill', 'SKILL.md')
+    const promptPath = join(fixture.projectDir, '.hello-scholar', 'active-prompt.md')
+    assert(modules.explicitSkills.includes('overlay-skill'))
+    assert.equal(existsSync(installedSkillPath), true)
+    assert(readFileSync(promptPath, 'utf-8').includes('overlay-skill'))
   } finally {
     if (previousHostHome === undefined) {
       delete process.env.HELLO_SCHOLAR_HOST_HOME
     } else {
       process.env.HELLO_SCHOLAR_HOST_HOME = previousHostHome
+    }
+    if (previousCodexHome === undefined) {
+      delete process.env.CODEX_HOME
+    } else {
+      process.env.CODEX_HOME = previousCodexHome
     }
     destroyFixture(fixture)
   }
@@ -102,6 +122,7 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
 function createFixture() {
   const root = mkdtempSync(join(tmpdir(), 'hello-scholar-merge-'))
   const hostHome = join(root, 'home')
+  const codexHome = join(hostHome, '.codex')
   const projectDir = join(root, 'project')
   const repoRoot = join(root, 'repo')
   mkdirSync(projectDir, { recursive: true })
@@ -109,11 +130,32 @@ function createFixture() {
   return {
     root,
     hostHome,
+    codexHome,
     projectDir,
     repoRoot,
+    env: {
+      ...process.env,
+      CODEX_HOME: codexHome,
+      HELLO_SCHOLAR_HOST_HOME: hostHome,
+    },
   }
 }
 
 function destroyFixture(fixture) {
   rmSync(fixture.root, { recursive: true, force: true })
+}
+
+function installStandby(fixture, bundles) {
+  const result = spawnSync(process.execPath, [
+    join(pkgRoot, 'cli.mjs'),
+    'install',
+    'codex',
+    '--standby',
+    ...bundles.flatMap((bundle) => ['--bundle', bundle]),
+  ], {
+    cwd: fixture.projectDir,
+    env: fixture.env,
+    encoding: 'utf-8',
+  })
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
 }

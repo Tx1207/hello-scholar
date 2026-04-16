@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { getOverlayPaths, getRuntimeContext } from './cli-config.mjs'
 import { copyTree, ensureDir, parseArgv, pathExists } from './cli-utils.mjs'
+import { activateEvolvedSkill } from './skill-evolution-runtime.mjs'
 import { getEvolutionPaths, readCandidate, writeCandidate } from './skill-evolution-store.mjs'
 
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -63,6 +64,10 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
       ].join('\n'),
     })
   }
+  const activation = activateEvolvedSkill(cwd, context.skillId, {
+    pkgRoot: context.pkgRoot,
+    runtime: context.runtime,
+  })
 
   return {
     ok: true,
@@ -72,6 +77,9 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
     repoSkillRoot: context.repoSkillRoot,
     notes: [
       `Merged overlay skill into repo source: ${context.skillId}`,
+      activation.activated
+        ? `Selection refreshed in ${activation.scope} scope (${activation.mode})`
+        : `Selection refresh skipped: ${activation.reason}`,
     ],
   }
 }
@@ -93,6 +101,7 @@ export function readMergeStatus(cwd, args, options = {}) {
 
 function loadMergeContext(cwd, args, options) {
   const effectivePkgRoot = resolve(String(options.pkgRoot || pkgRoot))
+  const repoRoot = resolve(String(options.repoRoot || effectivePkgRoot))
   const runtime = getRuntimeContext(effectivePkgRoot)
   const overlayPaths = getOverlayPaths(runtime)
   const evolutionPaths = getEvolutionPaths(cwd)
@@ -115,7 +124,7 @@ function loadMergeContext(cwd, args, options) {
     candidate,
     skillId: resolvedSkillId,
     overlaySkillRoot,
-    repoSkillRoot: join(effectivePkgRoot, 'skills', resolvedSkillId),
+    repoSkillRoot: join(repoRoot, 'skills', resolvedSkillId),
   }
 }
 

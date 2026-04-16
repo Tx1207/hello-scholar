@@ -2,10 +2,13 @@ import { readdirSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { detectInstalledScope, getRuntimeContext, loadInstallState, loadUserConfig } from './cli-config.mjs'
 import { parseArgv, pathExists, readJson, readText } from './cli-utils.mjs'
 import { loadCatalog } from './catalog-loader.mjs'
 import { parseFrontmatter } from './change-tracker-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
+import { loadSelectionState } from './selection-state.mjs'
+import { getEvolutionPaths, readCandidates } from './skill-evolution-store.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 
@@ -24,7 +27,12 @@ function main() {
 
 export function recommendCapabilities(cwd, args) {
   const storage = resolveProjectStorage(cwd)
-  const catalog = loadCatalog(pkgRoot)
+  const runtime = getRuntimeContext(pkgRoot)
+  const scope = detectInstalledScope(runtime, cwd)
+  const userConfig = loadUserConfig(runtime, cwd, scope)
+  const installState = loadInstallState(runtime, cwd, scope).state
+  const catalog = loadCatalog(pkgRoot, { dynamic: true, cwd, runtime })
+  const selection = loadSelectionState(catalog, installState, userConfig, runtime, { cwd, scope })
   const stateMeta = readStateMeta(join(storage.rootPath, 'state', 'STATE.md'))
   const contract = readActiveContract(storage.rootPath, args)
   const recommendations = []
@@ -56,6 +64,7 @@ export function recommendCapabilities(cwd, args) {
     addSkill(recommendations, catalog, 'frontend-design', 'allowed files include UI assets')
     addSkill(recommendations, catalog, 'web-design-reviewer', 'allowed files include UI assets')
   }
+  addEvolutionSkillRecommendations(recommendations, catalog, selection, contract, route, cwd)
 
   return {
     route,
@@ -90,7 +99,14 @@ function readActiveContract(storageRoot, args) {
 
 function addSkill(recommendations, catalog, skillId, reason) {
   if (!catalog.skillMap.has(skillId) || recommendations.some((entry) => entry.kind === 'skill' && entry.id === skillId)) return
-  recommendations.push({ kind: 'skill', id: skillId, reason })
+  const entry = catalog.skillMap.get(skillId)
+  recommendations.push({
+    kind: 'skill',
+    id: skillId,
+    reason,
+    sourceLayer: entry?.sourceLayer || 'repo',
+    path: entry?.path || '',
+  })
 }
 
 function addAgent(recommendations, catalog, agentId, reason) {
@@ -105,4 +121,90 @@ function addTool(recommendations, toolId, reason) {
 
 function readJsonAsText(filePath) {
   return readText(filePath, '')
+}
+
+function addEvolutionSkillRecommendations(recommendations, catalog, selection, contract, route, cwd) {
+  const candidates = readCandidates(getEvolutionPaths(cwd))
+    .filter((candidate) => ['applied', 'merged'].includes(candidate.status))
+  if (candidates.length === 0) return
+
+  const latestBySkill = new Map()
+  for (const candidate of candidates) {
+    const skillId = String(candidate.decision?.targetSkillId || '').trim()
+    if (!skillId || latestBySkill.has(skillId)) continue
+    latestBySkill.set(skillId, candidate)
+  }
+
+  const contextTokens = tokenizeContract(contract)
+  const candidateSkillIds = new Set([
+    ...selection.skills.filter((skillId) => catalog.skillMap.get(skillId)?.dynamic),
+    ...latestBySkill.keys(),
+  ])
+
+  for (const skillId of candidateSkillIds) {
+    const entry = catalog.skillMap.get(skillId)
+    const candidate = latestBySkill.get(skillId)
+    if (!entry) continue
+
+    const reasons = []
+    let score = 0
+
+    if (candidate?.source?.route && candidate.source.route === route && route !== '~auto') {
+      score += 2
+      reasons.push(`recent evolved skill was captured for route ${route}`)
+    }
+    if (candidate?.source?.planId && contract?.planId && candidate.source.planId === contract.planId) {
+      score += 3
+      reasons.push('same plan already produced this reusable skill')
+    }
+
+    const overlap = findTokenOverlap(contextTokens, [
+      entry.description,
+      ...(candidate?.extractedWorkflow || []),
+      ...(candidate?.decision?.reason || []),
+    ].join(' '))
+    if (overlap.length >= 2) {
+      score += 2
+      reasons.push(`contract overlap: ${overlap.slice(0, 3).join(', ')}`)
+    }
+
+    if (selection.explicitSkills.includes(skillId)) {
+      score += 1
+      reasons.push('skill is already in the active explicit selection')
+    }
+    if (entry.sourceLayer === 'overlay') {
+      score += 1
+      reasons.push('local overlay variant is available')
+    }
+
+    if (score >= 2) {
+      addSkill(recommendations, catalog, skillId, reasons.join('; '))
+    }
+  }
+}
+
+function tokenizeContract(contract) {
+  const parts = [
+    contract?.title || '',
+    contract?.route || '',
+    contract?.tier || '',
+    ...(contract?.reviewerFocus || []),
+    ...(contract?.testerFocus || []),
+    ...(contract?.advisor || []),
+    ...(contract?.allowedFiles || []),
+  ]
+  return tokenize(parts.join(' '))
+}
+
+function findTokenOverlap(baseTokens, text) {
+  const other = new Set(tokenize(text))
+  return [...baseTokens].filter((token) => other.has(token))
+}
+
+function tokenize(text) {
+  return [...new Set(String(text || '')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3))]
 }
