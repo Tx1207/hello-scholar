@@ -68,6 +68,7 @@
   - `hello-scholar/state/`
   - `hello-scholar/plans/`
   - `hello-scholar/evidence/`
+  - `hello-scholar/evolution/`
   - `hello-scholar/research/`
 - 项目产生的长期记录优先写入 `hello-scholar/`，避免混入运行时目录
 
@@ -120,7 +121,7 @@
 - **Zotero 集成**: 通过 Zotero MCP 服务器实现论文自动导入、集合管理、全文阅读和准确引用导出
 - **知识提取**: `paper-miner` 将论文中的可复用写作模式沉淀到一份全局 canonical writing memory；`kaggle-miner` 持续从竞赛方案中提取工程知识
 - **Obsidian 知识库**: 已内置 filesystem-first 项目知识库工作流；当仓库已绑定 project memory 时，应默认把 Obsidian 视为该科研项目的 durable knowledge sink
-- **技能进化**: `skill-development` → `skill-quality-reviewer` → `skill-improver` 三步改进循环
+- **技能进化**: 默认先产出 `skill evolution candidate`，再通过 `skill-development` → `skill-quality-reviewer` → `skill-improver` 完成后续 create / update
 
 ### Obsidian 项目知识库规则
 
@@ -183,6 +184,21 @@
 - 必须包含 `Actual Changes`
 - 需要时补 `Verification`、`Result`、`Next Step`
 - `STATE.md` 只维护当前活跃主题摘要，不替代明细记录
+
+### Skill 自进化协议
+
+对具备复用价值的 workflow、排障方法、交付套路或编写模式，允许将其标记为 `skill evolution candidate`，但必须遵守以下边界：
+
+- task-specific progress、临时 TODO、一次性 session outcome 不能写成 skill
+- 只有 durable、可复用、跨任务仍然成立的方法，才允许进入 skill evolution
+- 如果现有 skill 部分错误、过期或不完整，优先 update 现有 skill，而不是新建语义重复的 skill
+- 第一阶段默认只做 review-only：生成 candidate 和 review artifact，不直接修改 `skills/`
+- skill evolution 的持久状态写入 `hello-scholar/evolution/`
+- 若当前 `meta-builder` 未激活，则默认不触发 skill evolution，除非当前 `contract.json` 显式启用
+- review 优先读取：
+  - 当前或最近的 change record
+  - 当前或最近的 plan contract
+  - 当前 target 的 evidence bundle
 
 ---
 

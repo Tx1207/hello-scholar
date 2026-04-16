@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build:catalog": "node scripts/build-catalog.mjs",
+    "skill:merge": "node scripts/skill-evolution-merge.mjs merge",
     "test": "node --test",
     "postinstall": "node cli.mjs postinstall"
   },

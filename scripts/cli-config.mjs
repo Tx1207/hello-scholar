@@ -22,6 +22,16 @@ export function getRuntimeContext(pkgRoot) {
   }
 }
 
+export function getOverlayPaths(runtime) {
+  const overlayHome = process.env.HELLO_SCHOLAR_OVERLAY_HOME || join(runtime.hostHome, '.hello-scholar')
+  const overlayRoot = resolve(overlayHome)
+  return {
+    overlayHome: overlayRoot,
+    overlaysRoot: join(overlayRoot, 'overlays'),
+    overlaySkillsRoot: join(overlayRoot, 'overlays', 'skills'),
+  }
+}
+
 export function getScopedStatePaths(runtime, cwd = process.cwd()) {
   const projectStateRoot = join(cwd, '.hello-scholar')
   return {
