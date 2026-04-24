@@ -90,6 +90,11 @@ export function createPlanPackage(cwd, args) {
 }
 
 function buildContract(planId, title, route, tier, args, files) {
+  const deliveryGate = {
+    requiresEvidence: args.getFlag('--requires-evidence', 'true') !== 'false',
+    minEvidenceCount: Number(args.getFlag('--min-evidence', 1)) || 1,
+    maxEvidenceAgeHours: Number(args.getFlag('--max-evidence-age-hours', 168)) || 168,
+  }
   return {
     version: 1,
     planId,
@@ -102,12 +107,32 @@ function buildContract(planId, title, route, tier, args, files) {
     testerFocus: splitLines(args.getFlag('--tester-focus', '')).concat(args.getList('--tester-focus-item')),
     advisor: splitLines(args.getFlag('--advisor', '')).concat(args.getList('--advisor-item')),
     allowedFiles: files,
-    deliveryGate: {
-      requiresEvidence: args.getFlag('--requires-evidence', 'true') !== 'false',
-      minEvidenceCount: Number(args.getFlag('--min-evidence', 1)) || 1,
-      maxEvidenceAgeHours: Number(args.getFlag('--max-evidence-age-hours', 168)) || 168,
-    },
+    deliveryGate,
+    skillEvolution: buildSkillEvolutionPolicy(args, deliveryGate),
   }
+}
+
+function buildSkillEvolutionPolicy(args, deliveryGate) {
+  const enabled = args.hasFlag('--skill-evolution')
+    ? normalizeBool(args.getFlag('--skill-evolution', true), true)
+    : false
+  return {
+    enabled,
+    requiresApproval: normalizeBool(args.getFlag('--skill-evolution-requires-approval', 'true'), true),
+    allowCreate: normalizeBool(args.getFlag('--skill-evolution-allow-create', 'true'), true),
+    allowUpdate: normalizeBool(args.getFlag('--skill-evolution-allow-update', 'true'), true),
+    minEvidenceCount: Number(args.getFlag('--skill-evolution-min-evidence', deliveryGate.minEvidenceCount)) || deliveryGate.minEvidenceCount,
+    scope: String(args.getFlag('--skill-evolution-scope', 'meta-builder-or-opt-in')).trim() || 'meta-builder-or-opt-in',
+  }
+}
+
+function normalizeBool(value, fallback) {
+  if (value === true) return true
+  const normalized = String(value || '').trim().toLowerCase()
+  if (!normalized) return fallback
+  if (['true', '1', 'yes', 'on'].includes(normalized)) return true
+  if (['false', '0', 'no', 'off'].includes(normalized)) return false
+  return fallback
 }
 
 function writeTemplate(targetPath, templateName, values, fallback) {

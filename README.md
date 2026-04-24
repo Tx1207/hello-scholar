@@ -27,7 +27,7 @@ npm install -g .
 After a global install, the `hello-scholar` command is available directly in your terminal:
 
 ```bash
-hello-scholar --help
+hello-scholar help
 ```
 
 Important note:

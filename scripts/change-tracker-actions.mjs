@@ -26,6 +26,7 @@ import {
   writeIndexAndState,
   writeRecord,
 } from './change-tracker-store.mjs'
+import { runCloseoutAutomation } from './closeout-automation.mjs'
 
 export function trackIntent(cwd, args) {
   const request = requireText(args.getFlag('--request', ''), '--request is required')
@@ -115,10 +116,14 @@ export function trackCloseout(cwd, args) {
   writeRecord(paths, record)
   const nextWorkspace = loadWorkspace(paths)
   writeIndexAndState(paths, nextWorkspace, '', isActiveStatus)
-  return buildResult('track-closeout', 'close-current', record, [
+  const result = buildResult('track-closeout', 'close-current', record, [
     `Marked the change as ${status}.`,
     nextStepItems.length > 0 ? `Captured ${nextStepItems.length} next-step item(s).` : 'No next-step items were added.',
   ])
+  const automation = runCloseoutAutomation(cwd, args, record)
+  result.automation = automation
+  result.notes = [...result.notes, ...automation.notes]
+  return result
 }
 
 export function refreshIndexOnly(cwd) {
