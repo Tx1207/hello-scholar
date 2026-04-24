@@ -1,30 +1,30 @@
 {{frontmatter}}
-# 变更：{{title}}
+# Change: {{title}}
 
-## 用户请求
+## User Requests
 
 {{user_requests}}
 
-## 意图摘要
+## Intent Summary
 
 {{intent_summary}}
 
-## 影响文件
+## Affected Files
 
 {{affected_files}}
 
-## 实际修改
+## Actual Changes
 
 {{actual_changes}}
 
-## 验证
+## Verification
 
 {{verification}}
 
-## 结果
+## Result
 
 {{result}}
 
-## 下一步
+## Next Step
 
 {{next_step}}

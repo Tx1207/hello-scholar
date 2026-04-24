@@ -33,6 +33,26 @@ const optionalDependencies = {
   'project-creator': ['uv-package-manager', 'git-workflow'],
 }
 
+const INTERNAL_SKILL_DIRS = new Set([
+  '_meta',
+  'commands',
+  'helloagents',
+  'hello-api',
+  'hello-arch',
+  'hello-data',
+  'hello-debug',
+  'hello-errors',
+  'hello-perf',
+  'hello-reflect',
+  'hello-review',
+  'hello-security',
+  'hello-subagent',
+  'hello-test',
+  'hello-ui',
+  'hello-verify',
+  'hello-write',
+])
+
 const bundleSkillMembership = new Map()
 const bundleAgentMembership = new Map()
 for (const bundle of bundles) {
@@ -83,6 +103,7 @@ console.log(`Generated catalog for ${skills.length} skills and ${agents.length} 
 function readModuleDirectories(rootPath) {
   return readdirSync(rootPath)
     .filter((entry) => statSync(join(rootPath, entry)).isDirectory())
+    .filter((entry) => !INTERNAL_SKILL_DIRS.has(entry))
     .sort()
 }
 

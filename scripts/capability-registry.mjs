@@ -41,7 +41,14 @@ export function recommendCapabilities(cwd, args) {
   if (route === '~plan') addSkill(recommendations, catalog, 'planning-with-files', 'route requires persistent planning')
   if (route === '~build') addSkill(recommendations, catalog, 'daily-coding', 'route focuses on implementation work')
   if (route === '~verify') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on verification')
+  if (route === '~test') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on targeted testing')
   if (route === '~idea') addSkill(recommendations, catalog, 'research-ideation', 'route focuses on exploration')
+  if (route === '~prd') {
+    addSkill(recommendations, catalog, 'planning-with-files', 'route requires persistent document planning')
+    addSkill(recommendations, catalog, 'doc-coauthoring', 'route focuses on delivery documents')
+  }
+  if (route === '~loop') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on iterative verification loops')
+  if (route === '~commit') addSkill(recommendations, catalog, 'git-commit', 'route focuses on structured git commits')
 
   if (contract?.verifyMode === 'evidence-driven') {
     addSkill(recommendations, catalog, 'verification-loop', 'contract requires evidence-driven verification')
