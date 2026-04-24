@@ -1,32 +1,32 @@
 ---
 name: verification-loop
-description: This skill should be used when the user asks to "verify code", "run verification", "check quality", "validate changes", or before creating a PR. Provides comprehensive verification including build, type check, lint, tests, security scan, and diff review.
+description: 当用户要求 “verify code”、“run verification”、“check quality”、“validate changes”，或在创建 PR 前做质量确认时使用该 skill。它提供包括 build、type check、lint、tests、security scan 和 diff review 在内的完整验证流程。
 version: 1.0.0
 ---
 
 # Verification Loop Skill
 
-A comprehensive verification system for Claude Code sessions.
+一个面向 Claude Code 会话的完整验证系统。
 
-## When to Use
+## 何时使用
 
-Invoke this skill:
-- After completing a feature or significant code change
-- Before creating a PR
-- When you want to ensure quality gates pass
-- After refactoring
+在以下场景调用：
+- 完成一个 feature 或一次重要代码变更之后
+- 创建 PR 之前
+- 需要确保质量闸门通过时
+- 重构之后
 
-## Verification Phases
+## 验证阶段
 
-Choose the commands adaptively for the current project instead of running every example blindly. Use the stack-appropriate command from `references/STACK-DETECTION.md` when the repo does not match the default examples below.
+根据当前项目自适应选择命令，而不是盲目运行所有示例。若仓库与默认示例不匹配，使用 `references/STACK-DETECTION.md` 中与当前 stack 对应的命令集合。
 
-For hello-scholar project assets, prefer an **evidence-driven loop**:
+对于 hello-scholar 项目资产，优先采用 **evidence-driven loop**：
 
-1. Create a plan package with `contract.json`
-2. Record verification evidence into `hello-scholar/evidence/<target-id>/`
-3. Run a delivery gate before closeout
+1. 创建带 `contract.json` 的 plan package
+2. 将验证证据写入 `hello-scholar/evidence/<target-id>/`
+3. 在 closeout 前运行 delivery gate
 
-Suggested commands:
+建议命令：
 
 ```bash
 node .hello-scholar/scripts/plan-package.mjs create --cwd "$PWD" --title "Implement evidence loop" --verify-mode evidence-driven
@@ -34,8 +34,7 @@ node .hello-scholar/scripts/evidence-store.mjs record --cwd "$PWD" --target-id "
 node .hello-scholar/scripts/delivery-gate.mjs check --cwd "$PWD" --target-id "<plan-id>" --plan-id "<plan-id>"
 ```
 
-
-### Phase 1: Build Verification
+### Phase 1: Build 验证
 ```bash
 # Python projects (uv)
 uv build 2>&1 | tail -20
@@ -48,9 +47,9 @@ npm run build 2>&1 | tail -20
 pnpm build 2>&1 | tail -20
 ```
 
-If build fails, STOP and fix before continuing.
+如果 build 失败，**停止**，先修复再继续。
 
-### Phase 2: Type Check
+### Phase 2: 类型检查
 ```bash
 # TypeScript projects
 npx tsc --noEmit 2>&1 | head -30
@@ -59,9 +58,9 @@ npx tsc --noEmit 2>&1 | head -30
 pyright . 2>&1 | head -30
 ```
 
-Report all type errors. Fix critical ones before continuing.
+报告所有 type errors。关键错误需要先修掉再继续。
 
-### Phase 3: Lint Check
+### Phase 3: Lint 检查
 ```bash
 # JavaScript/TypeScript
 npm run lint 2>&1 | head -30
@@ -79,13 +78,13 @@ pytest --cov=src --cov-report=term-missing 2>&1 | tail -50
 npm run test -- --coverage 2>&1 | tail -50
 ```
 
-Report:
+报告：
 - Total tests: X
 - Passed: X
 - Failed: X
 - Coverage: X%
 
-### Phase 5: Security Scan
+### Phase 5: 安全扫描
 ```bash
 # Python: Check for secrets
 grep -rn "sk-" --include="*.py" . 2>/dev/null | head -10
@@ -101,23 +100,23 @@ grep -rn "print(" --include="*.py" src/ 2>/dev/null | head -10
 grep -rn "console.log" --include="*.ts" --include="*.tsx" src/ 2>/dev/null | head -10
 ```
 
-### Phase 6: Diff Review
+### Phase 6: Diff 审查
 ```bash
 # Show what changed
 git diff --stat
 git diff HEAD~1 --name-only
 ```
 
-Review each changed file for:
-- Unintended changes
-- Missing error handling
-- Potential edge cases
+审查每个改动文件，关注：
+- 非预期修改
+- 缺失错误处理
+- 潜在边界情况
 
-## Output Format
+## 输出格式
 
-After running all phases, produce a verification report:
+跑完所有阶段后，输出一份 verification report：
 
-```
+```text
 VERIFICATION REPORT
 ==================
 
@@ -135,16 +134,16 @@ Issues to Fix:
 2. ...
 ```
 
-When using the evidence-driven loop, also persist:
+如果使用 evidence-driven loop，还要持久化：
 
 - `hello-scholar/evidence/<target-id>/index.json`
 - `hello-scholar/evidence/<target-id>/README.md`
 - `hello-scholar/evidence/<target-id>/delivery-gate.json`
 - `hello-scholar/evidence/<target-id>/closeout.md`
 
-## Continuous Mode
+## 持续模式
 
-For long sessions, run verification every 15 minutes or after major changes:
+对于长会话，每 15 分钟或每次 major changes 之后运行一次验证：
 
 ```markdown
 Set a mental checkpoint:
@@ -155,15 +154,14 @@ Set a mental checkpoint:
 Run: /verify
 ```
 
-## Integration with Hooks
+## 与 Hooks 的集成
 
-This skill complements PostToolUse hooks but provides deeper verification.
-Hooks catch issues immediately; this skill provides comprehensive review.
+该 skill 补充 PostToolUse hooks，但提供更深层验证。  
+Hooks 负责即时发现问题，而该 skill 负责完整 review。
 
+## 参考文件
 
-## Reference Files
-
-Load only what is needed:
-- `references/STACK-DETECTION.md` - how to choose the right verification command set for the current repo
-- `references/REPORT-TEMPLATE.md` - report structure for final verification output
-- `examples/example-verification-report.md` - example final report
+按需加载：
+- `references/STACK-DETECTION.md` - 如何为当前 repo 选择正确的验证命令集合
+- `references/REPORT-TEMPLATE.md` - 最终验证输出的报告结构
+- `examples/example-verification-report.md` - 最终报告示例

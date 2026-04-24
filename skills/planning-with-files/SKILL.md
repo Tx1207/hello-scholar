@@ -1,218 +1,218 @@
 ---
 name: planning-with-files
-description: Transforms workflow to use Manus-style persistent markdown files for planning, progress tracking, and knowledge storage. Use when starting complex tasks, multi-step projects, research tasks, or when the user mentions planning, organizing work, tracking progress, or wants structured output.
+description: 将工作流切换为 Manus 风格的持久化 Markdown 文件，用于规划、进度跟踪和知识存储。适用于复杂任务、多步骤项目、研究任务，或用户提到 planning、organizing work、tracking progress、需要结构化输出时。
 version: 0.1.0
 ---
 
-# Planning with Files
+# 基于文件的规划
 
-Work like Manus: Use persistent markdown files as your "working memory on disk."
+像 Manus 一样工作：把持久化 Markdown 文件当作“磁盘上的工作记忆”。
 
-## Quick Start
+## 快速开始
 
-Before ANY complex task:
+在任何复杂任务开始前：
 
-1. **Create a persistent plan on disk**
-2. **Define phases and affected files**
-3. **Update after each phase** - mark [x] and change status
-4. **Read before deciding** - refresh goals in attention window
+1. **在磁盘上创建持久计划**
+2. **定义阶段和受影响文件**
+3. **每个阶段后更新**：标记 `[x]` 并修改状态
+4. **决策前重新阅读**：把目标刷新回注意力窗口
 
-## Preferred hello-scholar Pattern
+## 推荐的 hello-scholar 模式
 
-For hello-scholar projects, prefer a **plan package** under `hello-scholar/plans/<plan-id>/`:
+对于 hello-scholar 项目，优先在 `hello-scholar/plans/<plan-id>/` 下创建 **plan package**：
 
-| File | Purpose | When to Update |
-|------|---------|----------------|
-| `requirements.md` | Record goals, constraints, and non-goals | At plan start |
-| `plan.md` | Explain approach, phases, and risk | Before implementation |
-| `tasks.md` | Track concrete tasks, files, done criteria, verification | During execution |
-| `contract.json` | Optional machine-readable execution contract | When verification/review rules matter |
+| 文件 | 用途 | 更新时机 |
+|------|------|----------|
+| `requirements.md` | 记录目标、约束和非目标 | 计划开始时 |
+| `plan.md` | 说明方法、阶段和风险 | 实施前 |
+| `tasks.md` | 跟踪具体任务、文件、完成标准和验证 | 执行过程中 |
+| `contract.json` | 可选的机器可读执行契约 | 当验证 / review 规则重要时 |
 
-`tasks.md` should explicitly contain:
+`tasks.md` 应明确包含：
 
 - `涉及文件`
 - `完成标准`
 - `验证方式`
 
-## Fallback 3-File Pattern
+## 回退 3 文件模式
 
-For generic repositories that do not use hello-scholar project assets, the older THREE-file pattern is still acceptable:
+对于不使用 hello-scholar 项目资产的通用仓库，旧的三文件模式仍然可接受：
 
-| File | Purpose | When to Update |
-|------|---------|----------------|
-| `task_plan.md` | Track phases and progress | After each phase |
-| `notes.md` | Store findings and research | During research |
-| `[deliverable].md` | Final output | At completion |
+| 文件 | 用途 | 更新时机 |
+|------|------|----------|
+| `task_plan.md` | 跟踪阶段和进度 | 每个阶段后 |
+| `notes.md` | 存储发现和研究结果 | 研究过程中 |
+| `[deliverable].md` | 最终交付物 | 完成时 |
 
-## Core Workflow
+## 核心工作流
 
+```text
+Loop 1: 创建包含 requirements + plan 的 plan package
+Loop 2: 研究 -> 保存 notes/findings -> 更新 tasks.md
+Loop 3: 执行 -> 更新 tasks.md + verification notes
+Loop 4: 交付最终输出并关闭计划
 ```
-Loop 1: Create plan package with requirements + plan
-Loop 2: Research → save notes/findings → update tasks.md
-Loop 3: Execute → update tasks.md + verification notes
-Loop 4: Deliver final output and close the plan
-```
 
-### The Loop in Detail
+### 循环细节
 
-**Before each major action:**
+**每个主要动作前：**
 ```bash
 Read task_plan.md  # Refresh goals in attention window
 ```
 
-**After each phase:**
+**每个阶段后：**
 ```bash
 Edit task_plan.md  # Mark [x], update status
 ```
 
-**When storing information:**
+**存储信息时：**
 ```bash
 Write notes.md     # Don't stuff context, store in file
 ```
 
-## hello-scholar Plan Package Template
+## hello-scholar Plan Package 模板
 
-Recommended structure:
+推荐结构：
 
 ```text
 hello-scholar/
-└─ plans/
-   └─ <plan-id>/
-      ├─ requirements.md
-      ├─ plan.md
-      ├─ tasks.md
-      └─ contract.json
+\- plans/
+   \- <plan-id>/
+      |- requirements.md
+      |- plan.md
+      |- tasks.md
+      \- contract.json
 ```
 
 ### `requirements.md`
 
 ```markdown
-# Requirements: [Brief Description]
+# 需求：[简短描述]
 
-## Goal
-[One sentence describing the end state]
+## 目标
+[一句话描述最终状态]
 
-## Constraints
-- [Constraint]
+## 约束
+- [约束]
 
-## Non-goals
-- [Explicitly excluded work]
+## 非目标
+- [明确排除的工作]
 ```
 
 ### `tasks.md`
 
 ```markdown
-# Tasks: [Brief Description]
+# 任务：[简短描述]
 
-- [ ] Task 1
-  涉及文件: [file list]
-  完成标准: [definition of done]
-  验证方式: [test / review / evidence]
+- [ ] 任务 1
+  涉及文件：[file list]
+  完成标准：[definition of done]
+  验证方式：[test / review / evidence]
 ```
 
-## Fallback `task_plan.md` Template
+## 回退 `task_plan.md` 模板
 
-Create this file FIRST for any complex task:
+任何复杂任务都要先创建这个文件：
 
 ```markdown
-# Task Plan: [Brief Description]
+# 任务计划：[简短描述]
 
-## Goal
-[One sentence describing the end state]
+## 目标
+[一句话描述最终状态]
 
-## Phases
-- [ ] Phase 1: Plan and setup
-- [ ] Phase 2: Research/gather information
-- [ ] Phase 3: Execute/build
-- [ ] Phase 4: Review and deliver
+## 阶段
+- [ ] 阶段 1：规划与准备
+- [ ] 阶段 2：研究 / 收集信息
+- [ ] 阶段 3：执行 / 构建
+- [ ] 阶段 4：审查并交付
 
-## Key Questions
-1. [Question to answer]
-2. [Question to answer]
+## 关键问题
+1. [需要回答的问题]
+2. [需要回答的问题]
 
-## Decisions Made
-- [Decision]: [Rationale]
+## 已做决策
+- [决策]：[理由]
 
-## Errors Encountered
-- [Error]: [Resolution]
+## 遇到的错误
+- [错误]：[解决方案]
 
-## Status
-**Currently in Phase X** - [What I'm doing now]
+## 状态
+**当前处于阶段 X** - [我正在做什么]
 ```
 
-## notes.md Template
+## `notes.md` 模板
 
-For research and findings:
+用于研究和发现：
 
 ```markdown
-# Notes: [Topic]
+# 笔记：[主题]
 
-## Sources
+## 来源
 
-### Source 1: [Name]
+### 来源 1：[名称]
 - URL: [link]
-- Key points:
-  - [Finding]
-  - [Finding]
+- 关键点：
+  - [发现]
+  - [发现]
 
-## Synthesized Findings
+## 综合发现
 
-### [Category]
-- [Finding]
-- [Finding]
+### [类别]
+- [发现]
+- [发现]
 ```
 
-## Critical Rules
+## 关键规则
 
-### 1. ALWAYS Create Plan First
-Never start a complex task without a persistent plan file or plan package. This is non-negotiable.
+### 1. 始终先创建计划
+复杂任务绝不在没有持久计划文件或 plan package 的情况下开始。这是硬性规则。
 
-### 2. Read Before Decide
-Before any major decision, read the active plan file(s). This keeps goals in your attention window.
+### 2. 决策前先阅读
+在任何重大决策前，读取当前活跃计划文件。这能让目标保持在注意力窗口中。
 
-### 3. Update After Act
-After completing any phase, immediately update the active plan file(s):
-- Mark completed phases with [x]
-- Update the Status section
-- Log any errors encountered
+### 3. 行动后立即更新
+完成任一阶段后，立即更新活跃计划文件：
+- 用 `[x]` 标记已完成阶段
+- 更新 Status section
+- 记录遇到的错误
 
-### 4. Store, Don't Stuff
-Large outputs go to files, not context. Keep only paths in working memory.
+### 4. 存储，不要塞进上下文
+大型输出写入文件，不塞进上下文。工作记忆里只保留路径。
 
-### 5. Log All Errors
-Every error goes in the "Errors Encountered" section. This builds knowledge for future tasks.
+### 5. 记录所有错误
+每个错误都写入 “遇到的错误” section。这会为未来任务沉淀知识。
 
-## When to Use This Pattern
+## 何时使用该模式
 
-**Use a persistent plan package for:**
-- Multi-step tasks (3+ steps)
-- Research tasks
-- Building/creating something
-- Tasks spanning multiple tool calls
-- Anything requiring organization
+**以下场景使用持久 plan package：**
+- 多步骤任务（3+ 步）
+- 研究任务
+- 构建 / 创建某物
+- 跨多次工具调用的任务
+- 任何需要组织的工作
 
-**Skip for:**
-- Simple questions
-- Single-file edits
-- Quick lookups
+**以下场景可跳过：**
+- 简单问题
+- 单文件编辑
+- 快速查找
 
-## Anti-Patterns to Avoid
+## 需要避免的反模式
 
-| Don't | Do Instead |
-|-------|------------|
-| Use TodoWrite for persistence | Create a plan file or plan package |
-| State goals once and forget | Re-read plan before each decision |
-| Hide errors and retry | Log errors to plan file |
-| Stuff everything in context | Store large content in files |
-| Start executing immediately | Create plan file FIRST |
+| 不要这样做 | 改为这样做 |
+|------------|------------|
+| 用 TodoWrite 做持久化 | 创建计划文件或 plan package |
+| 只说一次目标然后忘掉 | 每次决策前重新阅读计划 |
+| 隐藏错误然后重试 | 把错误记录到计划文件 |
+| 把所有东西塞进上下文 | 把大内容存入文件 |
+| 直接开始执行 | 先创建计划文件 |
 
-## Advanced Patterns
+## 高级模式
 
-See [reference.md](reference.md) for:
+参见 [reference.md](reference.md)：
 - Attention manipulation techniques
 - Error recovery patterns
-- Context optimization from Manus
+- Manus 的 context optimization
 
-See [examples.md](examples.md) for:
-- Real task examples
-- Complex workflow patterns
+参见 [examples.md](examples.md)：
+- 真实任务示例
+- 复杂工作流模式

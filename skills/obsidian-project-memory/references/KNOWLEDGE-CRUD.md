@@ -1,125 +1,131 @@
 # Knowledge CRUD
 
-Use these rules when maintaining a research-project knowledge base.
+维护 research-project knowledge base 时遵循这些规则。
 
-## Core defaults
+## 核心默认值
 
-- **One canonical note per durable object**
-- **Prefer updating over duplicating**
-- **Raw material is not durable knowledge**
-- **Archive by default; purge only on explicit request**
-- **Query narrowly first, synthesize second**
+- **每个 durable object 只保留一个 canonical note**
+- **优先更新，不优先复制**
+- **raw material 不是 durable knowledge**
+- **默认 archive；只有显式要求才 purge**
+- **先窄查询，再综合**
 
+## 默认研究推进路径
 
-## Default research progression
+当一轮科研工作具有实质性时，优先沿这条路径推进 durable knowledge：
 
-When a research turn is substantive, prefer moving durable knowledge forward along this path:
-
-```
+```text
 Papers -> Experiments -> Results -> Writing
 ```
 
-Interpretation:
-- a paper note should often end with a testable takeaway, not only a summary,
-- an experiment note should clarify what evidence would justify a result note,
-- a result note should usually clarify what writing object should absorb the claim next.
-
-This progression does not mean every turn must touch all four folders. It means the next durable handoff should be made explicit whenever it is already clear.
+这并不意味着每轮都必须触碰四个目录，而是意味着：只要下一次 durable handoff 已经明确，就应明确写出来。
 
 ## Create
 
-When new knowledge appears, answer two questions first:
+新知识出现时，先回答两个问题：
 
-1. Which type is it?
+1. 它属于哪一类？
    - `knowledge`
    - `paper`
    - `experiment`
    - `result`
    - `writing`
    - `daily`
-2. Is it a **durable note** or **raw material**?
+2. 它是 **durable note** 还是 **raw material**？
 
-Default policy: **summarize first, then route**.
+默认政策：**先总结，再路由**。
 
-Promote directly only when the content is already:
-- self-contained,
-- stable,
-- clearly bounded,
-- likely to be referenced later.
+只有当内容已经：
 
-Otherwise:
-- merge it into the existing canonical note for the same object, or
-- stage it in `Daily/` if it is not stable enough yet.
+- 自包含
+- 稳定
+- 边界清晰
+- 后续可能被引用
 
-Never:
-- map new files one-to-one into new durable notes by path alone,
-- create a new canonical note for the same experiment/result/paper without a real distinction,
-- turn every discovered Markdown file into a formal vault object.
+时，才直接 promote。
+
+否则：
+
+- merge 到同一对象的现有 canonical note
+- 或者先放到 `Daily/`
+
+永远不要：
+
+- 仅凭路径把新文件一对一映射成新 durable note
+- 对同一个 experiment / result / paper 重复创建 canonical note
+- 把发现到的每个 Markdown 文件都强行变成正式 vault 对象
 
 ## Read
 
-Use the smallest sufficient read set first.
+优先使用最小充分读取集。
 
 ### Query presets
 
 - broad project question -> `00-Hub.md` + `Knowledge/Project-Overview.md` + `Knowledge/Research-Questions.md`
-- next step / active work -> `01-Plan.md` + today's `Daily/` + project memory
-- specific experiment -> matching note in `Experiments/`
-- specific result -> matching note in `Results/`
-- literature question -> matching note in `Papers/`
+- next step / active work -> `01-Plan.md` + 今天的 `Daily/` + project memory
+- specific experiment -> `Experiments/` 中对应 note
+- specific result -> `Results/` 中对应 note
+- literature question -> `Papers/` 中对应 note
 
-### Query order
+### Query 顺序
 
 1. canonical note
-2. neighboring durable notes
-3. daily or scratch context
-4. repo source docs or outputs
+2. 相邻 durable notes
+3. daily 或 scratch context
+4. repo source docs 或 outputs
 5. agent synthesis
 
-Do not start by scanning the entire vault or repo when a canonical note already exists.
+如果 canonical note 已存在，不要一上来就扫描整个 vault 或 repo。
 
 ## Update
 
-When new material overlaps an existing durable object:
-- update the canonical note,
-- do not create a sibling note by default.
+当新材料与已有 durable object 重叠时：
 
-Update style by folder:
-- `Knowledge/` -> rewrite stable conclusions; avoid timestamp noise
-- `Experiments/` -> preserve experiment identity; add updates, findings, next steps
-- `Results/` -> update headline, evidence, interpretation
-- `Writing/` -> continue draft evolution or split by output object when necessary
-- `Daily/` -> append freely; later promote durable parts
+- 更新 canonical note
+- 默认不要创建 sibling note
 
-Merge and split rules:
-- merge several small notes when they are clearly about one durable object,
-- split a note when it has grown into multiple durable objects with different lifecycles.
+按目录更新风格：
+
+- `Knowledge/` -> 重写稳定结论，避免时间戳噪音
+- `Experiments/` -> 保持实验身份，追加 updates、findings、next steps
+- `Results/` -> 更新 headline、evidence、interpretation
+- `Writing/` -> 继续演化草稿；必要时按输出对象拆分
+- `Daily/` -> 可自由追加，之后再 promote 耐久部分
+
+合并与拆分规则：
+
+- 多个小 note 明显描述同一 durable object 时，合并
+- 一个 note 演化成多个生命周期不同的 durable object 时，拆分
 
 ## Delete
 
-Interpret deletion intent carefully:
+认真理解用户的“删除”意图：
+
 - “remove / delete / stop using / no longer needed” -> archive
 - “keep history but stop using” -> archive
 - “permanently delete / purge” -> purge
 
 ### Archive
 
-Default action:
-- move the target note into `Archive/`,
-- repair direct links in `00-Hub.md`, `01-Plan.md`, and explicit index notes,
-- avoid leaving the main working surface with broken links.
+默认动作：
+
+- 把目标 note 移到 `Archive/`
+- 修复 `00-Hub.md`、`01-Plan.md` 以及显式 index notes 中的直接链接
+- 不要让主工作面留下坏链接
 
 ### Purge
 
-Only on explicit permanent-delete intent:
-- delete the target note,
-- clean direct links in `00-Hub.md`, `01-Plan.md`, and explicit index notes,
-- ensure the deleted note was not the only canonical carrier of still-needed knowledge.
+只有在明确永久删除意图时才执行：
 
-### Rename or move
+- 删除目标 note
+- 清理 `00-Hub.md`、`01-Plan.md` 和显式 index notes 中的直接链接
+- 确保被删 note 不是仍在使用的唯一 canonical knowledge carrier
 
-Treat rename or move as:
-- update of the same durable object, plus
-- link repair
+### Rename 或 move
 
-Do not treat rename as delete-plus-create unless the object meaning actually changed.
+rename / move 应视为：
+
+- 同一个 durable object 的更新
+- 加上 link repair
+
+除非对象含义真的变了，否则不要把 rename 当成 delete-plus-create。

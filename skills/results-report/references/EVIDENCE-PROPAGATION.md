@@ -1,25 +1,24 @@
-# Evidence Propagation
+# 证据传播
 
-Use this file to keep `results-analysis` outputs aligned with the final report.
+使用本文件保证 `results-analysis` 的输出与最终报告保持一致。
 
-## Mapping rule
+## 映射规则
 
-- `analysis-report.md` -> main findings and narrative summary
-- `stats-appendix.md` -> test choice, uncertainty, effect size, correction rule
-- `figure-catalog.md` -> figure purpose and per-figure interpretation scaffolding
-- figure files -> visual evidence cited in `Figure-by-Figure Interpretation`
+- `analysis-report.md` -> main findings 和 narrative summary
+- `stats-appendix.md` -> test choice、uncertainty、effect size、correction rule
+- `figure-catalog.md` -> figure purpose 和逐图解释脚手架
+- figure files -> `Figure-by-Figure Interpretation` 中引用的视觉证据
 
-## Minimum statistical carry-over
+## 最小统计继承要求
 
-Every strong claim in a results report should preserve:
-- sample size or run/seed count,
-- metric definition,
-- uncertainty summary,
-- test name,
-- effect size when relevant,
-- multiple-comparison handling when relevant.
+results report 中的每个强 claim 都应保留：
+- sample size 或 run/seed count
+- metric definition
+- uncertainty summary
+- test name
+- relevant 时的 effect size
+- relevant 时的 multiple-comparison handling
 
-## Unsupported claim rule
+## 不支持 claim 规则
 
-If the analysis bundle does not support a claim strongly enough, keep the claim tentative and say why.
-Do not upgrade a suggestive result into a decisive conclusion during report writing.
+如果 analysis bundle 不足以强支撑某个 claim，应保持 tentative，并说明原因。写报告时不要把 suggestive result 升级成 decisive conclusion。

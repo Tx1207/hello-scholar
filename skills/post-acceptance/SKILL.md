@@ -1,150 +1,149 @@
 ---
 name: post-acceptance
-description: This skill should be used when the user asks to "prepare conference presentation", "create presentation slides", "design poster", "make academic poster", "write promotion content", "create Twitter thread", or mentions post-acceptance conference preparation. Provides comprehensive workflow for presentation, poster, and promotion content creation.
+description: 当用户要求 “prepare conference presentation”、“create presentation slides”、“design poster”、“make academic poster”、“write promotion content”、“create Twitter thread”，或提到论文接收后的 conference 准备工作时使用该 skill。它提供 presentation、poster 和 promotion content 的完整工作流。
 version: 0.1.0
 ---
 
-# Post-Acceptance Conference Preparation
+# 论文接收后的 Conference 准备
 
-A post-acceptance conference preparation workflow that helps researchers efficiently complete presentations, posters, and promotional content.
+一个面向论文接收后阶段的 conference 准备工作流，帮助研究者高效完成 presentation、poster 和宣传内容。
 
-## Core Features
+## 核心功能
 
-### 1. Presentation Slide Creation
+### 1. Presentation Slides 制作
 
-Guidance for creating conference presentation slides:
+关于 conference presentation slides 的指导：
 
-**Time Control**
-- 15-minute talk: 10-15 slides
-- 20-minute talk: 15-20 slides
-- 30-minute talk: 20-30 slides
-- Average 1-1.5 minutes per slide
+**时间控制**
+- 15 分钟报告：10-15 页
+- 20 分钟报告：15-20 页
+- 30 分钟报告：20-30 页
+- 平均每页 1-1.5 分钟
 
-**Content Structure**
-- Title slide (1)
-- Motivation/Problem (2-3)
-- Method overview (3-5)
-- Key results (3-5)
-- Conclusion (1-2)
-- Q&A/Thank you (1)
+**内容结构**
+- 标题页（1）
+- Motivation / Problem（2-3）
+- Method overview（3-5）
+- Key results（3-5）
+- Conclusion（1-2）
+- Q&A / Thank you（1）
 
-**Visual Design Principles**
-- One key message per slide
-- Use figures and diagrams over text
-- Consistent color scheme and fonts
-- Minimum font size: 24pt for body, 32pt for titles
-- High-contrast colors for readability
+**视觉设计原则**
+- 每页只传达一个核心信息
+- 优先使用 figures 和 diagrams，而不是大量文字
+- 保持一致的配色和字体
+- 最小字号：正文 24pt，标题 32pt
+- 使用高对比颜色保证可读性
 
-**Presentation Tips**
-- Practice timing with a stopwatch
-- Prepare backup slides for anticipated questions
-- Use animations sparingly and purposefully
-- Include slide numbers for Q&A reference
+**Presentation 技巧**
+- 用秒表练习时间控制
+- 为预期问题准备 backup slides
+- 有节制且有目的地使用动画
+- 加入页码，方便 Q&A 时引用
 
-### 2. Academic Poster Design
+### 2. Academic Poster 设计
 
-Guidance for creating conference posters:
+关于 conference posters 的指导：
 
-**Standard Sizes**
-- Portrait: 24x36 inches or A0 (841x1189mm)
-- Landscape: 36x24 inches or A0 landscape
-- Check conference requirements for specific size
+**标准尺寸**
+- 纵向：24x36 inches 或 A0（841x1189mm）
+- 横向：36x24 inches 或 A0 横版
+- 以 conference 官方要求为准
 
-**Layout Structure**
-- Title bar (top): Title, authors, affiliations, logos
-- Introduction (left): Problem statement, motivation
-- Method (center): Key approach, architecture diagram
-- Results (right): Main findings, tables, figures
-- Conclusion (bottom): Summary, future work, QR code
+**布局结构**
+- 标题栏（顶部）：Title、authors、affiliations、logos
+- Introduction（左侧）：问题定义、动机
+- Method（中间）：关键方法、架构图
+- Results（右侧）：主要发现、tables、figures
+- Conclusion（底部）：总结、future work、QR code
 
-**Design Guidelines**
-- Readable from 4-6 feet distance
-- Title font: 72-96pt
-- Section headers: 36-48pt
-- Body text: 24-32pt
-- Use bullet points, not paragraphs
-- Include QR code linking to paper/code
+**设计指南**
+- 在 4-6 英尺距离可读
+- 标题字号：72-96pt
+- Section headers：36-48pt
+- 正文字号：24-32pt
+- 使用 bullet points，不要用长段落
+- 加入指向 paper/code 的 QR code
 
-### 3. Promotion Content Creation
+### 3. Promotion Content 创作
 
-Guidance for creating promotional content after paper acceptance:
+关于论文接收后宣传内容的指导：
 
 **Twitter/X Thread**
-- Thread structure: Hook -> Problem -> Method -> Key Result -> Link
-- First tweet: Attention-grabbing summary with emoji
-- Include 1-2 key figures
-- End with paper link and relevant hashtags
-- Tag co-authors and relevant accounts
+- 结构：Hook -> Problem -> Method -> Key Result -> Link
+- 第一条 tweet：用抓眼球的摘要开场
+- 包含 1-2 张关键 figures
+- 结尾附论文链接和相关 hashtags
+- 标记 co-authors 和相关账号
 
 **LinkedIn Post**
-- Professional tone, 3-5 paragraphs
-- Highlight practical implications
-- Include key figure or diagram
-- Add relevant hashtags
+- 专业语气，3-5 个段落
+- 强调 practical implications
+- 包含关键图或 diagram
+- 加入相关 hashtags
 
 **Blog Post**
-- 800-1500 words
-- Non-technical summary for broader audience
-- Include figures with explanations
-- Link to paper, code, and demo
+- 800-1500 字
+- 面向更广泛读者的非技术摘要
+- 包含 figures 与解释
+- 链接到 paper、code 和 demo
 
-## When to Use
+## 何时使用
 
-Use this skill in the following scenarios:
+在以下场景使用：
 
-- **After paper acceptance** - Prepare presentation materials for the conference
-- **Poster session preparation** - Design and create academic poster
-- **Research promotion** - Create social media and blog content
-- **Conference talk preparation** - Structure and practice presentation
+- **论文被接收后** - 为 conference 准备演示材料
+- **Poster session 准备** - 设计和制作 academic poster
+- **研究宣传** - 编写社交媒体和 blog 内容
+- **Conference talk 准备** - 组织并练习 presentation
 
-## Workflow
+## 工作流
 
-### Presentation Workflow
-```
+### Presentation 工作流
+```text
 Paper accepted -> Identify key messages -> Create slide outline -> Design slides -> Practice timing -> Prepare Q&A backup slides
 ```
 
-### Poster Workflow
-```
+### Poster 工作流
+```text
 Paper accepted -> Choose layout template -> Extract key content -> Design poster -> Print test at reduced size -> Final print
 ```
 
-### Promotion Workflow
-```
+### Promotion 工作流
+```text
 Paper accepted -> Write Twitter thread -> Create LinkedIn post -> Draft blog post -> Schedule posts around conference dates
 ```
 
-## Best Practices
+## 最佳实践
 
 ### Presentation
-- Start with the "so what" - why should the audience care
-- Tell a story: problem -> insight -> solution -> impact
-- Use concrete examples and demos when possible
-- Anticipate questions and prepare answers
-- Arrive early to test equipment
+- 先讲 “so what” - 为什么听众应该关心这项工作
+- 讲一个故事：problem -> insight -> solution -> impact
+- 在可能时使用具体例子和 demo
+- 预判问题并提前准备回答
+- 提前到场测试设备
 
 ### Poster
-- Design for scanning, not reading
-- Use visual hierarchy to guide the eye
-- Include a "elevator pitch" summary
-- Bring business cards or QR codes
-- Practice a 2-minute and 5-minute explanation
+- 为“扫视”而设计，而不是为“逐字阅读”而设计
+- 使用视觉层级引导视线
+- 包含一段 “elevator pitch” 摘要
+- 携带名片或 QR codes
+- 准备 2 分钟和 5 分钟两个版本的讲解
 
 ### Promotion
-- Post within 1-2 weeks of acceptance notification
-- Coordinate timing with co-authors
-- Engage with comments and questions
-- Share across multiple platforms
-- Include accessible descriptions for figures
+- 在接收通知后 1-2 周内发出
+- 与 co-authors 协调发布时间
+- 积极回应评论和问题
+- 跨多个平台分发
+- 为 figures 提供可访问描述
 
-## Summary
+## 总结
 
-This skill provides a comprehensive post-acceptance workflow covering three key areas: presentation slides, academic posters, and promotional content. Following these guidelines helps researchers effectively communicate their work at conferences and to the broader community.
+该 skill 提供了一个完整的 post-acceptance 工作流，覆盖三大方向：presentation slides、academic posters 和 promotion content。遵循这些指南，可以帮助研究者更有效地在 conference 和更广泛社区中传播工作成果。
 
+## 参考文件
 
-## Reference Files
-
-Load only what is needed:
-- `references/design-guidelines.md` - visual design guidance
-- `references/deliverable-checklists.md` - slide/poster/promo-specific checklists
-- `examples/post-acceptance-plan.md` - compact delivery plan example
+按需加载：
+- `references/design-guidelines.md` - 视觉设计指导
+- `references/deliverable-checklists.md` - 针对 slides / poster / promo 的检查清单
+- `examples/post-acceptance-plan.md` - 紧凑型交付计划示例

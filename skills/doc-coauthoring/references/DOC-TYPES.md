@@ -1,30 +1,30 @@
-# Document Type Scaffolds
+# 文档类型脚手架
 
-## Decision doc
-- Context
-- Decision
-- Alternatives considered
-- Risks
-- Rollout / next steps
+## 决策文档
+- 背景
+- 决策
+- 已考虑的替代方案
+- 风险
+- 发布 / 后续步骤
 
-## Technical spec
-- Problem
-- Requirements
-- Proposed design
-- Data / API changes
-- Failure modes
-- Validation plan
+## 技术规格
+- 问题
+- 需求
+- 设计方案
+- 数据 / API 变更
+- 失败模式
+- 验证计划
 
-## Proposal
-- Motivation
-- Proposed work
-- Expected impact
-- Risks and dependencies
-- Ask / timeline
+## 提案
+- 动机
+- 拟开展工作
+- 预期影响
+- 风险与依赖
+- 请求事项 / 时间线
 
 ## RFC
-- Background
-- Proposal
-- Open questions
-- Compatibility / migration
-- Decision record
+- 背景
+- 提案
+- 开放问题
+- 兼容性 / 迁移
+- 决策记录

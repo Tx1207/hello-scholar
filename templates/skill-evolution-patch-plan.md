@@ -1,14 +1,14 @@
-# Skill Evolution Patch Plan: {{candidate_id}}
+# Skill 演化补丁计划：{{candidate_id}}
 
-- Action: `{{action}}`
-- Target Skill: `{{target_skill}}`
-- Overlay Root: `{{overlay_root}}`
-- Repo Source Root: `{{repo_root}}`
+- 动作：`{{action}}`
+- 目标 Skill：`{{target_skill}}`
+- Overlay 根目录：`{{overlay_root}}`
+- 仓库源码根目录：`{{repo_root}}`
 
-## Planned Changes
+## 计划修改
 
 {{changes}}
 
-## Extracted Workflow
+## 提取出的工作流
 
 {{workflow}}

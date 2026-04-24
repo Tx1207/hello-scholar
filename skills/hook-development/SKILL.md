@@ -1,29 +1,29 @@
 ---
 name: hook-development
-description: This skill should be used when the user asks to "create a hook", "add a PreToolUse/PostToolUse/Stop hook", "validate tool use", "implement prompt-based hooks", "use ${CLAUDE_PLUGIN_ROOT}", "set up event-driven automation", "block dangerous commands", or mentions hook events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, PreCompact, Notification). Provides comprehensive guidance for creating and implementing Claude Code plugin hooks with focus on advanced prompt-based hooks API.
+description: 当用户要求“create a hook”、“add a PreToolUse/PostToolUse/Stop hook”、“validate tool use”、“implement prompt-based hooks”、“use ${CLAUDE_PLUGIN_ROOT}”、“set up event-driven automation”、“block dangerous commands”，或提到 PreToolUse、PostToolUse、Stop、SubagentStop、SessionStart、SessionEnd、UserPromptSubmit、PreCompact、Notification 等 hook event 时使用。该 skill 提供 Claude Code plugin hook 的完整开发指南，重点覆盖 prompt-based hooks API。
 version: 0.1.0
 ---
 
 # Hook Development for Claude Code Plugins
 
-> **Scope note**: This skill is a **Claude Code hook reference**, not a Codex-native capability. Codex CLI does not expose the Claude Code hook system.
+> **范围说明**：本 skill 是 **Claude Code hook 参考文档**，不是 Codex 原生能力。Codex CLI 不暴露 Claude Code 的 hook system。
 
-## Overview
+## 概览
 
-Hooks are event-driven automation scripts that execute in response to Claude Code events. Use hooks to validate operations, enforce policies, add context, and integrate external tools into workflows.
+Hook 是对 Claude Code event 做出响应的自动化脚本。它可用于校验操作、执行策略、补充上下文，以及把外部工具整合进开发流程。
 
-**Key capabilities:**
-- Validate tool calls before execution (PreToolUse)
-- React to tool results (PostToolUse)
-- Enforce completion standards (Stop, SubagentStop)
-- Load project context (SessionStart)
-- Automate workflows across the development lifecycle
+**关键能力：**
+- 在 tool 执行前校验（`PreToolUse`）
+- 在 tool 执行后响应结果（`PostToolUse`）
+- 在停止前检查完成度（`Stop`、`SubagentStop`）
+- 在 `SessionStart` 加载项目上下文
+- 在整个开发生命周期中自动化流程
 
 ## Hook Types
 
 ### Prompt-Based Hooks (Recommended)
 
-Use LLM-driven decision making for context-aware validation:
+使用 LLM 推理做上下文感知判断：
 
 ```json
 {
@@ -33,17 +33,17 @@ Use LLM-driven decision making for context-aware validation:
 }
 ```
 
-**Supported events:** Stop, SubagentStop, UserPromptSubmit, PreToolUse
+**适用事件：** `Stop`、`SubagentStop`、`UserPromptSubmit`、`PreToolUse`
 
-**Benefits:**
-- Context-aware decisions based on natural language reasoning
-- Flexible evaluation logic without bash scripting
-- Better edge case handling
-- Easier to maintain and extend
+**优点：**
+- 上下文敏感
+- 逻辑灵活
+- 处理 edge case 更自然
+- 易维护
 
 ### Command Hooks
 
-Execute bash commands for deterministic checks:
+执行 bash 命令做确定性检查：
 
 ```json
 {
@@ -53,17 +53,17 @@ Execute bash commands for deterministic checks:
 }
 ```
 
-**Use for:**
-- Fast deterministic validations
-- File system operations
-- External tool integrations
-- Performance-critical checks
+适合：
+- 快速、确定性的校验
+- 文件系统操作
+- 外部工具集成
+- 对性能要求高的检查
 
 ## Hook Configuration Formats
 
 ### Plugin hooks.json Format
 
-**For plugin hooks** in `hooks/hooks.json`, use wrapper format:
+plugin 的 `hooks/hooks.json` 使用 wrapper 格式：
 
 ```json
 {
@@ -76,34 +76,9 @@ Execute bash commands for deterministic checks:
 }
 ```
 
-**Key points:**
-- `description` field is optional
-- `hooks` field is required wrapper containing actual hook events
-- This is the **plugin-specific format**
-
-**Example:**
-```json
-{
-  "description": "Validation hooks for code quality",
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/validate.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
 ### Settings Format (Direct)
 
-**For user settings** in `.claude/settings.json`, use direct format:
+用户设置中的 `.claude/settings.json` 使用直接格式：
 
 ```json
 {
@@ -113,173 +88,43 @@ Execute bash commands for deterministic checks:
 }
 ```
 
-**Key points:**
-- No wrapper - events directly at top level
-- No description field
-- This is the **settings format**
-
-**Important:** The examples below show the hook event structure that goes inside either format. For plugin hooks.json, wrap these in `{"hooks": {...}}`.
-
 ## Hook Events
 
 ### PreToolUse
 
-Execute before any tool runs. Use to approve, deny, or modify tool calls.
-
-**Example (prompt-based):**
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Validate file write safety. Check: system paths, credentials, path traversal, sensitive content. Return 'approve' or 'deny'."
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Output for PreToolUse:**
-```json
-{
-  "hookSpecificOutput": {
-    "permissionDecision": "allow|deny|ask",
-    "updatedInput": {"field": "modified_value"}
-  },
-  "systemMessage": "Explanation for Claude"
-}
-```
+在 tool 执行前运行，可用于 approve / deny / modify。
 
 ### PostToolUse
 
-Execute after tool completes. Use to react to results, provide feedback, or log.
-
-**Example:**
-```json
-{
-  "PostToolUse": [
-    {
-      "matcher": "Edit",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Analyze edit result for potential issues: syntax errors, security vulnerabilities, breaking changes. Provide feedback."
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Output behavior:**
-- Exit 0: stdout shown in transcript
-- Exit 2: stderr fed back to Claude
-- systemMessage included in context
+在 tool 完成后运行，可用于反馈、日志、补充上下文。
 
 ### Stop
 
-Execute when main agent considers stopping. Use to validate completeness.
-
-**Example:**
-```json
-{
-  "Stop": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Verify task completion: tests run, build succeeded, questions answered. Return 'approve' to stop or 'block' with reason to continue."
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Decision output:**
-```json
-{
-  "decision": "approve|block",
-  "reason": "Explanation",
-  "systemMessage": "Additional context"
-}
-```
+主 agent 准备结束时执行，用于检查任务是否真的完成。
 
 ### SubagentStop
 
-Execute when subagent considers stopping. Use to ensure subagent completed its task.
-
-Similar to Stop hook, but for subagents.
+subagent 结束时执行，作用类似 `Stop`。
 
 ### UserPromptSubmit
 
-Execute when user submits a prompt. Use to add context, validate, or block prompts.
-
-**Example:**
-```json
-{
-  "UserPromptSubmit": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Check if prompt requires security guidance. If discussing auth, permissions, or API security, return relevant warnings."
-        }
-      ]
-    }
-  ]
-}
-```
+用户提交 prompt 时执行，可用于前置校验、补充 context 或阻断提示。
 
 ### SessionStart
 
-Execute when Claude Code session begins. Use to load context and set environment.
-
-**Example:**
-```json
-{
-  "SessionStart": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/load-context.sh"
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Special capability:** Persist environment variables using `$CLAUDE_ENV_FILE`:
-```bash
-echo "export PROJECT_TYPE=nodejs" >> "$CLAUDE_ENV_FILE"
-```
-
-See `examples/load-context.sh` for complete example.
+session 开始时执行，可用于加载环境、上下文、持久化环境变量。
 
 ### SessionEnd
 
-Execute when session ends. Use for cleanup, logging, and state preservation.
+session 结束时执行，可用于清理和落日志。
 
-### PreCompact
+### PreCompact / Notification
 
-Execute before context compaction. Use to add critical information to preserve.
-
-### Notification
-
-Execute when Claude sends notifications. Use to react to user notifications.
+分别用于 compact 前保留关键信息，以及响应通知事件。
 
 ## Hook Output Format
 
-### Standard Output (All Hooks)
+标准输出示例：
 
 ```json
 {
@@ -289,315 +134,120 @@ Execute when Claude sends notifications. Use to react to user notifications.
 }
 ```
 
-- `continue`: If false, halt processing (default true)
-- `suppressOutput`: Hide output from transcript (default false)
-- `systemMessage`: Message shown to Claude
-
-### Exit Codes
-
-- `0` - Success (stdout shown in transcript)
-- `2` - Blocking error (stderr fed back to Claude)
-- Other - Non-blocking error
+**Exit code：**
+- `0`：成功
+- `2`：阻断性错误
+- 其他：非阻断错误
 
 ## Hook Input Format
 
-All hooks receive JSON via stdin with common fields:
+所有 hook 都通过 stdin 接收 JSON，通常包含：
+- `session_id`
+- `transcript_path`
+- `cwd`
+- `permission_mode`
+- `hook_event_name`
 
-```json
-{
-  "session_id": "abc123",
-  "transcript_path": "/path/to/transcript.txt",
-  "cwd": "/current/working/dir",
-  "permission_mode": "ask|allow",
-  "hook_event_name": "PreToolUse"
-}
-```
-
-**Event-specific fields:**
-
-- **PreToolUse/PostToolUse:** `tool_name`, `tool_input`, `tool_result`
-- **UserPromptSubmit:** `user_prompt`
-- **Stop/SubagentStop:** `reason`
-
-Access fields in prompts using `$TOOL_INPUT`, `$TOOL_RESULT`, `$USER_PROMPT`, etc.
+不同事件还会附带：
+- `tool_name`、`tool_input`、`tool_result`
+- `user_prompt`
+- `reason`
 
 ## Environment Variables
 
-Available in all command hooks:
+常见环境变量：
+- `$CLAUDE_PROJECT_DIR`
+- `$CLAUDE_PLUGIN_ROOT`
+- `$CLAUDE_ENV_FILE`（仅 SessionStart）
+- `$CLAUDE_CODE_REMOTE`
 
-- `$CLAUDE_PROJECT_DIR` - Project root path
-- `$CLAUDE_PLUGIN_ROOT` - Plugin directory (use for portable paths)
-- `$CLAUDE_ENV_FILE` - SessionStart only: persist env vars here
-- `$CLAUDE_CODE_REMOTE` - Set if running in remote context
-
-**Always use ${CLAUDE_PLUGIN_ROOT} in hook commands for portability:**
-
-```json
-{
-  "type": "command",
-  "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh"
-}
-```
+**始终优先使用 `${CLAUDE_PLUGIN_ROOT}` 做可移植路径引用。**
 
 ## Plugin Hook Configuration
 
-In plugins, define hooks in `hooks/hooks.json`:
-
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Validate file write safety"
-        }
-      ]
-    }
-  ],
-  "Stop": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Verify task completion"
-        }
-      ]
-    }
-  ],
-  "SessionStart": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/load-context.sh",
-          "timeout": 10
-        }
-      ]
-    }
-  ]
-}
-```
-
-Plugin hooks merge with user's hooks and run in parallel.
+plugin 中通常在 `hooks/hooks.json` 定义各事件 hook。plugin hook 会与用户 hook 合并，并并行运行。
 
 ## Matchers
 
 ### Tool Name Matching
 
-**Exact match:**
 ```json
 "matcher": "Write"
-```
-
-**Multiple tools:**
-```json
 "matcher": "Read|Write|Edit"
-```
-
-**Wildcard (all tools):**
-```json
 "matcher": "*"
+"matcher": "mcp__.*__delete.*"
 ```
 
-**Regex patterns:**
-```json
-"matcher": "mcp__.*__delete.*"  // All MCP delete tools
-```
+matcher 大小写敏感。
 
-**Note:** Matchers are case-sensitive.
-
-### Common Patterns
-
-```json
-// All MCP tools
-"matcher": "mcp__.*"
-
-// Specific plugin's MCP tools
-"matcher": "mcp__plugin_asana_.*"
-
-// All file operations
-"matcher": "Read|Write|Edit"
-
-// Bash commands only
-"matcher": "Bash"
-```
-
-## Security Best Practices
+## 安全最佳实践
 
 ### Input Validation
 
-Always validate inputs in command hooks:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-input=$(cat)
-tool_name=$(echo "$input" | jq -r '.tool_name')
-
-# Validate tool name format
-if [[ ! "$tool_name" =~ ^[a-zA-Z0-9_]+$ ]]; then
-  echo '{"decision": "deny", "reason": "Invalid tool name"}' >&2
-  exit 2
-fi
-```
+command hook 中必须校验输入，不要信任外部数据。
 
 ### Path Safety
 
-Check for path traversal and sensitive files:
-
-```bash
-file_path=$(echo "$input" | jq -r '.tool_input.file_path')
-
-# Deny path traversal
-if [[ "$file_path" == *".."* ]]; then
-  echo '{"decision": "deny", "reason": "Path traversal detected"}' >&2
-  exit 2
-fi
-
-# Deny sensitive files
-if [[ "$file_path" == *".env"* ]]; then
-  echo '{"decision": "deny", "reason": "Sensitive file"}' >&2
-  exit 2
-fi
-```
-
-See `examples/validate-write.sh` and `examples/validate-bash.sh` for complete examples.
+要检查：
+- path traversal
+- `.env` 等敏感文件
+- 非法 tool name
 
 ### Quote All Variables
 
-```bash
-# GOOD: Quoted
-echo "$file_path"
-cd "$CLAUDE_PROJECT_DIR"
-
-# BAD: Unquoted (injection risk)
-echo $file_path
-cd $CLAUDE_PROJECT_DIR
-```
+bash 变量一律加引号。
 
 ### Set Appropriate Timeouts
 
-```json
-{
-  "type": "command",
-  "command": "bash script.sh",
-  "timeout": 10
-}
-```
-
-**Defaults:** Command hooks (60s), Prompt hooks (30s)
+hook 必须设置合理超时，避免拖慢交互。
 
 ## Performance Considerations
 
 ### Parallel Execution
 
-All matching hooks run **in parallel**:
+所有匹配到的 hook 会**并行执行**。
 
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write",
-      "hooks": [
-        {"type": "command", "command": "check1.sh"},  // Parallel
-        {"type": "command", "command": "check2.sh"},  // Parallel
-        {"type": "prompt", "prompt": "Validate..."}   // Parallel
-      ]
-    }
-  ]
-}
-```
-
-**Design implications:**
-- Hooks don't see each other's output
-- Non-deterministic ordering
-- Design for independence
+设计含义：
+- hook 看不到彼此输出
+- 执行顺序不稳定
+- 必须按“彼此独立”来设计
 
 ### Optimization
 
-1. Use command hooks for quick deterministic checks
-2. Use prompt hooks for complex reasoning
-3. Cache validation results in temp files
-4. Minimize I/O in hot paths
+1. 简单确定性检查用 command hook
+2. 复杂推理用 prompt hook
+3. 热路径减少 I/O
+4. 必要时缓存结果
 
 ## Temporarily Active Hooks
 
-Create hooks that activate conditionally by checking for a flag file or configuration:
+可通过 flag file 或配置开关，让 hook 仅在特定条件下生效。
 
-**Pattern: Flag file activation**
-```bash
-#!/bin/bash
-# Only active when flag file exists
-FLAG_FILE="$CLAUDE_PROJECT_DIR/.enable-strict-validation"
-
-if [ ! -f "$FLAG_FILE" ]; then
-  # Flag not present, skip validation
-  exit 0
-fi
-
-# Flag present, run validation
-input=$(cat)
-# ... validation logic ...
-```
-
-**Pattern: Configuration-based activation**
-```bash
-#!/bin/bash
-# Check configuration for activation
-CONFIG_FILE="$CLAUDE_PROJECT_DIR/.codex/plugin-config.json"
-
-if [ -f "$CONFIG_FILE" ]; then
-  enabled=$(jq -r '.strictMode // false' "$CONFIG_FILE")
-  if [ "$enabled" != "true" ]; then
-    exit 0  # Not enabled, skip
-  fi
-fi
-
-# Enabled, run hook logic
-input=$(cat)
-# ... hook logic ...
-```
-
-**Use cases:**
-- Enable strict validation only when needed
-- Temporary debugging hooks
-- Project-specific hook behavior
-- Feature flags for hooks
-
-**Best practice:** Document activation mechanism in plugin README so users know how to enable/disable temporary hooks.
+适用场景：
+- 临时严格校验
+- 调试专用 hook
+- 项目特定行为
+- feature flag
 
 ## Hook Lifecycle and Limitations
 
 ### Hooks Load at Session Start
 
-**Important:** Hooks are loaded when Claude Code session starts. Changes to hook configuration require restarting Claude Code.
+**重要：** hook 在 Claude Code session 启动时加载，修改配置后必须重启 Claude Code 才会生效。
 
-**Cannot hot-swap hooks:**
-- Editing `hooks/hooks.json` won't affect current session
-- Adding new hook scripts won't be recognized
-- Changing hook commands/prompts won't update
-- Must restart Claude Code: exit and run `claude` again
-
-**To test hook changes:**
-1. Edit hook configuration or scripts
-2. Exit Claude Code session
-3. Restart: `claude` or `cc`
-4. New hook configuration loads
-5. Test hooks with `claude --debug`
+不能热更新：
+- 改 `hooks.json`
+- 新增 hook script
+- 修改 command / prompt
 
 ### Hook Validation at Startup
 
-Hooks are validated when Claude Code starts:
-- Invalid JSON in hooks.json causes loading failure
-- Missing scripts cause warnings
-- Syntax errors reported in debug mode
+启动时会校验：
+- JSON 是否合法
+- script 是否存在
+- 调试模式下会报告语法问题
 
-Use `/hooks` command to review loaded hooks in current session.
+可用 `/hooks` 查看当前 session 已加载的 hook。
 
 ## Debugging Hooks
 
@@ -607,27 +257,18 @@ Use `/hooks` command to review loaded hooks in current session.
 claude --debug
 ```
 
-Look for hook registration, execution logs, input/output JSON, and timing information.
+关注：
+- hook 注册与执行日志
+- 输入 / 输出 JSON
+- timing
 
 ### Test Hook Scripts
 
-Test command hooks directly:
-
-```bash
-echo '{"tool_name": "Write", "tool_input": {"file_path": "/test"}}' | \
-  bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh
-
-echo "Exit code: $?"
-```
+可以直接把 JSON pipe 给 hook script 测试。
 
 ### Validate JSON Output
 
-Ensure hooks output valid JSON:
-
-```bash
-output=$(./your-hook.sh < test-input.json)
-echo "$output" | jq .
-```
+可用 `jq` 检查 hook 输出是否是合法 JSON。
 
 ## Quick Reference
 
@@ -635,80 +276,59 @@ echo "$output" | jq .
 
 | Event | When | Use For |
 |-------|------|---------|
-| PreToolUse | Before tool | Validation, modification |
-| PostToolUse | After tool | Feedback, logging |
-| UserPromptSubmit | User input | Context, validation |
-| Stop | Agent stopping | Completeness check |
-| SubagentStop | Subagent done | Task validation |
-| SessionStart | Session begins | Context loading |
-| SessionEnd | Session ends | Cleanup, logging |
-| PreCompact | Before compact | Preserve context |
-| Notification | User notified | Logging, reactions |
+| PreToolUse | 工具执行前 | 校验、改写 |
+| PostToolUse | 工具执行后 | 反馈、日志 |
+| UserPromptSubmit | 用户提交 prompt 时 | context、校验 |
+| Stop | 主 agent 结束前 | 完成度检查 |
+| SubagentStop | subagent 结束前 | 子任务校验 |
+| SessionStart | session 开始 | 加载上下文 |
+| SessionEnd | session 结束 | 清理、日志 |
+| PreCompact | compact 前 | 保留关键上下文 |
+| Notification | 发送通知时 | 响应或记录 |
 
-### Best Practices
+### 最佳实践
 
-**DO:**
-- ✅ Use prompt-based hooks for complex logic
-- ✅ Use ${CLAUDE_PLUGIN_ROOT} for portability
-- ✅ Validate all inputs in command hooks
-- ✅ Quote all bash variables
-- ✅ Set appropriate timeouts
-- ✅ Return structured JSON output
-- ✅ Test hooks thoroughly
+**DO：**
+- ✅ 复杂逻辑优先用 prompt-based hook
+- ✅ 路径统一用 `${CLAUDE_PLUGIN_ROOT}`
+- ✅ 校验所有输入
+- ✅ bash 变量全部加引号
+- ✅ 设置合理 timeout
+- ✅ 输出结构化 JSON
+- ✅ 充分测试
 
-**DON'T:**
-- ❌ Use hardcoded paths
-- ❌ Trust user input without validation
-- ❌ Create long-running hooks
-- ❌ Rely on hook execution order
-- ❌ Modify global state unpredictably
-- ❌ Log sensitive information
+**DON'T：**
+- ❌ 硬编码路径
+- ❌ 不校验用户输入
+- ❌ 写长时间运行 hook
+- ❌ 依赖 hook 执行顺序
+- ❌ 不可预测地修改全局状态
+- ❌ 记录敏感信息
 
 ## Additional Resources
 
-### Reference Files
-
-For detailed patterns and advanced techniques, consult:
-
-- **`references/patterns.md`** - Common hook patterns (8+ proven patterns)
-- **`references/migration.md`** - Migrating from basic to advanced hooks
-- **`references/advanced.md`** - Advanced use cases and techniques
-
-### Example Hook Scripts
-
-Working examples in `examples/`:
-
-- **`validate-write.sh`** - File write validation example
-- **`validate-bash.sh`** - Bash command validation example
-- **`load-context.sh`** - SessionStart context loading example
-
-### Utility Scripts
-
-Development tools in `scripts/`:
-
-- **`validate-hook-schema.sh`** - Validate hooks.json structure and syntax
-- **`test-hook.sh`** - Test hooks with sample input before deployment
-- **`hook-linter.sh`** - Check hook scripts for common issues and best practices
-
-### External Resources
-
-- **Official Docs**: https://docs.claude.com/en/docs/claude-code/hooks
-- **Examples**: See security-guidance plugin in marketplace
-- **Testing**: Use `claude --debug` for detailed logs
-- **Validation**: Use `jq` to validate hook JSON output
+- **`references/patterns.md`** - 常见 hook 模式
+- **`references/migration.md`** - 从基础 hook 迁移到高级 hook
+- **`references/advanced.md`** - 高级场景与技巧
+- **`examples/validate-write.sh`** - 文件写入校验示例
+- **`examples/validate-bash.sh`** - Bash 校验示例
+- **`examples/load-context.sh`** - SessionStart 上下文加载示例
+- **`scripts/validate-hook-schema.sh`** - 校验 `hooks.json`
+- **`scripts/test-hook.sh`** - 测试 hook
+- **`scripts/hook-linter.sh`** - 检查常见问题
 
 ## Implementation Workflow
 
-To implement hooks in a plugin:
+为 plugin 实现 hook 时：
 
-1. Identify events to hook into (PreToolUse, Stop, SessionStart, etc.)
-2. Decide between prompt-based (flexible) or command (deterministic) hooks
-3. Write hook configuration in `hooks/hooks.json`
-4. For command hooks, create hook scripts
-5. Use ${CLAUDE_PLUGIN_ROOT} for all file references
-6. Validate configuration with `scripts/validate-hook-schema.sh hooks/hooks.json`
-7. Test hooks with `scripts/test-hook.sh` before deployment
-8. Test in Claude Code with `claude --debug`
-9. Document hooks in plugin README
+1. 先确定要监听的事件
+2. 决定使用 prompt-based 还是 command hook
+3. 在 `hooks/hooks.json` 中写配置
+4. 若使用 command hook，则创建 script
+5. 路径统一使用 `${CLAUDE_PLUGIN_ROOT}`
+6. 用校验脚本检查配置
+7. 部署前先做本地测试
+8. 在 Claude Code 中用 `claude --debug` 验证
+9. 在 plugin README 中记录 hook 行为
 
-Focus on prompt-based hooks for most use cases. Reserve command hooks for performance-critical or deterministic checks.
+大多数场景优先使用 prompt-based hook；只有在需要高性能或确定性检查时再使用 command hook。

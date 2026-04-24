@@ -1,24 +1,19 @@
-# Review Response and Rebuttal Strategies
+# 审稿回复与 Rebuttal 策略
 
-This file contains effective strategies for responding to reviewer comments and addressing reviewer concerns, extracted from successful ML conference paper rebuttals.
+本文档整理了应对 reviewer comments 的高效策略，提炼自成功的 ML 会议 rebuttal。
 
----
+## 通用原则
 
-## General Rebuttal Principles
+### 核心哲学
 
-### Core Philosophy
-**Source:** Analysis of successful NeurIPS/ICML rebuttals
+1. **语气尊重**：先感谢 reviewer 的时间和反馈
+2. **逐点回应**：每个 concern 都要正面回应
+3. **以证据为基础**：用数据、实验或引用支撑
+4. **简洁清楚**：信息完整，但不要冗长
+5. **不要过度承诺**：只承诺真正能做的修改
 
-**Key Principles:**
-1. **Respectful tone**: Thank reviewers for their time
-2. **Direct addressing**: Respond point-by-point to each concern
-3. **Evidence-based**: Support claims with data, experiments, or citations
-4. **Concise communication**: Be clear but brief
-5. **No over-committing**: Only promise what can be done
+### 常见回应结构
 
-### Response Structure
-
-**Template:**
 ```markdown
 # Response to Reviewer [Number]
 
@@ -28,402 +23,233 @@ Thank you for this insightful comment. We [address the concern].
 
 [Additional evidence/experiments if needed].
 
-We have revised the manuscript to clarify this point (see changes marked in blue).
+We have revised the manuscript to clarify this point.
 ```
 
----
+## 针对具体 concern 的策略
 
-## Addressing Specific Concerns
+### 1. Clarity 问题
 
-### Concern: Clarity Issues
+做法：
 
-**Strategy:**
-- Acknowledge the confusion
-- Clarify with revised text
-- Add examples if helpful
+- 承认原文不清
+- 给出 revised text
+- 必要时补 example、figure 或 appendix 说明
 
-**Template:**
-```markdown
-# Response to Clarity Concern
+### 2. 缺少实验
 
-We apologize for the confusion. The original text was:
+做法：
 
-[Original unclear text]
+- 先判断实验是否可行
+- 可行就补实验并报告结果
+- 不可行就说明为什么不属于当前 scope
+- 尽量给替代证据
 
-We have revised this to:
-"Revised text with clearer explanation"
+### 3. Statistical significance
 
-We also added an example (Figure X) to illustrate this concept.
-```
+做法：
 
-**Real Example:**
-- **Concern:** "The algorithm description is unclear."
-- **Response:** "We've rewritten Algorithm 1 with more detailed steps and added pseudocode. We also included a concrete example in Appendix B to illustrate the algorithm's execution."
+- 增加 statistical test
+- 报 confidence interval
+- 区分 practical significance 和 statistical significance
+- 诚实说明 sample size 限制
 
-### Concern: Missing Experiments
+### 4. Baselines 不充分
 
-**Strategy:**
-- Assess whether experiment is feasible
-- If yes: add experiment and report results
-- If not: explain why experiment is not essential
-- Offer alternative evidence if possible
+做法：
 
-**Template:**
-```markdown
-# Response to Missing Experiment Request
+- 补 reviewer 提到的重要 baseline
+- 若某 baseline 不可比，要明确给出理由
+- 必要时引用文献支撑排除理由
 
-We agree that [experiment] would strengthen the evaluation. We have:
-[Option 1: Added experiment and results]
-OR
-[Option 2: Explained why not essential with alternative evidence]
+### 5. Writing quality
 
-We believe this addresses the concern while maintaining focus on our core contribution.
-```
+做法：
 
-**Real Example:**
-- **Concern:** "Add comparison with Method X on dataset Y."
-- **Response:** "We've added results on dataset Y (Table 3). Our method outperforms Method X by 5%. We also include ablation showing our improvement comes from [feature], not just better optimization."
+- 重写问题段落
+- 修复 grammar / typo
+- 增强 flow 和 signposting
 
-### Concern: Statistical Significance
+### 6. Overclaiming
 
-**Strategy:**
-- Add statistical tests if appropriate
-- Report confidence intervals
-- Discuss practical significance vs statistical significance
-- Note sample size limitations
+做法：
 
-**Template:**
-```markdown
-# Response to Statistical Significance
+- 把绝对化表述收紧
+- 补充条件和边界
+- 更明确写 limitation
+- 让 claim 与证据强度匹配
 
-We agree statistical testing is important. We have:
-- Added paired t-test results showing significance (p<0.01)
-- Included 95% confidence intervals in Figure 3
-- Reported standard deviations across 5 runs
-- Noted that while some differences are not statistically significant due to sample size, they are practically meaningful for [application]
+## 语气与措辞模式
 
-We have updated Section 4.2 with these statistical details.
-```
+### 开场感谢
 
-### Concern: Insufficient Baselines
+- `Thank you for this insightful comment.`
+- `We appreciate the reviewer's suggestion to...`
+- `We thank the reviewer for pointing this out.`
 
-**Strategy:**
-- Add missing baselines if available
-- Explain why certain baselines are inappropriate
-- Cite reasons for exclusions with references
+### 承认合理批评
 
-**Template:**
-```markdown
-# Response to Baseline Concern
+- `The reviewer is right that...`
+- `We agree this is a limitation.`
+- `This is an excellent suggestion.`
 
-We have added comparisons with:
-- [Method A]: Added in Table 2
-- [Method B]: Excluded because [reason with citation]
+### 礼貌反驳
 
-For Method B, while it seems related, it [specific reason why not comparable], making direct comparison inappropriate.
-```
+- `We respectfully disagree with this assessment based on...`
+- `While we understand the concern, our results suggest...`
+- `We believe our approach is justified because...`
 
-### Concern: Writing Quality
+### 做出承诺
 
-**Strategy:**
-- Revise problematic text
-- Fix grammatical issues
-- Improve flow and clarity
-- Add signposting
+- `We will add this experiment in the revised version.`
+- `We have added additional ablation studies in Section 5.`
+- `We have expanded discussion of this point in the revision.`
 
-**Template:**
-```markdown
-# Response to Writing Concern
+### 拒绝不合理请求
 
-We've revised the writing to address your concerns:
-- Restructured Section 3 for better flow
-- Fixed typos and grammar
-- Added transition sentences between paragraphs
-- Clarified technical terminology
+- `Unfortunately, due to [constraint], we cannot add this experiment.`
+- `This would require substantial additional resources beyond our current scope.`
+- `We believe this is beyond the scope of the current paper but note it as future work.`
 
-The revised manuscript has been proofread and edited for clarity.
-```
+## 常见 rebuttal 组织方式
 
-### Concern: Overclaiming
+### Organized Response
 
-**Strategy:**
-- Tone down absolute statements
-- Add qualifications where appropriate
-- Acknowledge limitations more explicitly
-- Reframe claims to match evidence
+建议结构：
 
-**Template:**
-```markdown
-# Response to Overclaiming Concern
+1. Summary of Changes
+2. Reviewer 1 point-by-point response
+3. Reviewer 2 point-by-point response
+4. Reviewer 3 point-by-point response
 
-We accept that our original claim was too strong. We have revised the text:
+### Evidence-Based Arguments
 
-Original: "Our method achieves state-of-the-art on all tasks."
-Revised: "Our method achieves state-of-the-art on [specific tasks] and competitive performance on [other tasks]."
+对 technical concern，优先用：
 
-We also added a Limitations section acknowledging that our method may not generalize to [condition].
-```
+1. 数据
+2. 新实验
+3. figure / table
+4. 理论解释
+5. prior work
 
----
+### Highlighting Improvements
 
-## Tone and Phrasing Patterns
+最好显式列出：
 
-### Opening Statements
+1. 新实验
+2. 新分析
+3. 文本重写
+4. 新 limitation
 
-**Thanking:**
-- "Thank you for this insightful comment."
-- "We appreciate the reviewer's suggestion to..."
-- "We thank the reviewer for pointing this out."
-
-**Acknowledging Valid Points:**
-- "The reviewer is right that..."
-- "We agree this is a limitation."
-- "This is an excellent suggestion."
-
-### Addressing Disagreements
-
-**Respectful Disagreement:**
-- "We respectfully disagree with this assessment based on..."
-- "While we understand the concern, our results suggest..."
-- "We believe our approach is justified because..."
-
-**Providing Evidence:**
-- "Our experimental results (Table 3) show..."
-- "As shown in Figure 4, the difference is..."
-- "This is supported by prior work [Citation]."
-
-### Making Commitments
-
-**Full Commitments:**
-- "We will add this experiment in the revised version."
-- "We have added additional ablation studies in Section 5."
-
-**Partial Commitments:**
-- "We have added clarification in the appendix due to space constraints."
-- "We've expanded discussion of this point in the revision."
-
-**Declining Requests:**
-- "Unfortunately, due to [constraint], we cannot add this experiment."
-- "This would require substantial additional resources beyond our current scope."
-- "We believe this is beyond the scope of the current paper but note it as future work."
-
----
-
-## Common Rebuttal Strategies
-
-### Strategy: Organized Response
-
-**Structure:**
-```markdown
-# Summary of Changes
-
-We thank the reviewers for their constructive feedback. In this response, we:
-- [Major change 1]
-- [Major change 2]
-- [Improvement 3]
-
-We believe these changes have significantly strengthened the paper.
-
-# Response to Reviewer 1
-
-[Point-by-point responses]
-
-# Response to Reviewer 2
-
-[Point-by-point responses]
-```
-
-### Strategy: Evidence-Based Arguments
-
-**Template:**
-```markdown
-# Response to Technical Concern
-
-Our approach is valid because:
-1. [Reason 1 with reference/evidence]
-2. [Reason 2 with data/figure]
-3. [Reason 3 with theoretical justification]
-
-This is supported by [Citation], which demonstrates that [fact].
-```
-
-### Strategy: Highlighting Improvements
-
-**Template:**
-```markdown
-# Major Revisions
-
-1. **New Experiments**: Added comparison with [method] on [dataset]
-2. **New Analysis**: Included ablation study in Table 4
-3. **Clarified Writing**: Rewrote Section 3 for clarity
-4. **Added Limitations**: New section 5.2 acknowledging constraints
-
-These additions strengthen our core claims about [contribution].
-```
-
----
-
-## Venue-Specific Considerations
+## Venue-specific 注意点
 
 ### NeurIPS
 
-**Emphasis:**
-- Novelty and conceptual contribution
-- Broader impact (lay summary)
-- Reproducibility checklist
+重点通常在：
 
-**Rebuttal Focus:**
-- How work advances understanding
-- Significance of contribution
-- Ethical considerations
+- novelty
+- conceptual contribution
+- broader impact
+- reproducibility checklist
 
 ### ICML
 
-**Emphasis:**
-- Methodological rigor
-- Theoretical contributions
-- Broader impact statement
+重点通常在：
 
-**Rebuttal Focus:**
-- Soundness of methods
-- Theoretical guarantees
-- Practical implications
+- methodological rigor
+- theoretical contribution
+- broader impact
 
 ### ICLR
 
-**Emphasis:**
-- Experimental thoroughness
-- Limitations acknowledgment
-- LLM usage disclosure
+重点通常在：
 
-**Rebuttal Focus:**
-- Comprehensive evaluation
-- Honest limitation discussion
-- Transparency about methods
+- experimental thoroughness
+- limitations
+- LLM disclosure
 
 ### ACL
 
-**Emphasis:**
-- Linguistic appropriateness
-- Ethical considerations
-- Clear limitations
+重点通常在：
 
-**Rebuttal Focus:**
-- Language quality and appropriateness
-- Data provenance and ethics
-- Practical utility
+- 语言质量
+- 伦理和数据来源
+- clear limitations
 
----
+## 成功 rebuttal 的建议
 
-## Tips for Successful Rebuttals
+### 写之前
 
-### Before Writing
+1. 先彻底理解 reviewer 的 concern
+2. 先处理 major concerns
+3. 对可行工作量做现实判断
+4. 把 supporting evidence 准备齐
+5. 与 co-authors 对齐口径
 
-1. **Understand the concerns**: Read carefully, identify key issues
-2. **Prioritize**: Address major concerns first
-3. **Be realistic**: Only promise what can deliver
-4. **Gather evidence**: Collect data, results, citations
-5. **Coordinate**: Discuss with co-authors if applicable
+### 写的时候
 
-### While Writing
+1. 引用具体章节、图表和表格
+2. 句子短、信息实
+3. 既感谢 reviewer，也要适度 defend
+4. 对 limitation 保持诚实
 
-1. **Be specific**: Reference exact sections, figures, tables
-2. **Be concise**: Keep responses focused and brief
-3. **Be respectful**: Thank reviewers, acknowledge good points
-4. **Be confident**: Defend your work appropriately
-5. **Be honest**: Acknowledge limitations, don't overpromise
+### 避免的错误
 
-### Common Mistakes to Avoid
+- 语气防御性过强
+- 回应模糊
+- 跳过困难问题
+- 过度承诺
+- 结构混乱
+- 用语不专业
 
-- **Defensive tone**: Don't argue excessively
-- **Vague responses**: Be specific about changes
-- **Ignoring concerns**: Address every point
-- **Over-promising**: Only commit to feasible additions
-- **Disorganized:**
-- **Poor formatting:** Use clear sections and structure
-- **Rude language:** Maintain professional tone
+## 示例场景
 
----
+### Clarity concern
 
-## Rebuttal Examples
+Reviewer：`The method description in Section 3 is unclear.`
 
-### Example 1: Clarity Concern
+可用回应：
 
-**Reviewer:** "The method description in Section 3 is unclear and hard to follow."
+- 承认原文不清
+- 指出重写了哪一节
+- 新增了 pseudocode / example / appendix
+- 明确表示现在可复现
 
-**Response:**
-```markdown
-We apologize for the confusion. We have rewritten Section 3.2 to clarify our algorithm:
+### Missing baseline
 
-**Original:** "We process the data using our method and get results."
+Reviewer：`You should compare with Method X.`
 
-**Revised:** "Our method consists of three stages: (1) We first normalize the input
-features using [technique]. (2) We then apply our core algorithm, which iteratively [process].
-(3) Finally, we post-process the outputs using [method]."
+可用回应：
 
-We also added Algorithm 1 with detailed steps and included a concrete example in
-Appendix A. We believe this revision makes the method reproducible and clear.
-```
+- 已补入 Table 3
+- 新 baseline 成绩是多少
+- 自己的方法领先多少
+- 如有 ablation，说明增益来自何处
 
-### Example 2: Missing Baseline
+### Overclaiming
 
-**Reviewer:** "You should compare with Method X (Smith et al., 2022)."
+Reviewer：`The abstract claims state-of-the-art too broadly.`
 
-**Response:**
-```markdown
-Thank you for this suggestion. We have added comparisons with Method X in our
-revised manuscript:
+可用回应：
 
-**Results in Table 3:** Our method achieves 92% accuracy compared to Method X's
-85% on dataset Y. This 7% improvement demonstrates the value of our [key innovation].
+- 承认 original claim 过强
+- 给出 revised sentence
+- 增加 Limitations section
+- 将泛化表述收紧到具体 tasks / settings
 
-**Ablation Study:** We show in Table 4 that our improvement comes specifically from
-[feature], not just better optimization.
+## 最终检查
 
-We chose not to include Method Z because [reason with citation].
-```
+- [ ] 所有 reviewer concerns 都已回应
+- [ ] 回应具体而清楚
+- [ ] 语气专业、尊重
+- [ ] 关键改动已在 manuscript 中体现
+- [ ] 所有 claims 都有证据支撑
+- [ ] 承诺都可执行
+- [ ] co-authors 已确认
+- [ ] 已通读排错
 
-### Example 3: Overclaiming
+## 备注
 
-**Reviewer:** "The abstract claims 'state-of-the-art' too broadly."
-
-**Response:**
-```markdown
-We accept this critique. Our original claim was too broad. We have revised the
-abstract:
-
-**Original:** "Our method achieves state-of-the-art performance across all tasks."
-
-**Revised:** "Our method achieves state-of-the-art on [specific tasks A and B] (Table 1)
-and competitive performance on [other tasks C and D] (Table 2)."
-
-We also added a Limitations section (Section 5) noting that performance may vary
-across domains and tasks.
-```
-
----
-
-## Final Checklist
-
-Before submitting rebuttal:
-
-- [ ] All reviewer concerns addressed
-- [ ] Responses are clear and specific
-- [ ] Tone is respectful and professional
-- [ ] Changes are marked in manuscript
-- [ ] Evidence provided for claims
-- [ ] Feasible commitments made
-- [ ] Co-authors agree with responses
-- [ ] Proofread for errors
-- [ ] Check formatting requirements
-
----
-
-## Notes
-
-- **Learn from successful rebuttals**: Read well-received papers' reviewer exchanges
-- **Practice humility**: Acknowledge mistakes, show willingness to improve
-- **Focus on core contribution**: Defend your main contribution without overclaiming
-- **Keep it concise**: Reviewers are busy; be respectful of their time
-
-**Updates:** This file is periodically updated with new strategies and examples from successful rebuttals.
+- 多读成功 rebuttal 的 reviewer exchange
+- 保持 humility，但不要放弃 defend 核心贡献
+- 把 rebuttal 当成“澄清和收束证据”的机会，而不是争论场

@@ -1,4 +1,4 @@
-# Konwinski Prize 2025 - AI GitHub Issue Resolver Competition
+# Konwinski Prize 2025 - AI GitHub Issue Resolver 竞赛笔记
 
 > **Competition URL**: https://www.kaggle.com/competitions/konwinski-prize
 >
@@ -10,653 +10,189 @@
 
 ---
 
-## Competition Brief
+## 竞赛简介
 
-### Overview
-The **Konwinski Prize** is a $1M competition founded by **Andy Konwinski** (co-founder of Databricks) that challenges teams to build an AI system capable of resolving **real GitHub issues**. The competition uses a contamination-free version of the SWE-bench benchmark with GitHub issues collected **after** submissions to prevent data leakage.
+### 概览
 
-### Prize Structure
-- **Grand Prize**: $1,000,000 for achieving >90% success rate (unclaimed)
-- **Round 1 First Place**: $50,000
-- **Total Prize Fund**: $1,225,000+
-- **Participation**: 616 teams in Round 1
+**Konwinski Prize** 是由 **Andy Konwinski** 发起的高奖金竞赛，目标是构建一个能够自动解决**真实 GitHub issue** 的 AI 系统。竞赛采用 contamination-free 的 SWE-bench 评测设置：测试 issue 会在提交冻结后再收集，以尽量避免训练或调参阶段发生数据泄露。
 
-### Key Challenge
-- **Goal**: Build an AI agent that can resolve real GitHub issues
-- **Evaluation**: Performed on a **contamination-free test set** collected after submission
-- **Success Criterion**: >90% issue resolution rate
-- **Timeline**: Round 1 submissions closed July 2025; next round TBD
+### 奖项结构
 
-### Round 1 Results (July 2025)
-| Rank | Participant | Score | Achievement |
-|------|-------------|-------|-------------|
-| 1st | Eduardo Rocha de Andrade | 7.5% (0.058242) | $50,000 prize |
-| 2nd | camaro | ~6-7% | Public 2nd Place |
-| 3rd | Anonymous | ~5-6% | Bronze Medal |
-| 4th | Anonymous | ~5-6% | "Select-Patch-Verify-Test" |
-| 5th | Anonymous | ~5% | Regex traceback analysis |
-| 6th | quan16369 (Team of 2) | 0.8% | Gold Medal (3 correct, 2 wrong) |
+- **Grand Prize**：成功率超过 90% 时可获得 $1,000,000（截至当前尚未触发）
+- **Round 1 First Place**：$50,000
+- **总奖池**：$1,225,000+
+- **Round 1 参赛规模**：616 支队伍
 
-**Key Insight**: The winning score of **7.5%** highlights how extremely difficult real-world GitHub issue resolution is, even for state-of-the-art AI systems.
+### 核心挑战
 
-### Technical Constraints
-- **Open-Weight Models Only**: No closed models (GPT-4, Claude, etc.) allowed
-- **No External API Calls**: Must run locally
-- **Runtime Environment**: Limited computing resources
-- **Test Set**: Hidden until evaluation, collected after submission freeze
+- **目标**：构建能够自动修复真实 GitHub issue 的 AI Agent
+- **评估方式**：在隐藏的 contamination-free 测试集上离线评估
+- **成功标准**：真实修复成功率越高越好；错误修复会被重罚
+- **时间线**：Round 1 于 2025 年 7 月截止，后续轮次以官方公告为准
 
----
+### Round 1 成绩概览（2025 年 7 月）
 
-## Top Solutions Analysis
+| 排名 | 参赛者 | 分数/表现 | 备注 |
+|------|--------|-----------|------|
+| 1st | Eduardo Rocha de Andrade | 7.5%（0.058242） | 获得 $50,000 |
+| 2nd | camaro | 约 6% - 7% | Public 榜前列 |
+| 3rd | Anonymous | 约 5% - 6% | Bronze Medal |
+| 4th | Anonymous | 约 5% - 6% | `Select-Patch-Verify-Test` 思路 |
+| 5th | Anonymous | 约 5% | 使用 regex traceback analysis |
+| 6th | quan16369（2 人队） | 0.8% | 3 correct, 2 wrong，仍获 Gold Medal |
 
-### 1st Place: Eduardo Rocha de Andrade (7.5% success)
+**关键洞察**：第一名只有 7.5%，说明“真实仓库里的 issue 自动修复”远比常规 benchmark 里的代码生成更难，真正困难之处在于定位、验证、选择跳过以及避免错误修复。
 
-**Approach Summary**: Prompt engineering + careful test case generation
+### 技术约束
 
-**Key Techniques**:
-- Meticulous prompt engineering
-- Automated test case generation (Fail-to-Pass tests)
-- Careful patch validation
-- Conservative submission strategy (only high-confidence fixes)
-
-**Why It Won**:
-- Quality over quantity: Only submitted fixes with highest confidence
-- Proper test validation to ensure patches actually work
-- Avoided the heavy penalties for wrong fixes
+- 只能使用 **open-weight models**
+- 不允许调用外部闭源 API
+- 必须在本地计算资源下运行
+- 测试集在评测前不可见
 
 ---
 
-### 4th Place: "Select-Patch-Verify-Test" Pipeline
+## 前排方案分析
 
-**Architecture**:
-```
-Select → Patch → Verify → Test → Choose
-```
+### 1st Place：Eduardo Rocha de Andrade（7.5%）
 
-**Pipeline Steps**:
+**总体策略**：高质量 prompt 设计 + 审慎的验证流程 + 保守提交策略。
 
-1. **Select**: Analyze bug reports + code tree to identify relevant files
-2. **Patch**: Generate candidate patches using LLM
-3. **Verify**: Multi-attempt LLM verification (measure confidence)
-4. **Test**: Generate F2P (Fail-to-Pass) tests
-   - Tests must fail on original code
-   - Tests must pass after patch application
-5. **Choose**: Rule-based scoring with strict filtering
+**核心做法：**
 
-**Key Innovation**: The **mandatory testing phase** was crucial for objective validation.
+- 细致的 prompt engineering
+- 自动构造 Fail-to-Pass tests
+- 对候选 patch 做严格校验
+- 只有在高置信度时才提交修复
 
----
+**经验要点：**
 
-### 5th Place: Regex Traceback Analysis
+1. 真实 issue 的难点不只是“写 patch”，而是先找准该修什么。
+2. 验证强于生成，能稳定识别错误 patch 才能避免被重罚。
+3. 保守跳过比盲目修复更有价值。
 
-**Key Strategy**:
-- Use regex to extract traceback information from error messages
-- Focus LLM attention on specific error locations
-- More targeted patch generation
-- Reduced context window usage
+### 4th/6th Place 一类方案：Select-Patch-Verify-Choose
 
-**Effectiveness**: Improved localization of bugs, less hallucination.
+这类方案普遍把流程拆成几个明确阶段：
 
----
+1. **Select**：根据 issue、traceback、仓库结构筛选候选文件和代码段
+2. **Patch**：围绕候选位置生成多个补丁
+3. **Verify**：使用模型自检、测试或规则校验评估补丁是否可信
+4. **Choose**：按评分函数决定提交哪个 patch，或者直接 skip
 
-### 6th Place: Select-Patch-Verify-Choose (quan16369)
+这类 pipeline 的优点是可解释、易调参，也更适合受限算力场景。
 
-**Performance**:
-- Private LB: 0.823% (3 correct, 2 wrong, 115 skipped)
-- Public LB: -0.0097% (1 correct, 1 wrong, 69 skipped)
+### 5th Place：Regex traceback analysis
 
-**Core Pipeline**:
-```python
-Select → Patch → Verify (Multi-attempt) → Choose (Logic)
-```
+这一类方案强调用更便宜、更稳定的启发式手段缩小搜索空间，典型方法包括：
 
-**Key Techniques**:
+- 对 traceback 做 regex 抽取
+- 将 issue 文本中的文件名、函数名、异常名转成定位线索
+- 用规则先找潜在改动位置，再交给模型生成 patch
 
-#### 1. Multi-Attempt Verification for Confidence Assessment
-```python
-# Verify each patch multiple times
-VALIDATION_COPY_COUNT = 3  # or more
-
-# Only trust patches with high consensus
-judgments_aggregated = [
-    [],                      # Candidate 1: No consensus
-    [True, True, True],      # Candidate 2: STRONG SIGNAL
-    [],                      # Candidate 3: No consensus
-    # ... etc
-]
-```
-
-#### 2. Sophisticated Scoring Function
-```python
-def calculate_patch_score(patch, judgments):
-    # Heavy penalty if invalid or no Yes votes
-    if not is_valid(patch) or judgments.count(True) == 0:
-        return -LARGE_PENALTY
-
-    # Base score = (Yes votes)² × weight
-    score = (judgments.count(True) ** 2) * 5.0
-
-    # EXPONENTIAL size penalty - forces concise solutions
-    score -= (np.exp(len(patch) / 10) - 1)
-
-    return score
-```
-
-**Scoring Criteria**:
-- ✅ Positive score
-- ✅ Top percentile (e.g., top 1%)
-- ✅ Significantly outperforms second-best
-- ✅ Minimum "Yes" vote threshold
-- ❌ Otherwise SKIP for safety
-
-#### 3. Size Penalty Strategy
-- **Exponential penalty** for patch length
-- Forces LLM to find minimal, precise solutions
-- Prevents unnecessary changes that cause side effects
-
-**Why Only 6th Place**:
-- No **objective testing phase** (unlike top 5)
-- Relied only on LLM self-verification (hallucination risk)
-- Missed the importance of F2P tests
+这种做法的价值在于：先把仓库范围压小，再让 LLM 做局部决策，整体成功率通常会高于“让模型直接全仓自由发挥”。
 
 ---
 
-### Common Themes Across Top Solutions
+## 任务拆解视角
 
-#### What Worked:
-1. **Conservative Strategy**: Better to skip than be wrong
-   - Wrong fixes: Heavy penalty
-   - Skips: Small penalty
-   - **Insight**: Quality > Quantity
+把 Konwinski Prize 看成一个完整软件工程闭环，会更容易理解高分方案为何都很保守：
 
-2. **Multi-Attempt Verification**
-   - Don't trust single LLM judgment
-   - Aggregate multiple verification attempts
-   - Use consensus as confidence metric
+### 1. 问题理解
 
-3. **Size Penalties**
-   - Exponential penalty for large patches
-   - Forces minimal, targeted fixes
-   - Reduces side effects
+- 读取 GitHub issue
+- 提炼复现线索
+- 判断这是逻辑 bug、边界条件问题、依赖问题，还是测试缺失
 
-4. **Test Case Generation** (Critical for top places)
-   - Generate Fail-to-Pass tests
-   - Must fail on original code
-   - Must pass after patching
-   - Objective validation (not subjective LLM judgment)
+### 2. 定位
 
-#### What Didn't Work:
-1. **Aggressive Fixing**: Trying to fix everything led to more wrong fixes
-2. **Single Verification**: Trusting one LLM judgment caused hallucinations
-3. **Large Patches**: More code = more chance of breaking something
-4. **No Objective Tests**: Pure LLM verification is unreliable
+- 从 traceback、文件名、函数名、测试名、日志片段中确定候选模块
+- 识别最可能需要修改的代码范围
+
+### 3. 生成补丁
+
+- 生成最小改动 patch
+- 避免过度重构
+- 优先追求“通过验证”而不是“看起来聪明”
+
+### 4. 验证
+
+- 能跑测试就跑测试
+- 不能跑测试时，至少做静态一致性检查与模型多次交叉判断
+- 对副作用进行显式审查
+
+### 5. 决策
+
+- 高置信度才提交
+- 低置信度宁可 skip
 
 ---
 
-## Code Templates
+## 为什么这类竞赛这么难
 
-### Template 1: Select-Patch-Verify-Choose Pipeline
+### 1. Benchmark 更接近真实仓库
 
-```python
-import numpy as np
-from typing import List, Tuple
+这不是单纯的单文件补全，而是要在真实项目上下文中理解：
 
-class KonwinskiPrizeAgent:
-    def __init__(self, llm_client):
-        self.llm = llm_client
-        self.VALIDATION_COPY_COUNT = 3
-        self.SIZE_PENALTY_WEIGHT = 0.1
+- issue 描述
+- 文件结构
+- 依赖关系
+- 测试行为
+- 可能的副作用
 
-    def select_relevant_code(self, issue: str, code_tree: dict) -> List[str]:
-        """Select relevant files using LLM analysis"""
-        prompt = f"""
-        Analyze this GitHub issue and identify relevant files:
+### 2. 错误修复代价很高
 
-        Issue: {issue}
+很多比赛里“尝试一下”没有太大坏处，但这里错误 patch 会被重罚，因此系统必须能判断“自己不确定”。
 
-        Code Tree:
-        {self._format_code_tree(code_tree)}
+### 3. 测试与验证不完整
 
-        Return a list of relevant files with brief explanations.
-        """
-        # Multiple selection attempts for diversity
-        selections = []
-        for _ in range(3):
-            selection = self.llm.generate(prompt)
-            selections.append(selection)
-        return selections
+有些仓库测试本来就不全，或者 issue 难以稳定复现，这迫使方案必须结合：
 
-    def generate_patches(self, issue: str, selected_code: str) -> List[str]:
-        """Generate multiple candidate patches"""
-        prompt = f"""
-        GitHub Issue: {issue}
+- prompt-based reasoning
+- 规则校验
+- 多样本验证
+- 保守选择策略
 
-        Relevant Code:
-        {selected_code}
+### 4. 泛化要求极强
 
-        Generate 5 different git diff patches to fix this issue.
-        Each patch should be minimal and targeted.
-        """
-        patches = self.llm.generate(prompt)
-        return self._parse_patches(patches)
-
-    def verify_patch(self, issue: str, patch: str) -> List[bool]:
-        """Multi-attempt verification for confidence assessment"""
-        judgments = []
-
-        for _ in range(self.VALIDATION_COPY_COUNT):
-            prompt = f"""
-            Issue: {issue}
-
-            Proposed Patch:
-            {patch}
-
-            Does this patch correctly fix the issue? Answer Yes or No.
-            """
-            response = self.llm.generate(prompt)
-            is_yes = "yes" in response.lower()
-            judgments.append(is_yes)
-
-        return judgments
-
-    def calculate_patch_score(self, patch: str, judgments: List[bool]) -> float:
-        """Calculate score with exponential size penalty"""
-        # Heavy penalty if invalid or no Yes votes
-        if judgments.count(True) == 0:
-            return -1000.0
-
-        # Base score = (Yes votes)² × weight
-        score = (judgments.count(True) ** 2) * 5.0
-
-        # Exponential size penalty
-        score -= (np.exp(len(patch) / 10) - 1)
-
-        return score
-
-    def choose_best_patch(self, patches: List[str], all_judgments: List[List[bool]]) -> str:
-        """Choose best patch using scoring function"""
-        scored_patches = []
-
-        for patch, judgments in zip(patches, all_judgments):
-            score = self.calculate_patch_score(patch, judgments)
-            scored_patches.append((patch, score, judgments))
-
-        # Sort by score
-        scored_patches.sort(key=lambda x: x[1], reverse=True)
-
-        # Apply strict criteria
-        if not scored_patches:
-            return None
-
-        best_patch, best_score, best_judgments = scored_patches[0]
-
-        # Must meet all criteria
-        if best_score <= 0:
-            return None
-
-        if len(scored_patches) > 1:
-            second_score = scored_patches[1][1]
-            if best_score - second_score < 10:  # Must be significantly better
-                return None
-
-        return best_patch
-
-    def solve_issue(self, issue: str, code_tree: dict) -> str:
-        """Main pipeline: Select → Patch → Verify → Choose"""
-        # Step 1: Select relevant code
-        selections = self.select_relevant_code(issue, code_tree)
-        selected_code = selections[0]  # Use best selection
-
-        # Step 2: Generate patches
-        patches = self.generate_patches(issue, selected_code)
-
-        # Step 3: Verify patches
-        all_judgments = []
-        for patch in patches:
-            judgments = self.verify_patch(issue, patch)
-            all_judgments.append(judgments)
-
-        # Step 4: Choose best patch
-        best_patch = self.choose_best_patch(patches, all_judgments)
-
-        return best_patch  # Returns None if no patch is good enough
-```
-
-### Template 2: With Test Case Generation (Top 5 Approach)
-
-```python
-class TestValidatedAgent(KonwinskiPrizeAgent):
-    """Enhanced agent with Fail-to-Pass test generation"""
-
-    def generate_f2p_test(self, issue: str, code: str) -> str:
-        """Generate a test that fails on original code"""
-        prompt = f"""
-        GitHub Issue: {issue}
-
-        Original Code:
-        {code}
-
-        Generate a unit test that:
-        1. FAILS on the current (buggy) code
-        2. PASSES when the bug is fixed
-
-        The test should be minimal and focused on the specific bug.
-        """
-        test_code = self.llm.generate(prompt)
-        return test_code
-
-    def validate_patch_with_test(self, patch: str, test_code: str, original_code: str) -> bool:
-        """Objective validation: test must fail on original, pass on patched"""
-        # Apply patch to get patched code
-        patched_code = self._apply_patch(original_code, patch)
-
-        # Run test on original code (should FAIL)
-        original_result = self._run_test(test_code, original_code)
-        if original_result != "FAIL":
-            return False  # Test doesn't fail on buggy code!
-
-        # Run test on patched code (should PASS)
-        patched_result = self._run_test(test_code, patched_code)
-        if patched_result != "PASS":
-            return False  # Test doesn't pass on fixed code!
-
-        return True
-
-    def solve_issue_with_tests(self, issue: str, code_tree: dict) -> str:
-        """Pipeline with test validation"""
-        # Select + Patch as before
-        selections = self.select_relevant_code(issue, code_tree)
-        patches = self.generate_patches(issue, selections[0])
-
-        # Generate test
-        test_code = self.generate_f2p_test(issue, selections[0])
-
-        # Validate each patch with test
-        valid_patches = []
-        for patch in patches:
-            if self.validate_patch_with_test(patch, test_code, selections[0]):
-                valid_patches.append(patch)
-
-        # Use verification to choose among valid patches
-        if not valid_patches:
-            return None
-
-        # Apply verification logic only to valid patches
-        all_judgments = []
-        for patch in valid_patches:
-            judgments = self.verify_patch(issue, patch)
-            all_judgments.append(judgments)
-
-        return self.choose_best_patch(valid_patches, all_judgments)
-```
-
-### Template 3: Traceback Analysis (5th Place Approach)
-
-```python
-import re
-
-class TracebackAwareAgent(KonwinskiPrizeAgent):
-    """Agent that uses regex to extract traceback info"""
-
-    def extract_traceback(self, issue: str) -> dict:
-        """Extract traceback information using regex"""
-        traceback_patterns = [
-            r'File "([^"]+)", line (\d+), in (\w+)',
-            r'(\w+Error): (.+)',
-            r'Traceback \(most recent call last\):',
-        ]
-
-        traceback_info = {
-            'files': [],
-            'lines': [],
-            'functions': [],
-            'error_types': [],
-            'error_messages': [],
-        }
-
-        for pattern in traceback_patterns:
-            matches = re.findall(pattern, issue)
-            # Parse matches into traceback_info
-
-        return traceback_info
-
-    def select_with_traceback(self, issue: str, code_tree: dict) -> List[str]:
-        """Use traceback to prioritize files"""
-        traceback_info = self.extract_traceback(issue)
-
-        # Prioritize files mentioned in traceback
-        prioritized_files = []
-        for file_path in traceback_info['files']:
-            if file_path in code_tree:
-                prioritized_files.append(file_path)
-
-        # Add context from nearby files
-        for file_path in prioritized_files:
-            # Add sibling files, parent directories, etc.
-
-        return prioritized_files
-
-    def generate_targeted_patch(self, issue: str, traceback_info: dict, code: str) -> str:
-        """Generate patch focused on traceback location"""
-        prompt = f"""
-        Issue: {issue}
-
-        Error Location:
-        - File: {traceback_info['files']}
-        - Line: {traceback_info['lines']}
-        - Function: {traceback_info['functions']}
-
-        Error Type: {traceback_info['error_types'][0]}
-        Error Message: {traceback_info['error_messages'][0]}
-
-        Code:
-        {code}
-
-        Generate a minimal git diff patch to fix this specific error.
-        Focus on the exact location mentioned in the traceback.
-        """
-        patch = self.llm.generate(prompt)
-        return patch
-```
+测试集在提交后收集，意味着不能通过背 benchmark、记住训练数据来偷分，真正比拼的是泛化的软件工程能力。
 
 ---
 
-## Best Practices
+## 可复用方法论
 
-### 1. Conservative Strategy > Aggressive Fixing
+从这场竞赛里，可以抽出几条对 Code Agent 很有价值的原则：
 
-**Key Insight**: The evaluation heavily penalizes wrong fixes more than skips.
+### 原则 1：先缩小搜索空间，再生成 patch
 
-```python
-# Bad: Try to fix everything
-if patch_score > 0:
-    submit(patch)  # Might submit low-quality patches
+先用 issue 关键词、traceback、函数调用关系、文件路径等线索缩小候选位置，再让模型动手，通常比全仓盲修更稳。
 
-# Good: Only submit when very confident
-if (patch_score > 0 and
-    patch_score > second_best_score * 2 and  # Significantly better
-    min_yes_votes >= 3):  # Strong consensus
-    submit(patch)
-else:
-    skip()  # Better safe than sorry
-```
+### 原则 2：把“验证”做成独立阶段
 
-### 2. Multi-Attempt Verification is Essential
+不要把 patch generation 和 patch acceptance 混在一起。生成只是候选，验证决定是否值得提交。
 
-**Key Insight**: Single LLM judgments are unreliable due to hallucination.
+### 原则 3：把 skip 当成有效动作
 
-```python
-# Bad: Trust single verification
-if verify(patch) == "Yes":
-    trust(patch)
+在高惩罚任务中，skip 不是失败，而是风险控制的一部分。
 
-# Good: Aggregate multiple verifications
-verifications = [verify(patch) for _ in range(5)]
-yes_count = sum(1 for v in verifications if v == "Yes")
-if yes_count >= 4:  # Strong consensus
-    trust(patch)
-```
+### 原则 4：启发式方法依然重要
 
-### 3. Exponential Size Penalties Work
+regex、错误栈提取、关键词匹配、文件打分这些传统工程技巧，在 Agent 体系中仍然非常有用。
 
-**Key Insight**: Larger patches have exponentially higher risk of side effects.
+### 原则 5：最小可行修复优于大改动
 
-```python
-def score_with_size_penalty(patch, base_score):
-    # Exponential penalty
-    penalty = np.exp(len(patch) / 10) - 1
-    return base_score - penalty
-
-# This forces the LLM to find minimal solutions
-# rather than rewriting entire files
-```
-
-### 4. Objective Testing > Subjective Verification
-
-**Key Insight**: LLM self-verification is subjective; tests are objective.
-
-```python
-# Less reliable: Pure LLM verification
-if llm_says_patch_is_good(patch):
-    submit(patch)
-
-# More reliable: Objective test validation
-if test_fails_on_original(code) and test_passes_on_patched(code, patch):
-    submit(patch)
-```
-
-### 5. Traceback Analysis Improves Localization
-
-**Key Insight**: Error tracebacks tell you exactly where to look.
-
-```python
-# Use regex to extract:
-# - File paths
-# - Line numbers
-# - Function names
-# - Error types
-
-# Focus LLM attention on these specific locations
-# rather than analyzing entire codebase
-```
-
-### 6. Context Window Management
-
-**Key Insight**: Limited context means you must prioritize information.
-
-```python
-# Bad: Send entire codebase
-context = entire_repository  # Too large!
-
-# Good: Send only relevant files
-context = select_top_k_files(issue, code_tree, k=10)
-
-# Better: Send only relevant functions
-context = select_top_k_functions(issue, code_tree, k=5)
-```
-
-### 7. Model Selection
-
-**Open-Weight Models** (allowed in competition):
-- **Qwen2.5-Coder-32B-Instruct**: Good balance of capability and size
-- **DeepSeek-Coder-V2**: Strong coding performance (may be too large)
-- **CodeLlama-34B**: Reliable but older
-
-**Strategies**:
-- Use smaller models for selection/verification
-- Use larger models for patch generation
-- Ensemble multiple models if compute allows
+真实 issue 修复更偏向“小而准”的 patch，大范围重构通常更难通过验证。
 
 ---
 
-## Lessons Learned
+## 对未来 Code Agent 的启发
 
-### What Round 1 Revealed
+Konwinski Prize 表明，下一阶段 Code Agent 的关键不只是更大的模型，而是更可靠的系统设计：
 
-1. **Real-World Code is Much Harder Than Benchmarks**
-   - SWE-bench Verified: ~75% top score
-   - Konwinski Prize: 7.5% top score
-   - **Gap**: Contamination-free, recent issues are significantly harder
+- 更稳的仓库定位能力
+- 更强的 test synthesis 与 failure reproduction
+- 更好的 patch ranking
+- 更明确的 uncertainty estimation
+- 更严格的 verification loop
 
-2. **Objective Testing is Non-Negotiable**
-   - All top 5 solutions used test generation
-   - 6th place (no tests) dropped to 0.8%
-   - LLM verification alone is insufficient
-
-3. **Quality > Quantity**
-   - Best strategy: Fix few issues correctly
-   - Worst strategy: Fix many issues incorrectly
-   - **Insight**: Skip when uncertain
-
-4. **Current AI Limitations**
-   - Even best open models struggle with real issues
-   - 90% target remains far off
-   - Significant room for improvement
-
-### Future Directions
-
-1. **Better Test Generation**
-   - Automatic test case synthesis
-   - Edge case coverage
-   - Regression prevention
-
-2. **Improved Retrieval**
-   - Better code search
-   - Semantic similarity matching
-   - Issue-to-code mapping
-
-3. **Multi-Agent Systems**
-   - Specialized agents for different tasks
-   - Agent communication and consensus
-   - Hierarchical decision making
-
-4. **Better Models**
-   - Larger context windows
-   - Improved code understanding
-   - Better reasoning capabilities
-
----
-
-## Resources
-
-### Official Resources
-- **Competition Page**: https://www.kaggle.com/competitions/konwinski-prize
-- **Official Website**: https://kprize.ai
-- **Strategy Guide**: https://github.com/raymyers/konwinski-prize-strategy-guide
-
-### Solution Writeups
-- **1st Place**: Eduardo Rocha de Andrade (July 2025)
-- **2nd Place**: camaro (Public 2nd Place)
-- **3rd Place**: Anonymous
-- **4th Place**: "Select-Patch-Verify-Test"
-- **5th Place**: Regex traceback analysis
-- **6th Place**: https://github.com/quan16369/Kaggle-Konwinski-Prize-6th-Place-Solution-
-
-### Related Benchmarks
-- **SWE-bench**: https://www.swebench.com/
-- **SWE-bench Verified**: https://www.swebench.com/verified
-- **SWE-agent**: https://github.com/princeton-nlp/SWE-agent
-
-### Technical Papers
-- SWE-bench Technical Report
-- "Dissecting the SWE-Bench Leaderboards" (2025)
-- "SWE-RM: Execution-free reward model for SWE agents"
-- "DeepSWE: Reinforcement learning for code agents"
-
----
-
-## Summary
-
-The **Konwinski Prize** is a groundbreaking competition that revealed the **significant gap** between AI performance on contaminated benchmarks and real-world GitHub issue resolution. With a winning score of only **7.5%**, the competition demonstrated that:
-
-1. **Current AI is far from 90% automated software engineering**
-2. **Objective testing is essential** for reliable code generation
-3. **Conservative strategies beat aggressive approaches**
-4. **Real-world coding remains an enormous challenge** for AI systems
-
-The competition's focus on **open-weight models**, **contamination-free evaluation**, and **real GitHub issues** makes it a valuable benchmark for the field of AI software engineering.
-
----
-
-**Last Updated**: January 2026
-**Sources**: Kaggle competition page, solution writeups, GitHub repositories, and news articles
+对任何想做自动化软件修复、SWE-bench、repo-level agent 的团队来说，这场竞赛最值得学的不是“神奇 prompt”，而是**保守、分阶段、强验证、允许跳过**的系统工程思路。

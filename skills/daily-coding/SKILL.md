@@ -1,76 +1,76 @@
 ---
 name: daily-coding
-description: Use for everyday coding tasks that involve writing or modifying source code.
+description: 用于涉及编写或修改源码的日常编码任务。
 version: 1.0.0
 tags: [Coding, Daily, Checklist]
 ---
 
-# Daily Coding Checklist
+# 日常编码检查清单
 
-A minimal coding quality assurance checklist ensuring every code modification follows best practices.
+一个最小化的编码质量保障清单，用于确保每次代码修改都遵循最佳实践。
 
-## When to Use
+## 何时使用
 
-Use this skill for:
-- Implementing new features
-- Adding code or modifying existing code
-- User requests like "write a...", "implement...", "add...", or "modify..."
-- Any coding task that involves Edit or Write tools
+在以下场景使用该 skill：
+- 实现新功能
+- 添加代码或修改现有代码
+- 用户提出类似 “write a...”、“implement...”、“add...” 或 “modify...” 的请求
+- 任何涉及 Edit 或 Write 工具的编码任务
 
-## When Not to Use
+## 何时不使用
 
-Do not use this skill for:
-- Pure reading or understanding tasks with no modification intent
-- Work already covered by specialized skills such as `bug-detective`, `architecture-design`, or `tdd-guide`
-- Configuration-only changes
-- Documentation-only writing
+不要在以下场景使用该 skill：
+- 没有修改意图的纯阅读或理解任务
+- 已被 `bug-detective`、`architecture-design` 或 `tdd-guide` 等专门 skills 覆盖的工作
+- 仅配置变更
+- 仅文档写作
 
-## Core Checklist
+## 核心清单
 
-### Before Starting
+### 开始前
 
-- [ ] **Read before modify** - Must read target file with Read tool before making changes
-- [ ] **Understand context** - Confirm understanding of existing code logic and design intent
+- [ ] **先读后改**：修改前必须先用 Read 工具读取目标文件
+- [ ] **理解上下文**：确认已理解现有代码逻辑和设计意图
 
-### During Coding
+### 编码过程中
 
-- [ ] **Minimal changes** - Only change what's necessary, no over-engineering, no unrelated features
-- [ ] **Type safety** - Add type hints for Python, avoid `any` in TypeScript
-- [ ] **Security check** - Avoid command injection, XSS, SQL injection vulnerabilities
+- [ ] **最小改动**：只改必要内容，不做过度工程，不添加无关功能
+- [ ] **类型安全**：Python 添加类型标注，TypeScript 避免 `any`
+- [ ] **安全检查**：避免命令注入、XSS、SQL injection 等漏洞
 
-### After Completion
+### 完成后
 
-- [ ] **Verify execution** - Ensure code runs correctly with no syntax errors
-- [ ] **Clean up** - Remove print/console.log debug statements and temporary files
-- [ ] **Brief summary** - Inform user what was changed and the scope of impact
+- [ ] **验证执行**：确保代码能正确运行且没有语法错误
+- [ ] **清理现场**：移除 `print` / `console.log` 调试语句和临时文件
+- [ ] **简要总结**：告知用户修改了什么以及影响范围
 
-## Quick Reference
+## 快速参考
 
-### Common Mistakes to Avoid
+### 常见错误避免
 
 ```python
-# ❌ Don't
+# Don't
 def process(data=[]):  # Mutable default argument
     pass
 
-# ✅ Should
+# Should
 def process(data: list | None = None):
     data = data or []
 ```
 
 ```python
-# ❌ Don't
+# Don't
 except:  # Bare except
     pass
 
-# ✅ Should
+# Should
 except ValueError as e:
     logger.error(f"Processing failed: {e}")
     raise
 ```
 
-### Security Check Points
+### 安全检查点
 
-- User input must be validated/escaped
-- Use pathlib for file paths, avoid path traversal
-- Never hardcode sensitive info (API keys, passwords)
+- 用户输入必须被校验或转义
+- 使用 `pathlib` 处理文件路径，避免 path traversal
+- 绝不硬编码敏感信息（API keys、passwords）

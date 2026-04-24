@@ -1,367 +1,207 @@
-# Reviewer Guidelines & Evaluation Criteria
+# 审稿标准与评估维度
 
-This reference documents how reviewers evaluate papers at major ML/AI conferences, helping authors anticipate and address reviewer concerns.
+本参考总结主要 ML/AI 会议审稿人如何评估论文，帮助作者提前识别可能的 reviewer concerns。
 
----
+## 通用评估维度
 
-## Contents
+主要会议通常围绕四个核心维度评审：
 
-- [Universal Evaluation Dimensions](#universal-evaluation-dimensions)
-- [NeurIPS Reviewer Guidelines](#neurips-reviewer-guidelines)
-- [ICML Reviewer Guidelines](#icml-reviewer-guidelines)
-- [ICLR Reviewer Guidelines](#iclr-reviewer-guidelines)
-- [ACL Reviewer Guidelines](#acl-reviewer-guidelines)
-- [What Makes Reviews Strong](#what-makes-reviews-strong)
-- [Common Reviewer Concerns](#common-reviewer-concerns)
-- [How to Address Reviewer Feedback](#how-to-address-reviewer-feedback)
+1. **Quality / Technical Soundness**
+   - claims 是否由理论或实验充分支撑
+   - proofs 是否正确
+   - baselines 是否合理且公平
+   - methodology 是否可靠
 
----
+2. **Clarity / Writing & Organization**
+   - 论文是否清晰、组织良好
+   - 是否能让领域专家复现
+   - notation 是否一致、术语是否定义
+   - 是否自包含
 
-## Universal Evaluation Dimensions
+3. **Significance / Impact**
+   - 结果对社区是否重要
+   - 是否解决重要问题
+   - 是否具有现实影响
 
-All major ML conferences assess papers across four core dimensions:
+4. **Originality / Novelty**
+   - 是否提供新 insight
+   - 与 prior work 有何不同
+   - 贡献是否非平凡
 
-### 1. Quality (Technical Soundness)
+NeurIPS 明确指出：originality 不一定等于“全新方法”，对现有方法给出新 insight 或揭示成功原因也可以非常原创。
 
-**What reviewers ask:**
-- Are claims well-supported by theoretical analysis or experimental results?
-- Are the proofs correct? Are the experiments properly controlled?
-- Are baselines appropriate and fairly compared?
-- Is the methodology sound?
+## NeurIPS 审稿倾向
 
-**How to ensure high quality:**
-- Include complete proofs (main paper or appendix with sketches)
-- Use appropriate baselines (not strawmen)
-- Report variance/error bars with methodology
-- Document hyperparameter selection process
+NeurIPS 常用 1-6 分：
 
-### 2. Clarity (Writing & Organization)
+| Score | 含义 |
+|-------|------|
+| 6 | Strong Accept |
+| 5 | Accept |
+| 4 | Borderline Accept |
+| 3 | Borderline Reject |
+| 2 | Reject |
+| 1 | Strong Reject |
 
-**What reviewers ask:**
-- Is the paper clearly written and well organized?
-- Can an expert in the field reproduce the results?
-- Is notation consistent? Are terms defined?
-- Is the paper self-contained?
+审稿人被鼓励：
 
-**How to ensure clarity:**
-- Use consistent terminology throughout
-- Define all notation at first use
-- Include reproducibility details (appendix acceptable)
-- Have non-authors read before submission
+- 按论文当前写出来的样子评审，而不是想象修完后会怎样
+- 提供建设性反馈
+- 不要惩罚诚实写 limitation 的作者
+- 检查 reproducibility
+- 考虑伦理风险
 
-### 3. Significance (Impact & Importance)
+## ICML 审稿倾向
 
-**What reviewers ask:**
-- Are the results impactful for the community?
-- Will others build upon this work?
-- Does it address an important problem?
-- What is the potential for real-world impact?
+ICML 通常要求：
 
-**How to demonstrate significance:**
-- Clearly articulate the problem's importance
-- Connect to broader research themes
-- Discuss potential applications
-- Compare to existing approaches meaningfully
+- Summary
+- Strengths
+- Weaknesses
+- Questions
+- Limitations
+- Ethics
+- Overall Score
 
-### 4. Originality (Novelty & Contribution)
+ICML 特别关注：
 
-**What reviewers ask:**
-- Does this provide new insights?
-- How does it differ from prior work?
-- Is the contribution non-trivial?
+- reproducibility 是否充分
+- experimental rigor 是否足够
+- writing quality 是否清楚
+- novelty 是否非平凡
 
-**Key insight from NeurIPS guidelines:**
-> "Originality does not necessarily require introducing an entirely new method. Papers that provide novel insights from evaluating existing approaches or shed light on why methods succeed can also be highly original."
+## ICLR 审稿倾向
 
----
+ICLR 常用 OpenReview 流程，含公开 review、author response 和 reviewer / AC 讨论。
 
-## NeurIPS Reviewer Guidelines
+通常会评：
 
-### Scoring System (1-6 Scale)
+- Soundness
+- Presentation
+- Contribution
+- Overall
+- Confidence
 
-| Score | Label | Description |
-|-------|-------|-------------|
-| **6** | Strong Accept | Groundbreaking, flawless work; top 2-3% of submissions |
-| **5** | Accept | Technically solid, high impact; would benefit the community |
-| **4** | Borderline Accept | Solid work with limited evaluation; leans accept |
-| **3** | Borderline Reject | Solid but weaknesses outweigh strengths; leans reject |
-| **2** | Reject | Technical flaws or weak evaluation |
-| **1** | Strong Reject | Well-known results or unaddressed ethics concerns |
+ICLR 特别注意：
 
-### Reviewer Instructions
+- LLM disclosure 是否合规
+- code availability
+- reciprocal reviewing 义务
 
-Reviewers are explicitly instructed to:
+## ACL 审稿倾向
 
-1. **Evaluate the paper as written** - not what it could be with revisions
-2. **Provide constructive feedback** - 3-5 actionable points
-3. **Not penalize honest limitations** - acknowledging weaknesses is encouraged
-4. **Assess reproducibility** - can the work be verified?
-5. **Consider ethical implications** - potential misuse or harm
+ACL 除通用维度外，还会看：
 
-### What Reviewers Should Avoid
+- linguistic soundness
+- dataset / model documentation
+- multilingual considerations
+- ethics review（bias、privacy、dual-use）
 
-- Superficial, uninformed reviews
-- Demanding unreasonable additional experiments
-- Penalizing authors for honest limitation acknowledgment
-- Rejecting for missing citations to reviewer's own work
+ACL 会特别检查 Limitations section 是否诚实充分。
 
-### Timeline (NeurIPS 2025)
+## 什么样的 review 算强
 
-- Bidding: May 17-21
-- Reviewing period: May 29 - July 2
-- Author rebuttals: July 24-30
-- Discussion period: July 31 - August 13
-- Final notifications: September 18
+强 review 一般遵循：
 
----
+1. 准确复述论文观点，证明理解到位
+2. 先指出做得好的地方
+3. 再指出问题和改进建议
+4. 给出具体、可执行的反馈
 
-## ICML Reviewer Guidelines
+一个好的 review 通常包含：
 
-### Review Structure
+- Summary
+- 3-5 条 strengths
+- 3-5 条 weaknesses
+- 2-4 个 clarification questions
+- minor issues（可选）
+- clear recommendation
 
-ICML reviewers provide:
+## 常见 reviewer concerns 与预防
 
-1. **Summary** - Brief description of contributions
-2. **Strengths** - Positive aspects
-3. **Weaknesses** - Areas for improvement
-4. **Questions** - Clarifications for authors
-5. **Limitations** - Assessment of stated limitations
-6. **Ethics** - Any concerns
-7. **Overall Score** - Recommendation
+### 技术
 
-### Scoring Guidelines
+- “Baselines too weak” -> 使用最新且合理的 baselines
+- “Missing ablations” -> 提供系统化 ablation
+- “No error bars” -> 报告 variance / error bars 和方法
+- “Hyperparameters not tuned” -> 写清 tuning 过程和搜索范围
+- “Claims not supported” -> 每个 claim 都有对应证据
 
-ICML uses a similar 1-6 scale with calibration:
-- Top 25% of accepted papers: Score 5-6
-- Typical accepted paper: Score 4-5
-- Borderline: Score 3-4
-- Clear reject: Score 1-2
+### 新颖性
 
-### Key Evaluation Points
+- “Incremental contribution” -> 明确写出相对 prior work 的非平凡增量
+- “Similar to paper X” -> 在 Related Work 中正面比较
+- “Straightforward extension” -> 强调非显然设计或 insight
 
-1. **Reproducibility** - Are there enough details?
-2. **Experimental rigor** - Multiple seeds, proper baselines?
-3. **Writing quality** - Clear, organized, well-structured?
-4. **Novelty** - Non-trivial contribution?
+### 清晰度
 
----
+- “Hard to follow” -> 加强结构和 signposting
+- “Notation inconsistent” -> 统一 notation
+- “Missing details” -> 提供 reproducibility appendix
+- “Figures unclear” -> 用自包含 caption 和足够尺寸
 
-## ICLR Reviewer Guidelines
+### 重要性
 
-### OpenReview Process
+- “Limited impact” -> 说明 broader implications
+- “Narrow evaluation” -> 增加 benchmark 或说明边界
+- “Only works in restricted setting” -> 诚实写 scope，并说明仍有价值
 
-ICLR uses OpenReview with:
-- Public reviews (after acceptance decisions)
-- Author responses visible to reviewers
-- Discussion between reviewers and ACs
+## 如何回应 reviewer feedback
 
-### Scoring
+### Rebuttal 最佳实践
 
-ICLR reviews include:
-- **Soundness**: 1-4 scale
-- **Presentation**: 1-4 scale
-- **Contribution**: 1-4 scale
-- **Overall**: 1-10 scale
-- **Confidence**: 1-5 scale
+应当：
 
-### Unique ICLR Considerations
+- 感谢 reviewer
+- 逐条回应具体 concern
+- 用证据支持
+- 保持简洁
+- 承认有效批评
 
-1. **LLM Disclosure** - Reviewers assess whether LLM use is properly disclosed
-2. **Reproducibility** - Emphasis on code availability
-3. **Reciprocal Reviewing** - Authors must also serve as reviewers
+不要：
 
----
+- 情绪化防御
+- 做无法兑现的承诺
+- 回避困难问题
+- 写过长 rebuttal
 
-## ACL Reviewer Guidelines
+### 适合直接接受的批评
 
-### ACL-Specific Criteria
+- 真实 technical error
+- 漏掉重要 related work
+- 表达不清
+- 缺失实验细节
 
-ACL adds NLP-specific evaluation:
+可以用：
+“The reviewer is correct that ... We will revise to ...”
 
-1. **Linguistic soundness** - Are linguistic claims accurate?
-2. **Resource documentation** - Are datasets/models properly documented?
-3. **Multilingual consideration** - If applicable, is language diversity addressed?
+### 可以礼貌反驳的情况
 
-### Limitations Section
+- reviewer 误解论文
+- 要求实验明显超出 scope
+- criticism 在事实层面不成立
 
-ACL specifically requires a Limitations section. Reviewers check:
-- Are limitations honest and comprehensive?
-- Do limitations undermine core claims?
-- Are potential negative impacts addressed?
+建议用：
+“We appreciate this perspective. However, ...”
 
-### Ethics Review
+## 投稿前自审
 
-ACL has a dedicated ethics review process for:
-- Dual-use concerns
-- Data privacy issues
-- Bias and fairness implications
+### Quality
+- [ ] 我自己看到这些结果会信吗？
+- [ ] 所有 claims 都有证据吗？
+- [ ] baselines 是否公平且足够新？
 
----
+### Clarity
+- [ ] 仅靠论文能否大致复现？
+- [ ] 非本子领域专家能否跟上叙述？
+- [ ] 术语和 notation 是否都已定义？
 
-## What Makes Reviews Strong
+### Significance
+- [ ] 社区为什么该关心这个问题？
+- [ ] 别人可以用这项工作做什么？
+- [ ] 这个问题是否重要？
 
-### Following Daniel Dennett's Rules
-
-Good reviewers follow these principles:
-
-1. **Re-express the position fairly** - Show you understand the paper
-2. **List agreements** - Acknowledge what works well
-3. **List what you learned** - Credit the contribution
-4. **Only then critique** - After establishing understanding
-
-### Review Structure Best Practices
-
-**Strong Review Structure:**
-```
-Summary (1 paragraph):
-- What the paper does
-- Main contribution claimed
-
-Strengths (3-5 bullets):
-- Specific positive aspects
-- Why these matter
-
-Weaknesses (3-5 bullets):
-- Specific concerns
-- Why these matter
-- Suggestions for addressing
-
-Questions (2-4 items):
-- Clarifications needed
-- Things that would change assessment
-
-Minor Issues (optional):
-- Typos, unclear sentences
-- Formatting issues
-
-Overall Assessment:
-- Clear recommendation with reasoning
-```
-
----
-
-## Common Reviewer Concerns
-
-### Technical Concerns
-
-| Concern | How to Pre-empt |
-|---------|-----------------|
-| "Baselines too weak" | Use state-of-the-art baselines, cite recent work |
-| "Missing ablations" | Include systematic ablation study |
-| "No error bars" | Report std dev/error, multiple runs |
-| "Hyperparameters not tuned" | Document tuning process, search ranges |
-| "Claims not supported" | Ensure every claim has evidence |
-
-### Novelty Concerns
-
-| Concern | How to Pre-empt |
-|---------|-----------------|
-| "Incremental contribution" | Clearly articulate what's new vs prior work |
-| "Similar to [paper X]" | Explicitly compare to X in Related Work |
-| "Straightforward extension" | Highlight non-obvious aspects |
-
-### Clarity Concerns
-
-| Concern | How to Pre-empt |
-|---------|-----------------|
-| "Hard to follow" | Use clear structure, signposting |
-| "Notation inconsistent" | Review all notation, create notation table |
-| "Missing details" | Include reproducibility appendix |
-| "Figures unclear" | Self-contained captions, proper sizing |
-
-### Significance Concerns
-
-| Concern | How to Pre-empt |
-|---------|-----------------|
-| "Limited impact" | Discuss broader implications |
-| "Narrow evaluation" | Evaluate on multiple benchmarks |
-| "Only works in restricted setting" | Acknowledge scope, explain why still valuable |
-
----
-
-## How to Address Reviewer Feedback
-
-### Rebuttal Best Practices
-
-**Do:**
-- Thank reviewers for their time
-- Address each concern specifically
-- Provide evidence (new experiments if possible)
-- Be concise—reviewers are busy
-- Acknowledge valid criticisms
-
-**Don't:**
-- Be defensive or dismissive
-- Make promises you can't keep
-- Ignore difficult criticisms
-- Write excessively long rebuttals
-- Argue about subjective assessments
-
-### Rebuttal Template
-
-```markdown
-We thank the reviewers for their thoughtful feedback.
-
-## Reviewer 1
-
-**R1-Q1: [Quoted concern]**
-[Direct response with evidence]
-
-**R1-Q2: [Quoted concern]**
-[Direct response with evidence]
-
-## Reviewer 2
-
-...
-
-## Summary of Changes
-If accepted, we will:
-1. [Specific change]
-2. [Specific change]
-3. [Specific change]
-```
-
-### When to Accept Criticism
-
-Some reviewer feedback should simply be accepted:
-- Valid technical errors
-- Missing important related work
-- Unclear explanations
-- Missing experimental details
-
-Acknowledge these gracefully: "The reviewer is correct that... We will revise to..."
-
-### When to Push Back
-
-You can respectfully disagree when:
-- Reviewer misunderstood the paper
-- Requested experiments are out of scope
-- Criticism is factually incorrect
-
-Frame disagreements constructively: "We appreciate this perspective. However, [explanation]..."
-
----
-
-## Pre-Submission Reviewer Simulation
-
-Before submitting, ask yourself:
-
-**Quality:**
-- [ ] Would I trust these results if I saw them?
-- [ ] Are all claims supported by evidence?
-- [ ] Are baselines fair and recent?
-
-**Clarity:**
-- [ ] Can someone reproduce this from the paper?
-- [ ] Is the writing clear to non-experts in this subfield?
-- [ ] Are all terms and notation defined?
-
-**Significance:**
-- [ ] Why should the community care about this?
-- [ ] What can people do with this work?
-- [ ] Is the problem important?
-
-**Originality:**
-- [ ] What specifically is new here?
-- [ ] How does this differ from closest related work?
-- [ ] Is the contribution non-trivial?
+### Originality
+- [ ] 到底哪一点是新的？
+- [ ] 与最近相关工作到底差在哪？
+- [ ] 贡献是否非平凡？

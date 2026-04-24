@@ -1,11 +1,11 @@
-# Batch Review Template
+# 批量评审模板
 
-## Portfolio Summary
-- Skills reviewed:
-- Highest-risk skills:
-- Common issue clusters:
+## 作品集摘要
+- 已评审的 skills：
+- 风险最高的 skills：
+- 常见问题簇：
 
-## Priority Backlog
+## 优先级待办
 ### P0
 - 
 ### P1

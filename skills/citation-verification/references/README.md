@@ -1,10 +1,10 @@
-# Citation Verification Reference Files
+# 引用验证参考文件
 
 ## 文件用途
 
 本目录中的文件提供**背景知识和参考信息**，用于理解引用验证的原理和常见问题。
 
-**重要**: 这些文件不是主要工作流的一部分。实际的引用验证使用 WebSearch 和 Google Scholar。
+**重要**：这些文件不是主要工作流的一部分。实际引用验证以 `ml-paper-writing` 中的 citation workflow 为准；WebSearch 和 Google Scholar 只作为发现与辅助核验入口。
 
 ## 文件说明
 

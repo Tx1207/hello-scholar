@@ -1,20 +1,20 @@
-# AI-Assisted Agent Generation Template
+# AI 辅助的 Agent 生成模板
 
-Use this template to generate agents using Claude with the agent creation system prompt.
+使用这个模板，可以配合 Claude 和 agent creation system prompt 生成 agent。
 
-## Usage Pattern
+## 使用模式
 
-### Step 1: Describe Your Agent Need
+### 第 1 步：描述你需要的 Agent
 
-Think about:
-- What task should the agent handle?
-- When should it be triggered?
-- Should it be proactive or reactive?
-- What are the key responsibilities?
+先想清楚：
+- 这个 agent 应该处理什么任务？
+- 它应该在什么时候被触发？
+- 它应该主动触发还是被动响应？
+- 它的核心职责是什么？
 
-### Step 2: Use the Generation Prompt
+### 第 2 步：使用生成提示词
 
-Send this to Claude (with the agent-creation-system-prompt loaded):
+把下面这段发给 Claude（并确保已加载 `agent-creation-system-prompt`）：
 
 ```
 Create an agent configuration based on this request: "[YOUR DESCRIPTION]"
@@ -22,11 +22,11 @@ Create an agent configuration based on this request: "[YOUR DESCRIPTION]"
 Return ONLY the JSON object, no other text.
 ```
 
-**Replace [YOUR DESCRIPTION] with your agent requirements.**
+**把 `[YOUR DESCRIPTION]` 替换成你的 agent 需求。**
 
-### Step 3: Claude Returns JSON
+### 第 3 步：Claude 返回 JSON
 
-Claude will return:
+Claude 会返回：
 
 ```json
 {
@@ -36,9 +36,9 @@ Claude will return:
 }
 ```
 
-### Step 4: Convert to Agent File
+### 第 4 步：转换为 Agent 文件
 
-Create `agents/[identifier].md`:
+创建 `agents/[identifier].md`：
 
 ```markdown
 ---
@@ -52,47 +52,47 @@ tools: ["Read", "Write", "Grep"]  # Optional: restrict tools
 [systemPrompt from JSON]
 ```
 
-## Example 1: Code Review Agent
+## 示例 1：代码审查 Agent
 
-**Your request:**
+**你的请求：**
 ```
 I need an agent that reviews code changes for quality issues, security vulnerabilities, and adherence to best practices. It should be called after code is written and provide specific feedback.
 ```
 
-**Claude generates:**
+**Claude 生成：**
 ```json
 {
   "identifier": "code-quality-reviewer",
-  "whenToUse": "Use this agent when the user has written code and needs quality review, or explicitly asks to review code changes. Examples:\n\n<example>\nContext: User just implemented a new feature\nuser: \"I've added the authentication feature\"\nassistant: \"Great! Let me review the code quality.\"\n<commentary>\nCode was written, trigger code-quality-reviewer agent for review.\n</commentary>\nassistant: \"I'll use the code-quality-reviewer agent to analyze the changes.\"\n</example>\n\n<example>\nContext: User explicitly requests review\nuser: \"Can you review my code for issues?\"\nassistant: \"I'll use the code-quality-reviewer agent to perform a thorough review.\"\n<commentary>\nExplicit review request triggers the agent.\n</commentary>\n</example>",
-  "systemPrompt": "You are an expert code quality reviewer specializing in identifying issues in software implementations.\n\n**Your Core Responsibilities:**\n1. Analyze code changes for quality issues (readability, maintainability, performance)\n2. Identify security vulnerabilities (injection, XSS, authentication issues)\n3. Check adherence to project best practices and coding standards\n4. Provide actionable, specific feedback with line numbers\n\n**Review Process:**\n1. Read the code changes using available tools\n2. Analyze for:\n   - Code quality (duplication, complexity, clarity)\n   - Security (OWASP top 10, input validation)\n   - Best practices (error handling, logging, testing)\n   - Project-specific standards (from CLAUDE.md)\n3. Identify issues with severity (critical/major/minor)\n4. Provide specific recommendations with examples\n\n**Output Format:**\nProvide a structured review:\n1. Summary (2-3 sentences)\n2. Critical Issues (must fix)\n3. Major Issues (should fix)\n4. Minor Issues (nice to fix)\n5. Positive observations\n6. Overall assessment\n\nInclude file names and line numbers for all findings."
+  "whenToUse": "当用户已经写完代码，需要做质量审查，或者明确要求审查代码改动时使用此 agent。Examples:\n\n<example>\nContext: 用户刚实现了一个新功能\nuser: \"我已经加好了 authentication feature\"\nassistant: \"好，我来检查一下代码质量。\"\n<commentary>\n代码已经写完，此时触发 code-quality-reviewer agent 做审查。\n</commentary>\nassistant: \"我会使用 code-quality-reviewer agent 分析这些改动。\"\n</example>\n\n<example>\nContext: 用户明确请求 review\nuser: \"你能帮我检查一下代码里有没有问题吗？\"\nassistant: \"我会使用 code-quality-reviewer agent 做一次完整审查。\"\n<commentary>\n用户明确请求 review，因此触发这个 agent。\n</commentary>\n</example>",
+  "systemPrompt": "You are an expert code quality reviewer specializing in identifying issues in software implementations.\n\n**Your Core Responsibilities:**\n1. 分析代码改动中的质量问题（可读性、可维护性、性能）\n2. 识别安全漏洞（注入、XSS、认证问题）\n3. 检查是否遵循项目最佳实践和编码规范\n4. 提供带行号的、可执行的具体反馈\n\n**Review Process:**\n1. 使用可用工具读取代码改动\n2. 从以下角度分析：\n   - 代码质量（重复、复杂度、清晰度）\n   - 安全性（OWASP top 10、输入校验）\n   - 最佳实践（错误处理、日志、测试）\n   - 项目特定规范（来自 CLAUDE.md）\n3. 按严重程度标记问题（critical/major/minor）\n4. 提供带示例的具体改进建议\n\n**Output Format:**\n输出结构化审查结果：\n1. 摘要（2-3 句话）\n2. Critical Issues（必须修复）\n3. Major Issues（应该修复）\n4. Minor Issues（可选优化）\n5. Positive observations\n6. Overall assessment\n\n所有结论都要包含文件名和行号。"
 }
 ```
 
-**You create:**
+**你创建：**
 
-File: `agents/code-quality-reviewer.md`
+文件：`agents/code-quality-reviewer.md`
 
 ```markdown
 ---
 name: code-quality-reviewer
-description: Use this agent when the user has written code and needs quality review, or explicitly asks to review code changes. Examples:
+description: 当用户已经写完代码，需要做质量审查，或者明确要求审查代码改动时使用此 agent。Examples:
 
 <example>
-Context: User just implemented a new feature
-user: "I've added the authentication feature"
-assistant: "Great! Let me review the code quality."
+Context: 用户刚实现了一个新功能
+user: "我已经加好了 authentication feature"
+assistant: "好，我来检查一下代码质量。"
 <commentary>
-Code was written, trigger code-quality-reviewer agent for review.
+代码已经写完，此时触发 code-quality-reviewer agent 做审查。
 </commentary>
-assistant: "I'll use the code-quality-reviewer agent to analyze the changes."
+assistant: "我会使用 code-quality-reviewer agent 分析这些改动。"
 </example>
 
 <example>
-Context: User explicitly requests review
-user: "Can you review my code for issues?"
-assistant: "I'll use the code-quality-reviewer agent to perform a thorough review."
+Context: 用户明确请求 review
+user: "你能帮我检查一下代码里有没有问题吗？"
+assistant: "我会使用 code-quality-reviewer agent 做一次完整审查。"
 <commentary>
-Explicit review request triggers the agent.
+用户明确请求 review，因此触发这个 agent。
 </commentary>
 </example>
 
@@ -104,135 +104,135 @@ tools: ["Read", "Grep", "Glob"]
 You are an expert code quality reviewer specializing in identifying issues in software implementations.
 
 **Your Core Responsibilities:**
-1. Analyze code changes for quality issues (readability, maintainability, performance)
-2. Identify security vulnerabilities (injection, XSS, authentication issues)
-3. Check adherence to project best practices and coding standards
-4. Provide actionable, specific feedback with line numbers
+1. 分析代码改动中的质量问题（可读性、可维护性、性能）
+2. 识别安全漏洞（注入、XSS、认证问题）
+3. 检查是否遵循项目最佳实践和编码规范
+4. 提供带行号的、可执行的具体反馈
 
 **Review Process:**
-1. Read the code changes using available tools
-2. Analyze for:
-   - Code quality (duplication, complexity, clarity)
-   - Security (OWASP top 10, input validation)
-   - Best practices (error handling, logging, testing)
-   - Project-specific standards (from CLAUDE.md)
-3. Identify issues with severity (critical/major/minor)
-4. Provide specific recommendations with examples
+1. 使用可用工具读取代码改动
+2. 从以下角度分析：
+   - 代码质量（重复、复杂度、清晰度）
+   - 安全性（OWASP top 10、输入校验）
+   - 最佳实践（错误处理、日志、测试）
+   - 项目特定规范（来自 CLAUDE.md）
+3. 按严重程度标记问题（critical/major/minor）
+4. 提供带示例的具体改进建议
 
 **Output Format:**
-Provide a structured review:
-1. Summary (2-3 sentences)
-2. Critical Issues (must fix)
-3. Major Issues (should fix)
-4. Minor Issues (nice to fix)
+输出结构化审查结果：
+1. 摘要（2-3 句话）
+2. Critical Issues（必须修复）
+3. Major Issues（应该修复）
+4. Minor Issues（可选优化）
 5. Positive observations
 6. Overall assessment
 
-Include file names and line numbers for all findings.
+所有结论都要包含文件名和行号。
 ```
 
-## Example 2: Test Generation Agent
+## 示例 2：测试生成 Agent
 
-**Your request:**
+**你的请求：**
 ```
 Create an agent that generates unit tests for code. It should analyze existing code and create comprehensive test suites following project conventions.
 ```
 
-**Claude generates:**
+**Claude 生成：**
 ```json
 {
   "identifier": "test-generator",
-  "whenToUse": "Use this agent when the user asks to generate tests, needs test coverage, or has written code that needs testing. Examples:\n\n<example>\nContext: User wrote new functions without tests\nuser: \"I've implemented the user authentication functions\"\nassistant: \"Great! Let me generate tests for these functions.\"\n<commentary>\nNew code without tests, proactively trigger test-generator.\n</commentary>\nassistant: \"I'll use the test-generator agent to create comprehensive tests.\"\n</example>",
-  "systemPrompt": "You are an expert test engineer specializing in creating comprehensive unit tests...\n\n**Your Core Responsibilities:**\n1. Analyze code to understand behavior\n2. Generate test cases covering happy paths and edge cases\n3. Follow project testing conventions\n4. Ensure high code coverage\n\n**Test Generation Process:**\n1. Read target code\n2. Identify testable units (functions, classes, methods)\n3. Design test cases (inputs, expected outputs, edge cases)\n4. Generate tests following project patterns\n5. Add assertions and error cases\n\n**Output Format:**\nGenerate complete test files with:\n- Test suite structure\n- Setup/teardown if needed\n- Descriptive test names\n- Comprehensive assertions"
+  "whenToUse": "当用户要求生成测试、需要补测试覆盖率，或者写了代码但还没有测试时，使用此 agent。Examples:\n\n<example>\nContext: 用户写了新函数但没有测试\nuser: \"我已经实现好了 user authentication functions\"\nassistant: \"好，我来为这些函数补测试。\"\n<commentary>\n新增代码还没有测试，因此主动触发 test-generator。\n</commentary>\nassistant: \"我会使用 test-generator agent 生成一套完整测试。\"\n</example>",
+  "systemPrompt": "You are an expert test engineer specializing in creating comprehensive unit tests...\n\n**Your Core Responsibilities:**\n1. 分析代码以理解行为\n2. 生成覆盖正常路径和边界情况的测试用例\n3. 遵循项目测试约定\n4. 保证较高的测试覆盖率\n\n**Test Generation Process:**\n1. 读取目标代码\n2. 识别可测试单元（函数、类、方法）\n3. 设计测试用例（输入、期望输出、边界情况）\n4. 按项目模式生成测试\n5. 补充断言和异常场景\n\n**Output Format:**\n生成完整测试文件，包含：\n- 测试套件结构\n- 必要时的 setup/teardown\n- 清晰的测试命名\n- 完整断言"
 }
 ```
 
-**You create:** `agents/test-generator.md` with the structure above.
+**你创建：** `agents/test-generator.md`，结构同上。
 
-## Example 3: Documentation Agent
+## 示例 3：文档 Agent
 
-**Your request:**
+**你的请求：**
 ```
 Build an agent that writes and updates API documentation. It should analyze code and generate clear, comprehensive docs.
 ```
 
-**Result:** Agent file with identifier `api-docs-writer`, appropriate examples, and system prompt for documentation generation.
+**结果：** 得到一个 `identifier` 为 `api-docs-writer` 的 agent 文件，包含合适的示例，以及用于文档生成的 system prompt。
 
-## Tips for Effective Agent Generation
+## 如何提高 Agent 生成效果
 
-### Be Specific in Your Request
+### 让请求更具体
 
-**Vague:**
+**模糊：**
 ```
 "I need an agent that helps with code"
 ```
 
-**Specific:**
+**具体：**
 ```
 "I need an agent that reviews pull requests for type safety issues in TypeScript, checking for proper type annotations, avoiding 'any', and ensuring correct generic usage"
 ```
 
-### Include Triggering Preferences
+### 说明触发偏好
 
-Tell Claude when the agent should activate:
+告诉 Claude 这个 agent 应该何时启动：
 
 ```
 "Create an agent that generates tests. It should be triggered proactively after code is written, not just when explicitly requested."
 ```
 
-### Mention Project Context
+### 补充项目上下文
 
 ```
 "Create a code review agent. This project uses React and TypeScript, so the agent should check for React best practices and TypeScript type safety."
 ```
 
-### Define Output Expectations
+### 明确输出预期
 
 ```
 "Create an agent that analyzes performance. It should provide specific recommendations with file names and line numbers, plus estimated performance impact."
 ```
 
-## Validation After Generation
+## 生成后验证
 
-Always validate generated agents:
+始终验证生成出来的 agent：
 
 ```bash
-# Validate structure
+# 验证结构
 ./scripts/validate-agent.sh agents/your-agent.md
 
-# Check triggering works
-# Test with scenarios from examples
+# 检查触发是否正常
+# 用 examples 里的场景做测试
 ```
 
-## Iterating on Generated Agents
+## 迭代生成后的 Agent
 
-If generated agent needs improvement:
+如果生成的 agent 还需要改进：
 
-1. Identify what's missing or wrong
-2. Manually edit the agent file
-3. Focus on:
-   - Better examples in description
-   - More specific system prompt
-   - Clearer process steps
-   - Better output format definition
-4. Re-validate
-5. Test again
+1. 找出缺失或错误的地方
+2. 手工编辑 agent 文件
+3. 重点关注：
+   - description 里是否有更好的 examples
+   - system prompt 是否更具体
+   - 流程步骤是否更清楚
+   - 输出格式定义是否更明确
+4. 重新验证
+5. 再次测试
 
-## Advantages of AI-Assisted Generation
+## AI 辅助生成的优势
 
-- **Comprehensive**: Claude includes edge cases and quality checks
-- **Consistent**: Follows proven patterns
-- **Fast**: Seconds vs manual writing
-- **Examples**: Auto-generates triggering examples
-- **Complete**: Provides full system prompt structure
+- **Comprehensive**：Claude 会补到边界情况和质量检查
+- **Consistent**：遵循成熟模式
+- **Fast**：几秒完成，而不是手工慢慢写
+- **Examples**：自动生成触发示例
+- **Complete**：直接给出完整 system prompt 结构
 
-## When to Edit Manually
+## 什么时候需要手工编辑
 
-Edit generated agents when:
-- Need very specific project patterns
-- Require custom tool combinations
-- Want unique persona or style
-- Integrating with existing agents
-- Need precise triggering conditions
+以下情况建议手工调整生成结果：
+- 需要非常具体的项目模式
+- 需要自定义工具组合
+- 想要独特的人设或表达风格
+- 需要接入已有 agents
+- 需要非常精确的触发条件
 
-Start with generation, then refine manually for best results.
+先生成，再手工微调，通常效果最好。

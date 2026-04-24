@@ -1,39 +1,39 @@
-# Error Handling
+# 错误处理
 
 ## Parse Errors
 
-**Symptom:** Cannot read improvement plan
+**症状：** 无法读取 improvement plan
 
-**Solutions:**
-- Verify file exists and is readable
-- Check file follows expected format
-- Ensure proper markdown structure
+**处理方式：**
+- 确认文件存在且可读
+- 检查格式是否符合预期
+- 确认 Markdown 结构完整
 
 ## Conflict Errors
 
-**Symptom:** Multiple changes to same content
+**症状：** 多个改动命中同一内容
 
-**Solutions:**
-- Apply highest priority change
-- Flag conflict for manual review
-- Document decision in report
+**处理方式：**
+- 优先应用更高优先级改动
+- 将冲突标记为人工复核
+- 在报告中记录决策
 
 ## Edit Failures
 
-**Symptom:** Cannot find current content to replace
+**症状：** 找不到要替换的当前内容
 
-**Solutions:**
-- Verify current content matches exactly
-- Check line numbers are correct
-- File may have been modified externally
-- Skip change and document in report
+**处理方式：**
+- 确认当前内容是否完全匹配
+- 检查行号是否正确
+- 可能文件已被外部修改
+- 跳过该改动并在报告中说明
 
 ## Verification Failures
 
-**Symptom:** Update broke skill structure
+**症状：** 更新后 skill 结构被破坏
 
-**Solutions:**
-- Restore from backup
-- Review conflicting changes
-- Apply changes individually
-- Skip problematic changes
+**处理方式：**
+- 从备份恢复
+- 检查冲突改动
+- 改为逐条应用
+- 跳过有问题的更新

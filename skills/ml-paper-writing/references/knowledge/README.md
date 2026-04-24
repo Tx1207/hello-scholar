@@ -1,60 +1,67 @@
-# Academic Writing Knowledge Base
+# 学术写作知识库
 
-This knowledge base contains reusable academic writing knowledge mined from papers.
+该知识库存放从论文中挖掘出的、可复用的 academic writing knowledge。
 
 ## Canonical maintained memory
 
-The canonical paper-miner memory is:
+当前 canonical paper-miner memory 位于：
 
 - `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 
-This is the **only maintained paper-miner writing memory**.
+这是**唯一持续维护中的 paper-miner writing memory**。
 
-It stores:
-- writing patterns mined,
-- structure signals,
-- reusable phrasing,
-- venue-specific signals,
-- how those signals help future writing,
-- and a source index.
+它存储：
 
-## Maintenance rule
+- 挖掘出的 writing patterns
+- 结构信号
+- 可复用措辞
+- venue-specific signals
+- 这些信号如何帮助后续写作
+- source index
 
-`paper-miner` always writes mined writing knowledge into `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`.
+## 维护规则
 
-This memory is:
-- **global**,
-- **cross-project**,
-- **not project-specific**.
+`paper-miner` 总是把挖掘出的写作知识写入 `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`。
 
-If `paper-miner` is invoked inside a project, it may use project context to understand relevance, but it still writes only to the global memory.
+这个 memory 是：
 
-## Legacy files
+- **global**
+- **cross-project**
+- **not project-specific**
 
-Bundled files in this directory are seed material and historical references only.
+即使在某个项目内调用 `paper-miner`，它也只会把结果写到这份全局 memory；项目上下文只用于帮助理解相关性。
 
-Older files such as:
+## Legacy 文件
+
+当前目录中的 bundled files 只作为 seed material 或 historical references。
+
+像下面这些旧文件：
+
 - `structure.md`
 - `writing-techniques.md`
 - `submission-guides.md`
 - `review-response.md`
 
-may still exist as historical material, but new paper-miner updates should treat `paper-miner-writing-memory.md` as the canonical maintained memory.
+仍可保留作历史参考，但新的 paper-miner 更新都应把 `paper-miner-writing-memory.md` 视为 canonical maintained memory。
 
-## Usage
+## 使用场景
 
-Use this knowledge base when:
-- drafting papers,
-- improving section structure,
-- borrowing reusable phrasing patterns,
-- preparing rebuttals,
-- studying venue-facing writing signals.
+当你需要：
 
-## Contributing
+- 起草论文
+- 改进 section structure
+- 借用可复用 phrasing patterns
+- 准备 rebuttal
+- 研究 venue-facing 写作信号
 
-When `paper-miner` analyzes a new paper:
-1. extract actionable writing knowledge,
-2. merge it into `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`,
-3. preserve source attribution,
-4. avoid duplicate patterns,
-5. keep the memory compact and reusable.
+时，可以使用这个知识库。
+
+## 贡献方式
+
+当 `paper-miner` 分析新论文时：
+
+1. 提取可执行的写作知识
+2. 将其 merge 进 `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
+3. 保留来源归属
+4. 避免重复模式
+5. 保持 memory 紧凑且可复用

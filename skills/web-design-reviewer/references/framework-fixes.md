@@ -1,20 +1,20 @@
-# Framework-specific Fix Guide
+# 各框架修复指南
 
-This document explains specific fix techniques for each framework and styling method.
+本文档说明不同框架和样式方案下的具体修复方式。
 
 ---
 
 ## Pure CSS / SCSS
 
-### Fixing Layout Overflow
+### 修复布局溢出
 
 ```css
-/* Before: Overflow occurs */
+/* 修改前：发生溢出 */
 .container {
   width: 100%;
 }
 
-/* After: Control overflow */
+/* 修改后：控制溢出 */
 .container {
   width: 100%;
   max-width: 100%;
@@ -22,17 +22,17 @@ This document explains specific fix techniques for each framework and styling me
 }
 ```
 
-### Text Clipping Prevention
+### 防止文本裁切
 
 ```css
-/* Single line truncation */
+/* 单行截断 */
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Multi-line truncation */
+/* 多行截断 */
 .text-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -40,7 +40,7 @@ This document explains specific fix techniques for each framework and styling me
   overflow: hidden;
 }
 
-/* Word wrapping */
+/* 自动换词 */
 .text-wrap {
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -48,10 +48,10 @@ This document explains specific fix techniques for each framework and styling me
 }
 ```
 
-### Spacing Unification
+### 统一间距
 
 ```css
-/* Unify spacing with CSS custom properties */
+/* 用 CSS 自定义属性统一间距 */
 :root {
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -66,18 +66,18 @@ This document explains specific fix techniques for each framework and styling me
 }
 ```
 
-### Improving Contrast
+### 提升对比度
 
 ```css
-/* Before: Insufficient contrast */
+/* 修改前：对比度不足 */
 .text {
   color: #999999;
   background-color: #ffffff;
 }
 
-/* After: Meets WCAG AA standards */
+/* 修改后：满足 WCAG AA 标准 */
 .text {
-  color: #595959; /* Contrast ratio 7:1 */
+  color: #595959; /* 对比度约 7:1 */
   background-color: #ffffff;
 }
 ```
@@ -86,49 +86,49 @@ This document explains specific fix techniques for each framework and styling me
 
 ## Tailwind CSS
 
-### Layout Fixes
+### 布局修复
 
 ```jsx
-{/* Before: Overflow */}
+{/* 修改前：溢出 */}
 <div className="w-full">
   <img src="..." />
 </div>
 
-{/* After: Overflow control */}
+{/* 修改后：控制溢出 */}
 <div className="w-full max-w-full overflow-hidden">
   <img src="..." className="w-full h-auto object-contain" />
 </div>
 ```
 
-### Text Clipping Prevention
+### 防止文本裁切
 
 ```jsx
-{/* Single line truncation */}
+{/* 单行截断 */}
 <p className="truncate">Long text...</p>
 
-{/* Multi-line truncation */}
+{/* 多行截断 */}
 <p className="line-clamp-3">Long text...</p>
 
-{/* Allow wrapping */}
+{/* 允许换行 */}
 <p className="break-words">Long text...</p>
 ```
 
-### Responsive Support
+### 响应式支持
 
 ```jsx
-{/* Mobile-first responsive */}
+{/* Mobile-first 响应式写法 */}
 <div className="
   flex flex-col gap-4
   md:flex-row md:gap-6
   lg:gap-8
 ">
   <div className="w-full md:w-1/2 lg:w-1/3">
-    Content
+    内容
   </div>
 </div>
 ```
 
-### Spacing Unification (Tailwind Config)
+### 统一间距（Tailwind Config）
 
 ```javascript
 // tailwind.config.js
@@ -144,21 +144,21 @@ module.exports = {
 }
 ```
 
-### Accessibility Improvements
+### 无障碍改进
 
 ```jsx
-{/* Add focus state */}
+{/* 添加焦点态 */}
 <button className="
   bg-blue-500 text-white
   hover:bg-blue-600
   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
 ">
-  Button
+  按钮
 </button>
 
-{/* Improve contrast */}
-<p className="text-gray-700 bg-white"> {/* Changed from text-gray-500 */}
-  Readable text
+{/* 提升对比度 */}
+<p className="text-gray-700 bg-white"> {/* 从 text-gray-500 调整而来 */}
+  可读文本
 </p>
 ```
 
@@ -166,17 +166,17 @@ module.exports = {
 
 ## React + CSS Modules
 
-### Fixes in Module Scope
+### 在模块作用域内修复
 
 ```css
 /* Component.module.css */
 
-/* Before */
+/* 修改前 */
 .container {
   display: flex;
 }
 
-/* After: Add overflow control */
+/* 修改后：增加溢出控制 */
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -185,16 +185,16 @@ module.exports = {
 }
 ```
 
-### Component-side Fixes
+### 组件侧修复
 
 ```jsx
 // Component.jsx
 import styles from './Component.module.css';
 
-// Before
+// 修改前
 <div className={styles.container}>
 
-// After: Add conditional class
+// 修改后：增加条件类名
 <div className={`${styles.container} ${isOverflow ? styles.overflow : ''}`}>
 ```
 
@@ -202,15 +202,15 @@ import styles from './Component.module.css';
 
 ## styled-components / Emotion
 
-### Style Fixes
+### 样式修复
 
 ```jsx
-// Before
+// 修改前
 const Container = styled.div`
   width: 100%;
 `;
 
-// After
+// 修改后
 const Container = styled.div`
   width: 100%;
   max-width: 100%;
@@ -222,7 +222,7 @@ const Container = styled.div`
 `;
 ```
 
-### Responsive Support
+### 响应式支持
 
 ```jsx
 const Card = styled.div`
@@ -241,7 +241,7 @@ const Card = styled.div`
 `;
 ```
 
-### Consistency with Theme
+### 与主题保持一致
 
 ```jsx
 // theme.js
@@ -249,7 +249,7 @@ export const theme = {
   colors: {
     primary: '#2563eb',
     text: '#1f2937',
-    textLight: '#4b5563', // Improved contrast
+    textLight: '#4b5563', // 提升对比度
   },
   spacing: {
     sm: '0.5rem',
@@ -258,7 +258,7 @@ export const theme = {
   },
 };
 
-// Usage
+// 用法
 const Text = styled.p`
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: ${({ theme }) => theme.spacing.md};
@@ -269,28 +269,28 @@ const Text = styled.p`
 
 ## Vue (Scoped Styles)
 
-### Fixing Scoped Styles
+### 修复 scoped 样式
 
 ```vue
 <template>
   <div class="container">
-    <p class="text">Content</p>
+    <p class="text">内容</p>
   </div>
 </template>
 
 <style scoped>
-/* Applied only to this component */
+/* 仅作用于当前组件 */
 .container {
   max-width: 100%;
   overflow: hidden;
 }
 
 .text {
-  /* Fix: Improve contrast */
-  color: #374151; /* Was: #9ca3af */
+  /* 修复：提升对比度 */
+  color: #374151; /* 原来是 #9ca3af */
 }
 
-/* Responsive */
+/* 响应式 */
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -299,11 +299,11 @@ const Text = styled.p`
 </style>
 ```
 
-### Deep Selectors (Affecting Child Components)
+### 深层选择器（影响子组件）
 
 ```vue
 <style scoped>
-/* Override child component styles (use cautiously) */
+/* 覆盖子组件样式（谨慎使用） */
 :deep(.child-class) {
   margin-bottom: 1rem;
 }
@@ -314,7 +314,7 @@ const Text = styled.p`
 
 ## Next.js / App Router
 
-### Global Style Fixes
+### 全局样式修复
 
 ```css
 /* app/globals.css */
@@ -323,20 +323,20 @@ const Text = styled.p`
   --background: #ffffff;
 }
 
-/* Prevent layout overflow */
+/* 防止布局溢出 */
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
 }
 
-/* Prevent image overflow */
+/* 防止图片溢出 */
 img {
   max-width: 100%;
   height: auto;
 }
 ```
 
-### Fixes in Layout Components
+### 在布局组件中修复
 
 ```tsx
 // app/layout.tsx
@@ -345,13 +345,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <header className="sticky top-0 z-50">
-          {/* Header */}
+          {/* 页头 */}
         </header>
         <main className="flex-1 container mx-auto px-4 py-8">
           {children}
         </main>
         <footer>
-          {/* Footer */}
+          {/* 页脚 */}
         </footer>
       </body>
     </html>
@@ -361,18 +361,18 @@ export default function RootLayout({ children }) {
 
 ---
 
-## Common Patterns
+## 常见模式
 
-### Fixing Flexbox Layout Issues
+### 修复 Flexbox 布局问题
 
 ```css
-/* Before: Items overflow */
+/* 修改前：元素溢出 */
 .flex-container {
   display: flex;
   gap: 1rem;
 }
 
-/* After: Wrap and size control */
+/* 修改后：换行并控制尺寸 */
 .flex-container {
   display: flex;
   flex-wrap: wrap;
@@ -381,20 +381,20 @@ export default function RootLayout({ children }) {
 
 .flex-item {
   flex: 1 1 300px; /* grow, shrink, basis */
-  min-width: 0; /* Prevent flexbox overflow issues */
+  min-width: 0; /* 防止 Flexbox 溢出 */
 }
 ```
 
-### Fixing Grid Layout Issues
+### 修复 Grid 布局问题
 
 ```css
-/* Before: Fixed column count */
+/* 修改前：列数固定 */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* After: Auto-adjust */
+/* 修改后：自动调整 */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -402,10 +402,10 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### Organizing z-index
+### 统一管理 z-index
 
 ```css
-/* Systematize z-index */
+/* 系统化管理 z-index */
 :root {
   --z-dropdown: 100;
   --z-sticky: 200;
@@ -419,10 +419,10 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### Adding Focus States
+### 添加焦点态
 
 ```css
-/* Add focus state to all interactive elements */
+/* 为所有交互元素添加焦点态 */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -432,7 +432,7 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* Customize focus ring */
+/* 自定义 focus ring */
 .custom-focus:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
@@ -441,35 +441,35 @@ textarea:focus-visible {
 
 ---
 
-## Debugging Techniques
+## 调试技巧
 
-### Visualizing Element Boundaries
+### 可视化元素边界
 
 ```css
-/* Use only during development */
+/* 仅在开发阶段使用 */
 * {
   outline: 1px solid red !important;
 }
 ```
 
-### Detecting Overflow
+### 检测溢出
 
 ```javascript
-// Run in console to detect overflow elements
+// 在控制台运行，用于检测溢出元素
 document.querySelectorAll('*').forEach(el => {
   if (el.scrollWidth > el.clientWidth) {
-    console.log('Horizontal overflow:', el);
+    console.log('横向溢出:', el);
   }
   if (el.scrollHeight > el.clientHeight) {
-    console.log('Vertical overflow:', el);
+    console.log('纵向溢出:', el);
   }
 });
 ```
 
-### Checking Contrast Ratio
+### 检查对比度
 
 ```javascript
-// Use Chrome DevTools Lighthouse or axe DevTools
-// Or check at the following site:
+// 使用 Chrome DevTools Lighthouse 或 axe DevTools
+// 也可在下面的网站检查：
 // https://webaim.org/resources/contrastchecker/
 ```

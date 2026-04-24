@@ -1,45 +1,45 @@
-# Interactive Command Patterns
+# 交互式 Command 模式
 
-Comprehensive guide to creating commands that gather user feedback and make decisions through the AskUserQuestion tool.
+这是一份使用 `AskUserQuestion` tool 构建交互式 command 的完整指南。
 
-## Overview
+## 概览
 
-Some commands need user input that doesn't work well with simple arguments. For example:
-- Choosing between multiple complex options with trade-offs
-- Selecting multiple items from a list
-- Making decisions that require explanation
-- Gathering preferences or configuration interactively
+有些 commands 需要用户输入，但这些输入并不适合简单参数，例如：
+- 在多个复杂选项之间做选择
+- 从列表中选多个项目
+- 做需要解释 trade-off 的决策
+- 交互式收集偏好和配置
 
-For these cases, use the **AskUserQuestion tool** within command execution rather than relying on command arguments.
+这时，应在 command 执行过程中使用 **AskUserQuestion**，而不是强行塞进 command arguments。
 
-## When to Use AskUserQuestion
+## 什么时候用 AskUserQuestion
 
-### Use AskUserQuestion When:
+### 应该用 AskUserQuestion 的场景
 
-1. **Multiple choice decisions** with explanations needed
-2. **Complex options** that require context to choose
-3. **Multi-select scenarios** (choosing multiple items)
-4. **Preference gathering** for configuration
-5. **Interactive workflows** that adapt based on answers
+1. 需要解释的 multiple choice 决策
+2. 需要上下文才能选的复杂选项
+3. multi-select 场景
+4. 配置偏好收集
+5. 会根据回答动态变化的交互式工作流
 
-### Use Command Arguments When:
+### 应该继续用 arguments 的场景
 
-1. **Simple values** (file paths, numbers, names)
-2. **Known inputs** user already has
-3. **Scriptable workflows** that should be automatable
-4. **Fast invocations** where prompting would slow down
+1. 简单值，如文件路径、数字、名称
+2. 用户已经明确知道的输入
+3. 需要可脚本化的工作流
+4. 追求快速调用，不想中断用户
 
-## AskUserQuestion Basics
+## AskUserQuestion 基础
 
-### Tool Parameters
+### Tool 参数
 
 ```typescript
 {
   questions: [
     {
       question: "Which authentication method should we use?",
-      header: "Auth method",  // Short label (max 12 chars)
-      multiSelect: false,     // true for multiple selection
+      header: "Auth method",
+      multiSelect: false,
       options: [
         {
           label: "OAuth 2.0",
@@ -48,10 +48,6 @@ For these cases, use the **AskUserQuestion tool** within command execution rathe
         {
           label: "JWT",
           description: "Stateless, good for APIs"
-        },
-        {
-          label: "Session",
-          description: "Traditional, server-side state"
         }
       ]
     }
@@ -59,148 +55,51 @@ For these cases, use the **AskUserQuestion tool** within command execution rathe
 }
 ```
 
-**Key points:**
-- Users can always choose "Other" to provide custom input (automatic)
-- `multiSelect: true` allows selecting multiple options
-- Options should be 2-4 choices (not more)
-- Can ask 1-4 questions per tool call
+关键点：
+- 用户总可以选 `"Other"` 自定义输入
+- `multiSelect: true` 允许多选
+- 每题尽量只有 2-4 个选项
+- 一次 tool call 建议问 1-4 个问题
 
-## Command Pattern for User Interaction
+## 交互式 Command 模式
 
-### Basic Interactive Command
+### 基础交互式 Command
 
-```markdown
----
-description: Interactive setup command
-allowed-tools: AskUserQuestion, Write
----
+典型流程：
 
-# Interactive Plugin Setup
+1. 用 AskUserQuestion 收集配置
+2. 解析回答
+3. 生成配置文件
+4. 向用户确认并给出下一步
 
-This command will guide you through configuring the plugin with a series of questions.
+例如可询问：
+- 部署平台
+- 环境数量
+- 要启用的 features（多选）
 
-## Step 1: Gather Configuration
+然后把答案写入 `.codex/plugin-name.local.md`。
 
-Use the AskUserQuestion tool to ask:
+### 多阶段交互工作流
 
-**Question 1 - Deployment target:**
-- header: "Deploy to"
-- question: "Which deployment platform will you use?"
-- options:
-  - AWS (Amazon Web Services with ECS/EKS)
-  - GCP (Google Cloud with GKE)
-  - Azure (Microsoft Azure with AKS)
-  - Local (Docker on local machine)
+适合先问大方向，再按回答继续追问的场景：
 
-**Question 2 - Environment strategy:**
-- header: "Environments"
-- question: "How many environments do you need?"
-- options:
-  - Single (Just production)
-  - Standard (Dev, Staging, Production)
-  - Complete (Dev, QA, Staging, Production)
+1. **Stage 1**：先问基础配置
+2. **Stage 2**：如果用户选了 Advanced，再问更细设置
+3. **Stage 3**：汇总结果，让用户确认
+4. **Stage 4**：根据确认结果执行 setup
 
-**Question 3 - Features to enable:**
-- header: "Features"
-- question: "Which features do you want to enable?"
-- multiSelect: true
-- options:
-  - Auto-scaling (Automatic resource scaling)
-  - Monitoring (Health checks and metrics)
-  - CI/CD (Automated deployment pipeline)
-  - Backups (Automated database backups)
-
-## Step 2: Process Answers
-
-Based on the answers received from AskUserQuestion:
-
-1. Parse the deployment target choice
-2. Set up environment-specific configuration
-3. Enable selected features
-4. Generate configuration files
-
-## Step 3: Generate Configuration
-
-Create `.codex/plugin-name.local.md` with:
-
-\`\`\`yaml
----
-deployment_target: [answer from Q1]
-environments: [answer from Q2]
-features:
-  auto_scaling: [true if selected in Q3]
-  monitoring: [true if selected in Q3]
-  ci_cd: [true if selected in Q3]
-  backups: [true if selected in Q3]
----
-
-# Plugin Configuration
-
-Generated: [timestamp]
-Target: [deployment_target]
-Environments: [environments]
-\`\`\`
-
-## Step 4: Confirm and Next Steps
-
-Confirm configuration created and guide user on next steps.
-```
-
-### Multi-Stage Interactive Workflow
-
-```markdown
----
-description: Multi-stage interactive workflow
-allowed-tools: AskUserQuestion, Read, Write, Bash
----
-
-# Multi-Stage Deployment Setup
-
-This command walks through deployment setup in stages, adapting based on your answers.
-
-## Stage 1: Basic Configuration
-
-Use AskUserQuestion to ask about deployment basics.
-
-Based on answers, determine which additional questions to ask.
-
-## Stage 2: Advanced Options (Conditional)
-
-If user selected "Advanced" deployment in Stage 1:
-
-Use AskUserQuestion to ask about:
-- Load balancing strategy
-- Caching configuration
-- Security hardening options
-
-If user selected "Simple" deployment:
-- Skip advanced questions
-- Use sensible defaults
-
-## Stage 3: Confirmation
-
-Show summary of all selections.
-
-Use AskUserQuestion for final confirmation:
-- header: "Confirm"
-- question: "Does this configuration look correct?"
-- options:
-  - Yes (Proceed with setup)
-  - No (Start over)
-  - Modify (Let me adjust specific settings)
-
-If "Modify", ask which specific setting to change.
-
-## Stage 4: Execute Setup
-
-Based on confirmed configuration, execute setup steps.
-```
-
-## Interactive Question Design
+## 问题设计
 
 ### Question Structure
 
-**Good questions:**
+好的问题应具备：
+- 问句清晰，不含糊
+- header 简短（建议 12 个字符以内）
+- option labels 明确
+- descriptions 能解释差异和 trade-off
+
+**好例子：**
+
 ```markdown
 Question: "Which database should we use for this project?"
 Header: "Database"
@@ -210,711 +109,203 @@ Options:
   - Redis (In-memory, fast, best for caching and sessions)
 ```
 
-**Poor questions:**
+**坏例子：**
+
 ```markdown
-Question: "Database?"  // Too vague
-Header: "DB"  // Unclear abbreviation
+Question: "Database?"
+Header: "DB"
 Options:
-  - Option 1  // Not descriptive
+  - Option 1
   - Option 2
 ```
 
-### Option Design Best Practices
+### Option Design 最佳实践
 
-**Clear labels:**
-- Use 1-5 words
-- Specific and descriptive
-- No jargon without context
+- label 尽量 1-5 个词
+- description 说明含义、收益和 trade-off
+- 每题 2-4 个选项，避免用户被淹没
+- multiSelect 只用于允许同时成立的选项
 
-**Helpful descriptions:**
-- Explain what the option means
-- Mention key benefits or trade-offs
-- Help user make informed decision
-- Keep to 1-2 sentences
+## 常见模式
 
-**Appropriate number:**
-- 2-4 options per question
-- Don't overwhelm with too many choices
-- Group related options
-- "Other" automatically provided
+### 模式 1：简单确认
 
-### Multi-Select Questions
+适合高风险操作前确认：
+- Yes（继续）
+- No（取消）
 
-**When to use multiSelect:**
+### 模式 2：一次问多个配置问题
 
-```markdown
-Use AskUserQuestion for enabling features:
+适合项目初始化时一次性收集：
+- 语言
+- 测试框架
+- CI/CD 平台
+- features（多选）
 
-Question: "Which features do you want to enable?"
-Header: "Features"
-multiSelect: true  // Allow selecting multiple
-Options:
-  - Logging (Detailed operation logs)
-  - Metrics (Performance monitoring)
-  - Alerts (Error notifications)
-  - Backups (Automatic backups)
-```
+### 模式 3：条件分支提问
 
-User can select any combination: none, some, or all.
+先问复杂度等级：
+- Simple
+- Standard
+- Complex
 
-**When NOT to use multiSelect:**
+然后根据选择再问不同问题。
 
-```markdown
-Question: "Which authentication method?"
-multiSelect: false  // Only one auth method makes sense
-```
+### 模式 4：循环收集多条信息
 
-Mutually exclusive choices should not use multiSelect.
+例如先问 team size，再为每个成员逐个收集 role。
 
-## Command Patterns with AskUserQuestion
+### 模式 5：依赖选择
 
-### Pattern 1: Simple Yes/No Decision
+适合 library / feature 这种可任意组合的多选。
 
-```markdown
----
-description: Command with confirmation
-allowed-tools: AskUserQuestion, Bash
----
-
-# Destructive Operation
-
-This operation will delete all cached data.
-
-Use AskUserQuestion to confirm:
-
-Question: "This will delete all cached data. Are you sure?"
-Header: "Confirm"
-Options:
-  - Yes (Proceed with deletion)
-  - No (Cancel operation)
-
-If user selects "Yes":
-  Execute deletion
-  Report completion
-
-If user selects "No":
-  Cancel operation
-  Exit without changes
-```
-
-### Pattern 2: Multiple Configuration Questions
-
-```markdown
----
-description: Multi-question configuration
-allowed-tools: AskUserQuestion, Write
----
-
-# Project Configuration Setup
-
-Gather configuration through multiple questions.
-
-Use AskUserQuestion with multiple questions in one call:
-
-**Question 1:**
-- question: "Which programming language?"
-- header: "Language"
-- options: Python, TypeScript, Go, Rust
-
-**Question 2:**
-- question: "Which test framework?"
-- header: "Testing"
-- options: Jest, PyTest, Go Test, Cargo Test
-  (Adapt based on language from Q1)
-
-**Question 3:**
-- question: "Which CI/CD platform?"
-- header: "CI/CD"
-- options: GitHub Actions, GitLab CI, CircleCI
-
-**Question 4:**
-- question: "Which features do you need?"
-- header: "Features"
-- multiSelect: true
-- options: Linting, Type checking, Code coverage, Security scanning
-
-Process all answers together to generate cohesive configuration.
-```
-
-### Pattern 3: Conditional Question Flow
-
-```markdown
----
-description: Conditional interactive workflow
-allowed-tools: AskUserQuestion, Read, Write
----
-
-# Adaptive Configuration
-
-## Question 1: Deployment Complexity
-
-Use AskUserQuestion:
-
-Question: "How complex is your deployment?"
-Header: "Complexity"
-Options:
-  - Simple (Single server, straightforward)
-  - Standard (Multiple servers, load balancing)
-  - Complex (Microservices, orchestration)
-
-## Conditional Questions Based on Answer
-
-If answer is "Simple":
-  - No additional questions
-  - Use minimal configuration
-
-If answer is "Standard":
-  - Ask about load balancing strategy
-  - Ask about scaling policy
-
-If answer is "Complex":
-  - Ask about orchestration platform (Kubernetes, Docker Swarm)
-  - Ask about service mesh (Istio, Linkerd, None)
-  - Ask about monitoring (Prometheus, Datadog, CloudWatch)
-  - Ask about logging aggregation
-
-## Process Conditional Answers
-
-Generate configuration appropriate for selected complexity level.
-```
-
-### Pattern 4: Iterative Collection
-
-```markdown
----
-description: Collect multiple items iteratively
-allowed-tools: AskUserQuestion, Write
----
-
-# Collect Team Members
-
-We'll collect team member information for the project.
-
-## Question: How many team members?
-
-Use AskUserQuestion:
-
-Question: "How many team members should we set up?"
-Header: "Team size"
-Options:
-  - 2 people
-  - 3 people
-  - 4 people
-  - 6 people
-
-## Iterate Through Team Members
-
-For each team member (1 to N based on answer):
-
-Use AskUserQuestion for member details:
-
-Question: "What role for team member [number]?"
-Header: "Role"
-Options:
-  - Frontend Developer
-  - Backend Developer
-  - DevOps Engineer
-  - QA Engineer
-  - Designer
-
-Store each member's information.
-
-## Generate Team Configuration
-
-After collecting all N members, create team configuration file with all members and their roles.
-```
-
-### Pattern 5: Dependency Selection
-
-```markdown
----
-description: Select dependencies with multi-select
-allowed-tools: AskUserQuestion
----
-
-# Configure Project Dependencies
-
-## Question: Required Libraries
-
-Use AskUserQuestion with multiSelect:
-
-Question: "Which libraries does your project need?"
-Header: "Dependencies"
-multiSelect: true
-Options:
-  - React (UI framework)
-  - Express (Web server)
-  - TypeORM (Database ORM)
-  - Jest (Testing framework)
-  - Axios (HTTP client)
-
-User can select any combination.
-
-## Process Selections
-
-For each selected library:
-- Add to package.json dependencies
-- Generate sample configuration
-- Create usage examples
-- Update documentation
-```
-
-## Best Practices for Interactive Commands
+## 最佳实践
 
 ### Question Design
 
-1. **Clear and specific**: Question should be unambiguous
-2. **Concise header**: Max 12 characters for clean display
-3. **Helpful options**: Labels are clear, descriptions explain trade-offs
-4. **Appropriate count**: 2-4 options per question, 1-4 questions per call
-5. **Logical order**: Questions flow naturally
+1. 问句具体，不模糊
+2. header 简洁
+3. options 有解释，不只给名字
+4. 每次问题数量控制在合理范围
+5. 问题顺序要自然
 
 ### Error Handling
 
-```markdown
-# Handle AskUserQuestion Responses
-
-After calling AskUserQuestion, verify answers received:
-
-If answers are empty or invalid:
-  Something went wrong gathering responses.
-
-  Please try again or provide configuration manually:
-  [Show alternative approach]
-
-  Exit.
-
-If answers look correct:
-  Process as expected
-```
+调用 AskUserQuestion 后，要检查答案是否为空或异常；若失败，应提供手动配置的替代路径。
 
 ### Progressive Disclosure
 
-```markdown
-# Start Simple, Get Detailed as Needed
+推荐先问一个“Setup type”：
+- Quick
+- Custom
+- Guided
 
-## Question 1: Setup Type
+再根据选择决定后续问多少问题。
 
-Use AskUserQuestion:
+### Multi-Select 指南
 
-Question: "How would you like to set up?"
-Header: "Setup type"
-Options:
-  - Quick (Use recommended defaults)
-  - Custom (Configure all options)
-  - Guided (Step-by-step with explanations)
+适合多选：
+- Logging
+- Metrics
+- Alerts
+- Backups
 
-If "Quick":
-  Apply defaults, minimal questions
+不适合多选：
+- 数据库引擎
+- 认证方式
+- 部署平台
 
-If "Custom":
-  Ask all available configuration questions
+这些通常是互斥选项。
 
-If "Guided":
-  Ask questions with extra explanation
-  Provide recommendations along the way
-```
-
-### Multi-Select Guidelines
-
-**Good multi-select use:**
-```markdown
-Question: "Which features do you want to enable?"
-multiSelect: true
-Options:
-  - Logging
-  - Metrics
-  - Alerts
-  - Backups
-
-Reason: User might want any combination
-```
-
-**Bad multi-select use:**
-```markdown
-Question: "Which database engine?"
-multiSelect: true  // ❌ Should be single-select
-
-Reason: Can only use one database engine
-```
-
-## Advanced Patterns
+## 高级模式
 
 ### Validation Loop
 
-```markdown
----
-description: Interactive with validation
-allowed-tools: AskUserQuestion, Bash
----
+流程：
+1. 先收集配置
+2. 校验是否冲突或缺少依赖
+3. 若校验失败，再问用户：
+   - Fix
+   - Override
+   - Cancel
 
-# Setup with Validation
+### Incremental Configuration Builder
 
-## Gather Configuration
-
-Use AskUserQuestion to collect settings.
-
-## Validate Configuration
-
-Check if configuration is valid:
-- Required dependencies available?
-- Settings compatible with each other?
-- No conflicts detected?
-
-If validation fails:
-  Show validation errors
-
-  Use AskUserQuestion to ask:
-
-  Question: "Configuration has issues. What would you like to do?"
-  Header: "Next step"
-  Options:
-    - Fix (Adjust settings to resolve issues)
-    - Override (Proceed despite warnings)
-    - Cancel (Abort setup)
-
-  Based on answer, retry or proceed or exit.
-```
-
-### Build Configuration Incrementally
-
-```markdown
----
-description: Incremental configuration builder
-allowed-tools: AskUserQuestion, Write, Read
----
-
-# Incremental Setup
-
-## Phase 1: Core Settings
-
-Use AskUserQuestion for core settings.
-
-Save to `.codex/config-partial.yml`
-
-## Phase 2: Review Core Settings
-
-Show user the core settings:
-
-Based on these core settings, you need to configure:
-- [Setting A] (because you chose [X])
-- [Setting B] (because you chose [Y])
-
-Ready to continue?
-
-## Phase 3: Detailed Settings
-
-Use AskUserQuestion for settings based on Phase 1 answers.
-
-Merge with core settings.
-
-## Phase 4: Final Review
-
-Present complete configuration.
-
-Use AskUserQuestion for confirmation:
-
-Question: "Is this configuration correct?"
-Options:
-  - Yes (Save and apply)
-  - No (Start over)
-  - Modify (Edit specific settings)
-```
+分阶段构建配置：
+1. 先收核心设置
+2. 保存 partial config
+3. 再问依赖前面答案的细节设置
+4. 最后统一 review 和确认
 
 ### Dynamic Options Based on Context
 
-```markdown
----
-description: Context-aware questions
-allowed-tools: AskUserQuestion, Bash, Read
----
+先检测当前项目上下文：
+- 当前语言
+- 已有框架
+- 可用工具
 
-# Context-Aware Setup
+再生成对应问题。例如：
+- TypeScript 项目：问 strict mode、decorators、path mapping
+- Python 项目：问 mypy、Black、Pylint
 
-## Detect Current State
+## 实战示例：Multi-Agent Swarm Launch
 
-Check existing configuration:
-- Current language: !`detect-language.sh`
-- Existing frameworks: !`detect-frameworks.sh`
-- Available tools: !`check-tools.sh`
+一个典型交互式 command 可以这样设计：
 
-## Ask Context-Appropriate Questions
+1. 问需要启动多少 agents
+2. 问任务定义方式：
+   - File
+   - Guided
+   - Custom
+3. 问 coordination mode：
+   - Team Leader
+   - Collaborative
+   - Autonomous
+4. 如果选 Guided，则为每个 agent 继续问：
+   - Agent name
+   - Task type
+   - Dependencies
+   - Base branch
 
-Based on detected language, ask relevant questions.
+最后生成任务文件并继续启动流程。
 
-If language is TypeScript:
-
-  Use AskUserQuestion:
-
-  Question: "Which TypeScript features should we enable?"
-  Options:
-    - Strict Mode (Maximum type safety)
-    - Decorators (Experimental decorator support)
-    - Path Mapping (Module path aliases)
-
-If language is Python:
-
-  Use AskUserQuestion:
-
-  Question: "Which Python tools should we configure?"
-  Options:
-    - Type Hints (mypy for type checking)
-    - Black (Code formatting)
-    - Pylint (Linting and style)
-
-Questions adapt to project context.
-```
-
-## Real-World Example: Multi-Agent Swarm Launch
-
-**From multi-agent-swarm plugin:**
-
-```markdown
----
-description: Launch multi-agent swarm
-allowed-tools: AskUserQuestion, Read, Write, Bash
----
-
-# Launch Multi-Agent Swarm
-
-## Interactive Mode (No Task List Provided)
-
-If user didn't provide task list file, help create one interactively.
-
-### Question 1: Agent Count
-
-Use AskUserQuestion:
-
-Question: "How many agents should we launch?"
-Header: "Agent count"
-Options:
-  - 2 agents (Best for simple projects)
-  - 3 agents (Good for medium projects)
-  - 4 agents (Standard team size)
-  - 6 agents (Large projects)
-  - 8 agents (Complex multi-component projects)
-
-### Question 2: Task Definition Approach
-
-Use AskUserQuestion:
-
-Question: "How would you like to define tasks?"
-Header: "Task setup"
-Options:
-  - File (I have a task list file ready)
-  - Guided (Help me create tasks interactively)
-  - Custom (Other approach)
-
-If "File":
-  Ask for file path
-  Validate file exists and has correct format
-
-If "Guided":
-  Enter iterative task creation mode (see below)
-
-### Question 3: Coordination Mode
-
-Use AskUserQuestion:
-
-Question: "How should agents coordinate?"
-Header: "Coordination"
-Options:
-  - Team Leader (One agent coordinates others)
-  - Collaborative (Agents coordinate as peers)
-  - Autonomous (Independent work, minimal coordination)
-
-### Iterative Task Creation (If "Guided" Selected)
-
-For each agent (1 to N from Question 1):
-
-**Question A: Agent Name**
-Question: "What should we call agent [number]?"
-Header: "Agent name"
-Options:
-  - auth-agent
-  - api-agent
-  - ui-agent
-  - db-agent
-  (Provide relevant suggestions based on common patterns)
-
-**Question B: Task Type**
-Question: "What task for [agent-name]?"
-Header: "Task type"
-Options:
-  - Authentication (User auth, JWT, OAuth)
-  - API Endpoints (REST/GraphQL APIs)
-  - UI Components (Frontend components)
-  - Database (Schema, migrations, queries)
-  - Testing (Test suites and coverage)
-  - Documentation (Docs, README, guides)
-
-**Question C: Dependencies**
-Question: "What does [agent-name] depend on?"
-Header: "Dependencies"
-multiSelect: true
-Options:
-  - [List of previously defined agents]
-  - No dependencies
-
-**Question D: Base Branch**
-Question: "Which base branch for PR?"
-Header: "PR base"
-Options:
-  - main
-  - staging
-  - develop
-
-Store all task information for each agent.
-
-### Generate Task List File
-
-After collecting all agent task details:
-
-1. Ask for project name
-2. Generate task list in proper format
-3. Save to `.daisy/swarm/tasks.md`
-4. Show user the file path
-5. Proceed with launch using generated task list
-```
-
-## Best Practices
+## 最佳实践
 
 ### Question Writing
 
-1. **Be specific**: "Which database?" not "Choose option?"
-2. **Explain trade-offs**: Describe pros/cons in option descriptions
-3. **Provide context**: Question text should stand alone
-4. **Guide decisions**: Help user make informed choice
-5. **Keep concise**: Header max 12 chars, descriptions 1-2 sentences
+1. 具体，不要含糊
+2. 在描述里解释 trade-offs
+3. 问题本身要能独立成立
+4. 帮用户做信息充分的决策
+5. 文案尽量短
 
 ### Option Design
 
-1. **Meaningful labels**: Specific, clear names
-2. **Informative descriptions**: Explain what each option does
-3. **Show trade-offs**: Help user understand implications
-4. **Consistent detail**: All options equally explained
-5. **2-4 options**: Not too few, not too many
+1. label 要有意义
+2. description 要说明用途
+3. 帮用户理解选择后果
+4. 所有选项说明粒度一致
+5. 每题控制在 2-4 个选项
 
 ### Flow Design
 
-1. **Logical order**: Questions flow naturally
-2. **Build on previous**: Later questions use earlier answers
-3. **Minimize questions**: Ask only what's needed
-4. **Group related**: Ask related questions together
-5. **Show progress**: Indicate where in flow
+1. 问题顺序自然
+2. 后续问题建立在前面答案之上
+3. 只问必要问题
+4. 相关问题放在一起
+5. 告诉用户当前进度
 
 ### User Experience
 
-1. **Set expectations**: Tell user what to expect
-2. **Explain why**: Help user understand purpose
-3. **Provide defaults**: Suggest recommended options
-4. **Allow escape**: Let user cancel or restart
-5. **Confirm actions**: Summarize before executing
+1. 先告诉用户将会发生什么
+2. 解释为什么要问这些问题
+3. 给出推荐默认项
+4. 允许取消或重来
+5. 执行前先做最终确认
 
-## Common Patterns
+## 参数和问题混用
 
-### Pattern: Feature Selection
+推荐做法：
+- **arguments**：承载用户已知且简单的输入，如 `project-name`
+- **AskUserQuestion**：承载需要解释的复杂选择，如架构模式、技术栈、部署策略
 
-```markdown
-Use AskUserQuestion:
+## 排错
 
-Question: "Which features do you need?"
-Header: "Features"
-multiSelect: true
-Options:
-  - Authentication
-  - Authorization
-  - Rate Limiting
-  - Caching
-```
+**问题没有出现：**
+- 检查 `AskUserQuestion` 是否在 `allowed-tools`
+- 检查问题格式是否正确
+- 检查 options 数量是否合理
 
-### Pattern: Environment Configuration
+**用户难以选择：**
+- 检查 label 是否清楚
+- 检查 description 是否足够有帮助
+- 看看是不是选项过多
+- 确认 `multiSelect` 设置是否正确
 
-```markdown
-Use AskUserQuestion:
+**流程让人困惑：**
+- 减少问题数量
+- 把相关问题分组
+- 在阶段之间加解释
+- 给出流程进度提示
 
-Question: "Which environment is this?"
-Header: "Environment"
-Options:
-  - Development (Local development)
-  - Staging (Pre-production testing)
-  - Production (Live environment)
-```
-
-### Pattern: Priority Selection
-
-```markdown
-Use AskUserQuestion:
-
-Question: "What's the priority for this task?"
-Header: "Priority"
-Options:
-  - Critical (Must be done immediately)
-  - High (Important, do soon)
-  - Medium (Standard priority)
-  - Low (Nice to have)
-```
-
-### Pattern: Scope Selection
-
-```markdown
-Use AskUserQuestion:
-
-Question: "What scope should we analyze?"
-Header: "Scope"
-Options:
-  - Current file (Just this file)
-  - Current directory (All files in directory)
-  - Entire project (Full codebase scan)
-```
-
-## Combining Arguments and Questions
-
-### Use Both Appropriately
-
-**Arguments for known values:**
-```markdown
----
-argument-hint: [project-name]
-allowed-tools: AskUserQuestion, Write
----
-
-Setup for project: $1
-
-Now gather additional configuration...
-
-Use AskUserQuestion for options that require explanation.
-```
-
-**Questions for complex choices:**
-```markdown
-Project name from argument: $1
-
-Now use AskUserQuestion to choose:
-- Architecture pattern
-- Technology stack
-- Deployment strategy
-
-These require explanation, so questions work better than arguments.
-```
-
-## Troubleshooting
-
-**Questions not appearing:**
-- Verify AskUserQuestion in allowed-tools
-- Check question format is correct
-- Ensure options array has 2-4 items
-
-**User can't make selection:**
-- Check option labels are clear
-- Verify descriptions are helpful
-- Consider if too many options
-- Ensure multiSelect setting is correct
-
-**Flow feels confusing:**
-- Reduce number of questions
-- Group related questions
-- Add explanation between stages
-- Show progress through workflow
-
-With AskUserQuestion, commands become interactive wizards that guide users through complex decisions while maintaining the clarity that simple arguments provide for straightforward inputs.
+有了 AskUserQuestion，command 就可以从“单次调用”升级成“交互式向导”，在复杂决策里比单纯 arguments 更自然。

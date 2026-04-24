@@ -1,25 +1,25 @@
-# Operating Modes
+# 运行模式
 
-Use this file to decide how much of the writing stack to load.
+用本文件决定需要加载多少论文写作上下文。
 
-## Modes
+## 模式
 
 ### 1. drafting
-Use when writing or rewriting a paper section from repo evidence.
-Load: core SKILL + writing guide + citation workflow.
+用于基于仓库证据撰写或改写论文段落。
+加载：核心 `SKILL.md`、writing guide、citation workflow。
 
 ### 2. related-work
-Use when searching, comparing, and integrating literature.
-Load: citation workflow + reviewer guidelines + relevant venue notes.
+用于搜索、比较和整合文献。
+加载：citation workflow、reviewer guidelines，以及相关会议规则。
 
 ### 3. citation-only
-Use when the task is primarily reference verification or bibliography repair.
-Load: citation workflow first; do not load the full paper-writing stack unless needed.
+用于主要任务是引用验证或 bibliography 修复时。
+优先加载 citation workflow；除非必要，不加载完整 paper-writing 栈。
 
 ### 4. format-conversion
-Use when moving between conference templates or preparing camera-ready assets.
-Load: template / format references and only the relevant venue rules.
+用于会议模板转换或准备 camera-ready 资产。
+加载：模板 / 格式参考，以及目标会议规则。
 
 ### 5. camera-ready
-Use when compliance, formatting, and final verification dominate over drafting.
-Load: venue-specific checklist + citation workflow + final verification notes.
+用于合规、格式和最终验证优先于正文写作时。
+加载：会议 checklist、citation workflow、最终验证说明。

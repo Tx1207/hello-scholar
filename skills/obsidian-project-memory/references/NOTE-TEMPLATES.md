@@ -1,8 +1,8 @@
-# Note Templates
+# Note 模板
 
-Templates should follow the project's configured `note_language`; if no note language is configured, default to English.
+模板应遵循项目配置的 `note_language`；如果未配置，默认使用 English。
 
-The examples below are provided in both English and Chinese so agents can mirror the active note language while keeping a stable note shape.
+下面同时给出 English 和中文示例，方便 agent 在保持 note shape 稳定的同时，镜像当前激活语言。
 
 ## Project Overview
 
@@ -371,7 +371,6 @@ linked_results:
 ## 下一步
 - ...
 ```
-
 
 ## Writing Note
 

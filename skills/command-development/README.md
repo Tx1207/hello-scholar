@@ -1,114 +1,61 @@
 # Command Development Skill
 
-Comprehensive guidance on creating Claude Code slash commands, including file format, frontmatter options, dynamic arguments, and best practices.
+这份技能文档提供 Claude Code slash command 开发的完整说明，覆盖文件格式、frontmatter、动态参数、文件引用、bash 执行、plugin 特性和维护建议。
 
-## Overview
+## 概览
 
-This skill provides knowledge about:
-- Slash command file format and structure
-- YAML frontmatter configuration fields
-- Dynamic arguments ($ARGUMENTS, $1, $2, etc.)
-- File references with @ syntax
-- Bash execution with !` syntax
-- Command organization and namespacing
-- Best practices for command development
-- Plugin-specific features (${CLAUDE_PLUGIN_ROOT}, plugin patterns)
-- Integration with plugin components (agents, skills, hooks)
-- Validation patterns and error handling
+本 skill 主要包含：
+- slash command 文件结构
+- YAML frontmatter 配置字段
+- 动态参数（`$ARGUMENTS`、`$1`、`$2`）
+- `@` 文件引用
+- `!``...`` ` bash 执行
+- command 组织与 namespacing
+- plugin 专属能力（`${CLAUDE_PLUGIN_ROOT}`、agents、skills、hooks 集成）
+- 输入校验和错误处理
 
 ## Skill Structure
 
-### SKILL.md (~2,470 words)
+### `SKILL.md`
 
-Core skill content covering:
-
-**Fundamentals:**
-- Command basics and locations
-- File format (Markdown with optional frontmatter)
-- YAML frontmatter fields overview
-- Dynamic arguments ($ARGUMENTS and positional)
-- File references (@ syntax)
-- Bash execution (!` syntax)
-- Command organization patterns
-- Best practices and common patterns
-- Troubleshooting
-
-**Plugin-Specific:**
-- ${CLAUDE_PLUGIN_ROOT} environment variable
-- Plugin command discovery and organization
-- Plugin command patterns (configuration, template, multi-script)
-- Integration with plugin components (agents, skills, hooks)
-- Validation patterns (argument, file, resource, error handling)
+核心文档，负责说明：
+- command 基本概念与位置
+- frontmatter 字段概览
+- 参数、文件引用和 bash 执行
+- 组织方式、常见模式、排障
+- plugin 特性与验证模式
 
 ### References
 
-Detailed documentation:
-
-- **frontmatter-reference.md**: Complete YAML frontmatter field specifications
-  - All field descriptions with types and defaults
-  - When to use each field
-  - Examples and best practices
-  - Validation and common errors
-
-- **plugin-features-reference.md**: Plugin-specific command features
-  - Plugin command discovery and organization
-  - ${CLAUDE_PLUGIN_ROOT} environment variable usage
-  - Plugin command patterns (configuration, template, multi-script)
-  - Integration with plugin agents, skills, and hooks
-  - Validation patterns and error handling
+- `frontmatter-reference.md`：frontmatter 字段细则
+- `plugin-features-reference.md`：plugin 专属 command 能力
+- `interactive-commands.md`：交互式 command
+- `advanced-workflows.md`：多阶段 workflow
+- `testing-strategies.md`：command 测试策略
+- `documentation-patterns.md`：command 文档化模式
+- `marketplace-considerations.md`：发布与分发注意事项
 
 ### Examples
 
-Practical command examples:
-
-- **simple-commands.md**: 10 complete command examples
-  - Code review commands
-  - Testing commands
-  - Deployment commands
-  - Documentation generators
-  - Git integration commands
-  - Analysis and research commands
-
-- **plugin-commands.md**: 10 plugin-specific command examples
-  - Simple plugin commands with scripts
-  - Multi-script workflows
-  - Template-based generation
-  - Configuration-driven deployment
-  - Agent and skill integration
-  - Multi-component workflows
-  - Validated input commands
-  - Environment-aware commands
+- `simple-commands.md`：基础 command 示例
+- `plugin-commands.md`：plugin command 示例
 
 ## When This Skill Triggers
 
-Claude Code activates this skill when users:
-- Ask to "create a slash command" or "add a command"
-- Need to "write a custom command"
-- Want to "define command arguments"
-- Ask about "command frontmatter" or YAML configuration
-- Need to "organize commands" or use namespacing
-- Want to create commands with file references
-- Ask about "bash execution in commands"
-- Need command development best practices
+以下场景应触发本 skill：
+- 创建 slash command
+- 添加自定义 command
+- 定义参数和 frontmatter
+- 使用文件引用或 bash 执行
+- 组织 command 目录
+- 设计 plugin command
 
 ## Progressive Disclosure
 
-The skill uses progressive disclosure:
-
-1. **SKILL.md** (~2,470 words): Core concepts, common patterns, and plugin features overview
-2. **References** (~13,500 words total): Detailed specifications
-   - frontmatter-reference.md (~1,200 words)
-   - plugin-features-reference.md (~1,800 words)
-   - interactive-commands.md (~2,500 words)
-   - advanced-workflows.md (~1,700 words)
-   - testing-strategies.md (~2,200 words)
-   - documentation-patterns.md (~2,000 words)
-   - marketplace-considerations.md (~2,200 words)
-3. **Examples** (~6,000 words total): Complete working command examples
-   - simple-commands.md
-   - plugin-commands.md
-
-Claude loads references and examples as needed based on task.
+默认分层使用：
+1. 先读 `SKILL.md`
+2. 需要细节时再打开 `references/`
+3. 需要范例时再看 `examples/`
 
 ## Command Basics Quick Reference
 
@@ -129,144 +76,41 @@ Command prompt content with:
 
 ### Locations
 
-- **Project**: `.codex/commands/` (shared with team)
-- **Personal**: `~/.codex/commands/` (your commands)
-- **Plugin**: `plugin-name/commands/` (plugin-specific)
+- **Project**：`.codex/commands/`
+- **Personal**：`~/.codex/commands/`
+- **Plugin**：`plugin-name/commands/`
 
 ### Key Features
 
-**Dynamic arguments:**
-- `$ARGUMENTS` - All arguments as single string
-- `$1`, `$2`, `$3` - Positional arguments
-
-**File references:**
-- `@path/to/file` - Include file contents
-
-**Bash execution:**
-- `!`command`` - Execute and include output
+- `$ARGUMENTS`：接收全部参数
+- `$1`、`$2`：按位置接收参数
+- `@path/to/file`：读取文件内容
+- `!`command``：执行 bash 并嵌入输出
 
 ## Frontmatter Fields Quick Reference
 
 | Field | Purpose | Example |
 |-------|---------|---------|
-| `description` | Brief description for /help | `"Review code for issues"` |
-| `allowed-tools` | Restrict tool access | `Read, Bash(git:*)` |
-| `model` | Specify model | `sonnet`, `opus`, `haiku` |
-| `argument-hint` | Document arguments | `[pr-number] [priority]` |
-| `disable-model-invocation` | Manual-only command | `true` |
-
-## Common Patterns
-
-### Simple Review Command
-
-```markdown
----
-description: Review code for issues
----
-
-Review this code for quality and potential bugs.
-```
-
-### Command with Arguments
-
-```markdown
----
-description: Deploy to environment
-argument-hint: [environment] [version]
----
-
-Deploy to $1 environment using version $2
-```
-
-### Command with File Reference
-
-```markdown
----
-description: Document file
-argument-hint: [file-path]
----
-
-Generate documentation for @$1
-```
-
-### Command with Bash Execution
-
-```markdown
----
-description: Show Git status
-allowed-tools: Bash(git:*)
----
-
-Current status: !`git status`
-Recent commits: !`git log --oneline -5`
-```
+| `description` | `/help` 中显示说明 | `"Review code for issues"` |
+| `allowed-tools` | 限制工具权限 | `Read, Bash(git:*)` |
+| `model` | 指定 model | `sonnet` |
+| `argument-hint` | 说明参数格式 | `[pr-number] [priority]` |
+| `disable-model-invocation` | 仅允许手动调用 | `true` |
 
 ## Development Workflow
 
-1. **Design command:**
-   - Define purpose and scope
-   - Determine required arguments
-   - Identify needed tools
+1. 明确 command 的目的和范围
+2. 创建 `.md` 文件
+3. 补充必要 frontmatter
+4. 测试参数、bash、文件引用是否生效
+5. 继续精修 prompt、错误处理和示例
 
-2. **Create file:**
-   - Choose appropriate location
-   - Create `.md` file with command name
-   - Write basic prompt
+## 最佳实践总结
 
-3. **Add frontmatter:**
-   - Start minimal (just description)
-   - Add fields as needed (allowed-tools, etc.)
-   - Document arguments with argument-hint
-
-4. **Test command:**
-   - Invoke with `/command-name`
-   - Verify arguments work
-   - Check bash execution
-   - Test file references
-
-5. **Refine:**
-   - Improve prompt clarity
-   - Handle edge cases
-   - Add examples in comments
-   - Document requirements
-
-## Best Practices Summary
-
-1. **Single responsibility**: One command, one clear purpose
-2. **Clear descriptions**: Make discoverable in `/help`
-3. **Document arguments**: Always use argument-hint
-4. **Minimal tools**: Use most restrictive allowed-tools
-5. **Test thoroughly**: Verify all features work
-6. **Add comments**: Explain complex logic
-7. **Handle errors**: Consider missing arguments/files
-
-## Status
-
-**Completed enhancements:**
-- ✓ Plugin command patterns (${CLAUDE_PLUGIN_ROOT}, discovery, organization)
-- ✓ Integration patterns (agents, skills, hooks coordination)
-- ✓ Validation patterns (input, file, resource validation, error handling)
-
-**Remaining enhancements (in progress):**
-- Advanced workflows (multi-step command sequences)
-- Testing strategies (how to test commands effectively)
-- Documentation patterns (command documentation best practices)
-- Marketplace considerations (publishing and distribution)
-
-## Maintenance
-
-To update this skill:
-1. Keep SKILL.md focused on core fundamentals
-2. Move detailed specifications to references/
-3. Add new examples/ for different use cases
-4. Update frontmatter when new fields added
-5. Ensure imperative/infinitive form throughout
-6. Test examples work with current Claude Code
-
-## Version History
-
-**v0.1.0** (2025-01-15):
-- Initial release with basic command fundamentals
-- Frontmatter field reference
-- 10 simple command examples
-- Ready for plugin-specific pattern additions
+1. 单一职责
+2. 描述清晰
+3. 参数必须可发现
+4. 工具权限尽量最小
+5. 全量测试
+6. 复杂逻辑加注释
+7. 处理缺参、缺文件、执行失败等错误场景

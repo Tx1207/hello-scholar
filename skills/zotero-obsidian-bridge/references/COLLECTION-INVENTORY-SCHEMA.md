@@ -1,8 +1,8 @@
-# Collection Inventory Schema
+# 文献集合清单 Schema
 
-Use this note when a Zotero collection is imported or audited at collection scope.
+当某个 Zotero collection 在“集合范围”内被导入或审计时，使用这份笔记。
 
-## Canonical path
+## 规范路径
 
 ```text
 Knowledge/Zotero-Collection-{collection-slug}-Inventory.md
@@ -22,7 +22,7 @@ updated: 2026-03-18T00:00:00Z
 ---
 ```
 
-## Required sections
+## 必需章节
 
 ```markdown
 # Cross Subject Inventory
@@ -42,9 +42,9 @@ updated: 2026-03-18T00:00:00Z
 - items that still need full notes
 ```
 
-## Rules
-- Keep one durable inventory note per collection slug.
-- `Canonical Note` should use project-relative note paths.
-- `Canonical Note` should normally follow `Papers/{FirstAuthor}-{Year}-{ShortTitle}.md`.
-- `Status` should use a small vocabulary such as `covered`, `bridge-only`, `skipped`, `needs-review`.
-- Update coverage counts whenever the collection is batch-processed again.
+## 规则
+- 每个 collection slug 只保留一份持久化 inventory note。
+- `Canonical Note` 应使用相对于项目的笔记路径。
+- `Canonical Note` 通常遵循 `Papers/{FirstAuthor}-{Year}-{ShortTitle}.md`。
+- `Status` 应使用小而稳定的词汇集，如 `covered`、`bridge-only`、`skipped`、`needs-review`。
+- 每次重新批量处理该 collection 时，都要更新覆盖数量。

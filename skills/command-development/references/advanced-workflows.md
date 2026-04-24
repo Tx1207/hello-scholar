@@ -1,137 +1,91 @@
-# Advanced Workflow Patterns
+# 高级工作流模式
 
-Multi-step command sequences and composition patterns for complex workflows.
+用于复杂工作流的多步骤 command 序列、组合方式和状态协调模式。
 
-## Overview
+## 概览
 
-Advanced workflows combine multiple commands, coordinate state across invocations, and create sophisticated automation sequences. These patterns enable building complex functionality from simple command building blocks.
+高级工作流会把多个 commands 组合起来，在多次调用之间维护状态，并形成更复杂的自动化流程。核心思想是：用简单 commands 作为 building blocks，拼成复杂功能。
 
-## Multi-Step Command Patterns
+## 多步骤 Command 模式
 
-### Sequential Workflow Command
+### 顺序式工作流 Command
 
-Commands that guide users through multi-step processes:
+适合引导用户按步骤完成流程：
 
 ```markdown
 ---
-description: Complete PR review workflow
+description: 完整 PR review 工作流
 argument-hint: [pr-number]
 allowed-tools: Bash(gh:*), Read, Grep
 ---
 
 # PR Review Workflow for #$1
 
-## Step 1: Fetch PR Details
+## Step 1: 获取 PR 详情
 !`gh pr view $1 --json title,body,author,files`
 
-## Step 2: Review Files
+## Step 2: 审查文件
 Files changed: !`gh pr diff $1 --name-only`
 
 For each file:
-- Check code quality
-- Verify tests exist
-- Review documentation
+- 检查代码质量
+- 确认测试是否存在
+- 审查文档
 
-## Step 3: Run Checks
+## Step 3: 运行检查
 Test status: !`gh pr checks $1`
 
 Verify:
-- All tests passing
-- No merge conflicts
-- CI/CD successful
+- 所有测试通过
+- 没有 merge conflicts
+- CI/CD 成功
 
-## Step 4: Provide Feedback
+## Step 4: 给出反馈
 
 Summarize:
-- Issues found (critical/minor)
-- Suggestions for improvement
-- Approval recommendation
-
-Would you like to:
-1. Approve PR
-2. Request changes
-3. Leave comments only
-
-Reply with your choice and I'll help complete the action.
+- 发现的问题（critical/minor）
+- 改进建议
+- 是否建议 approve
 ```
 
-**Key features:**
-- Numbered steps for clarity
-- Bash execution for context
-- Decision points for user input
-- Next action suggestions
+关键点：
+- 用编号步骤保证清晰度
+- 用 Bash 获取上下文
+- 在关键节点让用户决策
+- 明确给出下一步
 
-### State-Carrying Workflow
+### 带状态的工作流
 
-Commands that maintain state between invocations:
+在多次 command 调用之间保存状态：
 
 ```markdown
 ---
-description: Initialize deployment workflow
+description: 初始化部署工作流
 allowed-tools: Write, Bash(git:*)
 ---
 
 # Initialize Deployment
 
-Creating deployment tracking file...
+当前分支: !`git branch --show-current`
+最新提交: !`git log -1 --format=%H`
 
-Current branch: !`git branch --show-current`
-Latest commit: !`git log -1 --format=%H`
-
-Deployment state saved to `.codex/deployment-state.local.md`:
-
-\`\`\`markdown
----
-initialized: true
-branch: $(git branch --show-current)
-commit: $(git log -1 --format=%H)
-timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
-status: initialized
----
-
-# Deployment Tracking
-
-Branch: $(git branch --show-current)
-Started: $(date)
-
-Next steps:
-1. Run tests: /deploy-test
-2. Build: /deploy-build
-3. Deploy: /deploy-execute
-\`\`\`
+把状态写入 `.codex/deployment-state.local.md`
 
 State saved. Run `/deploy-test` to continue.
 ```
 
-**Next command** (`/deploy-test`):
-```markdown
----
-description: Run deployment tests
-allowed-tools: Read, Bash(npm:*)
----
+后续 command 读取同一个 state file 继续执行。这种模式适合：
+- 长流程
+- 需要中断恢复
+- 多阶段安全检查
 
-Reading deployment state from `.codex/deployment-state.local.md`...
+### 条件分支工作流
 
-Running tests: !`npm test`
-
-Updating state to 'tested'...
-
-Tests complete. Run `/deploy-build` to continue.
-```
-
-**Pattern benefits:**
-- Persistent state across commands
-- Clear workflow progression
-- Safety checkpoints
-- Resume capability
-
-### Conditional Workflow Branching
-
-Commands that adapt based on conditions:
+根据环境、分支或检查结果动态分支：
 
 ```markdown
 ---
-description: Smart deployment workflow
+description: 智能部署工作流
 argument-hint: [environment]
 allowed-tools: Bash(git:*), Bash(npm:*), Read
 ---
@@ -143,580 +97,190 @@ allowed-tools: Bash(git:*), Bash(npm:*), Read
 Branch: !`git branch --show-current`
 Status: !`git status --short`
 
-**Checking conditions:**
+- main/master: 需要额外批准
+- feature branch: 给出目标提醒
+- hotfix: 走快速流程
 
-1. Branch status:
-   - If main/master: Require approval
-   - If feature branch: Warning about target
-   - If hotfix: Fast-track process
-
-2. Tests:
-   !`npm test`
-   - If tests fail: STOP - fix tests first
-   - If tests pass: Continue
-
-3. Environment:
-   - If $1 = 'production': Extra validation
-   - If $1 = 'staging': Standard process
-   - If $1 = 'dev': Minimal checks
-
-**Workflow decision:**
-Based on above, proceeding with: [determined workflow]
-
-[Conditional steps based on environment and status]
-
-Ready to deploy? (yes/no)
+- 如果测试失败：停止
+- production: 增加额外校验
+- staging: 标准流程
+- dev: 最少检查
 ```
 
-## Command Composition Patterns
+## Command 组合模式
 
 ### Command Chaining
 
-Commands designed to work together:
+一个 command 只负责 orchestrate，真正动作交给其他 commands：
 
 ```markdown
----
-description: Prepare for code review
----
-
-# Prepare Code Review
-
-Running preparation sequence:
-
 1. Format code: /format-code
 2. Run linter: /lint-code
 3. Run tests: /test-all
 4. Generate coverage: /coverage-report
 5. Create review summary: /review-summary
-
-This is a meta-command. After completing each step above,
-I'll compile results and prepare comprehensive review materials.
-
-Starting sequence...
 ```
 
-**Individual commands** are simple:
-- `/format-code` - Just formats
-- `/lint-code` - Just lints
-- `/test-all` - Just tests
-
-**Composition command** orchestrates them.
+原则：
+- 子 commands 保持单一职责
+- 组合 command 负责调度和汇总
 
 ### Pipeline Pattern
 
-Commands that process output from previous commands:
-
-```markdown
----
-description: Analyze test failures
----
-
-# Analyze Test Failures
-
-## Step 1: Get test results
-(Run /test-all first if not done)
-
-Reading test output...
-
-## Step 2: Categorize failures
-- Flaky tests (random failures)
-- Consistent failures
-- New failures vs existing
-
-## Step 3: Prioritize
-Rank by:
-- Impact (critical path vs edge case)
-- Frequency (always fails vs sometimes)
-- Effort (quick fix vs major work)
-
-## Step 4: Generate fix plan
-For each failure:
-- Root cause hypothesis
-- Suggested fix approach
-- Estimated effort
-
-Would you like me to:
-1. Fix highest priority failure
-2. Generate detailed fix plans for all
-3. Create GitHub issues for each
-```
+后一个 command 消费前一个 command 的输出，例如先跑 `/test-all`，再跑 `/analyze-test-failures`，对失败按类型、影响和修复成本排序。
 
 ### Parallel Execution Pattern
 
-Commands that coordinate multiple simultaneous operations:
+当任务互不依赖时，并行执行多个检查：
+- 代码质量
+- 安全扫描
+- 依赖审计
+- 性能 profiling
+
+最后汇总所有结果。
+
+## 工作流状态管理
+
+### 使用 `.local.md` 文件
+
+推荐把工作流状态写入插件专用 `.local.md` 文件，例如：
 
 ```markdown
----
-description: Run comprehensive validation
-allowed-tools: Bash(*), Read
----
-
-# Comprehensive Validation
-
-Running validations in parallel...
-
-Starting:
-- Code quality checks
-- Security scanning
-- Dependency audit
-- Performance profiling
-
-This will take 2-3 minutes. I'll monitor all processes
-and report when complete.
-
-[Poll each process and report progress]
-
-All validations complete. Summary:
-- Quality: PASS (0 issues)
-- Security: WARN (2 minor issues)
-- Dependencies: PASS
-- Performance: PASS (baseline met)
-
-Details:
-[Collated results from all checks]
+.codex/plugin-name-workflow.local.md
 ```
 
-## Workflow State Management
+可存：
+- 当前 workflow 名称
+- 当前 stage
+- 开始时间
+- 环境
+- 分支和 commit
+- 已完成步骤
+- 待完成步骤
 
-### Using .local.md Files
+### 工作流恢复
 
-Store workflow state in plugin-specific files:
+当流程中断时，可以通过 state file 提供恢复选项：
 
-```markdown
-.codex/plugin-name-workflow.local.md:
+1. 从上一步继续
+2. 从头重来
+3. 中止并清理
 
----
-workflow: deployment
-stage: testing
-started: 2025-01-15T10:30:00Z
-environment: staging
-branch: feature/new-api
-commit: abc123def
-tests_passed: false
-build_complete: false
----
-
-# Deployment Workflow State
-
-Current stage: Testing
-Started: 2025-01-15 10:30 UTC
-
-Completed steps:
-- ✅ Validation
-- ✅ Branch check
-- ⏳ Testing (in progress)
-
-Pending steps:
-- Build
-- Deploy
-- Smoke tests
-```
-
-**Reading state in commands:**
-
-```markdown
----
-description: Continue deployment workflow
-allowed-tools: Read, Write
----
-
-Reading workflow state from .codex/plugin-name-workflow.local.md...
-
-Current stage: @.codex/plugin-name-workflow.local.md
-
-[Parse YAML frontmatter to determine next step]
-
-Next action based on state: [determined action]
-```
-
-### Workflow Recovery
-
-Handle interrupted workflows:
-
-```markdown
----
-description: Resume deployment workflow
-allowed-tools: Read
----
-
-# Resume Deployment
-
-Checking for interrupted workflow...
-
-State file: @.codex/plugin-name-workflow.local.md
-
-**Workflow found:**
-- Started: [timestamp]
-- Environment: [env]
-- Last completed: [step]
-
-**Recovery options:**
-1. Resume from last step
-2. Restart from beginning
-3. Abort and clean up
-
-Which would you like? (1/2/3)
-```
-
-## Workflow Coordination Patterns
+## 工作流协调模式
 
 ### Cross-Command Communication
 
-Commands that signal each other:
+commands 可以通过 marker file 彼此通信，例如：
 
 ```markdown
----
-description: Mark feature complete
-allowed-tools: Write
----
-
-# Mark Feature Complete
-
-Writing completion marker...
-
-Creating: .codex/feature-complete.flag
-
-This signals other commands that feature is ready for:
-- Integration testing (/integration-test will auto-detect)
-- Documentation generation (/docs-generate will include)
-- Release notes (/release-notes will add)
-
-Feature marked complete.
+.codex/feature-complete.flag
 ```
 
-**Other commands check for flag:**
-
-```markdown
----
-description: Generate release notes
-allowed-tools: Read, Bash(git:*)
----
-
-Checking for completed features...
-
-if [ -f .codex/feature-complete.flag ]; then
-  Feature ready for release notes
-fi
-
-[Include in release notes]
-```
+其他 commands 检测到这个 flag 后，就知道某个 feature 已完成，可继续：
+- integration testing
+- docs generation
+- release notes
 
 ### Workflow Locking
 
-Prevent concurrent workflow execution:
+为避免并发执行同一流程，可使用 lock file：
 
 ```markdown
----
-description: Start deployment
-allowed-tools: Read, Write, Bash
----
-
-# Start Deployment
-
-Checking for active deployments...
-
-if [ -f .codex/deployment.lock ]; then
-  ERROR: Deployment already in progress
-  Started: [timestamp from lock file]
-
-  Cannot start concurrent deployment.
-  Wait for completion or run /deployment-abort
-
-  Exit.
-fi
-
-Creating deployment lock...
-
-Deployment started. Lock created.
-[Proceed with deployment]
+.codex/deployment.lock
 ```
 
-**Lock cleanup:**
+开始流程前先检查 lock；完成或中止时再清理 lock。
+
+## 高级参数处理
+
+### 带默认值的可选参数
 
 ```markdown
----
-description: Complete deployment
-allowed-tools: Write, Bash
----
-
-Deployment complete.
-
-Removing deployment lock...
-rm .codex/deployment.lock
-
-Ready for next deployment.
-```
-
-## Advanced Argument Handling
-
-### Optional Arguments with Defaults
-
-```markdown
----
-description: Deploy with optional version
-argument-hint: [environment] [version]
----
-
 Environment: ${1:-staging}
 Version: ${2:-latest}
-
-Deploying ${2:-latest} to ${1:-staging}...
-
-Note: Using defaults for missing arguments:
-- Environment defaults to 'staging'
-- Version defaults to 'latest'
 ```
 
-### Argument Validation
+### 参数校验
 
 ```markdown
----
-description: Deploy to validated environment
-argument-hint: [environment]
----
-
-Environment: $1
-
-Validating environment...
-
 valid_envs="dev staging production"
 if ! echo "$valid_envs" | grep -w "$1" > /dev/null; then
-  ERROR: Invalid environment '$1'
-  Valid options: dev, staging, production
-  Exit.
+  ERROR: Invalid environment
 fi
-
-Environment validated. Proceeding...
 ```
 
-### Argument Transformation
+### 参数转换
 
-```markdown
----
-description: Deploy with shorthand
-argument-hint: [env-shorthand]
----
+支持 shorthand：
+- `d/dev -> development`
+- `s/stg -> staging`
+- `p/prod -> production`
 
-Input: $1
-
-Expanding shorthand:
-- d/dev → development
-- s/stg → staging
-- p/prod → production
-
-case "$1" in
-  d|dev) ENV="development";;
-  s|stg) ENV="staging";;
-  p|prod) ENV="production";;
-  *) ENV="$1";;
-esac
-
-Deploying to: $ENV
-```
-
-## Error Handling in Workflows
+## 工作流中的错误处理
 
 ### Graceful Failure
 
-```markdown
----
-description: Resilient deployment workflow
----
-
-# Deployment Workflow
-
-Running steps with error handling...
-
-## Step 1: Tests
-!`npm test`
-
-if [ $? -ne 0 ]; then
-  ERROR: Tests failed
-
-  Options:
-  1. Fix tests and retry
-  2. Skip tests (NOT recommended)
-  3. Abort deployment
-
-  What would you like to do?
-
-  [Wait for user input before continuing]
-fi
-
-## Step 2: Build
-[Continue only if Step 1 succeeded]
-```
+每一步失败时都应：
+- 立即停止后续危险操作
+- 清楚说明失败原因
+- 提供可选恢复路径
 
 ### Rollback on Failure
 
-```markdown
----
-description: Deployment with rollback
----
-
-# Deploy with Rollback
-
-Saving current state for rollback...
-Previous version: !`current-version.sh`
-
-Deploying new version...
-
-!`deploy.sh`
-
-if [ $? -ne 0 ]; then
-  DEPLOYMENT FAILED
-
-  Initiating automatic rollback...
-  !`rollback.sh`
-
-  Rolled back to previous version.
-  Check logs for failure details.
-fi
-
-Deployment complete.
-```
+部署类工作流应在执行前保存可回滚状态；失败时自动 rollback，并告诉用户如何查看日志。
 
 ### Checkpoint Recovery
 
-```markdown
----
-description: Workflow with checkpoints
----
+每完成一个阶段就记录 checkpoint。失败后可从最近成功 checkpoint 恢复，而不必整条链路重跑。
 
-# Multi-Stage Deployment
-
-## Checkpoint 1: Validation
-!`validate.sh`
-echo "checkpoint:validation" >> .codex/deployment-checkpoints.log
-
-## Checkpoint 2: Build
-!`build.sh`
-echo "checkpoint:build" >> .codex/deployment-checkpoints.log
-
-## Checkpoint 3: Deploy
-!`deploy.sh`
-echo "checkpoint:deploy" >> .codex/deployment-checkpoints.log
-
-If any step fails, resume with:
-/deployment-resume [last-successful-checkpoint]
-```
-
-## Best Practices
+## 最佳实践
 
 ### Workflow Design
 
-1. **Clear progression**: Number steps, show current position
-2. **Explicit state**: Don't rely on implicit state
-3. **User control**: Provide decision points
-4. **Error recovery**: Handle failures gracefully
-5. **Progress indication**: Show what's done, what's pending
+1. 用编号步骤展示清晰进度
+2. 状态显式持久化，不依赖隐式上下文
+3. 在关键节点保留用户控制权
+4. 提前设计恢复路径
+5. 告诉用户“已完成什么、还差什么”
 
 ### Command Composition
 
-1. **Single responsibility**: Each command does one thing well
-2. **Composable design**: Commands work together easily
-3. **Standard interfaces**: Consistent input/output formats
-4. **Loose coupling**: Commands don't depend on each other's internals
+1. 每个 command 保持单一职责
+2. commands 要容易组合
+3. 输入输出风格尽量一致
+4. 尽量松耦合，不依赖彼此内部实现
 
 ### State Management
 
-1. **Persistent state**: Use .local.md files
-2. **Atomic updates**: Write complete state files atomically
-3. **State validation**: Check state file format/completeness
-4. **Cleanup**: Remove stale state files
-5. **Documentation**: Document state file formats
+1. 用 `.local.md` 保存持久状态
+2. 原子更新 state file
+3. 读取前先校验格式
+4. 及时清理陈旧状态
+5. 文档里说明 state file 结构
 
 ### Error Handling
 
-1. **Fail fast**: Detect errors early
-2. **Clear messages**: Explain what went wrong
-3. **Recovery options**: Provide clear next steps
-4. **State preservation**: Keep state for recovery
-5. **Rollback capability**: Support undoing changes
+1. 尽早发现错误
+2. 错误信息要明确
+3. 给出恢复建议
+4. 保留恢复所需状态
+5. 支持 rollback
 
-## Example: Complete Deployment Workflow
+## 完整示例：部署工作流
 
-### Initialize Command
+一个完整部署工作流通常拆成 4 个 commands：
 
-```markdown
----
-description: Initialize deployment
-argument-hint: [environment]
-allowed-tools: Write, Bash(git:*)
----
+1. `/deployment-init`
+   - 初始化 state
+2. `/deployment-validate`
+   - 运行分支、测试、构建校验
+3. `/deployment-execute`
+   - 执行部署并更新状态
+4. `/deployment-cleanup`
+   - 删除 state file，完成收尾
 
-# Initialize Deployment to $1
-
-Creating workflow state...
-
-\`\`\`yaml
----
-workflow: deployment
-environment: $1
-branch: !`git branch --show-current`
-commit: !`git rev-parse HEAD`
-stage: initialized
-timestamp: !`date -u +%Y-%m-%dT%H:%M:%SZ`
----
-\`\`\`
-
-Written to .codex/deployment-state.local.md
-
-Next: Run /deployment-validate
-```
-
-### Validation Command
-
-```markdown
----
-description: Validate deployment
-allowed-tools: Read, Bash
----
-
-Reading state: @.codex/deployment-state.local.md
-
-Running validation...
-- Branch check: PASS
-- Tests: PASS
-- Build: PASS
-
-Updating state to 'validated'...
-
-Next: Run /deployment-execute
-```
-
-### Execution Command
-
-```markdown
----
-description: Execute deployment
-allowed-tools: Read, Bash, Write
----
-
-Reading state: @.codex/deployment-state.local.md
-
-Executing deployment to [environment]...
-
-!`deploy.sh [environment]`
-
-Deployment complete.
-Updating state to 'completed'...
-
-Cleanup: /deployment-cleanup
-```
-
-### Cleanup Command
-
-```markdown
----
-description: Clean up deployment
-allowed-tools: Bash
----
-
-Removing deployment state...
-rm .codex/deployment-state.local.md
-
-Deployment workflow complete.
-```
-
-This complete workflow demonstrates state management, sequential execution, error handling, and clean separation of concerns across multiple commands.
+这种拆分方式能同时实现：
+- 顺序执行
+- 状态恢复
+- 清晰职责边界
+- 更容易测试

@@ -1,61 +1,61 @@
 ---
 name: skill-development
-description: This skill should be used when the user asks to create a new skill, repair an existing skill, improve trigger descriptions, reorganize skill structure, or make a Claude skill more reusable and internally consistent.
+description: 当用户要求创建新 skill、修复现有 skill、改进 trigger descriptions、重组 skill 结构，或让一个 Claude skill 变得更可复用、更内部一致时使用该 skill。
 version: 0.2.0
 ---
 
 # Skill Development
 
-Use this skill to create or repair Claude skills in the **current local environment**, not in an abstract plugin template.
+使用该 skill 在**当前本地环境**中创建或修复 Claude skills，而不是在抽象 plugin 模板里工作。
 
-## Goal
+## 目标
 
-Produce a skill that is:
-- easy to trigger,
-- lean at the `SKILL.md` layer,
-- backed by real `references/`, `examples/`, and `scripts/` files when they are mentioned,
-- free of dead local references.
+产出一个：
+- 容易触发
+- 在 `SKILL.md` 层保持轻量
+- 当提到 `references/`、`examples/` 和 `scripts/` 时，背后都对应真实文件
+- 不包含失效本地引用
 
-## Core rules
+## 核心规则
 
-- Keep **one skill = one durable job**.
-- Treat the frontmatter description as the main trigger surface.
-- Keep `SKILL.md` focused on workflow and boundaries.
-- Move detailed catalogs, templates, and long explanations into `references/` or `examples/`.
-- Do not mention files that do not exist.
-- Do not inherit stale names, agents, or sibling skill references without verifying they exist locally.
+- 保持 **one skill = one durable job**。
+- 把 frontmatter description 当作主要 trigger surface。
+- 让 `SKILL.md` 聚焦 workflow 和边界。
+- 把详细目录、模板和长解释移动到 `references/` 或 `examples/`。
+- 不要提及不存在的文件。
+- 不要在未核对本地实际情况前继承失效的 names、agents 或 sibling skill 引用。
 
-## Default workflow
+## 默认工作流
 
-### 1. Inspect the current environment first
+### 1. 先检查当前环境
 
-Before writing anything:
-- inspect the target skill directory,
-- inspect neighboring skills that already solve a similar problem,
-- verify which agents, commands, and sibling skills actually exist,
-- identify stale references before adding new ones.
+在动手前：
+- 检查目标 skill 目录，
+- 检查已经解决类似问题的邻近 skills，
+- 验证哪些 agents、commands 和 sibling skills 在本地真实存在，
+- 在新增内容前先识别 stale references。
 
-Use the local inventory as the authority. Do not write guidance against an imagined plugin layout.
+以本地 inventory 为唯一权威，不要基于想象中的 plugin layout 编写指导。
 
-### 2. Lock the skill contract
+### 2. 锁定 skill contract
 
-Define four things before editing:
-1. what the skill does,
-2. what triggers it,
-3. what it explicitly does **not** do,
-4. which bundled resources are actually needed.
+编辑前先定义四件事：
+1. 该 skill 做什么
+2. 什么会触发它
+3. 它明确**不**做什么
+4. 实际需要哪些 bundled resources
 
-If the skill only needs a short workflow, keep it short. Do not create `references/`, `examples/`, or `scripts/` just because the directories are conventional.
+如果该 skill 只需要一个简短 workflow，就保持简短。不要仅因为目录是惯例，就强行创建 `references/`、`examples/` 或 `scripts/`。
 
-### 3. Write or repair the frontmatter
+### 3. 编写或修复 frontmatter
 
-The frontmatter should:
-- use the real skill identifier in `name`,
-- use a third-person trigger description,
-- include concrete phrases a user would naturally say,
-- stay short enough to scan quickly.
+frontmatter 应该：
+- 在 `name` 中使用真实 skill identifier
+- 使用第三人称 trigger description
+- 包含用户自然会说出的具体短语
+- 保持足够短，便于快速扫描
 
-Prefer descriptions of this form:
+优先采用这种描述形式：
 
 ```yaml
 ---
@@ -64,69 +64,69 @@ description: This skill should be used when the user asks to "...", "...", or ne
 ---
 ```
 
-### 4. Keep the main file lean
+### 4. 保持主文件精简
 
-A good `SKILL.md` should usually contain:
-- a short goal section,
-- role boundaries,
-- a default workflow,
-- safety or quality rules,
-- a short list of additional resources.
+一个好的 `SKILL.md` 通常应包含：
+- 简短的 goal section
+- role boundaries
+- default workflow
+- safety 或 quality rules
+- 一个短的 additional resources 列表
 
-Move these out of the main file when they get long:
-- templates,
-- exhaustive checklists,
-- edge-case catalogs,
-- sample outputs,
-- long examples.
+当以下内容变长时，把它们移出主文件：
+- templates
+- 穷尽式 checklists
+- edge-case catalogs
+- sample outputs
+- 长示例
 
-### 5. Add only real bundled resources
+### 5. 只添加真实存在的 bundled resources
 
-Use bundled resources deliberately:
-- `references/` for detailed guidance that may be loaded selectively,
-- `examples/` for real example outputs or scaffolds,
-- `scripts/` for deterministic helper logic.
+有意识地使用 bundled resources：
+- `references/` 用于可按需选择性加载的详细指导
+- `examples/` 用于真实示例输出或脚手架
+- `scripts/` 用于确定性 helper logic
 
-If a resource is mentioned in `SKILL.md`, it must exist.
-If a resource exists but is never referenced or used, delete it.
+如果一个资源在 `SKILL.md` 中被提及，它就必须存在。  
+如果一个资源存在却从未被引用或使用，应删除它。
 
-### 6. Run integrity checks before closing
+### 6. 收尾前运行完整性检查
 
-At minimum, verify:
-- frontmatter parses,
-- referenced local files exist,
-- sibling skill or agent references are real,
-- `SKILL.md` is not overloaded with material that belongs in references,
-- temporary logs, caches, and editor artifacts are not left inside the skill directory.
+至少验证：
+- frontmatter 能被解析
+- 被引用的本地文件真实存在
+- sibling skill 或 agent 引用是真实的
+- `SKILL.md` 没有塞进本应属于 references 的冗长内容
+- skill 目录中没有留下临时日志、缓存或编辑器产物
 
-## Typical repair patterns
+## 常见修复模式
 
-### When the skill is too long
-- keep the trigger and workflow in `SKILL.md`,
-- move catalogs and deep detail into `references/`,
-- keep a short read order so another model knows what to load first.
+### 当 skill 太长时
+- 在 `SKILL.md` 中只保留 trigger 和 workflow
+- 把目录和深层细节移到 `references/`
+- 保留一个简短 read order，让另一个模型知道优先读什么
 
-### When the skill is too thin
-- add a default workflow,
-- add at least one concrete example or checklist,
-- make the boundaries explicit so the skill is not just a slogan.
+### 当 skill 太薄时
+- 增加 default workflow
+- 至少补一个具体 example 或 checklist
+- 把边界写清楚，避免 skill 只剩一句口号
 
-### When the skill has stale references
-- remove dead paths immediately,
-- replace historical names with current local names,
-- re-check neighboring agents/commands/skills against the live directory.
+### 当 skill 有 stale references 时
+- 立即删除失效路径
+- 把历史名称替换成当前本地名称
+- 对照 live directory 重新检查邻近 agents / commands / skills
 
-## Recommended output shape
+## 推荐输出形态
 
-When creating or repairing a skill, prefer ending with:
-- what changed,
-- which files were created or updated,
-- what integrity checks were run,
-- what still needs manual follow-up, if anything.
+在创建或修复 skill 时，优先以以下内容结尾：
+- 改了什么
+- 创建或更新了哪些文件
+- 运行了哪些完整性检查
+- 如果还有需要人工跟进的事项，也明确列出
 
 ## References
 
-Load only what is needed:
-- `references/checklist.md` - compact quality checklist before closing a skill edit
-- `references/integrity-checks.md` - concrete local checks for missing files, dead references, and drift
-- `references/skill-creator-original.md` - legacy background reference; use for context, not as the live source of truth
+只在需要时加载：
+- `references/checklist.md` - 收尾前的紧凑质量清单
+- `references/integrity-checks.md` - 关于缺失文件、失效引用和漂移的本地检查
+- `references/skill-creator-original.md` - 历史背景参考；只用来补背景，不作为当前权威来源

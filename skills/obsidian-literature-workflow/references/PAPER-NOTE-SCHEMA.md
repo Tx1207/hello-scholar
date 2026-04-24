@@ -1,8 +1,8 @@
 # Paper Note Schema
 
-Use this schema when normalizing or creating durable paper notes in `Papers/`.
+当你需要在 `Papers/` 下创建或规范 durable paper notes 时，使用本 schema。
 
-## Required frontmatter
+## 必需 frontmatter
 
 ```yaml
 ---
@@ -21,15 +21,15 @@ updated: 2026-03-16T00:00:00Z
 ---
 ```
 
-## Canonical filename
+## 规范文件名
 
 ```text
 Papers/{FirstAuthor}-{Year}-{ShortTitle}.md
 ```
 
-Use the first author's surname, a 4-digit year, and a stable short title in original keyword order.
+使用第一作者姓氏、4 位年份，以及按原标题关键词顺序保留的稳定短标题。
 
-## Recommended frontmatter for knowledge mapping
+## 建议用于知识映射的 frontmatter
 
 ```yaml
 keywords:
@@ -45,7 +45,7 @@ linked_knowledge:
   - "Knowledge/Method-Families"
 ```
 
-## Recommended sections
+## 推荐章节
 
 - `## Claim`
 - `## Research question`
@@ -58,10 +58,10 @@ linked_knowledge:
 - `## Knowledge links`
 - `## Optional downstream hooks`
 
-## Working rules from real collection passes
+## 真实 collection pass 中的工作规则
 
-- Prefer one canonical note per paper and keep the schema aligned across the whole covered set.
-- When the user asks to check **all** papers, perform a coverage pass rather than stopping at a representative subset.
-- Use `zotero_key` as the durable join key between Zotero items and Obsidian notes.
-- Keep paper-note filenames stable under `FirstAuthor-Year-ShortTitle`, even if the displayed `title` later changes.
-- Keep `Direct relevance to repo` concrete enough to drive experiments, writing, or review prioritization.
+- 每篇论文优先只有一个 canonical note，并在整个覆盖集合中保持 schema 对齐。
+- 当用户要求检查 **all** papers 时，要做 coverage pass，而不是只抽样看代表性子集。
+- 用 `zotero_key` 作为 Zotero 条目与 Obsidian 笔记之间的 durable join key。
+- 即使展示用 `title` 后面变了，paper-note 文件名仍应稳定保持 `FirstAuthor-Year-ShortTitle`。
+- `Direct relevance to repo` 要足够具体，能直接驱动 experiment、writing 或 review prioritization。

@@ -1,48 +1,48 @@
 ---
 name: webapp-testing
-description: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
+description: 使用 Playwright 与本地 Web 应用交互并进行测试的工具包。支持验证前端功能、调试 UI 行为、抓取浏览器截图以及查看浏览器日志。
 license: Complete terms in LICENSE.txt
 version: 0.1.0
 ---
 
-# Web Application Testing
+# Web 应用测试
 
-To test local web applications, write native Python Playwright scripts.
+测试本地 Web 应用时，编写原生 Python Playwright 脚本。
 
-**Helper Scripts Available**:
-- `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
+**可用辅助脚本：**
+- `scripts/with_server.py` - 管理 server 生命周期（支持多个 server）
 
-**Always run scripts with `--help` first** to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be very large and thus pollute your context window. They exist to be called directly as black-box scripts rather than ingested into your context window.
+**始终先用 `--help` 运行脚本** 查看用法。不要在未尝试运行前就去读源码，除非你已经确认确实需要定制化方案。这些脚本可能很大，会污染上下文窗口。它们存在的意义是作为黑盒脚本被直接调用，而不是整体读入上下文。
 
-## Decision Tree: Choosing Your Approach
+## 决策树：如何选择方案
 
+```text
+User task -> Is it static HTML?
+    |- Yes -> 直接读取 HTML 文件，识别 selectors
+    |        |- Success -> 用这些 selectors 写 Playwright 脚本
+    |        \- Fails/Incomplete -> 按动态页面处理（见下）
+    |
+    \- No (dynamic webapp) -> Is the server already running?
+        |- No -> Run: python scripts/with_server.py --help
+        |       然后使用 helper + 编写简化 Playwright 脚本
+        |
+        \- Yes -> Reconnaissance-then-action:
+            1. Navigate 并等待 networkidle
+            2. 截图或检查 DOM
+            3. 从渲染状态识别 selectors
+            4. 使用已发现 selectors 执行动作
 ```
-User task → Is it static HTML?
-    ├─ Yes → Read HTML file directly to identify selectors
-    │         ├─ Success → Write Playwright script using selectors
-    │         └─ Fails/Incomplete → Treat as dynamic (below)
-    │
-    └─ No (dynamic webapp) → Is the server already running?
-        ├─ No → Run: python scripts/with_server.py --help
-        │        Then use the helper + write simplified Playwright script
-        │
-        └─ Yes → Reconnaissance-then-action:
-            1. Navigate and wait for networkidle
-            2. Take screenshot or inspect DOM
-            3. Identify selectors from rendered state
-            4. Execute actions with discovered selectors
-```
 
-## Example: Using with_server.py
+## 示例：使用 `with_server.py`
 
-To start a server, run `--help` first, then use the helper:
+启动 server 时，先运行 `--help`，再使用 helper：
 
-**Single server:**
+**单个 server：**
 ```bash
 python scripts/with_server.py --server "npm run dev" --port 5173 -- python your_automation.py
 ```
 
-**Multiple servers (e.g., backend + frontend):**
+**多个 servers（例如 backend + frontend）：**
 ```bash
 python scripts/with_server.py \
   --server "cd backend && python server.py" --port 3000 \
@@ -50,7 +50,7 @@ python scripts/with_server.py \
   -- python your_automation.py
 ```
 
-To create an automation script, include only Playwright logic (servers are managed automatically):
+创建自动化脚本时，只包含 Playwright 逻辑（servers 会自动管理）：
 ```python
 from playwright.sync_api import sync_playwright
 
@@ -63,35 +63,35 @@ with sync_playwright() as p:
     browser.close()
 ```
 
-## Reconnaissance-Then-Action Pattern
+## Reconnaissance-Then-Action 模式
 
-1. **Inspect rendered DOM**:
+1. **检查渲染后的 DOM**：
    ```python
    page.screenshot(path='/tmp/inspect.png', full_page=True)
    content = page.content()
    page.locator('button').all()
    ```
 
-2. **Identify selectors** from inspection results
+2. 从检查结果中识别 selectors
 
-3. **Execute actions** using discovered selectors
+3. 使用已发现 selectors 执行动作
 
-## Common Pitfall
+## 常见陷阱
 
-❌ **Don't** inspect the DOM before waiting for `networkidle` on dynamic apps
-✅ **Do** wait for `page.wait_for_load_state('networkidle')` before inspection
+`Don't`：在动态应用中，等待 `networkidle` 之前就检查 DOM  
+`Do`：先执行 `page.wait_for_load_state('networkidle')`，再进行检查
 
-## Best Practices
+## 最佳实践
 
-- **Use bundled scripts as black boxes** - To accomplish a task, consider whether one of the scripts available in `scripts/` can help. These scripts handle common, complex workflows reliably without cluttering the context window. Use `--help` to see usage, then invoke directly. 
-- Use `sync_playwright()` for synchronous scripts
-- Always close the browser when done
-- Use descriptive selectors: `text=`, `role=`, CSS selectors, or IDs
-- Add appropriate waits: `page.wait_for_selector()` or `page.wait_for_timeout()`
+- **把 bundled scripts 当黑盒用**：为完成任务，先判断 `scripts/` 里的脚本是否已经能帮你完成。它们能可靠处理常见复杂流程，同时不污染上下文。先看 `--help`，然后直接调用。
+- 对同步脚本使用 `sync_playwright()`
+- 完成后始终关闭浏览器
+- 使用具描述性的 selectors：`text=`、`role=`、CSS selectors 或 IDs
+- 添加合适等待：`page.wait_for_selector()` 或 `page.wait_for_timeout()`
 
-## Reference Files
+## 参考文件
 
-- **examples/** - Examples showing common patterns:
-  - `element_discovery.py` - Discovering buttons, links, and inputs on a page
-  - `static_html_automation.py` - Using file:// URLs for local HTML
-  - `console_logging.py` - Capturing console logs during automation
+- **examples/** - 展示常见模式的示例：
+  - `element_discovery.py` - 发现页面上的按钮、链接和输入框
+  - `static_html_automation.py` - 使用 `file://` URLs 处理本地 HTML
+  - `console_logging.py` - 在自动化过程中抓取 console logs

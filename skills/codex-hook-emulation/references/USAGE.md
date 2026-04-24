@@ -1,45 +1,45 @@
-# Usage
+# 用法
 
-Use the helper path that matches the current mode:
+使用与当前模式匹配的 helper path：
 - `standby`: `python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
 - `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" ...`
 
-## Exit codes
+## 退出码
 
 ### `preflight`
-- `0` -> allow
-- `3` -> confirm with user first
-- `2` -> block by default
+- `0` -> 允许
+- `3` -> 先向用户确认
+- `2` -> 默认阻止
 
-## Recommended patterns
+## 推荐模式
 
-### Before dangerous git operations
+### 危险 git 操作前
 
 ```bash
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" preflight "git reset --hard HEAD~1"
 ```
 
-### After broad documentation or skill edits
+### 大范围文档或 skill 编辑后
 
 ```bash
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" post-edit --cwd "$PWD"
 ```
 
-### At the start of a research repo session
+### research repo 会话开始时
 
 ```bash
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-start --cwd "$PWD"
 ```
 
-### Before ending a session
+### 会话结束前
 
 ```bash
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-end --cwd "$PWD"
 ```
 
-## JSON mode
+## JSON 模式
 
-For machine-readable output:
+如果需要 machine-readable 输出：
 
 ```bash
 python3 ".hello-scholar/skills/codex-hook-emulation/scripts/codex_hook_emulation.py" session-start --cwd "$PWD" --json

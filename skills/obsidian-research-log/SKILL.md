@@ -1,36 +1,36 @@
 ---
 name: obsidian-research-log
-description: Use this skill when the user is discussing daily research work, TODOs, plans, standups, meetings, milestones, or general project progress that should be reflected in Obsidian daily notes, plan notes, and hub updates.
+description: 当用户讨论 daily research work、TODOs、plans、standups、meetings、milestones 或一般项目进展，并且这些内容应反映到 Obsidian 的 daily notes、plan notes 和 hub updates 中时使用该 skill。
 ---
 
 # Obsidian Research Log
 
-Use this skill to keep project planning and daily progress synchronized.
+使用该 skill 让项目规划和 daily progress 保持同步。
 
-## Role in the workflow
+## 在工作流中的角色
 
-This is a **supporting skill** under `obsidian-project-memory`.
+这是 `obsidian-project-memory` 之下的一个 **supporting skill**。
 
-Prefer a small number of durable updates over creating extra planning folders.
+优先做少量 durable updates，而不是创建额外的 planning folders。
 
-## Default targets
+## 默认目标
 
 - `Daily/YYYY-MM-DD.md`
 - `01-Plan.md`
-- `00-Hub.md` recent progress block
+- `00-Hub.md` 中的 recent progress block
 - `hello-scholar/project-memory/<project_id>.md`
 
-## Rules
+## 规则
 
-- Convert vague TODOs into concrete checkbox lists in `01-Plan.md` when they become durable commitments.
-- Preserve chronology in `Daily/`: append dated blocks instead of rewriting history.
-- Link daily notes to touched experiments, papers, results, and writing notes when the destination is already canonical.
-- If a meeting note is only temporary, keep it in `Daily/` first.
-- If meeting output becomes durable project knowledge, summarize and route it into `Knowledge/`, `Writing/`, or `01-Plan.md` instead of creating a default `Meetings/` folder.
-- Prefer updating existing canonical notes over spawning parallel task notes.
+- 当模糊 TODO 变成 durable commitments 时，将其转成 `01-Plan.md` 中的具体 checkbox lists。
+- 保留 `Daily/` 的时间顺序：追加带日期的 blocks，而不是改写历史。
+- 当目标笔记已经是 canonical 时，把 daily notes 链接到被触及的 experiments、papers、results 和 writing notes。
+- 如果 meeting note 只是临时性的，先放在 `Daily/`。
+- 如果会议输出变成 durable project knowledge，则将其总结并路由到 `Knowledge/`、`Writing/` 或 `01-Plan.md`，而不是默认创建 `Meetings/` 文件夹。
+- 优先更新已有 canonical notes，而不是生成平行任务笔记。
 
-## Main judgment rule
+## 核心判断规则
 
-Daily logs are for process.
+Daily logs 用于记录过程。
 
-If a note will still matter after several days or weeks, promote the durable part into `Knowledge/`, `Experiments/`, `Results/`, or `Writing/`.
+如果某条信息在几天或几周后仍然重要，应将其中 durable 的部分提升到 `Knowledge/`、`Experiments/`、`Results/` 或 `Writing/`。

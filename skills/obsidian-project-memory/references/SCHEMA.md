@@ -1,21 +1,23 @@
-# Obsidian Project Knowledge Base Schema
+# Obsidian 项目知识库 Schema
 
-## Repository-local memory files
+## 仓库本地 memory 文件
 
-- `hello-scholar/project-memory/registry.yaml` — registry keyed by `project_id`
-- `hello-scholar/project-memory/<project_id>.md` — compact project memory snapshot used on project turns
+- `hello-scholar/project-memory/registry.yaml`：按 `project_id` 建索引的 registry
+- `hello-scholar/project-memory/<project_id>.md`：项目回合中使用的紧凑 project memory snapshot
 
-Note: `registry.yaml` is currently JSON-formatted on disk for historical compatibility.
+注意：`registry.yaml` 当前为了历史兼容，磁盘上实际使用 JSON 格式。
 
-Optional per-project registry fields:
-- `note_language` — note language for generated/synced notes. Supported values: `en`, `zh-CN`.
+可选的 per-project registry 字段：
 
-Language resolution priority:
-1. project config in `hello-scholar/project-memory/registry.yaml`
-2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
-3. default `en`
+- `note_language`：生成 / 同步笔记的语言；支持 `en`、`zh-CN`
 
-## Vault layout
+语言优先级：
+
+1. `hello-scholar/project-memory/registry.yaml` 中的项目配置
+2. 环境变量 `OBSIDIAN_NOTE_LANGUAGE`
+3. 默认 `en`
+
+## Vault 布局
 
 ```text
 Research/{project-slug}/
@@ -31,20 +33,20 @@ Research/{project-slug}/
   Archive/
 ```
 
-## Role of each top-level location
+## 顶层位置的角色
 
-- `00-Hub.md` — project homepage, current state, must-remember numbers, key links
-- `01-Plan.md` — active goals, tasks, open questions, next actions
-- `Knowledge/` — stable project understanding such as background, research questions, method survey, data protocol, source inventory
-- `Papers/` — paper notes, literature summaries, related-work assets
-- `Experiments/` — experiment designs, runbooks, ablations, mechanism studies
-- `Results/` — canonical durable findings, diagnostics, figure/table indexes, cross-experiment conclusions
-- `Results/Reports/` — internal experiment round reports and batch retrospectives with stable naming
-- `Writing/` — paper drafting, slides, proposal text, rebuttal material
-- `Daily/` — daily logs, lightweight sync queue, scratch notes, meeting fragments
-- `Archive/` — inactive or historical material that should not stay in the main working surface
+- `00-Hub.md`：项目首页、当前状态、关键数字、核心链接
+- `01-Plan.md`：活跃目标、任务、未解问题、下一步行动
+- `Knowledge/`：稳定的项目理解，如背景、研究问题、方法综述、数据协议、source inventory
+- `Papers/`：论文笔记、文献总结、related-work 素材
+- `Experiments/`：实验设计、runbook、ablation、机制研究
+- `Results/`：规范化 durable findings、诊断、图表索引、跨实验结论
+- `Results/Reports/`：内部实验轮次报告和批量 retrospective
+- `Writing/`：论文草稿、slides、proposal、rebuttal 素材
+- `Daily/`：daily logs、轻量 sync 队列、草稿笔记、会议碎片
+- `Archive/`：不应继续停留在主工作面的历史材料
 
-## Minimum note types
+## 最小 note 类型
 
 - `project`
 - `daily`
@@ -57,6 +59,6 @@ Research/{project-slug}/
 - `writing`
 - `task`
 
-## Main design rule
+## 主要设计规则
 
-This schema is intentionally small. Prefer a few durable notes over many placeholder notes.
+这个 schema 有意保持小而稳。优先维护少量 durable notes，而不是堆大量 placeholder notes。

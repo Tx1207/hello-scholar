@@ -1,36 +1,36 @@
-# Component Organization Patterns
+# 组件组织模式
 
-Advanced patterns for organizing plugin components effectively.
+关于如何高效组织插件组件的进阶模式说明。
 
-## Component Lifecycle
+## 组件生命周期
 
 ### Discovery Phase
 
-When Claude Code starts:
+当 Claude Code 启动时：
 
-1. **Scan enabled plugins**: Read `.claude-plugin/plugin.json` for each
-2. **Discover components**: Look in default and custom paths
-3. **Parse definitions**: Read YAML frontmatter and configurations
-4. **Register components**: Make available to Claude Code
-5. **Initialize**: Start MCP servers, register hooks
+1. **扫描已启用插件**：读取每个插件的 `.claude-plugin/plugin.json`
+2. **发现组件**：检查默认路径和自定义路径
+3. **解析定义**：读取 YAML frontmatter 和配置
+4. **注册组件**：把组件注册到 Claude Code
+5. **初始化**：启动 MCP servers、注册 hooks
 
-**Timing**: Component registration happens during Claude Code initialization, not continuously.
+**时机说明**：组件注册发生在 Claude Code 初始化阶段，不是持续后台扫描。
 
 ### Activation Phase
 
-When components are used:
+当组件真正被使用时：
 
-**Commands**: User types slash command → Claude Code looks up → Executes
-**Agents**: Task arrives → Claude Code evaluates capabilities → Selects agent
-**Skills**: Task context matches description → Claude Code loads skill
-**Hooks**: Event occurs → Claude Code calls matching hooks
-**MCP Servers**: Tool call matches server capability → Forwards to server
+- **Commands**：用户输入 slash command -> Claude Code 查找 -> 执行
+- **Agents**：任务到达 -> Claude Code 评估能力 -> 选择 agent
+- **Skills**：任务上下文命中描述 -> Claude Code 加载 skill
+- **Hooks**：事件发生 -> Claude Code 调用匹配 hooks
+- **MCP Servers**：工具调用命中 server 能力 -> 转发给对应 server
 
-## Command Organization Patterns
+## Command 组织模式
 
 ### Flat Structure
 
-Single directory with all commands:
+所有 command 都放在一个目录：
 
 ```
 commands/
@@ -41,35 +41,35 @@ commands/
 └── docs.md
 ```
 
-**When to use**:
-- 5-15 commands total
-- All commands at same abstraction level
-- No clear categorization
+**适用场景：**
+- 总共只有 5-15 个 commands
+- 命令抽象层级相近
+- 没有明显分类
 
-**Advantages**:
-- Simple, easy to navigate
-- No configuration needed
-- Fast discovery
+**优点：**
+- 简单，容易导航
+- 不需要额外配置
+- 发现速度快
 
 ### Categorized Structure
 
-Multiple directories for different command types:
+按不同 command 类型拆目录：
 
 ```
-commands/              # Core commands
+commands/
 ├── build.md
 └── test.md
 
-admin-commands/        # Administrative
+admin-commands/
 ├── configure.md
 └── manage.md
 
-workflow-commands/     # Workflow automation
+workflow-commands/
 ├── review.md
 └── deploy.md
 ```
 
-**Manifest configuration**:
+**Manifest 配置：**
 ```json
 {
   "commands": [
@@ -80,19 +80,14 @@ workflow-commands/     # Workflow automation
 }
 ```
 
-**When to use**:
-- 15+ commands
-- Clear functional categories
-- Different permission levels
-
-**Advantages**:
-- Organized by purpose
-- Easier to maintain
-- Can restrict access by directory
+**适用场景：**
+- 15 个以上 commands
+- 有清晰功能分类
+- 不同命令具备不同权限层级
 
 ### Hierarchical Structure
 
-Nested organization for complex plugins:
+复杂插件可做分层组织：
 
 ```
 commands/
@@ -108,7 +103,7 @@ commands/
     └── status.md
 ```
 
-**Note**: Claude Code doesn't support nested command discovery automatically. Use custom paths:
+**注意**：Claude Code 不会自动递归发现嵌套 command，需要显式写自定义路径：
 
 ```json
 {
@@ -120,448 +115,195 @@ commands/
 }
 ```
 
-**When to use**:
-- 20+ commands
-- Multi-level categorization
-- Complex workflows
+## Agent 组织模式
 
-**Advantages**:
-- Maximum organization
-- Clear boundaries
-- Scalable structure
-
-## Agent Organization Patterns
-
-### Role-Based Organization
-
-Organize agents by their primary role:
+### 按角色划分
 
 ```
 agents/
-├── code-reviewer.md        # Reviews code
-├── test-generator.md       # Generates tests
-├── documentation-writer.md # Writes docs
-└── refactorer.md          # Refactors code
+├── code-reviewer.md
+├── test-generator.md
+├── documentation-writer.md
+└── refactorer.md
 ```
 
-**When to use**:
-- Agents have distinct, non-overlapping roles
-- Users invoke agents manually
-- Clear agent responsibilities
+适合职责清晰、互不重叠的 agents。
 
-### Capability-Based Organization
-
-Organize by specific capabilities:
+### 按能力划分
 
 ```
 agents/
-├── python-expert.md        # Python-specific
-├── typescript-expert.md    # TypeScript-specific
-├── api-specialist.md       # API design
-└── database-specialist.md  # Database work
+├── python-expert.md
+├── typescript-expert.md
+├── api-specialist.md
+└── database-specialist.md
 ```
 
-**When to use**:
-- Technology-specific agents
-- Domain expertise focus
-- Automatic agent selection
+适合按技术栈或领域专长自动选 agent 的场景。
 
-### Workflow-Based Organization
-
-Organize by workflow stage:
+### 按工作流阶段划分
 
 ```
 agents/
-├── planning-agent.md      # Planning phase
-├── implementation-agent.md # Coding phase
-├── testing-agent.md       # Testing phase
-└── deployment-agent.md    # Deployment phase
+├── planning-agent.md
+├── implementation-agent.md
+├── testing-agent.md
+└── deployment-agent.md
 ```
 
-**When to use**:
-- Sequential workflows
-- Stage-specific expertise
-- Pipeline automation
+适合顺序式工作流和 pipeline 自动化。
 
-## Skill Organization Patterns
+## Skill 组织模式
 
-### Topic-Based Organization
-
-Each skill covers a specific topic:
+### 按主题划分
 
 ```
 skills/
 ├── api-design/
-│   └── SKILL.md
 ├── error-handling/
-│   └── SKILL.md
 ├── testing-strategies/
-│   └── SKILL.md
 └── performance-optimization/
-    └── SKILL.md
 ```
 
-**When to use**:
-- Knowledge-based skills
-- Educational or reference content
-- Broad applicability
+适合知识型、参考型 skill。
 
-### Tool-Based Organization
-
-Skills for specific tools or technologies:
+### 按工具划分
 
 ```
 skills/
 ├── docker/
-│   ├── SKILL.md
-│   └── references/
-│       └── dockerfile-best-practices.md
 ├── kubernetes/
-│   ├── SKILL.md
-│   └── examples/
-│       └── deployment.yaml
 └── terraform/
-    ├── SKILL.md
-    └── scripts/
-        └── validate-config.sh
 ```
 
-**When to use**:
-- Tool-specific expertise
-- Complex tool configurations
-- Tool best practices
+适合工具特定知识、复杂配置和最佳实践。
 
-### Workflow-Based Organization
-
-Skills for complete workflows:
+### 按工作流划分
 
 ```
 skills/
 ├── code-review-workflow/
-│   ├── SKILL.md
-│   └── references/
-│       ├── checklist.md
-│       └── standards.md
 ├── deployment-workflow/
-│   ├── SKILL.md
-│   └── scripts/
-│       ├── pre-deploy.sh
-│       └── post-deploy.sh
 └── testing-workflow/
-    ├── SKILL.md
-    └── examples/
-        └── test-structure.md
 ```
 
-**When to use**:
-- Multi-step processes
-- Company-specific workflows
-- Process automation
+适合多步骤流程、公司内部流程和自动化套路。
 
-### Skill with Rich Resources
-
-Comprehensive skill with all resource types:
+### 带丰富资源的 Skill
 
 ```
 skills/
 └── api-testing/
-    ├── SKILL.md              # Core skill (1500 words)
+    ├── SKILL.md
     ├── references/
-    │   ├── rest-api-guide.md
-    │   ├── graphql-guide.md
-    │   └── authentication.md
     ├── examples/
-    │   ├── basic-test.js
-    │   ├── authenticated-test.js
-    │   └── integration-test.js
     ├── scripts/
-    │   ├── run-tests.sh
-    │   └── generate-report.py
     └── assets/
-        └── test-template.json
 ```
 
-**Resource usage**:
-- **SKILL.md**: Overview and when to use resources
-- **references/**: Detailed guides (loaded as needed)
-- **examples/**: Copy-paste code samples
-- **scripts/**: Executable test runners
-- **assets/**: Templates and configurations
+**各类资源的职责：**
+- **SKILL.md**：总览与触发条件
+- **references/**：按需加载的详细说明
+- **examples/**：可复制的样例
+- **scripts/**：可执行脚本
+- **assets/**：模板与配置
 
-## Hook Organization Patterns
+## Hook 组织模式
 
 ### Monolithic Configuration
 
-Single hooks.json with all hooks:
-
-```
-hooks/
-├── hooks.json     # All hook definitions
-└── scripts/
-    ├── validate-write.sh
-    ├── validate-bash.sh
-    └── load-context.sh
-```
-
-**hooks.json**:
-```json
-{
-  "PreToolUse": [...],
-  "PostToolUse": [...],
-  "Stop": [...],
-  "SessionStart": [...]
-}
-```
-
-**When to use**:
-- 5-10 hooks total
-- Simple hook logic
-- Centralized configuration
+所有 hooks 都放在一个 `hooks.json` 中，适合 hook 数量不多、逻辑简单的插件。
 
 ### Event-Based Organization
 
-Separate files per event type:
-
-```
-hooks/
-├── hooks.json              # Combines all
-├── pre-tool-use.json      # PreToolUse hooks
-├── post-tool-use.json     # PostToolUse hooks
-├── stop.json              # Stop hooks
-└── scripts/
-    ├── validate/
-    │   ├── write.sh
-    │   └── bash.sh
-    └── context/
-        └── load.sh
-```
-
-**hooks.json** (combines):
-```json
-{
-  "PreToolUse": ${file:./pre-tool-use.json},
-  "PostToolUse": ${file:./post-tool-use.json},
-  "Stop": ${file:./stop.json}
-}
-```
-
-**Note**: Use build script to combine files, Claude Code doesn't support file references.
-
-**When to use**:
-- 10+ hooks
-- Different teams managing different events
-- Complex hook configurations
+按事件拆成多个文件，再通过构建脚本合并。适合 hook 数量很多、由不同团队维护的情况。
 
 ### Purpose-Based Organization
 
-Group by functional purpose:
+按功能组织脚本，例如：
 
 ```
 hooks/
-├── hooks.json
 └── scripts/
     ├── security/
-    │   ├── validate-paths.sh
-    │   ├── check-credentials.sh
-    │   └── scan-malware.sh
     ├── quality/
-    │   ├── lint-code.sh
-    │   ├── check-tests.sh
-    │   └── verify-docs.sh
     └── workflow/
-        ├── notify-team.sh
-        └── update-status.sh
 ```
 
-**When to use**:
-- Many hook scripts
-- Clear functional boundaries
-- Team specialization
+适合 hook 脚本很多、职责边界清晰的插件。
 
-## Script Organization Patterns
+## Script 组织模式
 
 ### Flat Scripts
 
-All scripts in single directory:
-
-```
-scripts/
-├── build.sh
-├── test.py
-├── deploy.sh
-├── validate.js
-└── report.py
-```
-
-**When to use**:
-- 5-10 scripts
-- All scripts related
-- Simple plugin
+所有脚本放在同一目录，适合只有少量脚本的小插件。
 
 ### Categorized Scripts
 
-Group by purpose:
-
-```
-scripts/
-├── build/
-│   ├── compile.sh
-│   └── package.sh
-├── test/
-│   ├── run-unit.sh
-│   └── run-integration.sh
-├── deploy/
-│   ├── staging.sh
-│   └── production.sh
-└── utils/
-    ├── log.sh
-    └── notify.sh
-```
-
-**When to use**:
-- 10+ scripts
-- Clear categories
-- Reusable utilities
+按用途分成 `build/`、`test/`、`deploy/`、`utils/` 等目录，适合 10 个以上脚本。
 
 ### Language-Based Organization
 
-Group by programming language:
+按语言拆成 `bash/`、`python/`、`javascript/` 目录，适合运行时依赖不同的插件。
 
-```
-scripts/
-├── bash/
-│   ├── build.sh
-│   └── deploy.sh
-├── python/
-│   ├── analyze.py
-│   └── report.py
-└── javascript/
-    ├── bundle.js
-    └── optimize.js
-```
-
-**When to use**:
-- Multi-language scripts
-- Different runtime requirements
-- Language-specific dependencies
-
-## Cross-Component Patterns
+## 跨组件模式
 
 ### Shared Resources
 
-Components sharing common resources:
+让 commands、agents、hooks 共享 `lib/` 里的公共脚本或工具函数：
 
-```
-plugin/
-├── commands/
-│   ├── test.md        # Uses lib/test-utils.sh
-│   └── deploy.md      # Uses lib/deploy-utils.sh
-├── agents/
-│   └── tester.md      # References lib/test-utils.sh
-├── hooks/
-│   └── scripts/
-│       └── pre-test.sh # Sources lib/test-utils.sh
-└── lib/
-    ├── test-utils.sh
-    └── deploy-utils.sh
-```
-
-**Usage in components**:
 ```bash
 #!/bin/bash
 source "${CLAUDE_PLUGIN_ROOT}/lib/test-utils.sh"
 run_tests
 ```
 
-**Benefits**:
-- Code reuse
-- Consistent behavior
-- Easier maintenance
+这样可以减少重复、保持行为一致、降低维护成本。
 
 ### Layered Architecture
 
-Separate concerns into layers:
-
 ```
 plugin/
-├── commands/          # User interface layer
-├── agents/            # Orchestration layer
-├── skills/            # Knowledge layer
+├── commands/
+├── agents/
+├── skills/
 └── lib/
-    ├── core/         # Core business logic
-    ├── integrations/ # External services
-    └── utils/        # Helper functions
 ```
 
-**When to use**:
-- Large plugins (100+ files)
-- Multiple developers
-- Clear separation of concerns
+适合大插件、多开发者协作和明确分层的场景。
 
 ### Plugin Within Plugin
 
-Nested plugin structure:
+把功能拆成 core 和多个 extensions，再在 manifest 中显式声明路径。适合模块化、可选功能和插件家族式结构。
 
-```
-plugin/
-├── .claude-plugin/
-│   └── plugin.json
-├── core/              # Core functionality
-│   ├── commands/
-│   └── agents/
-└── extensions/        # Optional extensions
-    ├── extension-a/
-    │   ├── commands/
-    │   └── agents/
-    └── extension-b/
-        ├── commands/
-        └── agents/
-```
+## 最佳实践
 
-**Manifest**:
-```json
-{
-  "commands": [
-    "./core/commands",
-    "./extensions/extension-a/commands",
-    "./extensions/extension-b/commands"
-  ]
-}
-```
+### 命名
 
-**When to use**:
-- Modular functionality
-- Optional features
-- Plugin families
+1. 文件名应和组件职责一致
+2. 名称尽量描述清楚用途
+3. 少用缩写，优先完整单词
 
-## Best Practices
+### 组织
 
-### Naming
+1. 先从简单结构开始
+2. 相关内容尽量放在一起
+3. 不要混放无关功能
 
-1. **Consistent naming**: Match file names to component purpose
-2. **Descriptive names**: Indicate what component does
-3. **Avoid abbreviations**: Use full words for clarity
+### 可扩展性
 
-### Organization
+1. 提前选择能扩展的结构
+2. 在失控前尽早重构目录
+3. 在 README 里解释结构原因
 
-1. **Start simple**: Use flat structure, reorganize when needed
-2. **Group related items**: Keep related components together
-3. **Separate concerns**: Don't mix unrelated functionality
+### 可维护性
 
-### Scalability
+1. 全插件保持一致模式
+2. 控制目录嵌套深度
+3. 尽量遵循社区通用约定
 
-1. **Plan for growth**: Choose structure that scales
-2. **Refactor early**: Reorganize before it becomes painful
-3. **Document structure**: Explain organization in README
+### 性能
 
-### Maintainability
-
-1. **Consistent patterns**: Use same structure throughout
-2. **Minimize nesting**: Keep directory depth manageable
-3. **Use conventions**: Follow community standards
-
-### Performance
-
-1. **Avoid deep nesting**: Impacts discovery time
-2. **Minimize custom paths**: Use defaults when possible
-3. **Keep configurations small**: Large configs slow loading
+1. 避免过深嵌套，减少 discovery 成本
+2. 能用默认路径就少写自定义路径
+3. 配置文件尽量保持小而清晰

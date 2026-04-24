@@ -87,12 +87,12 @@ get_item_fulltext 读取全文进行分析
 ```
 
 默认终端输出只需要告诉用户：
-- Imported as paper + PDF attached
-- Imported as paper
-- Saved as webpage + PDF attached
-- Saved as webpage
-- Collection dedupe summary: duplicate groups N, duplicates trashed M
-- Missing PDF postpass: repaired N items
+- 已导入为 paper，并附带 PDF
+- 已导入为 paper
+- 已保存为 webpage，并附带 PDF
+- 已保存为 webpage
+- 集合去重摘要：发现重复组 N 个，已移入回收站 M 条
+- PDF 补挂结果：修复了 N 个条目
 
 只有在调试时，才展开 `route`、`pdf_source` 等实现细节。import ledger 属于内部状态，不应假设存在公开 MCP tool 用于读取它。
 

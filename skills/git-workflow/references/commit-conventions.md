@@ -27,14 +27,14 @@
 | 类型       | 说明     | 示例                                |
 | :--------- | :------- | :---------------------------------- |
 | `feat`     | 新功能   | `feat(user): 新增用户导出功能`      |
-| `fix`      | 修复Bug  | `fix(login): 修复验证码不刷新问题`  |
+| `fix`      | 修复 Bug | `fix(login): 修复验证码不刷新问题`  |
 | `docs`     | 文档更新 | `docs(api): 更新接口文档`           |
 | `style`    | 代码格式 | `style: 调整代码缩进`               |
 | `refactor` | 重构     | `refactor(utils): 重构日期工具函数` |
 | `perf`     | 性能优化 | `perf(list): 优化列表渲染性能`      |
 | `test`     | 测试相关 | `test(user): 添加用户模块单元测试`  |
 | `build`    | 构建相关 | `build: 升级 vite 到 5.0`           |
-| `ci`       | CI配置   | `ci: 添加 GitHub Actions`           |
+| `ci`       | CI 配置  | `ci: 添加 GitHub Actions`           |
 | `chore`    | 其他修改 | `chore: 更新依赖版本`               |
 | `revert`   | 回滚提交 | `revert: 回滚 feat(user)`           |
 

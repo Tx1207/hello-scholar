@@ -1,8 +1,8 @@
-# Verification Report Template
+# 验证报告模板
 
 ```text
-VERIFICATION REPORT
-==================
+验证报告
+========
 Build:     [PASS/FAIL]
 Types:     [PASS/FAIL]
 Lint:      [PASS/FAIL]

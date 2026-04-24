@@ -1,12 +1,13 @@
-# New Markdown Ingestion
+# 新 Markdown 摄入
 
-Use this guide when a new Markdown file appears and should be considered for the knowledge base.
+当出现新的 Markdown 文件，并且需要决定是否纳入知识库时，使用本指南。
 
-## Three-step decision
+## 三步决策
 
-### 1. Classify
+### 1. 分类
 
-Classify the file as one of:
+把文件归为以下之一：
+
 - `knowledge`
 - `paper`
 - `experiment`
@@ -14,68 +15,68 @@ Classify the file as one of:
 - `writing`
 - `daily`
 
-### 2. Decide: durable note or raw material
+### 2. 判断：durable note 还是 raw material
 
-Treat it as a **durable note** only if it is already:
-- complete enough to stand on its own,
-- stable in scope,
-- likely to be referenced later.
+只有在以下条件都满足时，才把它视为 **durable note**：
 
-Otherwise treat it as **raw material**.
+- 完整到足以独立存在
+- scope 稳定
+- 后面还可能被引用
 
-### 3. Choose the action
+否则，一律视为 **raw material**。
 
-Choose one of these:
+### 3. 选择动作
+
+从下面三者中选择：
 
 - **promote**
-  - use only when the file is already a stable, complete, long-lived note
+  - 仅当文件本身已经稳定、完整、长期有效
 - **merge**
-  - use when it supplements an existing canonical note for the same object
+  - 当它只是补充同一对象的现有 canonical note
 - **stage-to-daily**
-  - use when it is still unstable, incomplete, or not worth promoting yet
+  - 当它仍不稳定、不完整，或尚不值得 promote
 
-Default answer: **summarize first, then route**.
+默认答案：**先总结，再路由**。
 
-## Examples
+## 示例
 
-### New paper summary
+### 新 paper summary
 
-- likely classification: `paper`
-- if complete and stable -> promote to `Papers/`
-- if partial reading notes for an existing paper note -> merge
+- 可能分类：`paper`
+- 如果完整且稳定 -> promote 到 `Papers/`
+- 如果只是已有 paper note 的部分阅读笔记 -> merge
 
-### New experiment plan
+### 新 experiment plan
 
-- likely classification: `experiment`
-- if it defines a distinct experiment line -> promote to `Experiments/`
-- if it refines an existing experiment -> merge into that note
+- 可能分类：`experiment`
+- 如果定义了一条独立 experiment line -> promote 到 `Experiments/`
+- 如果只是细化现有实验 -> merge 到对应 note
 
-### New result memo
+### 新 result memo
 
-- likely classification: `result`
-- if it contains a durable conclusion with evidence -> promote to `Results/`
-- if it is a full internal experiment summary report -> promote to `Results/Reports/` using the stable naming contract
-- if it is still exploratory -> stage in `Daily/` or merge into the existing experiment note first
+- 可能分类：`result`
+- 如果包含带证据的 durable conclusion -> promote 到 `Results/`
+- 如果它是一份完整内部实验总结报告 -> promote 到 `Results/Reports/`
+- 如果仍处于探索期 -> 先放 `Daily/`，或先 merge 进 experiment note
 
-### New meeting note
+### 新 meeting note
 
-- likely classification: `daily`
-- default -> stage in `Daily/`
-- promote only if the meeting produced a stable decision that belongs in `Knowledge/`, `Experiments/`, or `Writing/`
+- 可能分类：`daily`
+- 默认 -> 放入 `Daily/`
+- 只有当会议产出了稳定决策，且明显属于 `Knowledge/`、`Experiments/` 或 `Writing/` 时，再 promote
 
-### New scratch idea
+### 新 scratch idea
 
-- likely classification: `daily` or `knowledge`
-- default -> stage in `Daily/`
-- promote later only if it becomes a stable research question, method direction, or experiment plan
+- 可能分类：`daily` 或 `knowledge`
+- 默认 -> 放入 `Daily/`
+- 只有当它演化为稳定研究问题、方法方向或实验计划时，才后续 promote
 
+## 跨阶段路由提示
 
-### Cross-stage routing hint
+当新文件属于 papers、experiments、results 或 writing 时，不要只停在文件分类。还要追问它是否已经清楚指向下一次 durable handoff：
 
-When a new file is about papers, experiments, results, or writing, do not stop at file classification alone. Also ask whether it clearly implies the next durable handoff:
+- paper note -> 是否应该更新某个 experiment note？
+- experiment note -> 是否已经有稳定发现该写进 `Results/`？
+- result memo -> 是否需要同步更新 writing note？
 
-- paper note -> should an experiment note be updated?
-- experiment note -> is there already a stable finding that belongs in `Results/`?
-- result memo -> does a writing note need an update?
-
-If that next handoff is already clear, prefer updating the downstream canonical note in the same turn.
+如果下一跳已经明确，优先在同一回合中把下游 canonical note 也补上。

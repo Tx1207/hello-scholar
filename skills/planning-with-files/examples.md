@@ -1,10 +1,10 @@
-# Examples: Planning with Files in Action
+# 示例：基于文件的规划如何运作
 
-## Example 1: Research Task
+## 示例 1：研究任务
 
-**User Request:** "Research the benefits of morning exercise and write a summary"
+**用户请求：** “Research the benefits of morning exercise and write a summary”
 
-### Loop 1: Create Plan
+### Loop 1：创建计划
 ```bash
 Write task_plan.md
 ```
@@ -16,7 +16,7 @@ Write task_plan.md
 Create a research summary on the benefits of morning exercise.
 
 ## Phases
-- [ ] Phase 1: Create this plan ✓
+- [ ] Phase 1: Create this plan
 - [ ] Phase 2: Search and gather sources
 - [ ] Phase 3: Synthesize findings
 - [ ] Phase 4: Deliver summary
@@ -30,7 +30,7 @@ Create a research summary on the benefits of morning exercise.
 **Currently in Phase 1** - Creating plan
 ```
 
-### Loop 2: Research
+### Loop 2：研究
 ```bash
 Read task_plan.md           # Refresh goals
 WebSearch "morning exercise benefits"
@@ -38,7 +38,7 @@ Write notes.md              # Store findings
 Edit task_plan.md           # Mark Phase 2 complete
 ```
 
-### Loop 3: Synthesize
+### Loop 3：综合
 ```bash
 Read task_plan.md           # Refresh goals
 Read notes.md               # Get findings
@@ -46,7 +46,7 @@ Write morning_exercise_summary.md
 Edit task_plan.md           # Mark Phase 3 complete
 ```
 
-### Loop 4: Deliver
+### Loop 4：交付
 ```bash
 Read task_plan.md           # Verify complete
 Deliver morning_exercise_summary.md
@@ -54,9 +54,9 @@ Deliver morning_exercise_summary.md
 
 ---
 
-## Example 2: Bug Fix Task
+## 示例 2：Bug 修复任务
 
-**User Request:** "Fix the login bug in the authentication module"
+**用户请求：** “Fix the login bug in the authentication module”
 
 ### task_plan.md
 ```markdown
@@ -66,8 +66,8 @@ Deliver morning_exercise_summary.md
 Identify and fix the bug preventing successful login.
 
 ## Phases
-- [x] Phase 1: Understand the bug report ✓
-- [x] Phase 2: Locate relevant code ✓
+- [x] Phase 1: Understand the bug report
+- [x] Phase 2: Locate relevant code
 - [ ] Phase 3: Identify root cause (CURRENT)
 - [ ] Phase 4: Implement fix
 - [ ] Phase 5: Test and verify
@@ -83,7 +83,7 @@ Identify and fix the bug preventing successful login.
 
 ## Errors Encountered
 - [Initial] TypeError: Cannot read property 'token' of undefined
-  → Root cause: user object not awaited properly
+  -> Root cause: user object not awaited properly
 
 ## Status
 **Currently in Phase 3** - Found root cause, preparing fix
@@ -91,13 +91,13 @@ Identify and fix the bug preventing successful login.
 
 ---
 
-## Example 3: Feature Development
+## 示例 3：功能开发
 
-**User Request:** "Add a dark mode toggle to the settings page"
+**用户请求：** “Add a dark mode toggle to the settings page”
 
-### The 3-File Pattern in Action
+### 3 文件模式示例
 
-**task_plan.md:**
+**task_plan.md：**
 ```markdown
 # Task Plan: Dark Mode Toggle
 
@@ -105,8 +105,8 @@ Identify and fix the bug preventing successful login.
 Add functional dark mode toggle to settings.
 
 ## Phases
-- [x] Phase 1: Research existing theme system ✓
-- [x] Phase 2: Design implementation approach ✓
+- [x] Phase 1: Research existing theme system
+- [x] Phase 2: Design implementation approach
 - [ ] Phase 3: Implement toggle component (CURRENT)
 - [ ] Phase 4: Add theme switching logic
 - [ ] Phase 5: Test and polish
@@ -120,7 +120,7 @@ Add functional dark mode toggle to settings.
 **Currently in Phase 3** - Building toggle component
 ```
 
-**notes.md:**
+**notes.md：**
 ```markdown
 # Notes: Dark Mode Implementation
 
@@ -141,7 +141,7 @@ Add functional dark mode toggle to settings.
 - Dark text: #eaeaea
 ```
 
-**dark_mode_implementation.md:** (deliverable)
+**dark_mode_implementation.md：**（deliverable）
 ```markdown
 # Dark Mode Implementation
 
@@ -158,26 +158,26 @@ File: src/hooks/useTheme.ts
 
 ---
 
-## Example 4: Error Recovery Pattern
+## 示例 4：错误恢复模式
 
-When something fails, DON'T hide it:
+当出现失败时，**不要**隐藏它：
 
-### Before (Wrong)
-```
+### Before（错误示范）
+```text
 Action: Read config.json
 Error: File not found
 Action: Read config.json  # Silent retry
 Action: Read config.json  # Another retry
 ```
 
-### After (Correct)
-```
+### After（正确示范）
+```text
 Action: Read config.json
 Error: File not found
 
 # Update task_plan.md:
 ## Errors Encountered
-- config.json not found → Will create default config
+- config.json not found -> Will create default config
 
 Action: Write config.json (default config)
 Action: Read config.json
@@ -186,17 +186,17 @@ Success!
 
 ---
 
-## The Read-Before-Decide Pattern
+## 决策前先读计划模式
 
-**Always read your plan before major decisions:**
+**每次重大决策前都先读计划：**
 
-```
+```text
 [Many tool calls have happened...]
 [Context is getting long...]
 [Original goal might be forgotten...]
 
-→ Read task_plan.md          # This brings goals back into attention!
-→ Now make the decision       # Goals are fresh in context
+-> Read task_plan.md          # This brings goals back into attention!
+-> Now make the decision      # Goals are fresh in context
 ```
 
-This is why Manus can handle ~50 tool calls without losing track. The plan file acts as a "goal refresh" mechanism.
+这也是 Manus 为什么能在大约 50 次 tool calls 之后仍然不丢目标。计划文件相当于一个“目标刷新”机制。

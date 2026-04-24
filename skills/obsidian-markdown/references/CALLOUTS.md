@@ -1,54 +1,54 @@
-# Callouts Reference
+# Callouts 参考
 
-## Basic Callout
+## 基础 Callout
 
 ```markdown
 > [!note]
-> This is a note callout.
+> 这是一个 note callout。
 
-> [!info] Custom Title
-> This callout has a custom title.
+> [!info] 自定义标题
+> 这个 callout 使用了自定义标题。
 
-> [!tip] Title Only
+> [!tip] 只有标题
 ```
 
-## Foldable Callouts
+## 可折叠 Callout
 
 ```markdown
-> [!faq]- Collapsed by default
-> This content is hidden until expanded.
+> [!faq]- 默认折叠
+> 这段内容在展开前是隐藏的。
 
-> [!faq]+ Expanded by default
-> This content is visible but can be collapsed.
+> [!faq]+ 默认展开
+> 这段内容默认可见，但可以折叠。
 ```
 
-## Nested Callouts
+## 嵌套 Callout
 
 ```markdown
-> [!question] Outer callout
-> > [!note] Inner callout
-> > Nested content
+> [!question] 外层 callout
+> > [!note] 内层 callout
+> > 嵌套内容
 ```
 
-## Supported Callout Types
+## 支持的 Callout 类型
 
-| Type | Aliases | Color / Icon |
+| Type | Aliases | 颜色 / 图标 |
 |------|---------|-------------|
-| `note` | - | Blue, pencil |
-| `abstract` | `summary`, `tldr` | Teal, clipboard |
-| `info` | - | Blue, info |
-| `todo` | - | Blue, checkbox |
-| `tip` | `hint`, `important` | Cyan, flame |
-| `success` | `check`, `done` | Green, checkmark |
-| `question` | `help`, `faq` | Yellow, question mark |
-| `warning` | `caution`, `attention` | Orange, warning |
-| `failure` | `fail`, `missing` | Red, X |
-| `danger` | `error` | Red, zap |
-| `bug` | - | Red, bug |
-| `example` | - | Purple, list |
-| `quote` | `cite` | Gray, quote |
+| `note` | - | 蓝色，铅笔 |
+| `abstract` | `summary`, `tldr` | 青色，剪贴板 |
+| `info` | - | 蓝色，信息 |
+| `todo` | - | 蓝色，复选框 |
+| `tip` | `hint`, `important` | 青蓝色，火焰 |
+| `success` | `check`, `done` | 绿色，对勾 |
+| `question` | `help`, `faq` | 黄色，问号 |
+| `warning` | `caution`, `attention` | 橙色，警告 |
+| `failure` | `fail`, `missing` | 红色，X |
+| `danger` | `error` | 红色，闪电 |
+| `bug` | - | 红色，虫子 |
+| `example` | - | 紫色，列表 |
+| `quote` | `cite` | 灰色，引号 |
 
-## Custom Callouts (CSS)
+## 自定义 Callout（CSS）
 
 ```css
 .callout[data-callout="custom-type"] {

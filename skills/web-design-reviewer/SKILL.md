@@ -1,37 +1,37 @@
 ---
 name: web-design-reviewer
-description: 'This skill enables visual inspection of websites running locally or remotely to identify and fix design issues. Triggers on requests like "review website design", "check the UI", "fix the layout", "find design problems". Detects issues with responsive design, accessibility, visual consistency, and layout breakage, then performs fixes at the source code level.'
+description: 当用户提出 “review website design”、“check the UI”、“fix the layout”、“find design problems” 等请求时使用。该 skill 通过本地或远程页面的可视化检查识别并修复设计问题，覆盖 responsive design、accessibility、视觉一致性和布局破坏，并在源码层完成修复。
 version: 0.1.0
 ---
 
 # Web Design Reviewer
 
-This skill enables visual inspection and validation of website design quality, identifying and fixing issues at the source code level.
+本 skill 用于对网站设计质量进行可视化检查和验证，并在源码层定位与修复问题。
 
 ## Scope of Application
 
-- Static sites (HTML/CSS/JS)
-- SPA frameworks such as React / Vue / Angular / Svelte
-- Full-stack frameworks such as Next.js / Nuxt / SvelteKit
-- CMS platforms such as WordPress / Drupal
-- Any other web application
+- 静态站点（HTML / CSS / JS）
+- React / Vue / Angular / Svelte 等 SPA
+- Next.js / Nuxt / SvelteKit 等全栈框架
+- WordPress / Drupal 等 CMS
+- 其他任意 web application
 
 ## Prerequisites
 
 ### Required
 
-1. **Target website must be running**
-   - Local development server (e.g., `http://localhost:3000`)
-   - Staging environment
-   - Production environment (for read-only reviews)
+1. **目标网站必须已运行**
+   - 本地开发服务（如 `http://localhost:3000`）
+   - Staging 环境
+   - Production 环境（只读审查场景）
 
-2. **Browser automation must be available**
-   - Screenshot capture
-   - Page navigation
-   - DOM information retrieval
+2. **浏览器自动化能力必须可用**
+   - 截图
+   - 页面导航
+   - DOM 信息获取
 
-3. **Access to source code (when making fixes)**
-   - Project must exist within the workspace
+3. **具备源码访问权限（需要修复时）**
+   - 项目必须位于当前 workspace 中
 
 ## Workflow Overview
 
@@ -51,47 +51,47 @@ flowchart TD
 
 ### 1.1 URL Confirmation
 
-If the URL is not provided, ask the user:
+如果用户没有提供 URL，先询问：
 
-> Please provide the URL of the website to review (e.g., `http://localhost:3000`)
+> 请提供要审查的网站 URL（例如 `http://localhost:3000`）
 
 ### 1.2 Understanding Project Structure
 
-When making fixes, gather the following information:
+需要修复时，先收集以下信息：
 
 | Item | Example Question |
 |------|------------------|
-| Framework | Are you using React / Vue / Next.js, etc.? |
-| Styling Method | CSS / SCSS / Tailwind / CSS-in-JS, etc. |
-| Source Location | Where are style files and components located? |
-| Review Scope | Specific pages only or entire site? |
+| Framework | 使用的是 React / Vue / Next.js 等哪个框架？ |
+| Styling Method | CSS / SCSS / Tailwind / CSS-in-JS 等哪种样式方案？ |
+| Source Location | 样式文件和组件位于哪里？ |
+| Review Scope | 只看特定页面，还是覆盖整站？ |
 
 ### 1.3 Automatic Project Detection
 
-Attempt automatic detection from files in the workspace:
+尝试从 workspace 中文件自动识别项目：
 
-```
+```text
 Detection targets:
-├── package.json     → Framework and dependencies
-├── tsconfig.json    → TypeScript usage
+├── package.json     → 框架与依赖
+├── tsconfig.json    → 是否使用 TypeScript
 ├── tailwind.config  → Tailwind CSS
 ├── next.config      → Next.js
 ├── vite.config      → Vite
 ├── nuxt.config      → Nuxt
-└── src/ or app/     → Source directory
+└── src/ or app/     → 源码目录
 ```
 
 ### 1.4 Identifying Styling Method
 
 | Method | Detection | Edit Target |
 |--------|-----------|-------------|
-| Pure CSS | `*.css` files | Global CSS or component CSS |
-| SCSS/Sass | `*.scss`, `*.sass` | SCSS files |
-| CSS Modules | `*.module.css` | Module CSS files |
-| Tailwind CSS | `tailwind.config.*` | className in components |
-| styled-components | `styled.` in code | JS/TS files |
-| Emotion | `@emotion/` imports | JS/TS files |
-| CSS-in-JS (other) | Inline styles | JS/TS files |
+| Pure CSS | `*.css` 文件 | 全局 CSS 或组件 CSS |
+| SCSS/Sass | `*.scss`, `*.sass` | SCSS 文件 |
+| CSS Modules | `*.module.css` | module CSS 文件 |
+| Tailwind CSS | `tailwind.config.*` | 组件中的 `className` |
+| styled-components | 代码中出现 `styled.` | JS / TS 文件 |
+| Emotion | `@emotion/` import | JS / TS 文件 |
+| CSS-in-JS (other) | inline styles | JS / TS 文件 |
 
 ---
 
@@ -99,10 +99,10 @@ Detection targets:
 
 ### 2.1 Page Traversal
 
-1. Navigate to the specified URL
-2. Capture screenshots
-3. Retrieve DOM structure/snapshot (if possible)
-4. If additional pages exist, traverse through navigation
+1. 访问指定 URL
+2. 截图
+3. 获取 DOM 结构 / snapshot（若可用）
+4. 如果存在其他页面，通过导航继续遍历
 
 ### 2.2 Inspection Items
 
@@ -110,46 +110,46 @@ Detection targets:
 
 | Issue | Description | Severity |
 |-------|-------------|----------|
-| Element Overflow | Content overflows from parent element or viewport | High |
-| Element Overlap | Unintended overlapping of elements | High |
-| Alignment Issues | Grid or flex alignment problems | Medium |
-| Inconsistent Spacing | Padding/margin inconsistencies | Medium |
-| Text Clipping | Long text not handled properly | Medium |
+| Element Overflow | 内容从父元素或 viewport 溢出 | High |
+| Element Overlap | 元素发生非预期重叠 | High |
+| Alignment Issues | Grid 或 flex 对齐问题 | Medium |
+| Inconsistent Spacing | padding / margin 不一致 | Medium |
+| Text Clipping | 长文本处理不当被裁切 | Medium |
 
 #### Responsive Issues
 
 | Issue | Description | Severity |
 |-------|-------------|----------|
-| Non-mobile Friendly | Layout breaks on small screens | High |
-| Breakpoint Issues | Unnatural transitions when screen size changes | Medium |
-| Touch Targets | Buttons too small on mobile | Medium |
+| Non-mobile Friendly | 小屏下布局崩坏 | High |
+| Breakpoint Issues | 屏幕变化时过渡不自然 | Medium |
+| Touch Targets | 移动端按钮过小 | Medium |
 
 #### Accessibility Issues
 
 | Issue | Description | Severity |
 |-------|-------------|----------|
-| Insufficient Contrast | Low contrast ratio between text and background | High |
-| No Focus State | Cannot determine state during keyboard navigation | High |
-| Missing alt Text | No alternative text for images | Medium |
+| Insufficient Contrast | 文字与背景对比度不足 | High |
+| No Focus State | 键盘导航时看不出 focus 状态 | High |
+| Missing alt Text | 图片缺少替代文本 | Medium |
 
 #### Visual Consistency
 
 | Issue | Description | Severity |
 |-------|-------------|----------|
-| Font Inconsistency | Mixed font families | Medium |
-| Color Inconsistency | Non-unified brand colors | Medium |
-| Spacing Inconsistency | Non-uniform spacing between similar elements | Low |
+| Font Inconsistency | 字体族混用 | Medium |
+| Color Inconsistency | 品牌色不统一 | Medium |
+| Spacing Inconsistency | 相似元素间距不统一 | Low |
 
 ### 2.3 Viewport Testing (Responsive)
 
-Test at the following viewports:
+按以下 viewport 测试：
 
 | Name | Width | Representative Device |
 |------|-------|----------------------|
-| Mobile | 375px | iPhone SE/12 mini |
+| Mobile | 375px | iPhone SE / 12 mini |
 | Tablet | 768px | iPad |
-| Desktop | 1280px | Standard PC |
-| Wide | 1920px | Large display |
+| Desktop | 1280px | 标准 PC |
+| Wide | 1920px | 大屏显示器 |
 
 ---
 
@@ -161,26 +161,26 @@ Test at the following viewports:
 block-beta
     columns 1
     block:priority["Priority Matrix"]
-        P1["P1: Fix Immediately\n(Layout issues affecting functionality)"]
-        P2["P2: Fix Next\n(Visual issues degrading UX)"]
-        P3["P3: Fix If Possible\n(Minor visual inconsistencies)"]
+        P1["P1: 立即修复\n(影响功能的布局问题)"]
+        P2["P2: 其次修复\n(损害 UX 的视觉问题)"]
+        P3["P3: 可修则修\n(轻微视觉不一致)"]
     end
 ```
 
 ### 3.2 Identifying Source Files
 
-Identify source files from problematic elements:
+从有问题的元素反查源码文件：
 
-1. **Selector-based Search**
-   - Search codebase by class name or ID
-   - Explore style definitions with `grep_search`
+1. **基于 selector 搜索**
+   - 通过 class name 或 ID 搜代码
+   - 用 `grep_search` 查找样式定义
 
-2. **Component-based Search**
-   - Identify components from element text or structure
-   - Explore related files with `semantic_search`
+2. **基于 component 搜索**
+   - 从元素文本或结构判断组件来源
+   - 用 `semantic_search` 查看相关文件
 
-3. **File Pattern Filtering**
-   ```
+3. **按文件模式过滤**
+   ```text
    Style files: src/**/*.css, styles/**/*
    Components: src/components/**/*
    Pages: src/pages/**, app/**
@@ -188,16 +188,14 @@ Identify source files from problematic elements:
 
 ### 3.3 Applying Fixes
 
-#### Framework-specific Fix Guidelines
+具体框架修复策略见 [references/framework-fixes.md](references/framework-fixes.md)。
 
-See [references/framework-fixes.md](references/framework-fixes.md) for details.
+#### 修复原则
 
-#### Fix Principles
-
-1. **Minimal Changes**: Only make the minimum changes necessary to resolve the issue
-2. **Respect Existing Patterns**: Follow existing code style in the project
-3. **Avoid Breaking Changes**: Be careful not to affect other areas
-4. **Add Comments**: Add comments to explain the reason for fixes where appropriate
+1. **最小变更**：只做解决问题所需的最小修改
+2. **尊重现有模式**：遵循项目当前代码风格
+3. **避免破坏性影响**：谨慎评估对其他区域的影响
+4. **必要时加注释**：对复杂修复补充简短原因说明
 
 ---
 
@@ -205,25 +203,25 @@ See [references/framework-fixes.md](references/framework-fixes.md) for details.
 
 ### 4.1 Post-fix Confirmation
 
-1. Reload browser (or wait for development server HMR)
-2. Capture screenshots of fixed areas
-3. Compare before and after
+1. 重新加载浏览器（或等待开发服务器 HMR）
+2. 对修复区域重新截图
+3. 对比前后效果
 
 ### 4.2 Regression Testing
 
-- Verify that fixes haven't affected other areas
-- Confirm responsive display is not broken
+- 确认修复没有影响其他区域
+- 确认 responsive 展示未被破坏
 
 ### 4.3 Iteration Decision
 
 ```mermaid
 flowchart TD
     A{Issues Remaining?}
-    A -->|Yes| B[Return to Step 2]
-    A -->|No| C[Proceed to Completion Report]
+    A -->|Yes| B[返回 Step 2]
+    A -->|No| C[进入完成报告]
 ```
 
-**Iteration Limit**: If more than 3 fix attempts are needed for a specific issue, consult the user
+**迭代上限**：同一问题如果连续修 3 次仍未解决，应与用户确认再继续。
 
 ---
 
@@ -276,12 +274,12 @@ flowchart TD
 
 | Capability | Description | Required |
 |------------|-------------|----------|
-| Web Page Navigation | Access URLs, page transitions | ✅ |
-| Screenshot Capture | Page image capture | ✅ |
-| Image Analysis | Visual issue detection | ✅ |
-| DOM Retrieval | Page structure retrieval | Recommended |
-| File Read/Write | Source code reading and editing | Required for fixes |
-| Code Search | Code search within project | Required for fixes |
+| Web Page Navigation | 访问 URL、页面跳转 | ✅ |
+| Screenshot Capture | 页面截图 | ✅ |
+| Image Analysis | 识别视觉问题 | ✅ |
+| DOM Retrieval | 获取页面结构 | 推荐 |
+| File Read/Write | 读取与编辑源码 | 修复时必需 |
+| Code Search | 项目内代码搜索 | 修复时必需 |
 
 ---
 
@@ -289,16 +287,16 @@ flowchart TD
 
 ### Implementation with Playwright MCP
 
-[Playwright MCP](https://github.com/microsoft/playwright-mcp) is recommended as the reference implementation for this skill.
+[Playwright MCP](https://github.com/microsoft/playwright-mcp) 是本 skill 的推荐参考实现。
 
 | Capability | Playwright MCP Tool | Purpose |
 |------------|---------------------|---------|
-| Navigation | `browser_navigate` | Access URLs |
-| Snapshot | `browser_snapshot` | Retrieve DOM structure |
-| Screenshot | `browser_take_screenshot` | Images for visual inspection |
-| Click | `browser_click` | Interact with interactive elements |
-| Resize | `browser_resize` | Responsive testing |
-| Console | `browser_console_messages` | Detect JS errors |
+| Navigation | `browser_navigate` | 访问 URL |
+| Snapshot | `browser_snapshot` | 获取 DOM 结构 |
+| Screenshot | `browser_take_screenshot` | 用于视觉检查 |
+| Click | `browser_click` | 交互元素点击 |
+| Resize | `browser_resize` | 做 responsive 测试 |
+| Console | `browser_console_messages` | 检测 JS error |
 
 #### Configuration Example (MCP Server)
 
@@ -317,53 +315,53 @@ flowchart TD
 
 | Tool | Features |
 |------|----------|
-| Selenium | Broad browser support, multi-language support |
-| Puppeteer | Chrome/Chromium focused, Node.js |
-| Cypress | Easy integration with E2E testing |
-| WebDriver BiDi | Standardized next-generation protocol |
+| Selenium | 浏览器支持广，多语言生态成熟 |
+| Puppeteer | 聚焦 Chrome / Chromium，适合 Node.js |
+| Cypress | 易于和 E2E testing 集成 |
+| WebDriver BiDi | 标准化的新一代协议 |
 
-The same workflow can be implemented with these tools. As long as they provide the necessary capabilities (navigation, screenshot, DOM retrieval), the choice of tool is flexible.
+只要工具具备导航、截图、DOM 获取等必要能力，都可以按相同流程实现。
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### DO (Recommended)
+### DO
 
-- ✅ Always save screenshots before making fixes
-- ✅ Fix one issue at a time and verify each
-- ✅ Follow the project's existing code style
-- ✅ Confirm with user before major changes
-- ✅ Document fix details thoroughly
+- ✅ 修复前始终保留截图
+- ✅ 一次只修一个问题，并逐个验证
+- ✅ 遵循项目现有代码风格
+- ✅ 涉及较大变更前先与用户确认
+- ✅ 充分记录修复细节
 
-### DON'T (Not Recommended)
+### DON'T
 
-- ❌ Large-scale refactoring without confirmation
-- ❌ Ignoring design systems or brand guidelines
-- ❌ Fixes that ignore performance
-- ❌ Fixing multiple issues at once (difficult to verify)
+- ❌ 未确认就做大规模重构
+- ❌ 无视设计系统或品牌规范
+- ❌ 为修 UI 忽视性能
+- ❌ 同时修多个问题，导致难以验证
 
 ---
 
 ## Troubleshooting
 
-### Problem: Style files not found
+### Problem: 找不到样式文件
 
-1. Check dependencies in `package.json`
-2. Consider the possibility of CSS-in-JS
-3. Consider CSS generated at build time
-4. Ask user about styling method
+1. 检查 `package.json` 中的依赖
+2. 考虑是否使用 CSS-in-JS
+3. 考虑样式是否在构建期生成
+4. 询问用户具体的样式方案
 
-### Problem: Fixes not reflected
+### Problem: 修复后页面没变化
 
-1. Check if development server HMR is working
-2. Clear browser cache
-3. Rebuild if project requires build
-4. Check CSS specificity issues
+1. 检查开发服务器 HMR 是否正常
+2. 清空浏览器缓存
+3. 如果项目需要，重新构建
+4. 检查 CSS specificity 问题
 
-### Problem: Fixes affecting other areas
+### Problem: 修复影响了其他区域
 
-1. Rollback changes
-2. Use more specific selectors
-3. Consider using CSS Modules or scoped styles
-4. Consult user to confirm impact scope
+1. 回退本次修改
+2. 使用更具体的 selector
+3. 评估是否应改用 CSS Modules 或 scoped styles
+4. 与用户确认允许影响范围

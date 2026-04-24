@@ -1,22 +1,22 @@
 ---
 name: latex-conference-template-organizer
-description: Organize messy conference LaTeX template .zip files into clean Overleaf-ready structure. Use when the user asks to "organize LaTeX template", "clean up .zip template", or "prepare Overleaf submission template".
+description: 把杂乱的 conference LaTeX template `.zip` 整理成干净、可直接上传 Overleaf 的结构。用户要求“organize LaTeX template”、“clean up .zip template”或“prepare Overleaf submission template”时使用。
 version: 0.1.0
 ---
 
 # LaTeX Conference Template Organizer
 
-## Overview
+## 概览
 
-Transform messy conference LaTeX template .zip files into clean, Overleaf-ready submission templates. Official conference templates often contain excessive example content, instructional comments, and disorganized file structures. This skill converts them into templates ready for writing.
+把混乱的 conference LaTeX template `.zip` 转换成干净、可直接用于写作的 Overleaf-ready submission template。官方模板通常带大量示例内容、教学注释和凌乱目录结构，本 skill 的目标是把它们整理成可用模板。
 
 ## Working Mode
 
-**Analyze-then-confirm mode**: First analyze issues and present them to the user, then execute cleanup after confirmation.
+**Analyze-then-confirm mode**：先分析问题并向用户展示，再在确认后执行清理。
 
 ## Complete Workflow
 
-```
+```text
 Receive .zip file
     ↓
 1. Extract and analyze file structure
@@ -40,7 +40,7 @@ Receive .zip file
 
 ### Extract Files
 
-Extract .zip to a temporary directory:
+先把 `.zip` 解压到临时目录：
 
 ```bash
 unzip -q template.zip -d /tmp/latex-template-temp
@@ -52,54 +52,53 @@ find . -type f -name "*.tex" -o -name "*.sty" -o -name "*.cls" -o -name "*.bib"
 
 | File Type | Purpose |
 |-----------|---------|
-| `.tex` | LaTeX source files |
-| `.sty` / `.cls` | Style files |
-| `.bib` | Bibliography database |
-| `.pdf` / `.png` / `.jpg` | Image files |
+| `.tex` | LaTeX 源文件 |
+| `.sty` / `.cls` | 样式文件 |
+| `.bib` | 参考文献数据库 |
+| `.pdf` / `.png` / `.jpg` | 图片文件 |
 
 ### Identify Main File
 
-**Common main file names:**
+**常见主文件名：**
 - `main.tex`
 - `paper.tex`
 - `document.tex`
 - `sample-sigconf.tex`
 - `template.tex`
 
-**Identification methods:**
-1. Check if filename matches common patterns
-2. Search for files containing `\documentclass`
-3. If multiple candidates exist, ask user to confirm
+**识别方法：**
+1. 先看文件名是否符合常见模式
+2. 搜索包含 `\documentclass` 的 `.tex`
+3. 如果有多个候选，交给用户确认
 
 ```bash
-# Find files containing \documentclass
 grep -l "\\documentclass" *.tex
 ```
 
 ## Step 2: Diagnose Issues
 
-Present discovered issues to the user:
+向用户展示分析出的主要问题：
 
 ### Disorganized File Structure
 
-- Multi-level directory nesting
-- .tex files scattered across directories
-- Unclear which file is the main file
+- 多层目录嵌套
+- `.tex` 文件分散在多个目录
+- 主文件不明确
 
 ### Redundant Content
 
-Detect the following patterns and flag for cleanup:
-- Filenames containing: `sample`, `example`, `demo`, `test`
-- Comments containing: `sample`, `example`, `template`, `delete this`
+检测并标记以下冗余内容：
+- 文件名中包含 `sample`、`example`、`demo`、`test`
+- 注释中包含 `sample`、`example`、`template`、`delete this`
 
 ### Dependency Issues
 
-- Referenced `.sty`/`.cls` files missing
-- Image/table reference paths incorrect
+- 被引用的 `.sty` / `.cls` 缺失
+- 图片或表格路径不正确
 
 ## Step 3: Ask for Conference Information
 
-Ask the user for the following information:
+向用户请求以下信息：
 
 ```markdown
 Please provide the following information (optional):
@@ -111,7 +110,7 @@ Please provide the following information (optional):
 
 ## Step 4: Present Cleanup Plan
 
-Present the cleanup plan to the user and wait for confirmation:
+先给出清理方案，等待用户确认：
 
 ```markdown
 ## Cleanup Plan
@@ -140,330 +139,49 @@ mkdir -p output/{text,figures,tables,styles}
 
 ### Clean Up Main File (main.tex)
 
-**Keep:**
-- `\documentclass` declaration
-- Required package imports
-- Core configuration (e.g., anonymous mode)
+**保留：**
+- `\documentclass`
+- 必需 package import
+- 核心配置（如匿名模式）
 
-**Remove:**
-- Example section content
-- Verbose instructional comments
-- Example author/title information
+**删除：**
+- 示例 section 内容
+- 过长的教学注释
+- 示例作者和标题信息
 
-**Add:**
-- Import sections with `\input{text/XX-section}`
+**新增：**
+- 用 `\input{text/XX-section}` 导入章节
 
-**Example main.tex structure** (ACM template standard format):
+**示例 main.tex 结构：**
 ```latex
-\documentclass[...]{...}  % Keep original template document class
+\documentclass[...]{...}
 
-% Required packages (keep original template package declarations)
+% Required packages
 
-%% ============================================================================
-%% Preamble: Before \begin{document}
-%% ============================================================================
-
-%% Title and author information
 \title{Your Paper Title}
 \author{Author Name}
 \affiliation{...}
 
-%% Abstract (in preamble, before \maketitle)
 \begin{abstract}
 % TODO: Write abstract content
 \end{abstract}
 
-%% CCS Concepts and Keywords (in preamble)
-\begin{CCSXML}
-<ccs2012>
-   <concept>
-       <concept_id>10010405.10010444.10010447</concept_id>
-       <concept_desc>Applied computing~...</concept_desc>
-       <concept_significance>500</concept_significance>
-   </concept>
-</ccs2012>
-\end{CCSXML}
-
-\ccsdesc[500]{Applied computing~...}
-\keywords{keyword1, keyword2, keyword3}
-
-%% ============================================================================
-%% Document Body
-%% ============================================================================
 \begin{document}
-
 \maketitle
-
-%% Section content (imported from text/)
 \input{text/01-introduction}
 \input{text/02-related-work}
 \input{text/03-method}
 \input{text/04-experiments}
 \input{text/05-conclusion}
-
 \bibliographystyle{...}
 \bibliography{references}
-
 \end{document}
 ```
 
 ### KDD 2026 Anonymous Submission Special Configuration
 
-For KDD 2026 (using ACM acmart template), add the `nonacm` option to the document class to remove footnotes:
+对于 KDD 2026（ACM `acmart`），匿名投稿需要加 `nonacm` 选项以移除脚注：
 
-```latex
-%% ============================================================================
-%% Document Class - KDD 2026 Anonymous Submission Configuration
-%% Submission version: \documentclass[sigconf,anonymous,review,nonacm]{acmart}
-%% Camera-ready: \documentclass[sigconf]{acmart}
-%% ============================================================================
-\documentclass[sigconf,anonymous,review,nonacm]{acmart}
-
-%% ============================================================================
-%% Disable ACM metadata (submission version only)
-%% ============================================================================
-\settopmatter{printacmref=false}  % Disable ACM Reference Format
-\setcopyright{none}               % Disable copyright notice
-\acmConference[]{}{}{}            % Clear conference info (removes footnote)
-\acmYear{}                        % Clear year
-\acmISBN{}                        % Clear ISBN
-\acmDOI{}                         % Clear DOI
-
-%% Content to restore for camera-ready version:
-%% \acmConference[KDD '26]{Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining}{August 09--13, 2026}{Jeju, Korea}
-%% \acmISBN{978-1-4503-XXXX-X/26/08}
-%% \acmDOI{10.1145/nnnnnnn.nnnnnnn}
-```
-
-### Create Section Files (text/)
-
-Create independent .tex files for each section, **containing only section content** without `\begin{document}` etc.:
-
-**text/01-introduction.tex**:
-```latex
-\section{Introduction}
-% TODO: Write introduction content
-```
-
-**text/02-related-work.tex**:
-```latex
-\section{Related Work}
-% TODO: Write related work content
-```
-
-**text/03-method.tex**:
-```latex
-\section{Method}
-% TODO: Write method content
-```
-
-**text/04-experiments.tex**:
-```latex
-\section{Experiments}
-% TODO: Write experiments content
-```
-
-**text/05-conclusion.tex**:
-```latex
-\section{Conclusion}
-% TODO: Write conclusion content
-```
-
-**Important notes:**
-- **Abstract** should be placed in main.tex preamble (before `\begin{document}`), after `\maketitle`
-- **Files in text/ contain only sections**, starting with `\section{...}`
-- Do not include `\begin{document}` or other wrappers in text/ files
-
-### Copy Style Files (styles/)
-
-Copy all `.sty` and `.cls` files from the original template to `styles/`:
-
-```bash
-find /tmp/latex-template-temp -type f \( -name "*.sty" -o -name "*.cls" \) -exec cp {} output/styles/ \;
-```
-
-**Note:** Maintain the original template's directory structure (e.g., `acmart/`), only move to `styles/`.
-
-### Handle Images and Tables
-
-```bash
-# Copy image files
-find /tmp/latex-template-temp -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.pdf" \) -exec cp {} output/figures/ \;
-
-# Copy table files (if any)
-find /tmp/latex-template-temp -type f -name "*.tex" | grep -i table | while read f; do cp "$f" output/tables/; done
-```
-
-### Create Example Table File
-
-**Important:** Overleaf automatically deletes empty directories. To prevent the `tables/` directory from being deleted, create an example table file:
-
-```bash
-# Create example table file
-cat > output/tables/example-table.tex << 'EOF'
-% Example table file
-% Can be deleted or replaced with your own tables
-
-\begin{table}[h]
-    \centering
-    \caption{Example Table}
-    \label{tab:example}
-    \begin{tabular}{lccc}
-        \toprule
-        Method & Metric 1 & Metric 2 & Metric 3 \\
-        \midrule
-        Baseline & 85.3 & 12.4 & 0.92 \\
-        Method A & 87.1 & 11.8 & 0.95 \\
-        \textbf{Ours} & \textbf{89.4} & \textbf{10.2} & \textbf{0.97} \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-EOF
-```
-
-**Notes:**
-- If the original template already has table files, this step can be skipped
-- The example table is only to prevent directory deletion; it can be deleted or replaced
-- Reference tables in the paper using `\input{tables/example-table.tex}` or copy table content directly into section files
-
-### Copy Bibliography
-
-```bash
-# Copy .bib files
-find /tmp/latex-template-temp -type f -name "*.bib" -exec cp {} output/ \;
-```
-
-## Step 6: Generate README
-
-### Information Source Priority
-
-1. **Conference link provided by user** → Extract using WebFetch
-2. **Template file comments** → Extract from .tex files
-3. **Default inference** → Infer from `\documentclass`
-
-### README Template
-
-```markdown
-# [Conference Name] Submission Template
-
-## Template Information
-- **Conference**: [Conference name]
-- **Website**: [Conference link]
-- **Template version**: [From template or website]
-- **Document class**: [Extracted documentclass]
-
-## Submission Requirements
-
-### Page and Format
-- **Page limit**: [From website or template]
-- **Two-column/Single-column**: [Detect layout]
-- **Font size**: [10pt/11pt etc.]
-
-### Anonymity Requirements
-- **Blind review required**: [Detect template mode]
-- **Author information handling**: [Instructions]
-
-### Compilation Requirements
-- **Recommended compiler**: [XeLaTeX/pdfLaTeX/LuaLaTeX]
-- **Special package requirements**: [If any]
-
-## Overleaf Usage
-
-### Upload Steps
-1. Create a new project on Overleaf
-2. Upload the entire `output/` directory
-3. Set compiler to [specified compiler]
-4. Click Recompile to test
-
-### File Description
-- `main.tex` - Main file, start here
-- `text/` - Section content, edit as needed
-- `figures/` - Place images here
-- `tables/` - Place tables here
-- `styles/` - Style files, no modification needed
-- `references.bib` - Bibliography database
-
-## Common Operations
-
-### Adding Images
-```latex
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/your-image.pdf}
-    \caption{Image caption}
-    \label{fig:your-label}
-\end{figure}
-```
-
-### Adding Tables
-```latex
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|}
-        \hline
-        Column 1 & Column 2 \\
-        \hline
-        Content 1 & Content 2 \\
-        \hline
-    \end{tabular}
-    \caption{Table caption}
-    \label{tab:your-label}
-\end{table}
-```
-
-### Adding References
-Add entries to `references.bib` and cite in text using `\cite{key}`.
-
-## Notes
-- [Warnings extracted from template comments]
-- [Important notes extracted from website]
-```
-
-### Extract Information from Website (if user provided a link)
-
-Use WebFetch to get conference submission page content and extract:
-- Page limits
-- Anonymity requirements
-- Format requirements
-- Submission deadlines
-
-## Step 7: Cleanup and Output
-
-```bash
-# Clean up temporary files
-rm -rf /tmp/latex-template-temp
-
-# Output completion message
-echo "Template cleanup complete! Output directory: output/"
-echo "Please upload the output/ directory to Overleaf to test compilation."
-```
-
-## Error Handling
-
-| Error Scenario | Handling Approach |
-|----------------|-------------------|
-| Main file not found | List all .tex files, let user choose |
-| Dependency file missing | Warn user, attempt to locate from template directory |
-| Cannot extract conference info | Use default info from template, mark as [To be confirmed] |
-| Website inaccessible | Fall back to template comments, prompt user to fill in manually |
-| Extraction failed | Prompt user to check .zip file integrity |
-
-## Common Conference Template Types
-
-| Conference | Document Class | Notes |
-|------------|---------------|-------|
-| **KDD (ACM SIGKDD)** | `acmart` | **Anonymous submission requires `nonacm` option to remove footnotes** |
-| ACM Conferences | `acmart` | Requires anonymous mode `\acmReview{anonymous}` |
-| CVPR/ICCV | `cvpr` | Two-column, strict page limits |
-| NeurIPS | `neurips_2025` | Anonymous review, no page limit |
-| ICLR | `iclr2025_conference` | Two-column, requires session info |
-| AAAI | `aaai25` | Two-column, 8 pages + references |
-
-### KDD Anonymous Submission Configuration Notes
-
-KDD 2026 uses the ACM acmart template and requires special configuration for anonymous submission:
-
-**Submission version** (remove all ACM metadata footnotes):
 ```latex
 \documentclass[sigconf,anonymous,review,nonacm]{acmart}
 \settopmatter{printacmref=false}
@@ -474,36 +192,113 @@ KDD 2026 uses the ACM acmart template and requires special configuration for ano
 \acmDOI{}
 ```
 
-**Camera-ready version** (restore ACM metadata):
+camera-ready 时再恢复 ACM metadata。
+
+### Create Section Files (text/)
+
+为各 section 创建独立 `.tex` 文件，**只包含 section 内容**，不要包含 `\begin{document}` 等包装。
+
 ```latex
-\documentclass[sigconf]{acmart}
-\settopmatter{printacmref=true}
-\setcopyright{acmcopyright}
-\acmConference[KDD '26]{...}{...}{...}
-\acmYear{2026}
-\acmISBN{978-1-4503-XXXX-X/26/08}
-\acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\section{Introduction}
+% TODO: Write introduction content
 ```
+
+**注意：**
+- **Abstract** 应放在 `main.tex` 的 preamble 中
+- `text/` 下文件只写章节内容
+- 不要在 `text/` 文件里写 `\begin{document}`
+
+### Copy Style Files (styles/)
+
+复制所有 `.sty` / `.cls` 到 `styles/`：
+
+```bash
+find /tmp/latex-template-temp -type f \( -name "*.sty" -o -name "*.cls" \) -exec cp {} output/styles/ \;
+```
+
+### Handle Images and Tables
+
+```bash
+find /tmp/latex-template-temp -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.pdf" \) -exec cp {} output/figures/ \;
+find /tmp/latex-template-temp -type f -name "*.tex" | grep -i table | while read f; do cp "$f" output/tables/; done
+```
+
+### Create Example Table File
+
+由于 Overleaf 会自动删除空目录，若 `tables/` 为空，应创建一个示例表格文件防止目录消失。
+
+### Copy Bibliography
+
+```bash
+find /tmp/latex-template-temp -type f -name "*.bib" -exec cp {} output/ \;
+```
+
+## Step 6: Generate README
+
+### Information Source Priority
+
+1. 用户提供的 conference link
+2. 模板文件中的注释
+3. 从 `\documentclass` 默认推断
+
+README 需要包含：
+- Conference 名称与官网
+- Template version
+- `documentclass`
+- page limit / anonymity / compiler 等要求
+- Overleaf 上传说明
+- 目录说明
+- 添加图片、表格、引用的示例
+- 模板注释中提取出的关键提醒
+
+如果用户给了 conference 链接，可用网页内容补充：
+- page limits
+- 匿名要求
+- 格式要求
+- 截止时间
+
+## Step 7: Cleanup and Output
+
+```bash
+rm -rf /tmp/latex-template-temp
+echo "Template cleanup complete! Output directory: output/"
+echo "Please upload the output/ directory to Overleaf to test compilation."
+```
+
+## Error Handling
+
+| Error Scenario | Handling Approach |
+|----------------|-------------------|
+| Main file not found | 列出所有 `.tex` 文件，让用户选择 |
+| Dependency file missing | 警告用户，并尝试在模板目录中继续查找 |
+| Cannot extract conference info | 使用模板中的默认信息，并标记为 `[To be confirmed]` |
+| Website inaccessible | 回退到模板注释，并提醒用户手动补全 |
+| Extraction failed | 让用户检查 `.zip` 是否损坏 |
+
+## Common Conference Template Types
+
+| Conference | Document Class | Notes |
+|------------|---------------|-------|
+| **KDD (ACM SIGKDD)** | `acmart` | 匿名投稿需加 `nonacm` 以去掉脚注 |
+| ACM Conferences | `acmart` | 匿名模式通常要求 `\acmReview{anonymous}` |
+| CVPR/ICCV | `cvpr` | 双栏、页数限制严格 |
+| NeurIPS | `neurips_2025` | 匿名审稿，通常不限制页数 |
+| ICLR | `iclr2025_conference` | 双栏，需要会议信息 |
+| AAAI | `aaai25` | 双栏，8 页正文 + references |
 
 ## Quick Reference
 
 ### Detect Document Type
+
 ```bash
-# Detect document class
 grep "\\documentclass" main.tex
-
-# Detect anonymous mode
 grep -i "anonymous\|review\|blind" main.tex
-
-# Detect page settings
 grep "pagelimit\|pageLimit\|page_limit" main.tex
 ```
 
 ### Common Cleanup Patterns
-```bash
-# Remove example files
-rm -f sample-* example-* demo-* test-*
 
-# Remove temporary files
+```bash
+rm -f sample-* example-* demo-* test-*
 rm -f *.aux *.log *.out *.bbl *.blg
 ```

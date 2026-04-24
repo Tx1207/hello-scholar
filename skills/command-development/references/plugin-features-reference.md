@@ -1,609 +1,197 @@
-# Plugin-Specific Command Features Reference
+# Plugin 专属 Command 特性参考
 
-This reference covers features and patterns specific to commands bundled in Claude Code plugins.
+这份参考专门说明 Claude Code plugins 中 command 的特性与常见模式。
 
-## Table of Contents
+## 目录
 
-- [Plugin Command Discovery](#plugin-command-discovery)
-- [CLAUDE_PLUGIN_ROOT Environment Variable](#claude_plugin_root-environment-variable)
-- [Plugin Command Patterns](#plugin-command-patterns)
-- [Integration with Plugin Components](#integration-with-plugin-components)
-- [Validation Patterns](#validation-patterns)
+- Plugin Command Discovery
+- `CLAUDE_PLUGIN_ROOT` 环境变量
+- Plugin Command Patterns
+- 与其他 Plugin Components 的集成
+- Validation Patterns
 
 ## Plugin Command Discovery
 
 ### Auto-Discovery
 
-Claude Code automatically discovers commands in plugins using the following locations:
+Claude Code 会自动发现插件中的 commands，典型结构如下：
 
 ```
 plugin-name/
-├── commands/              # Auto-discovered commands
-│   ├── foo.md            # /foo (plugin:plugin-name)
-│   └── bar.md            # /bar (plugin:plugin-name)
-└── plugin.json           # Plugin manifest
+├── commands/
+│   ├── foo.md
+│   └── bar.md
+└── plugin.json
 ```
 
-**Key points:**
-- Commands are discovered at plugin load time
-- No manual registration required
-- Commands appear in `/help` with "(plugin:plugin-name)" label
-- Subdirectories create namespaces
+关键点：
+- commands 在插件加载时被发现
+- 不需要手工注册
+- 会出现在 `/help` 中，并带 `(plugin:plugin-name)` 标记
+- 子目录可形成 namespace
 
 ### Namespaced Plugin Commands
 
-Organize commands in subdirectories for logical grouping:
+按子目录组织 commands：
 
 ```
 plugin-name/
 └── commands/
     ├── review/
-    │   ├── security.md    # /security (plugin:plugin-name:review)
-    │   └── style.md       # /style (plugin:plugin-name:review)
     └── deploy/
-        ├── staging.md     # /staging (plugin:plugin-name:deploy)
-        └── prod.md        # /prod (plugin:plugin-name:deploy)
 ```
 
-**Namespace behavior:**
-- Subdirectory name becomes namespace
-- Shown as "(plugin:plugin-name:namespace)" in `/help`
-- Helps organize related commands
-- Use when plugin has 5+ commands
+这样在 `/help` 中会显示对应 namespace，适合命令较多的插件。
 
-### Command Naming Conventions
+### 命名约定
 
-**Plugin command names should:**
-1. Be descriptive and action-oriented
-2. Avoid conflicts with common command names
-3. Use hyphens for multi-word names
-4. Consider prefixing with plugin name for uniqueness
+plugin command 名称应：
+1. 清楚表达动作
+2. 尽量避免和常见命令冲突
+3. 多词命名时用连字符
+4. 必要时考虑加 plugin 前缀
 
-**Examples:**
-```
-Good:
-- /mylyn-sync          (plugin-specific prefix)
-- /analyze-performance (descriptive action)
-- /docker-compose-up   (clear purpose)
+## `CLAUDE_PLUGIN_ROOT` 环境变量
 
-Avoid:
-- /test               (conflicts with common name)
-- /run                (too generic)
-- /do-stuff           (not descriptive)
-```
+### 作用
 
-## CLAUDE_PLUGIN_ROOT Environment Variable
+`${CLAUDE_PLUGIN_ROOT}` 是插件 command 中可用的特殊环境变量，会解析成插件目录的绝对路径。
 
-### Purpose
+它的重要性在于：
+- 让插件内部路径具备可移植性
+- 可以引用脚本、模板、配置文件
+- 适配不同安装位置
+- 对多文件插件尤其关键
 
-`${CLAUDE_PLUGIN_ROOT}` is a special environment variable available in plugin commands that resolves to the absolute path of the plugin directory.
-
-**Why it matters:**
-- Enables portable paths within plugin
-- Allows referencing plugin files and scripts
-- Works across different installations
-- Essential for multi-file plugin operations
-
-### Basic Usage
-
-Reference files within your plugin:
+### 基本用法
 
 ```markdown
----
-description: Analyze using plugin script
-allowed-tools: Bash(node:*), Read
----
-
 Run analysis: !`node ${CLAUDE_PLUGIN_ROOT}/scripts/analyze.js`
 
 Read template: @${CLAUDE_PLUGIN_ROOT}/templates/report.md
 ```
 
-**Expands to:**
-```
-Run analysis: !`node /path/to/plugins/plugin-name/scripts/analyze.js`
+### 常见模式
 
-Read template: @/path/to/plugins/plugin-name/templates/report.md
-```
+1. **执行插件脚本**
+2. **加载配置文件**
+3. **访问模板或资源**
+4. **串联多步骤插件工作流**
 
-### Common Patterns
+### 最佳实践
 
-#### 1. Executing Plugin Scripts
-
-```markdown
----
-description: Run custom linter from plugin
-allowed-tools: Bash(node:*)
----
-
-Lint results: !`node ${CLAUDE_PLUGIN_ROOT}/bin/lint.js $1`
-
-Review the linting output and suggest fixes.
-```
-
-#### 2. Loading Configuration Files
-
-```markdown
----
-description: Deploy using plugin configuration
-allowed-tools: Read, Bash(*)
----
-
-Configuration: @${CLAUDE_PLUGIN_ROOT}/config/deploy-config.json
-
-Deploy application using the configuration above for $1 environment.
-```
-
-#### 3. Accessing Plugin Resources
-
-```markdown
----
-description: Generate report from template
----
-
-Use this template: @${CLAUDE_PLUGIN_ROOT}/templates/api-report.md
-
-Generate a report for @$1 following the template format.
-```
-
-#### 4. Multi-Step Plugin Workflows
-
-```markdown
----
-description: Complete plugin workflow
-allowed-tools: Bash(*), Read
----
-
-Step 1 - Prepare: !`bash ${CLAUDE_PLUGIN_ROOT}/scripts/prepare.sh $1`
-Step 2 - Config: @${CLAUDE_PLUGIN_ROOT}/config/$1.json
-Step 3 - Execute: !`${CLAUDE_PLUGIN_ROOT}/bin/execute $1`
-
-Review results and report status.
-```
-
-### Best Practices
-
-1. **Always use for plugin-internal paths:**
-   ```markdown
-   # Good
-   @${CLAUDE_PLUGIN_ROOT}/templates/foo.md
-
-   # Bad
-   @./templates/foo.md  # Relative to current directory, not plugin
-   ```
-
-2. **Validate file existence:**
-   ```markdown
-   ---
-   description: Use plugin config if exists
-   allowed-tools: Bash(test:*), Read
-   ---
-
-   !`test -f ${CLAUDE_PLUGIN_ROOT}/config.json && echo "exists" || echo "missing"`
-
-   If config exists, load it: @${CLAUDE_PLUGIN_ROOT}/config.json
-   Otherwise, use defaults...
-   ```
-
-3. **Document plugin file structure:**
-   ```markdown
-   <!--
-   Plugin structure:
-   ${CLAUDE_PLUGIN_ROOT}/
-   ├── scripts/analyze.js  (analysis script)
-   ├── templates/          (report templates)
-   └── config/             (configuration files)
-   -->
-   ```
-
-4. **Combine with arguments:**
-   ```markdown
-   Run: !`${CLAUDE_PLUGIN_ROOT}/bin/process.sh $1 $2`
-   ```
-
-### Troubleshooting
-
-**Variable not expanding:**
-- Ensure command is loaded from plugin
-- Check bash execution is allowed
-- Verify syntax is exact: `${CLAUDE_PLUGIN_ROOT}`
-
-**File not found errors:**
-- Verify file exists in plugin directory
-- Check file path is correct relative to plugin root
-- Ensure file permissions allow reading/execution
-
-**Path with spaces:**
-- Bash commands automatically handle spaces
-- File references work with spaces in paths
-- No special quoting needed
+1. 插件内部路径都优先用 `${CLAUDE_PLUGIN_ROOT}`
+2. 使用前先校验文件存在
+3. 在文档中说明插件目录结构
+4. 与 command arguments 组合使用
 
 ## Plugin Command Patterns
 
-### Pattern 1: Configuration-Based Commands
+### Pattern 1：基于配置的 Command
 
-Commands that load plugin-specific configuration:
+适合每次都要读取插件级配置的 command，例如部署类 commands。
 
-```markdown
----
-description: Deploy using plugin settings
-allowed-tools: Read, Bash(*)
----
+### Pattern 2：基于模板的生成
 
-Load configuration: @${CLAUDE_PLUGIN_ROOT}/deploy-config.json
+适合通过固定模板生成报告、文档、配置文件等标准化输出。
 
-Deploy to $1 environment using:
-1. Configuration settings above
-2. Current git branch: !`git branch --show-current`
-3. Application version: !`cat package.json | grep version`
+### Pattern 3：多脚本工作流
 
-Execute deployment and monitor progress.
-```
+command 自身作为编排层，调用多个插件脚本完成 build、validate、test 等动作。
 
-**When to use:** Commands that need consistent settings across invocations
+### Pattern 4：环境感知 Command
 
-### Pattern 2: Template-Based Generation
+按 `dev/staging/prod` 或不同 runtime 环境加载不同配置与行为。
 
-Commands that use plugin templates:
+### Pattern 5：插件数据管理
 
-```markdown
----
-description: Generate documentation from template
-argument-hint: [component-name]
----
+当 command 需要长期缓存分析结果、时间戳或中间状态时，可写入插件 cache 目录。
 
-Template: @${CLAUDE_PLUGIN_ROOT}/templates/component-docs.md
+## 与其他 Plugin Components 的集成
 
-Generate documentation for $1 component following the template structure.
-Include:
-- Component purpose and usage
-- API reference
-- Examples
-- Testing guidelines
-```
+### 调用 Plugin Agents
 
-**When to use:** Standardized output generation
+command 可以通过 Task tool 触发插件里的 agents。例如：
+- 深度代码分析
+- 复杂 review
+- 多步骤规划
 
-### Pattern 3: Multi-Script Workflow
+前提是 agent 已存在于插件 `agents/` 目录中。
 
-Commands that orchestrate multiple plugin scripts:
+### 调用 Plugin Skills
 
-```markdown
----
-description: Complete build and test workflow
-allowed-tools: Bash(*)
----
+command 可以显式提到 skill 名称，引导 Claude 加载该 skill 的专业知识，例如：
+- `api-docs-standards`
+- `code-standards`
 
-Build: !`bash ${CLAUDE_PLUGIN_ROOT}/scripts/build.sh`
-Validate: !`bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh`
-Test: !`bash ${CLAUDE_PLUGIN_ROOT}/scripts/test.sh`
+### 与 Plugin Hooks 协同
 
-Review all outputs and report:
-1. Build status
-2. Validation results
-3. Test results
-4. Recommended next steps
-```
+某些 commands 会触发 hooks，例如提交前校验、写入前检查。设计 command 时应把这些 hook 交互写进文档。
 
-**When to use:** Complex plugin workflows with multiple steps
+### 多组件协同 Command
 
-### Pattern 4: Environment-Aware Commands
+复杂 command 可以同时使用：
+1. plugin scripts
+2. plugin agents
+3. plugin skills
+4. plugin templates
 
-Commands that adapt to environment:
-
-```markdown
----
-description: Deploy based on environment
-argument-hint: [dev|staging|prod]
----
-
-Environment config: @${CLAUDE_PLUGIN_ROOT}/config/$1.json
-
-Environment check: !`echo "Deploying to: $1"`
-
-Deploy application using $1 environment configuration.
-Verify deployment and run smoke tests.
-```
-
-**When to use:** Commands that behave differently per environment
-
-### Pattern 5: Plugin Data Management
-
-Commands that manage plugin-specific data:
-
-```markdown
----
-description: Save analysis results to plugin cache
-allowed-tools: Bash(*), Read, Write
----
-
-Cache directory: ${CLAUDE_PLUGIN_ROOT}/cache/
-
-Analyze @$1 and save results to cache:
-!`mkdir -p ${CLAUDE_PLUGIN_ROOT}/cache && date > ${CLAUDE_PLUGIN_ROOT}/cache/last-run.txt`
-
-Store analysis for future reference and comparison.
-```
-
-**When to use:** Commands that need persistent data storage
-
-## Integration with Plugin Components
-
-### Invoking Plugin Agents
-
-Commands can trigger plugin agents using the Task tool:
-
-```markdown
----
-description: Deep analysis using plugin agent
-argument-hint: [file-path]
----
-
-Initiate deep code analysis of @$1 using the code-analyzer agent.
-
-The agent will:
-1. Analyze code structure
-2. Identify patterns
-3. Suggest improvements
-4. Generate detailed report
-
-Note: This uses the Task tool to launch the plugin's code-analyzer agent.
-```
-
-**Key points:**
-- Agent must be defined in plugin's `agents/` directory
-- Claude will automatically use Task tool to launch agent
-- Agent has access to same plugin resources
-
-### Invoking Plugin Skills
-
-Commands can reference plugin skills for specialized knowledge:
-
-```markdown
----
-description: API documentation with best practices
-argument-hint: [api-file]
----
-
-Document the API in @$1 following our API documentation standards.
-
-Use the api-docs-standards skill to ensure documentation includes:
-- Endpoint descriptions
-- Parameter specifications
-- Response formats
-- Error codes
-- Usage examples
-
-Note: This leverages the plugin's api-docs-standards skill for consistency.
-```
-
-**Key points:**
-- Skill must be defined in plugin's `skills/` directory
-- Mention skill by name to hint Claude should invoke it
-- Skills provide specialized domain knowledge
-
-### Coordinating with Plugin Hooks
-
-Commands can be designed to work with plugin hooks:
-
-```markdown
----
-description: Commit with pre-commit validation
-allowed-tools: Bash(git:*)
----
-
-Stage changes: !\`git add $1\`
-
-Commit changes: !\`git commit -m "$2"\`
-
-Note: This commit will trigger the plugin's pre-commit hook for validation.
-Review hook output for any issues.
-```
-
-**Key points:**
-- Hooks execute automatically on events
-- Commands can prepare state for hooks
-- Document hook interaction in command
-
-### Multi-Component Plugin Commands
-
-Commands that coordinate multiple plugin components:
-
-```markdown
----
-description: Comprehensive code review workflow
-argument-hint: [file-path]
----
-
-File to review: @$1
-
-Execute comprehensive review:
-
-1. **Static Analysis** (via plugin scripts)
-   !`node ${CLAUDE_PLUGIN_ROOT}/scripts/lint.js $1`
-
-2. **Deep Review** (via plugin agent)
-   Launch the code-reviewer agent for detailed analysis.
-
-3. **Best Practices** (via plugin skill)
-   Use the code-standards skill to ensure compliance.
-
-4. **Documentation** (via plugin template)
-   Template: @${CLAUDE_PLUGIN_ROOT}/templates/review-report.md
-
-Generate final report combining all outputs.
-```
-
-**When to use:** Complex workflows leveraging multiple plugin capabilities
+适合完整 code review、deployment workflow、documentation generation 等场景。
 
 ## Validation Patterns
 
-### Input Validation
+### 输入校验
 
-Commands should validate inputs before processing:
+在真正处理前先校验：
+- 参数是否存在
+- 参数格式是否正确
+- 文件是否存在
+- 环境值是否合法
 
-```markdown
----
-description: Deploy to environment with validation
-argument-hint: [environment]
----
+### 文件存在性检查
 
-Validate environment: !`echo "$1" | grep -E "^(dev|staging|prod)$" || echo "INVALID"`
+如果 command 依赖输入文件或插件资源，先确认路径存在，再继续处理；否则告诉用户：
+- 期望位置
+- 期望格式
+- 如何创建
 
-$IF($1 in [dev, staging, prod],
-  Deploy to $1 environment using validated configuration,
-  ERROR: Invalid environment '$1'. Must be one of: dev, staging, prod
-)
-```
+### 必需参数检查
 
-**Validation approaches:**
-1. Bash validation using grep/test
-2. Inline validation in prompt
-3. Script-based validation
-
-### File Existence Checks
-
-Verify required files exist:
-
-```markdown
----
-description: Process configuration file
-argument-hint: [config-file]
----
-
-Check file: !`test -f $1 && echo "EXISTS" || echo "MISSING"`
-
-Process configuration if file exists: @$1
-
-If file doesn't exist, explain:
-- Expected location
-- Required format
-- How to create it
-```
-
-### Required Arguments
-
-Validate required arguments provided:
-
-```markdown
----
-description: Create deployment with version
-argument-hint: [environment] [version]
----
-
-Validate inputs: !`test -n "$1" -a -n "$2" && echo "OK" || echo "MISSING"`
-
-$IF($1 AND $2,
-  Deploy version $2 to $1 environment,
-  ERROR: Both environment and version required. Usage: /deploy [env] [version]
-)
-```
+对于需要多个参数的 command，应明确提示 usage，而不是静默失败。
 
 ### Plugin Resource Validation
 
-Verify plugin resources available:
+运行前检查：
+- 配置文件是否存在
+- `scripts/` 是否存在
+- 可执行文件是否具备执行权限
 
-```markdown
----
-description: Run analysis with plugin tools
-allowed-tools: Bash(test:*)
----
+### 输出校验
 
-Validate plugin setup:
-- Config exists: !`test -f ${CLAUDE_PLUGIN_ROOT}/config.json && echo "✓" || echo "✗"`
-- Scripts exist: !`test -d ${CLAUDE_PLUGIN_ROOT}/scripts && echo "✓" || echo "✗"`
-- Tools available: !`test -x ${CLAUDE_PLUGIN_ROOT}/bin/analyze && echo "✓" || echo "✗"`
-
-If all checks pass, proceed with analysis.
-Otherwise, report missing components and installation steps.
-```
-
-### Output Validation
-
-Validate command execution results:
-
-```markdown
----
-description: Build and validate output
-allowed-tools: Bash(*)
----
-
-Build: !`bash ${CLAUDE_PLUGIN_ROOT}/scripts/build.sh`
-
-Validate output:
-- Exit code: !`echo $?`
-- Output exists: !`test -d dist && echo "✓" || echo "✗"`
-- File count: !`find dist -type f | wc -l`
-
-Report build status and any validation failures.
-```
+command 执行后还应验证：
+- 退出码
+- 产物目录是否存在
+- 产物数量是否合理
+- 构建 / 处理结果是否完整
 
 ### Graceful Error Handling
 
-Handle errors gracefully with helpful messages:
+当脚本失败时，command 应：
+1. 解释可能原因
+2. 给出 troubleshooting 步骤
+3. 提供替代做法
 
-```markdown
----
-description: Process file with error handling
-argument-hint: [file-path]
----
+## 最佳实践总结
 
-Try processing: !`node ${CLAUDE_PLUGIN_ROOT}/scripts/process.js $1 2>&1 || echo "ERROR: $?"`
+Plugin commands 应该：
 
-If processing succeeded:
-- Report results
-- Suggest next steps
+1. 对所有插件内部路径使用 `${CLAUDE_PLUGIN_ROOT}`
+2. 尽早校验输入
+3. 说明插件结构和依赖资源
+4. 与 agents / skills / hooks 做合理集成
+5. 提供有帮助的错误消息
+6. 处理缺文件、坏参数、脚本失败等边界情况
+7. 保持单一职责，复杂逻辑下放给 scripts 或 agents
+8. 在不同安装环境中反复测试
 
-If processing failed:
-- Explain likely causes
-- Provide troubleshooting steps
-- Suggest alternative approaches
-```
-
-## Best Practices Summary
-
-### Plugin Commands Should:
-
-1. **Use ${CLAUDE_PLUGIN_ROOT} for all plugin-internal paths**
-   - Scripts, templates, configuration, resources
-
-2. **Validate inputs early**
-   - Check required arguments
-   - Verify file existence
-   - Validate argument formats
-
-3. **Document plugin structure**
-   - Explain required files
-   - Document script purposes
-   - Clarify dependencies
-
-4. **Integrate with plugin components**
-   - Reference agents for complex tasks
-   - Use skills for specialized knowledge
-   - Coordinate with hooks when relevant
-
-5. **Provide helpful error messages**
-   - Explain what went wrong
-   - Suggest how to fix
-   - Offer alternatives
-
-6. **Handle edge cases**
-   - Missing files
-   - Invalid arguments
-   - Failed script execution
-   - Missing dependencies
-
-7. **Keep commands focused**
-   - One clear purpose per command
-   - Delegate complex logic to scripts
-   - Use agents for multi-step workflows
-
-8. **Test across installations**
-   - Verify paths work everywhere
-   - Test with different arguments
-   - Validate error cases
-
----
-
-For general command development, see main SKILL.md.
-For command examples, see examples/ directory.
+如需更一般性的 command 开发说明，请看主 `SKILL.md`；更多样例见 `examples/` 目录。

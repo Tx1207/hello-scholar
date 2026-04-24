@@ -1,4 +1,4 @@
-# Zotero-Sourced Paper Note Schema
+# Zotero 来源论文笔记 Schema
 
 ## Frontmatter
 
@@ -43,18 +43,18 @@ updated: 2026-03-16T00:00:00Z
 ---
 ```
 
-## Canonical filename
+## 规范文件名
 
 ```text
 Papers/{FirstAuthor}-{Year}-{ShortTitle}.md
 ```
 
-Where:
-- `FirstAuthor` uses the first author's surname.
-- `Year` uses the 4-digit publication year.
-- `ShortTitle` should stay concise, preserve title keyword order, and prefer a stable prefix before a colon when one exists.
+其中：
+- `FirstAuthor` 使用第一作者的姓氏。
+- `Year` 使用 4 位出版年份。
+- `ShortTitle` 应保持简洁，尽量保留标题关键词顺序；如果标题里有稳定的冒号前缀，优先使用该前缀。
 
-## Sections
+## 章节
 
 ```markdown
 # Paper Title
@@ -81,13 +81,13 @@ Where:
 - Writing:
 ```
 
-## Rules
+## 规则
 
-- `related_papers` and `linked_knowledge` should prefer project-relative note paths.
-- `paper_relationships` should record explicit semantic edges only when they are stable enough to support graph construction.
-- `concepts` and `methods` may remain plain strings; do not create dedicated notes by default.
-- Keep `Direct relevance to repo` concrete and actionable.
-- Keep the note filename stable under `FirstAuthor-Year-ShortTitle`, even if `title` or `# H1` wording becomes more reader-friendly later.
-- Prefer one durable canonical note per paper; update in place instead of making sibling notes.
-- If the user asked for a full collection pass, normalize the schema across the entire covered set before closing the task.
-- Treat Zotero `webpage` items as acceptable inputs when attachment text or fulltext is still available and useful.
+- `related_papers` 和 `linked_knowledge` 优先使用项目相对路径。
+- `paper_relationships` 只有在语义边稳定到足以支持图构建时才记录。
+- `concepts` 和 `methods` 可以保持为普通字符串；默认不要为它们单独建笔记。
+- `Direct relevance to repo` 要写得具体且可执行。
+- 即使后续为了可读性重写了 `title` 或 `# H1`，文件名仍应稳定保持在 `FirstAuthor-Year-ShortTitle`。
+- 每篇论文优先只有一份持久化 canonical note；尽量原位更新，不新增同级兄弟笔记。
+- 如果用户要求完整做一遍 collection pass，结束任务前应把整个覆盖集合的 schema 统一好。
+- 当 Zotero `webpage` 条目仍然提供有用的附件文本或 fulltext 时，也可以作为可接受输入。

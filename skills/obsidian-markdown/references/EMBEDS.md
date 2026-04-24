@@ -1,6 +1,6 @@
-# Embeds Reference
+# Embeds 参考
 
-## Embed Notes
+## 嵌入笔记
 
 ```markdown
 ![[Note Name]]
@@ -8,29 +8,29 @@
 ![[Note Name#^block-id]]
 ```
 
-## Embed Images
+## 嵌入图片
 
 ```markdown
 ![[image.png]]
-![[image.png|640x480]]    Width x Height
-![[image.png|300]]        Width only (maintains aspect ratio)
+![[image.png|640x480]]    宽 × 高
+![[image.png|300]]        只指定宽度（保持纵横比）
 ```
 
-## External Images
+## 外部图片
 
 ```markdown
 ![Alt text](https://example.com/image.png)
 ![Alt text|300](https://example.com/image.png)
 ```
 
-## Embed Audio
+## 嵌入音频
 
 ```markdown
 ![[audio.mp3]]
 ![[audio.ogg]]
 ```
 
-## Embed PDF
+## 嵌入 PDF
 
 ```markdown
 ![[document.pdf]]
@@ -38,13 +38,13 @@
 ![[document.pdf#height=400]]
 ```
 
-## Embed Lists
+## 嵌入列表
 
 ```markdown
 ![[Note#^list-id]]
 ```
 
-Where the list has a block ID:
+前提是该列表有 block ID：
 
 ```markdown
 - Item 1
@@ -54,7 +54,7 @@ Where the list has a block ID:
 ^list-id
 ```
 
-## Embed Search Results
+## 嵌入搜索结果
 
 ````markdown
 ```query

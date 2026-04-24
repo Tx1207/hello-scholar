@@ -1,65 +1,65 @@
 ---
 name: kaggle-learner
-description: This skill should be used when the user asks to "learn from Kaggle", "study Kaggle solutions", "analyze Kaggle competitions", "learn from code", "extract patterns", or mentions Kaggle competition URLs. Also covers extracting reusable patterns from coding sessions.
+description: 当用户要求 “learn from Kaggle”、“study Kaggle solutions”、“analyze Kaggle competitions”、“learn from code”、“extract patterns”，或提到 Kaggle competition URLs 时使用该 skill。同时也覆盖从编码 session 中提取可复用模式。
 version: 0.1.0
 ---
 
 # Kaggle Learner
 
-Extract and apply knowledge from Kaggle competition winning solutions. This skill provides access to a continuously updated knowledge base of techniques, code patterns, and best practices from top Kaggle competitors.
+从 Kaggle 竞赛获奖方案中提取并应用知识。该 skill 提供一个持续更新的知识库，沉淀顶级 Kaggle 选手的技术、代码模式和最佳实践。
 
-## Overview
+## 概览
 
-Kaggle competitions are at the forefront of practical machine learning. Winning solutions often innovate with novel techniques, clever feature engineering, and optimized pipelines. This skill captures that knowledge and makes it accessible for your projects.
+Kaggle competitions 站在 practical machine learning 的前沿。获奖方案通常在 novel techniques、feature engineering 和优化后的 pipelines 上有很多创新。这个 skill 的目标就是捕获这类知识，并让你的项目可以直接使用。
 
-## When to Use
+## 何时使用
 
-Use this skill when:
-- Studying for a Kaggle competition
-- Looking for proven techniques in a specific domain (NLP, CV, etc.)
-- Need code templates for common ML tasks
-- Want to learn from competition winners
+在以下场景使用该 skill：
+- 准备 Kaggle 比赛
+- 在特定领域（NLP、CV 等）寻找已验证有效的技术
+- 需要常见 ML 任务的代码模板
+- 希望向 competition winners 学习
 
-## Knowledge Categories
+## 知识类别
 
-Dynamic Kaggle knowledge should be written to the persistent global store under `~/.hello-scholar/knowledge/kaggle/`.
-The bundled `references/knowledge/` tree is seed material and read-only reference content.
+动态 Kaggle 知识应写入持久化全局存储：`~/.hello-scholar/knowledge/kaggle/`。  
+bundled 的 `references/knowledge/` 树只作为 seed material 和只读参考。
 
-| Category | Focus | Directory |
-|----------|-------|-----------|
-| **NLP** | Text classification, NER, translation, LLM applications | `~/.hello-scholar/knowledge/kaggle/nlp/` |
-| **CV** | Image classification, detection, segmentation, generation | `~/.hello-scholar/knowledge/kaggle/cv/` |
-| **Time Series** | Forecasting, anomaly detection, sequence modeling | `~/.hello-scholar/knowledge/kaggle/time-series/` |
-| **Tabular** | Feature engineering, traditional ML, structured data | `~/.hello-scholar/knowledge/kaggle/tabular/` |
-| **Multimodal** | Cross-modal tasks, vision-language models | `~/.hello-scholar/knowledge/kaggle/multimodal/` |
+| 类别 | 聚焦内容 | 目录 |
+|----------|----------|-----------|
+| **NLP** | 文本分类、NER、翻译、LLM 应用 | `~/.hello-scholar/knowledge/kaggle/nlp/` |
+| **CV** | 图像分类、检测、分割、生成 | `~/.hello-scholar/knowledge/kaggle/cv/` |
+| **Time Series** | 预测、异常检测、序列建模 | `~/.hello-scholar/knowledge/kaggle/time-series/` |
+| **Tabular** | 特征工程、传统 ML、结构化数据 | `~/.hello-scholar/knowledge/kaggle/tabular/` |
+| **Multimodal** | 跨模态任务、vision-language models | `~/.hello-scholar/knowledge/kaggle/multimodal/` |
 
-**文件组织结构**：每个竞赛一个独立的 markdown 文件，按 domain 分类到对应目录。
+**文件组织结构**：每个竞赛对应一个独立 markdown 文件，按 domain 分类到对应目录。
 
 示例：
 - `time-series/birdclef-plus-2025.md`
 - `nlp/aimo-2-2025.md`
 
-## Quick Reference
+## 快速参考
 
-**To learn from a competition:**
-1. Provide the Kaggle competition URL
-2. The kaggle-miner agent will extract the winning solution
-3. Knowledge is automatically added to the relevant category
-4. **前排方案详细技术分析** (Front-runner Detailed Technical Analysis) is automatically included
+**学习某个竞赛时：**
+1. 提供 Kaggle competition URL
+2. `kaggle-miner` agent 会提取获奖方案
+3. 知识会自动写入对应 category
+4. 会自动包含 **前排方案详细技术分析**
 
-**To browse existing knowledge:**
-- 浏览相关 domain 目录：`references/knowledge/[domain]/`
+**浏览现有知识时：**
+- 浏览对应 domain 目录：`references/knowledge/[domain]/`
 - 每个竞赛一个独立文件，包含：
-  - Competition Brief (竞赛简介)
-  - **前排方案详细技术分析** (前排方案详细技术分析) ⭐
-  - Code Templates (代码模板)
-  - Best Practices (最佳实践)
+  - 竞赛简介
+  - **前排方案详细技术分析**
+  - 代码模板
+  - 最佳实践
 
-## Self-Evolving
+## 自进化
 
-This skill automatically updates its knowledge base when the kaggle-miner agent processes new competitions. The more you use it, the smarter it becomes.
+当 `kaggle-miner` agent 处理新比赛时，这个 skill 会持续更新知识库。使用越多，它越有价值。
 
-## Knowledge Extraction Standard
+## 知识提取标准
 
 每次从 Kaggle 竞赛提取知识时，**必须**包含以下标准部分：
 
@@ -67,69 +67,69 @@ This skill automatically updates its knowledge base when the kaggle-miner agent 
 
 | 部分 | 说明 | 必需性 |
 |------|------|--------|
-| **Competition Brief** | 竞赛背景、任务描述、数据规模、评估指标 | ✅ 必需 |
-| **Original Summaries** | 前排方案的简要概述 | ✅ 必需 |
-| **前排方案详细技术分析** | Top 20 方案的核心技巧和实现细节 | ✅ **必需** ⭐ |
-| **Code Templates** | 可复用的代码模板 | ✅ 必需 |
-| **Best Practices** | 最佳实践和常见陷阱 | ✅ 必需 |
-| **Metadata** | 数据源标签和日期 | ✅ 必需 |
+| **竞赛简介** | 竞赛背景、任务描述、数据规模、评估指标 | 必需 |
+| **原始总结** | 前排方案的简要概览 | 必需 |
+| **前排方案详细技术分析** | Top 20 方案的核心技术和实现细节 | **必需** |
+| **代码模板** | 可复用代码模板 | 必需 |
+| **最佳实践** | 最佳实践和常见陷阱 | 必需 |
+| **元数据** | 数据源标签和日期 | 必需 |
 
 ### 前排方案详细技术分析格式
 
 每个前排方案应包含：
-- **排名和团队/作者**
-- **核心技巧列表** (3-6 个关键技术点)
-- **实现细节** (具体的参数、配置、数据)
+- **排名和团队 / 作者**
+- **核心技术列表**（3-6 个关键技术点）
+- **实现细节**（具体参数、配置、数据处理、实验结果）
 
 示例格式：
 ```markdown
-**排名 Place - 核心技术名称 (作者)**
+**Nth Place - Core Technique Name (Author)**
 
-核心技巧：
-- **技巧1**: 简短说明
-- **技巧2**: 简短说明
+Core Techniques:
+- **Technique 1**: Brief description
+- **Technique 2**: Brief description
 
-实现细节：
-- 具体参数、模型、配置
-- 数据和实验结果
+Implementation Details:
+- Specific parameters, models, configurations
+- Data and experimental results
 ```
 
-**建议覆盖 Top 20 方案，获取更多前排选手的创新技巧**
+**建议尽量覆盖 Top 20 方案，以吸收更多前排选手的创新技术。**
 
-## Additional Resources
+## 额外资源
 
-### Knowledge Directories
-- **`references/knowledge/nlp/`** - NLP competition techniques
-- **`references/knowledge/cv/`** - Computer vision techniques
-- **`references/knowledge/time-series/`** - Time series methods
-- **`references/knowledge/tabular/`** - Tabular data approaches
-- **`references/knowledge/multimodal/`** - Multimodal solutions
+### 知识目录
+- **`references/knowledge/nlp/`** - NLP 竞赛技术
+- **`references/knowledge/cv/`** - Computer vision 技术
+- **`references/knowledge/time-series/`** - Time series 方法
+- **`references/knowledge/tabular/`** - Tabular data 方法
+- **`references/knowledge/multimodal/`** - Multimodal 方案
 
-### Competition Examples
-- **BirdCLEF+ 2025** (`time-series/birdclef-plus-2025.md`) - 包含完整的 Top 14 前排方案详细技术分析
+### 竞赛示例
+- **BirdCLEF+ 2025** (`time-series/birdclef-plus-2025.md`) - 包含完整 Top 14 前排方案详细技术分析
 - **BirdCLEF 2024** (`time-series/birdclef-2024.md`) - 包含 Top 3 方案详细技术分析
 - **AIMO-2** (`nlp/aimo-2-2025.md`) - 包含 Top 12+ 前排方案技术总结
 
 ---
 
-## Pattern Learning (from /learn command)
+## 模式学习（来自 `/learn` 命令）
 
-Extract reusable patterns from coding sessions.
+从编码 session 中提取可复用模式。
 
-### When to Extract
+### 何时提取
 
-Run pattern learning when you've solved a non-trivial problem during a session.
+当你在一次 session 中解决了非平凡问题时，运行模式学习。
 
-### What to Extract
+### 提取什么
 
-1. **Error Resolution Patterns** - Root cause and fix for recurring errors
-2. **Debugging Techniques** - Non-obvious diagnostic steps
-3. **Workarounds** - Library quirks, API limitations, version-specific fixes
-4. **Project-Specific Patterns** - Codebase conventions, architecture decisions
+1. **错误解决模式** - 重复出现错误的根因与修复方法
+2. **调试技巧** - 不显然的诊断步骤
+3. **Workarounds** - 库怪异行为、API 限制、版本相关修复
+4. **项目特定模式** - 代码库约定、架构决策
 
-### Output Format
+### 输出格式
 
-Save extracted patterns to `~/.hello-scholar/learned-patterns/[pattern-name].md`:
+将提取的模式保存到 `~/.hello-scholar/learned-patterns/[pattern-name].md`：
 
 ```markdown
 # [Descriptive Pattern Name]
@@ -150,9 +150,9 @@ Save extracted patterns to `~/.hello-scholar/learned-patterns/[pattern-name].md`
 [Trigger conditions]
 ```
 
-### Guidelines
+### 指南
 
-- Don't extract trivial fixes (typos, simple syntax errors)
-- Don't extract one-time issues (specific API outages)
-- Focus on patterns that save time in future sessions
-- Keep skills focused - one pattern per skill
+- 不要提取琐碎修复（typos、简单语法错误）
+- 不要提取一次性问题（特定 API 宕机）
+- 聚焦那些能在未来 session 中节省时间的模式
+- 保持 skill 聚焦：一个 skill 只表达一个模式

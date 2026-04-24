@@ -1,4 +1,4 @@
-# Visualization Best Practices for ML/AI Papers
+# ML/AI 论文可视化最佳实践
 
 论文级可视化的最佳实践指南。
 

@@ -1,18 +1,18 @@
 ---
 name: git-workflow
-description: This skill should be used when the user asks to "create git commit", "manage branches", "follow git workflow", "use Conventional Commits", "handle merge conflicts", or asks about git branching strategies, version control best practices, pull request workflows. Provides comprehensive Git workflow guidance for team collaboration.
+description: 当用户要求“create git commit”、“manage branches”、“follow git workflow”、“use Conventional Commits”、“handle merge conflicts”，或询问 Git 分支策略、版本控制最佳实践、Pull Request 流程时使用。该 skill 提供面向团队协作的完整 Git workflow 指南。
 version: 1.2.0
 ---
 
 # Git Workflow Standards
 
-This document defines the project's Git usage standards, including commit message format, branch management strategy, workflows, merge strategies, and more. Following these standards improves collaboration efficiency, enables traceability, supports automation, and reduces conflicts.
+本文定义项目的 Git 使用标准，包括 commit message 格式、branch 管理策略、工作流、merge 策略等。遵循这些标准可以提升协作效率、增强可追溯性、支持自动化并减少冲突。
 
 ## Commit Message Standards
 
-The project follows the **Conventional Commits** specification:
+项目遵循 **Conventional Commits** 规范：
 
-```
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -24,21 +24,21 @@ The project follows the **Conventional Commits** specification:
 
 | Type | Description | Example |
 | :--- | :--- | :--- |
-| `feat` | New feature | `feat(user): add user export functionality` |
-| `fix` | Bug fix | `fix(login): fix captcha not refreshing` |
-| `docs` | Documentation update | `docs(api): update API documentation` |
-| `refactor` | Refactoring | `refactor(utils): refactor utility functions` |
-| `perf` | Performance improvement | `perf(list): optimize list performance` |
-| `test` | Test related | `test(user): add unit tests` |
-| `chore` | Other changes | `chore: update dependency versions` |
+| `feat` | 新功能 | `feat(user): add user export functionality` |
+| `fix` | Bug 修复 | `fix(login): fix captcha not refreshing` |
+| `docs` | 文档更新 | `docs(api): update API documentation` |
+| `refactor` | 重构 | `refactor(utils): refactor utility functions` |
+| `perf` | 性能优化 | `perf(list): optimize list performance` |
+| `test` | 测试相关 | `test(user): add unit tests` |
+| `chore` | 其他变更 | `chore: update dependency versions` |
 
 ### Subject Rules
 
-- Start with a verb: add, fix, update, remove, optimize
-- No more than 50 characters
-- No period at the end
+- 用动词开头：`add`、`fix`、`update`、`remove`、`optimize`
+- 不超过 50 个字符
+- 结尾不加句号
 
-For more detailed conventions and examples, see `references/commit-conventions.md`.
+更细的规范和示例见 `references/commit-conventions.md`。
 
 ## Branch Management Strategy
 
@@ -46,62 +46,62 @@ For more detailed conventions and examples, see `references/commit-conventions.m
 
 | Branch Type | Naming Convention | Description | Lifecycle |
 | :--- | :--- | :--- | :--- |
-| master | `master` | Main branch, releasable state | Permanent |
-| develop | `develop` | Development branch, latest integrated code | Permanent |
-| feature | `feature/feature-name` | Feature branch | Delete after completion |
-| bugfix | `bugfix/issue-description` | Bug fix branch | Delete after fix |
-| hotfix | `hotfix/issue-description` | Emergency fix branch | Delete after fix |
-| release | `release/version-number` | Release branch | Delete after release |
+| master | `master` | 主分支，可发布状态 | 长期存在 |
+| develop | `develop` | 开发分支，集成最新代码 | 长期存在 |
+| feature | `feature/feature-name` | 功能分支 | 完成后删除 |
+| bugfix | `bugfix/issue-description` | Bug 修复分支 | 修复后删除 |
+| hotfix | `hotfix/issue-description` | 紧急修复分支 | 修复后删除 |
+| release | `release/version-number` | 发布分支 | 发布后删除 |
 
 ### Branch Naming Examples
 
-```
-feature/user-management          # User management feature
-feature/123-add-export          # Issue-linked feature
-bugfix/login-error              # Login error fix
-hotfix/security-vulnerability   # Security vulnerability fix
-release/v1.0.0                  # Version release
+```text
+feature/user-management          # 用户管理功能
+feature/123-add-export          # 关联 issue 的功能分支
+bugfix/login-error              # 登录错误修复
+hotfix/security-vulnerability   # 安全漏洞紧急修复
+release/v1.0.0                  # 版本发布
 ```
 
 ### Branch Protection Rules
 
-**master branch:**
-- No direct pushes allowed
-- Must merge via Pull Request
-- Must pass CI checks
-- Requires at least one Code Review approval
+**master 分支：**
+- 禁止直接 push
+- 必须通过 Pull Request 合并
+- 必须通过 CI 检查
+- 至少需要一名 reviewer 批准
 
-**develop branch:**
-- Direct pushes restricted
-- Pull Request merges recommended
-- Must pass CI checks
+**develop 分支：**
+- 限制直接 push
+- 推荐通过 Pull Request 合并
+- 必须通过 CI 检查
 
-For detailed branch strategies and workflows, see `references/branching-strategies.md`.
+详细分支策略见 `references/branching-strategies.md`。
 
 ## Workflows
 
 ### Daily Development Workflow
 
 ```bash
-# 1. Sync latest code
+# 1. 同步最新代码
 git checkout develop
 git pull origin develop
 
-# 2. Create feature branch
+# 2. 创建 feature branch
 git checkout -b feature/user-management
 
-# 3. Develop and commit
+# 3. 开发并提交
 git add .
 git commit -m "feat(user): add user list page"
 
-# 4. Push to remote
+# 4. 推送到远端
 git push -u origin feature/user-management
 
-# 5. Create Pull Request and request Code Review
+# 5. 创建 Pull Request 并请求 Code Review
 
-# 6. Merge to develop (via PR)
+# 6. 通过 PR 合并到 develop
 
-# 7. Delete feature branch
+# 7. 删除 feature branch
 git branch -d feature/user-management
 git push origin -d feature/user-management
 ```
@@ -109,22 +109,22 @@ git push origin -d feature/user-management
 ### Hotfix Workflow
 
 ```bash
-# 1. Create fix branch from master
+# 1. 从 master 创建修复分支
 git checkout master
 git pull origin master
 git checkout -b hotfix/critical-bug
 
-# 2. Fix and commit
+# 2. 修复并提交
 git add .
 git commit -m "fix(auth): fix authentication bypass vulnerability"
 
-# 3. Merge to master
+# 3. 合并到 master
 git checkout master
 git merge --no-ff hotfix/critical-bug
 git tag -a v1.0.1 -m "hotfix: fix authentication bypass vulnerability"
 git push origin master --tags
 
-# 4. Sync to develop
+# 4. 回同步到 develop
 git checkout develop
 git merge --no-ff hotfix/critical-bug
 git push origin develop
@@ -133,23 +133,23 @@ git push origin develop
 ### Release Workflow
 
 ```bash
-# 1. Create release branch
+# 1. 创建 release branch
 git checkout develop
 git checkout -b release/v1.0.0
 
-# 2. Update version numbers and documentation
+# 2. 更新版本号和文档
 
-# 3. Commit version update
+# 3. 提交版本更新
 git add .
 git commit -m "chore(release): prepare release v1.0.0"
 
-# 4. Merge to master
+# 4. 合并到 master
 git checkout master
 git merge --no-ff release/v1.0.0
 git tag -a v1.0.0 -m "release: v1.0.0 official release"
 git push origin master --tags
 
-# 5. Sync to develop
+# 5. 回同步到 develop
 git checkout develop
 git merge --no-ff release/v1.0.0
 git push origin develop
@@ -161,39 +161,39 @@ git push origin develop
 
 | Feature | Merge | Rebase |
 | :--- | :--- | :--- |
-| History | Preserves complete history | Linear history |
-| Use case | Public branches | Private branches |
-| Recommended for | Merging to main branch | Syncing upstream code |
+| History | 保留完整历史 | 线性历史 |
+| Use case | 公共分支 | 私有分支 |
+| Recommended for | 合并到主分支 | 同步上游代码 |
 
 ### Recommendations
 
-- **Feature branch syncing develop**: Use `rebase`
-- **Feature branch merging to develop**: Use `merge --no-ff`
-- **develop merging to master**: Use `merge --no-ff`
+- **Feature branch 同步 develop**：使用 `rebase`
+- **Feature branch 合并到 develop**：使用 `merge --no-ff`
+- **develop 合并到 master**：使用 `merge --no-ff`
 
 ```bash
-# ✅ Recommended: Feature branch syncing develop
+# ✅ 推荐：feature branch 同步 develop
 git checkout feature/user-management
 git rebase develop
 
-# ✅ Recommended: Merge feature branch to develop
+# ✅ 推荐：feature branch 合并到 develop
 git checkout develop
 git merge --no-ff feature/user-management
 
-# ❌ Not recommended: Rebase on public branch
+# ❌ 不推荐：在公共分支上 rebase
 git checkout develop
-git rebase feature/xxx  # Dangerous operation
+git rebase feature/xxx  # 危险操作
 ```
 
-**Project convention**: Use `--no-ff` when merging feature branches to preserve branch history.
+**项目约定：** feature branch 合并时统一使用 `--no-ff`，保留分支历史。
 
-For detailed merge strategies and techniques, see `references/merge-strategies.md`.
+详细 merge 策略见 `references/merge-strategies.md`。
 
 ## Conflict Resolution
 
 ### Identifying Conflicts
 
-```
+```text
 <<<<<<< HEAD
 // Current branch code
 const name = 'Alice'
@@ -206,67 +206,67 @@ const name = 'Bob'
 ### Resolving Conflicts
 
 ```bash
-# 1. View conflicting files
+# 1. 查看冲突文件
 git status
 
-# 2. Manually edit files to resolve conflicts
+# 2. 手工编辑文件解决冲突
 
-# 3. Mark as resolved
+# 3. 标记为已解决
 git add <file>
 
-# 4. Complete the merge
-git commit  # merge conflict
-# or
-git rebase --continue  # rebase conflict
+# 4. 完成 merge / rebase
+git commit
+# 或
+git rebase --continue
 ```
 
 ### Conflict Resolution Strategies
 
 ```bash
-# Keep current branch version
+# 保留当前分支版本
 git checkout --ours <file>
 
-# Keep incoming branch version
+# 保留传入分支版本
 git checkout --theirs <file>
 
-# Abort merge
+# 中止 merge / rebase
 git merge --abort
 git rebase --abort
 ```
 
 ### Preventing Conflicts
 
-1. **Sync code regularly** - Pull latest code before starting work each day
-2. **Small commits** - Commit small changes frequently
-3. **Modular features** - Implement different features in different files
-4. **Communication** - Avoid modifying the same file simultaneously
+1. **定期同步代码** - 每天开工前先拉最新代码
+2. **小步提交** - 经常提交小改动
+3. **模块化开发** - 不同功能尽量落在不同文件
+4. **主动沟通** - 避免多人同时改同一文件
 
-For detailed conflict handling and advanced techniques, see `references/conflict-resolution.md`.
+更详细的冲突处理见 `references/conflict-resolution.md`。
 
 ## .gitignore Standards
 
 ### Basic Rules
 
-```
-# Ignore all .log files
+```text
+# 忽略所有 .log 文件
 *.log
 
-# Ignore directories
+# 忽略目录
 node_modules/
 
-# Ignore directory at root
+# 忽略根目录下的目录
 /temp/
 
-# Ignore files in all directories
+# 忽略所有目录中的文件
 **/.env
 
-# Don't ignore specific files
+# 不忽略特定文件
 !.gitkeep
 ```
 
 ### Common .gitignore
 
-```
+```text
 node_modules/
 dist/
 build/
@@ -280,37 +280,37 @@ logs/
 Thumbs.db
 ```
 
-For detailed .gitignore patterns and project-specific configurations, see `references/gitignore-guide.md`.
+更细的模式说明见 `references/gitignore-guide.md`。
 
 ## Tag Management
 
-Uses **Semantic Versioning**:
+使用 **Semantic Versioning**：
 
-```
+```text
 MAJOR.MINOR.PATCH[-PRERELEASE]
 ```
 
 ### Version Change Rules
 
-- **MAJOR**: Incompatible API changes (v1.0.0 → v2.0.0)
-- **MINOR**: Backward-compatible new features (v1.0.0 → v1.1.0)
-- **PATCH**: Backward-compatible bug fixes (v1.0.0 → v1.0.1)
+- **MAJOR**：不兼容 API 变更（`v1.0.0 → v2.0.0`）
+- **MINOR**：向后兼容的新功能（`v1.0.0 → v1.1.0`）
+- **PATCH**：向后兼容的 bug 修复（`v1.0.0 → v1.0.1`）
 
 ### Tag Operations
 
 ```bash
-# Create annotated tag (recommended)
+# 创建 annotated tag（推荐）
 git tag -a v1.0.0 -m "release: v1.0.0 official release"
 
-# Push tags
+# 推送 tag
 git push origin v1.0.0
 git push origin --tags
 
-# View tags
+# 查看 tag
 git tag
 git show v1.0.0
 
-# Delete tag
+# 删除 tag
 git tag -d v1.0.0
 git push origin :refs/tags/v1.0.0
 ```
@@ -319,11 +319,11 @@ git push origin :refs/tags/v1.0.0
 
 ### Pull Request Standards
 
-PRs should include:
+PR 应包含：
 
 ```markdown
 ## Change Description
-<!-- Describe the content and purpose of this change -->
+<!-- 描述本次变更的内容与目的 -->
 
 ## Change Type
 - [ ] New feature (feat)
@@ -331,7 +331,7 @@ PRs should include:
 - [ ] Code refactoring (refactor)
 
 ## Testing Method
-<!-- Describe how to test -->
+<!-- 说明如何验证 -->
 
 ## Related Issue
 Closes #xxx
@@ -343,35 +343,35 @@ Closes #xxx
 
 ### Code Review Standards
 
-Review focus areas:
-- **Code quality**: Clear and readable, proper naming, no duplicate code
-- **Logic correctness**: Business logic correct, edge cases handled
-- **Security**: No security vulnerabilities, sensitive information protected
-- **Performance**: No obvious performance issues, resources properly released
+Review 重点关注：
+- **Code quality**：清晰可读、命名合理、无重复代码
+- **Logic correctness**：业务逻辑正确，边界情况有处理
+- **Security**：无明显安全漏洞，敏感信息受保护
+- **Performance**：无明显性能问题，资源释放合理
 
-For detailed collaboration standards and best practices, see `references/collaboration.md`.
+详细协作规范见 `references/collaboration.md`。
 
-## Common Issues
+## 常见问题
 
 ### Amending the Last Commit
 
 ```bash
-# Amend commit content (not yet pushed)
+# 修改最近一次提交内容（尚未 push）
 git add forgotten-file.ts
 git commit --amend --no-edit
 
-# Amend commit message
+# 修改最近一次提交说明
 git commit --amend -m "new commit message"
 ```
 
 ### Push Rejected
 
 ```bash
-# Pull then push
+# 先拉再推
 git pull origin master
 git push origin master
 
-# Use rebase for cleaner history
+# 想要更整洁历史时可用 rebase
 git pull --rebase origin master
 git push origin master
 ```
@@ -379,10 +379,10 @@ git push origin master
 ### Rollback to Previous Version
 
 ```bash
-# Reset to specific commit (discards subsequent commits)
+# 重置到指定 commit（丢弃其后提交）
 git reset --hard abc123
 
-# Create reverse commit (recommended, preserves history)
+# 创建反向提交（推荐，保留历史）
 git revert abc123
 ```
 
@@ -397,81 +397,81 @@ git stash pop
 ### View File Modification History
 
 ```bash
-git log -- <file>             # Commit history
-git log -p -- <file>          # Detailed content
-git blame <file>              # Per-line author
+git log -- <file>
+git log -p -- <file>
+git blame <file>
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
 ### Commit Standards
 
-✅ **Recommended**:
-- Follow Conventional Commits specification
-- Write clear commit messages describing changes
-- One commit for one logical change
-- Run code checks before committing
+✅ **建议：**
+- 遵循 Conventional Commits
+- commit message 清楚描述改动
+- 一个 commit 只做一类逻辑改动
+- 提交前先跑代码检查
 
-❌ **Prohibited**:
-- Vague commit messages
-- Multiple unrelated changes in one commit
-- Committing sensitive information (passwords, keys)
-- Developing directly on main branch
+❌ **禁止：**
+- 模糊的 commit message
+- 一个 commit 混入多个无关修改
+- 提交敏感信息（密码、key）
+- 直接在主分支开发
 
 ### Branch Management
 
-✅ **Recommended**:
-- Use feature branches for development
-- Regularly sync main branch code
-- Delete branches promptly after feature completion
-- Use `--no-ff` merge to preserve history
+✅ **建议：**
+- 使用 feature branch 开发
+- 定期同步主线代码
+- 功能完成后及时删分支
+- 用 `--no-ff` 保留历史
 
-❌ **Prohibited**:
-- Developing directly on main branch
-- Long-lived unmerged feature branches
-- Non-standard branch naming
-- Rebasing on public branches
+❌ **禁止：**
+- 直接在主分支开发
+- 长期不合并的功能分支
+- 不规范的分支命名
+- 在公共分支上 rebase
 
 ### Code Review
 
-✅ **Recommended**:
-- All code goes through Pull Requests
-- At least one reviewer approval before merging
-- Provide constructive feedback
+✅ **建议：**
+- 所有代码都通过 Pull Request
+- 至少一名 reviewer 批准后再合并
+- 提供具体、建设性的 review feedback
 
-❌ **Prohibited**:
-- Merging without review
-- Reviewing your own code
+❌ **禁止：**
+- 无 review 直接合并
+- 自己 review 自己的代码
 
 ## Additional Resources
 
 ### Reference Files
 
-For detailed guidance on specific topics:
+更详细的专题指南见：
 
-- **`references/commit-conventions.md`** - Commit message detailed conventions and examples
-- **`references/branching-strategies.md`** - Comprehensive branch management strategies
-- **`references/merge-strategies.md`** - Merge, rebase, and conflict resolution strategies
-- **`references/conflict-resolution.md`** - Detailed conflict handling and prevention
-- **`references/advanced-usage.md`** - Git performance optimization, security, submodules, and advanced techniques
-- **`references/collaboration.md`** - Pull request and code review guidelines
-- **`references/gitignore-guide.md`** - .gitignore patterns and project-specific configurations
+- **`references/commit-conventions.md`** - commit message 规范与示例
+- **`references/branching-strategies.md`** - 完整 branch 管理策略
+- **`references/merge-strategies.md`** - merge、rebase 与冲突处理
+- **`references/conflict-resolution.md`** - 冲突处理与预防细则
+- **`references/advanced-usage.md`** - Git 性能优化、安全、submodule 与高级技巧
+- **`references/collaboration.md`** - Pull Request 和 code review 指南
+- **`references/gitignore-guide.md`** - `.gitignore` 模式与项目配置
 
 ### Example Files
 
-Working examples in `examples/`:
-- **`examples/commit-messages.txt`** - Good commit message examples
-- **`examples/workflow-commands.sh`** - Common workflow command snippets
+`examples/` 中的可运行示例：
+- **`examples/commit-messages.txt`** - 优质 commit message 示例
+- **`examples/workflow-commands.sh`** - 常用 workflow 命令片段
 
 ## Summary
 
-This document defines the project's Git standards:
+本文定义了项目的 Git 标准：
 
-1. **Commit Messages** - Follow Conventional Commits specification
-2. **Branch Management** - master/develop/feature/bugfix/hotfix/release branch strategy
-3. **Workflows** - Standard processes for daily development, hotfixes, and releases
-4. **Merge Strategy** - Use rebase to sync feature branches, merge --no-ff to merge
-5. **Tag Management** - Semantic versioning, annotated tags
-6. **Conflict Resolution** - Regular syncing, small commits, team communication
+1. **Commit Messages** - 遵循 Conventional Commits
+2. **Branch Management** - 使用 master / develop / feature / bugfix / hotfix / release 策略
+3. **Workflows** - 覆盖日常开发、hotfix 与 release
+4. **Merge Strategy** - feature 同步用 rebase，合并用 `merge --no-ff`
+5. **Tag Management** - Semantic Versioning + annotated tag
+6. **Conflict Resolution** - 定期同步、小步提交、团队沟通
 
-Following these standards improves collaboration efficiency, ensures code quality, and simplifies version management.
+遵循这些标准可以提升协作效率、保证代码质量，并简化版本管理。

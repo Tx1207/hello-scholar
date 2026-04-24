@@ -1,96 +1,75 @@
-# Plugin Manifest Reference
+# Plugin Manifest 参考
 
-Complete reference for `plugin.json` configuration.
+`plugin.json` 配置的完整参考说明。
 
-## File Location
+## 文件位置
 
-**Required path**: `.claude-plugin/plugin.json`
+**必须路径**：`.claude-plugin/plugin.json`
 
-> **Scope note**: This reference describes the Claude Code plugin manifest layout, not a Codex-native manifest system.
+> **范围说明**：这里描述的是 Claude Code 插件 manifest 结构，不是 Codex 原生 manifest。
 
-The manifest MUST be in the `.claude-plugin/` directory at the plugin root. Claude Code will not recognize plugins without this file in the correct location.
+manifest 必须位于插件根目录下的 `.claude-plugin/` 中；放错位置时，Claude Code 不会识别这个插件。
 
-## Complete Field Reference
+## 完整字段参考
 
-### Core Fields
+### 核心字段
 
-#### name (required)
+#### name（必填）
 
-**Type**: String
-**Format**: kebab-case
-**Example**: `"test-automation-suite"`
+**类型**：String  
+**格式**：kebab-case  
+**示例**：`"test-automation-suite"`
 
-The unique identifier for the plugin. Used for:
-- Plugin identification in Claude Code
-- Conflict detection with other plugins
-- Command namespacing (optional)
+这是插件的唯一标识，用于：
+- Claude Code 中的插件识别
+- 与其他插件的冲突检测
+- 命令命名空间（可选）
 
-**Requirements**:
-- Must be unique across all installed plugins
-- Use only lowercase letters, numbers, and hyphens
-- No spaces or special characters
-- Start with a letter
-- End with a letter or number
+**要求：**
+- 在所有已安装插件中必须唯一
+- 只能使用小写字母、数字和连字符
+- 不能包含空格或特殊字符
+- 必须字母开头
+- 必须以字母或数字结尾
 
-**Validation**:
+**校验规则：**
 ```javascript
 /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/
 ```
 
-**Examples**:
-- ✅ Good: `api-tester`, `code-review`, `git-workflow-automation`
-- ❌ Bad: `API Tester`, `code_review`, `-git-workflow`, `test-`
-
 #### version
 
-**Type**: String
-**Format**: Semantic versioning (MAJOR.MINOR.PATCH)
-**Example**: `"2.1.0"`
-**Default**: `"0.1.0"` if not specified
+**类型**：String  
+**格式**：Semantic versioning（MAJOR.MINOR.PATCH）  
+**默认值**：未指定时为 `"0.1.0"`
 
-Semantic versioning guidelines:
-- **MAJOR**: Incompatible API changes, breaking changes
-- **MINOR**: New functionality, backward-compatible
-- **PATCH**: Bug fixes, backward-compatible
+语义化版本含义：
+- **MAJOR**：不兼容变更
+- **MINOR**：向后兼容的新功能
+- **PATCH**：向后兼容的 bug 修复
 
-**Pre-release versions**:
-- `"1.0.0-alpha.1"` - Alpha release
-- `"1.0.0-beta.2"` - Beta release
-- `"1.0.0-rc.1"` - Release candidate
-
-**Examples**:
-- `"0.1.0"` - Initial development
-- `"1.0.0"` - First stable release
-- `"1.2.3"` - Patch update to 1.2
-- `"2.0.0"` - Major version with breaking changes
+也支持 `alpha`、`beta`、`rc` 这类预发布版本。
 
 #### description
 
-**Type**: String
-**Length**: 50-200 characters recommended
-**Example**: `"Automates code review workflows with style checks and automated feedback"`
+**类型**：String  
+**建议长度**：50-200 字符
 
-Brief explanation of plugin purpose and functionality.
+用于简要说明插件用途和能力。
 
-**Best practices**:
-- Focus on what the plugin does, not how
-- Use active voice
-- Mention key features or benefits
-- Keep under 200 characters for marketplace display
+**建议：**
+- 重点写“做什么”，不是“怎么做”
+- 尽量使用主动语态
+- 提到关键能力或收益
+- 控制在 marketplace 易读长度内
 
-**Examples**:
-- ✅ "Generates comprehensive test suites from code analysis and coverage reports"
-- ✅ "Integrates with Jira for automatic issue tracking and sprint management"
-- ❌ "A plugin that helps you do testing stuff"
-- ❌ "This is a very long description that goes on and on about every single feature..."
-
-### Metadata Fields
+### 元数据字段
 
 #### author
 
-**Type**: Object
-**Fields**: name (required), email (optional), url (optional)
+**类型**：Object 或 String
 
+对象格式：
 ```json
 {
   "author": {
@@ -101,358 +80,180 @@ Brief explanation of plugin purpose and functionality.
 }
 ```
 
-**Alternative format** (string only):
-```json
-{
-  "author": "Jane Developer <jane@example.com> (https://janedeveloper.com)"
-}
-```
-
-**Use cases**:
-- Credit and attribution
-- Contact for support or questions
-- Marketplace display
-- Community recognition
+用于署名、支持联系方式和 marketplace 展示。
 
 #### homepage
 
-**Type**: String (URL)
-**Example**: `"https://docs.example.com/plugins/my-plugin"`
+**类型**：URL 字符串
 
-Link to plugin documentation or landing page.
-
-**Should point to**:
-- Plugin documentation site
-- Project homepage
-- Detailed usage guide
-- Installation instructions
-
-**Not for**:
-- Source code (use `repository` field)
-- Issue tracker (include in documentation)
-- Personal websites (use `author.url`)
+应指向：
+- 插件文档站
+- 项目主页
+- 详细使用指南
+- 安装说明
 
 #### repository
 
-**Type**: String (URL) or Object
-**Example**: `"https://github.com/user/plugin-name"`
+**类型**：URL 字符串或对象
 
-Source code repository location.
-
-**String format**:
-```json
-{
-  "repository": "https://github.com/user/plugin-name"
-}
-```
-
-**Object format** (detailed):
-```json
-{
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/user/plugin-name.git",
-    "directory": "packages/plugin-name"
-  }
-}
-```
-
-**Use cases**:
-- Source code access
-- Issue reporting
-- Community contributions
-- Transparency and trust
+可以写简单 URL，也可以写带 `type`、`url`、`directory` 的对象形式，用于源码仓库定位和社区协作。
 
 #### license
 
-**Type**: String
-**Format**: SPDX identifier
-**Example**: `"MIT"`
+**类型**：String  
+**格式**：SPDX identifier
 
-Software license identifier.
-
-**Common licenses**:
-- `"MIT"` - Permissive, popular choice
-- `"Apache-2.0"` - Permissive with patent grant
-- `"GPL-3.0"` - Copyleft
-- `"BSD-3-Clause"` - Permissive
-- `"ISC"` - Permissive, similar to MIT
-- `"UNLICENSED"` - Proprietary, not open source
-
-**Full list**: https://spdx.org/licenses/
-
-**Multiple licenses**:
-```json
-{
-  "license": "(MIT OR Apache-2.0)"
-}
-```
+常见值包括：
+- `"MIT"`
+- `"Apache-2.0"`
+- `"GPL-3.0"`
+- `"BSD-3-Clause"`
+- `"ISC"`
+- `"UNLICENSED"`
 
 #### keywords
 
-**Type**: Array of strings
-**Example**: `["testing", "automation", "ci-cd", "quality-assurance"]`
+**类型**：字符串数组
 
-Tags for plugin discovery and categorization.
+用于插件发现和分类。
 
-**Best practices**:
-- Use 5-10 keywords
-- Include functionality categories
-- Add technology names
-- Use common search terms
-- Avoid duplicating plugin name
+**建议：**
+- 使用 5-10 个关键词
+- 包含功能类别、技术栈和工作流关键词
+- 不要只重复插件名
 
-**Categories to consider**:
-- Functionality: `testing`, `debugging`, `documentation`, `deployment`
-- Technologies: `typescript`, `python`, `docker`, `aws`
-- Workflows: `ci-cd`, `code-review`, `git-workflow`
-- Domains: `web-development`, `data-science`, `devops`
-
-### Component Path Fields
+### 组件路径字段
 
 #### commands
 
-**Type**: String or Array of strings
-**Default**: `["./commands"]`
-**Example**: `"./cli-commands"`
+**类型**：String 或字符串数组  
+**默认值**：`["./commands"]`
 
-Additional directories or files containing command definitions.
+表示 command 定义所在的额外目录或文件路径。
 
-**Single path**:
-```json
-{
-  "commands": "./custom-commands"
-}
-```
-
-**Multiple paths**:
 ```json
 {
   "commands": [
     "./commands",
-    "./admin-commands",
-    "./experimental-commands"
+    "./admin-commands"
   ]
 }
 ```
 
-**Behavior**: Supplements default `commands/` directory (does not replace)
-
-**Use cases**:
-- Organizing commands by category
-- Separating stable from experimental commands
-- Loading commands from shared locations
+适合按类别组织 commands、拆分稳定与实验命令等场景。
 
 #### agents
 
-**Type**: String or Array of strings
-**Default**: `["./agents"]`
-**Example**: `"./specialized-agents"`
+**类型**：String 或字符串数组  
+**默认值**：`["./agents"]`
 
-Additional directories or files containing agent definitions.
-
-**Format**: Same as `commands` field
-
-**Use cases**:
-- Grouping agents by specialization
-- Separating general-purpose from task-specific agents
-- Loading agents from plugin dependencies
+格式与 `commands` 相同，用于声明额外 agent 路径。
 
 #### hooks
 
-**Type**: String (path to JSON file) or Object (inline configuration)
-**Default**: `"./hooks/hooks.json"`
+**类型**：JSON 文件路径字符串，或内联对象  
+**默认值**：`"./hooks/hooks.json"`
 
-Hook configuration location or inline definition.
-
-**File path**:
-```json
-{
-  "hooks": "./config/hooks.json"
-}
-```
-
-**Inline configuration**:
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh",
-            "timeout": 30
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Use cases**:
-- Simple plugins: Inline configuration (< 50 lines)
-- Complex plugins: External JSON file
-- Multiple hook sets: Separate files for different contexts
+简单插件可内联配置，复杂插件建议放单独文件。
 
 #### mcpServers
 
-**Type**: String (path to JSON file) or Object (inline configuration)
-**Default**: `./.mcp.json`
+**类型**：JSON 文件路径字符串，或内联对象  
+**默认值**：`"./.mcp.json"`
 
-MCP server configuration location or inline definition.
+单个简单 server 可内联，多个 MCP servers 建议使用外部 `.mcp.json`。
 
-**File path**:
-```json
-{
-  "mcpServers": "./.mcp.json"
-}
-```
+## 路径解析规则
 
-**Inline configuration**:
-```json
-{
-  "mcpServers": {
-    "github": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/servers/github-mcp.js"],
-      "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      }
-    }
-  }
-}
-```
+所有组件路径都应满足：
 
-**Use cases**:
-- Simple plugins: Single inline server (< 20 lines)
-- Complex plugins: External `.mcp.json` file
-- Multiple servers: Always use external file
+1. 必须是相对路径
+2. 必须以 `./` 开头
+3. 不允许使用 `../`
+4. 即使在 Windows 也统一使用正斜杠 `/`
 
-## Path Resolution
-
-### Relative Path Rules
-
-All paths in component fields must follow these rules:
-
-1. **Must be relative**: No absolute paths
-2. **Must start with `./`**: Indicates relative to plugin root
-3. **Cannot use `../`**: No parent directory navigation
-4. **Forward slashes only**: Even on Windows
-
-**Examples**:
+**示例：**
 - ✅ `"./commands"`
 - ✅ `"./src/commands"`
-- ✅ `"./configs/hooks.json"`
 - ❌ `"/Users/name/plugin/commands"`
-- ❌ `"commands"` (missing `./`)
+- ❌ `"commands"`
 - ❌ `"../shared/commands"`
-- ❌ `".\\commands"` (backslash)
+- ❌ `".\\commands"`
 
-### Resolution Order
+## 加载顺序
 
-When Claude Code loads components:
+Claude Code 加载组件时：
 
-1. **Default directories**: Scans standard locations first
-   - `./commands/`
-   - `./agents/`
-   - `./skills/`
-   - `./hooks/hooks.json`
-   - `./.mcp.json`
+1. 先扫描默认目录
+2. 再扫描 manifest 中声明的自定义路径
+3. 最后合并所有发现到的组件
 
-2. **Custom paths**: Scans paths specified in manifest
-   - Paths from `commands` field
-   - Paths from `agents` field
-   - Files from `hooks` and `mcpServers` fields
+**注意：**
+- 不会覆盖已有组件
+- 所有已发现组件都会注册
+- 同名冲突会报错
 
-3. **Merge behavior**: Components from all locations load
-   - No overwriting
-   - All discovered components register
-   - Name conflicts cause errors
+## 校验
 
-## Validation
+### Manifest 校验内容
 
-### Manifest Validation
+加载插件时，Claude Code 会检查：
+- JSON 语法是否正确
+- 字段类型是否正确
+- `name` 是否存在且格式合法
+- `version` 是否符合语义化版本
+- 路径是否为带 `./` 的相对路径
+- URL 是否有效
+- 引用路径是否存在
+- hook / MCP 配置是否合法
 
-Claude Code validates the manifest on plugin load:
+### 常见错误
 
-**Syntax validation**:
-- Valid JSON format
-- No syntax errors
-- Correct field types
-
-**Field validation**:
-- `name` field present and valid format
-- `version` follows semantic versioning (if present)
-- Paths are relative with `./` prefix
-- URLs are valid (if present)
-
-**Component validation**:
-- Referenced paths exist
-- Hook and MCP configurations are valid
-- No circular dependencies
-
-### Common Validation Errors
-
-**Invalid name format**:
+**name 格式错误：**
 ```json
 {
-  "name": "My Plugin"  // ❌ Contains spaces
-}
-```
-Fix: Use kebab-case
-```json
-{
-  "name": "my-plugin"  // ✅
+  "name": "My Plugin"
 }
 ```
 
-**Absolute path**:
+应改为：
 ```json
 {
-  "commands": "/Users/name/commands"  // ❌ Absolute path
-}
-```
-Fix: Use relative path
-```json
-{
-  "commands": "./commands"  // ✅
+  "name": "my-plugin"
 }
 ```
 
-**Missing ./ prefix**:
+**使用绝对路径：**
 ```json
 {
-  "hooks": "hooks/hooks.json"  // ❌ No ./
-}
-```
-Fix: Add ./ prefix
-```json
-{
-  "hooks": "./hooks/hooks.json"  // ✅
+  "commands": "/Users/name/commands"
 }
 ```
 
-**Invalid version**:
+应改为：
 ```json
 {
-  "version": "1.0"  // ❌ Not semantic versioning
-}
-```
-Fix: Use MAJOR.MINOR.PATCH
-```json
-{
-  "version": "1.0.0"  // ✅
+  "commands": "./commands"
 }
 ```
 
-## Minimal vs. Complete Examples
+**缺少 `./` 前缀：**
+```json
+{
+  "hooks": "hooks/hooks.json"
+}
+```
 
-### Minimal Plugin
+应改为：
+```json
+{
+  "hooks": "./hooks/hooks.json"
+}
+```
 
-Bare minimum for a working plugin:
+## 示例层级
+
+### 最小插件
 
 ```json
 {
@@ -460,17 +261,13 @@ Bare minimum for a working plugin:
 }
 ```
 
-Relies entirely on default directory discovery.
-
-### Recommended Plugin
-
-Good metadata for distribution:
+### 推荐插件
 
 ```json
 {
   "name": "code-review-assistant",
   "version": "1.0.0",
-  "description": "Automates code review with style checks and suggestions",
+  "description": "自动化代码审查，并提供风格检查和修改建议",
   "author": {
     "name": "Jane Developer",
     "email": "jane@example.com"
@@ -482,15 +279,13 @@ Good metadata for distribution:
 }
 ```
 
-### Complete Plugin
-
-Full configuration with all features:
+### 完整插件
 
 ```json
 {
   "name": "enterprise-devops",
   "version": "2.3.1",
-  "description": "Comprehensive DevOps automation for enterprise CI/CD pipelines",
+  "description": "面向企业 CI/CD pipelines 的综合 DevOps 自动化插件",
   "author": {
     "name": "DevOps Team",
     "email": "devops@company.com",
@@ -502,53 +297,43 @@ Full configuration with all features:
     "url": "https://github.com/company/devops-plugin.git"
   },
   "license": "Apache-2.0",
-  "keywords": [
-    "devops",
-    "ci-cd",
-    "automation",
-    "kubernetes",
-    "docker",
-    "deployment"
-  ],
-  "commands": [
-    "./commands",
-    "./admin-commands"
-  ],
+  "keywords": ["devops", "ci-cd", "automation", "kubernetes", "docker", "deployment"],
+  "commands": ["./commands", "./admin-commands"],
   "agents": "./specialized-agents",
   "hooks": "./config/hooks.json",
   "mcpServers": "./.mcp.json"
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Metadata
+### 元数据
 
-1. **Always include version**: Track changes and updates
-2. **Write clear descriptions**: Help users understand plugin purpose
-3. **Provide contact information**: Enable user support
-4. **Link to documentation**: Reduce support burden
-5. **Choose appropriate license**: Match project goals
+1. 始终写 `version`
+2. `description` 要清楚说明用途
+3. 提供联系方式，便于支持
+4. 链接到文档，减少重复答疑
+5. 选择符合项目目标的 license
 
 ### Paths
 
-1. **Use defaults when possible**: Minimize configuration
-2. **Organize logically**: Group related components
-3. **Document custom paths**: Explain why non-standard layout used
-4. **Test path resolution**: Verify on multiple systems
+1. 能用默认路径就别额外配置
+2. 按逻辑组织组件
+3. 使用非标准布局时要写清楚原因
+4. 在不同系统上测试路径解析
 
 ### Maintenance
 
-1. **Bump version on changes**: Follow semantic versioning
-2. **Update keywords**: Reflect new functionality
-3. **Keep description current**: Match actual capabilities
-4. **Maintain changelog**: Track version history
-5. **Update repository links**: Keep URLs current
+1. 变更后同步升级版本号
+2. 新功能上线后更新 keywords
+3. 保持 description 与真实能力一致
+4. 维护 changelog
+5. 仓库和文档链接要保持可用
 
 ### Distribution
 
-1. **Complete metadata before publishing**: All fields filled
-2. **Test on clean install**: Verify plugin works without dev environment
-3. **Validate manifest**: Use validation tools
-4. **Include README**: Document installation and usage
-5. **Specify license file**: Include LICENSE file in plugin root
+1. 发布前补齐 metadata
+2. 在干净环境中验证安装
+3. 先做 manifest 校验
+4. 提供 README 说明安装与用法
+5. 在插件根目录附上 LICENSE 文件

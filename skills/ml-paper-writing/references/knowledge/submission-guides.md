@@ -1,326 +1,170 @@
-# Submission Guides and Venue Requirements
+# 投稿指南与会议要求
 
-This file contains venue-specific submission requirements, formatting guidelines, and checklist items extracted from ML conference and journal publications.
+本文档整理 venue-specific submission requirements、格式规范和 checklist 要点。
 
----
+## NeurIPS
 
-## NeurIPS Requirements
+常见要求：
 
-### Format Requirements
-**Source:** NeurIPS 2025 Conference Guidelines
+- Main paper：9 pages（references 不计）
+- Appendix 允许，但 reviewer 不一定看
+- 必须有 checklist
+- 接收后通常还需要 lay summary
+- double-blind
+- 使用官方 LaTeX template
 
-**Page Limits:**
-- Main paper: 9 pages (excluding references)
-- References: Unlimited (don't count toward page limit)
-- Appendices: Allowed but reviewers not required to read
+投稿前重点核查：
 
-**Required Sections:**
-- Abstract: 150-250 words
-- Introduction: Must clearly state contribution
-- Methods: Sufficient for reproduction
-- Experiments: Comprehensive evaluation
-- Discussion: Interpret results and limitations
-- References: Complete citations
-- **Checklist**: Mandatory submission checklist (16 items)
-- **Lay Summary**: Required for accepted papers (1 page, non-technical)
+- abstract 是否在字数限制内
+- paper 是否匿名
+- figures / tables 是否清晰
+- code / data availability 是否说明
+- equations 和 citations 是否完整
+- limitations / ethics 是否已覆盖
 
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- LaTeX template required
-- 9pt font, two-column format
-- Margins: 1 inch on all sides
+## ICML
 
-**Submission Checklist Items:**
-1. Do the main claims of the paper match the checklist?
-2. Have you checked the checklist for missing items?
-3. Is the paper anonymized?
-4. Are all figures/tables clear and readable?
-5. Have you included code and data availability statements?
-6. Are all equations properly formatted?
-7. Is the abstract within word limit?
-8. Are all citations complete and correct?
-9. Have you addressed potential ethical concerns?
-10. Are experimental settings clearly described?
-11. Is statistical significance properly reported?
-12. Have you included limitations?
-13. Is the broader impact discussed (if required)?
-14. Are all figures referenced in text?
-15. Is the supplementary material well-organized?
-16. Have you proofread for typos and grammar?
+常见要求：
 
----
+- Main paper：8 pages
+- camera-ready 常允许 +1 page
+- references 不计页数
+- 需要 Broader Impact Statement
+- double-blind
+- 官方 template
 
-## ICML Requirements
+Broader Impact 应覆盖：
 
-### Format Requirements
-**Source:** ICML 2026 Conference Guidelines
+- 正向社会影响
+- 负向社会影响
+- bias / fairness
+- environmental impact
 
-**Page Limits:**
-- Main paper: 8 pages
-- Camera-ready: +1 page (9 total)
-- References: Unlimited (don't count toward page limit)
+## ICLR
 
-**Required Sections:**
-- Abstract: Clear summary of contribution
-- Introduction: Problem and contribution
-- Methods: Complete description
-- Experiments: Thorough evaluation
-- **Broader Impact Statement**: Required (after conclusion)
-- References: Complete citations
+常见要求：
 
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- LaTeX template required
-- Two-column format
-- Margins as per template
+- Main paper：9 pages
+- references 不计页数
+- 必须有 Limitations section
+- 若使用 LLM，需要做 LLM disclosure
+- double-blind
 
-**Broader Impact Statement:**
-- Discuss positive and negative societal impacts
-- Consider biases, fairness, environmental impact
-- 1 page maximum
-- Required for all submissions
+LLM disclosure 常应说明：
 
----
+- LLM 在论文中的用途
+- 模型信息
+- 相关限制
+- 是否使用自动文本生成
 
-## ICLR Requirements
+## ACL
 
-### Format Requirements
-**Source:** ICLR 2026 Conference Guidelines
+常见要求：
 
-**Page Limits:**
-- Main paper: 9 pages
-- Camera-ready: +1 page (10 total)
-- References: Unlimited (don't count toward page limit)
+- 长文通常 8 pages
+- references 不计页数
+- 必须有 Limitations section
+- 如适用需有 Ethics Statement
+- double-blind
+- 使用 ACL style files
 
-**Required Sections:**
-- Abstract: Summary of contribution
-- Introduction: Clear problem statement
-- Methods: Reproducible description
-- Experiments: Comprehensive evaluation
-- **Limitations Section**: MANDATORY
-- **LLM Disclosure**: Required if using LLMs
-- References: Complete citations
+需要特别关注：
 
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- LaTeX template required
-- Two-column format
+- human subjects 是否有 IRB
+- data privacy 和 consent
+- environmental impact
 
-**LLM Disclosure Requirements:**
-- Describe LLM use in the paper
-- Include model details (architecture, training data, compute)
-- Acknowledge LLM limitations
-- Note any automated text generation
+## AAAI
 
----
+常见要求：
 
-## ACL Requirements
+- Main paper：7 pages
+- camera-ready 常允许 +1 page
+- 必须严格遵守官方 template
+- 不要修改 style files
 
-### Format Requirements
-**Source:** ACL 2025 Conference Guidelines
+## COLM
 
-**Page Limits:**
-- Main paper: 8 pages (long papers)
-- Short papers: 4 pages
-- References: Unlimited (don't count toward page limit)
+常见要求：
 
-**Required Sections:**
-- Abstract: 150-200 words
-- Introduction: Background and contribution
-- Methods: Technical description
-- Experiments: Evaluation
-- **Limitations Section**: MANDATORY
-- **Ethics Statement**: Required if applicable
-- References: Complete citations
+- Main paper：9 pages
+- 主要面向 language models
+- 实验和贡献应与 LM community 相关
 
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- LaTeX template required (ACL style files)
-- Two-column format
+## 通用投稿要求
 
-**Ethics Considerations:**
-- Human subjects research: IRB approval required
-- Data privacy: Anonymization and consent
-- Environmental impact: Compute resource usage
+### Double-Blind
 
----
+常见要求：
 
-## AAAI Requirements
+- 移除作者名和机构
+- 自引匿名化
+- 不在 acknowledgments 中暴露身份
+- 补充材料同样匿名
+- 不要忘记匿名 GitHub links 和文件路径
 
-### Format Requirements
-**Source:** AAAI 2026 Conference Guidelines
+### Code / Data Availability
 
-**Page Limits:**
-- Main paper: 7 pages
-- Camera-ready: +1 page (8 total)
-- References: Unlimited (don't count toward page limit)
+越来越多会议会要求或强烈鼓励：
 
-**Required Sections:**
-- Abstract: 150-250 words
-- Introduction: Problem and contribution
-- Methods: Technical description
-- Experiments: Evaluation
-- References: Complete citations
-
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- **Strict style file adherence**: Must use official template
-- Two-column format
-- No modifications to style files
-
-**Strict Requirements:**
-- Follow AAAI template exactly
-- No custom formatting beyond template
-- Font sizes and margins as specified
-- Page limits strictly enforced
-
----
-
-## COLM Requirements
-
-### Format Requirements
-**Source:** COLM 2025 Conference Guidelines
-
-**Page Limits:**
-- Main paper: 9 pages
-- Camera-ready: +1 page (10 total)
-- References: Unlimited (don't count toward page limit)
-
-**Required Sections:**
-- Abstract: Summary of contribution
-- Introduction: Problem and contribution
-- Methods: Technical description
-- Experiments: Evaluation
-- **Focus**: Language models specifically
-- References: Complete citations
-
-**Formatting:**
-- Double-blind review (anonymize submissions)
-- LaTeX template required
-- Two-column format
-
-**Language Model Focus:**
-- Papers should address language model challenges
-- Method contributions applicable to LM community
-- Experimental setup relevant to language tasks
-
----
-
-## Common Submission Requirements
-
-### Double-Blind Review
-**Applies to:** NeurIPS, ICML, ICLR, ACL, AAAI, COLM
-
-**Requirements:**
-- Remove author names and affiliations
-- Anonymize citations to own work (use [Anonymous, 2024])
-- Remove acknowledgments that reveal identity
-- Avoid distinctive phrases that identify authors
-- Supplementary materials must also be anonymized
-
-**Common Mistakes:**
-- Forgetting to anonymize GitHub links
-- Including author names in file paths
-- Thanking specific colleagues in acknowledgments
-- Citing own work with author names
-
-### Code and Data Availability
-
-**Increasingly Required:**
-
-**NeurIPS:** Encourages code/data availability statements
-**ICML:** Encourages reproducibility
-**ICLR:** Recommends code sharing
-
-**Best Practices:**
-- Include code repository link (anonymized if under review)
-- Provide data access instructions
-- Describe hyperparameters and settings
-- Note any proprietary constraints
+- 代码仓库说明
+- 数据访问方式
+- hyperparameters 和运行设置
+- proprietary constraints 说明
 
 ### Supplementary Materials
 
-**General Guidelines:**
-- Appendices allowed but not required reading
-- Use for additional experiments, proofs, tables
-- Keep main paper self-contained
-- Reference supplementary in main text
+一般原则：
 
-**Formatting:**
-- Same style as main paper
-- Clear section numbering (S1, S2, etc.)
-- Include in submission PDF or as separate file
+- appendix 可放额外实验、证明和大表
+- main paper 仍需自包含
+- main text 中要引用 supplementary
 
----
+## 引用格式
 
-## Citation Styles
+ML 常见风格：
 
-### Common Styles in ML
+- IEEE / ACM 编号制
+- author-year 风格
 
-**IEEE Style (Numbered):**
-```
-[1] J. Doe, "Paper title," Conference Name, Year.
-[2] A. Smith, "Another paper," Journal Name, vol. 10, pp. 1-15, 2020.
-```
+最佳实践：
 
-**ACM Style (Numbered):**
-```
-[J. Doe and A. Smith, "Paper title," Conference Name, Year.
-[A. Smith and B. Jones, "Another paper," Journal Name, 2020.
-```
+- 整篇引用风格统一
+- 有 DOI 时尽量给 DOI
+- preprint 给出 arXiv 链接
+- 提交前验证所有 citation
 
-**Author-Year (APA-like):**
-```
-Doe (2020) J. Doe. Paper title. Conference Name.
-Smith (2019) A. Smith. Another paper. Journal Name.
-```
+## 投稿前 Checklist
 
-### Reference Management
+### 内容
 
-**Best Practices:**
-- Use consistent style throughout
-- Include DOIs when available
-- Provide arXiv links for preprints
-- Check for broken links
-- Verify all citations before submission
+- [ ] novel contribution 写清楚
+- [ ] related work 充分
+- [ ] methods 可复现
+- [ ] results 支撑所有 claims
+- [ ] limitations 已说明
+- [ ] broader impact / ethics 已处理（如需要）
 
----
+### 格式
 
-## Checklists and Templates
+- [ ] page limits 合规
+- [ ] style file 严格遵守
+- [ ] references 完整一致
+- [ ] 图表清晰可读
+- [ ] equations 编号并被引用
+- [ ] supplementary material 组织清楚
 
-### Pre-Submission Checklist
+### 匿名
 
-**Content:**
-- [ ] Novel contribution clearly stated
-- [ ] Related work comprehensive
-- [ ] Methods reproducible
-- [ ] Results support all claims
-- [ ] Limitations acknowledged
-- [ ] Broader impact addressed (if required)
-- [ ] Ethics compliance verified
+- [ ] author names 已移除
+- [ ] acknowledgements 已匿名
+- [ ] self-citations 已匿名
+- [ ] GitHub links 已匿名
+- [ ] 所有 identifying information 都已去掉
 
-**Formatting:**
-- [ ] Page limits respected
-- [ ] Style file followed exactly
-- [ ] References complete and consistent
-- [ ] Figures/tables clear and readable
-- [ ] Equations numbered and referenced
-- [ ] Supplementary material organized
+## 备注
 
-**Anonymity:**
-- [ ] Author names removed
-- [ ] Acknowledgements anonymized
-- [ ] Self-citations anonymized
-- [ ] GitHub links anonymized
-- [ ] Identifying information removed
-
----
-
-## Notes
-
-- **Always verify**: Requirements change between years - always check current conference guidelines
-- **Plan ahead**: Some venues have strict formatting - start early
-- **Read examples**: Look at well-received papers from previous years
-- **Ask for help**: If unsure about a requirement, consult program chairs or experienced colleagues
-
-**Updates:** This file is regularly updated as new conference requirements become available.
+- 会议要求会逐年变化，投稿前一定重新核对当年官方指南
+- 严格格式会议要尽早开始排版
+- 多看前几年写得好的论文
+- 不确定时优先查 program chairs 或有经验的合作者

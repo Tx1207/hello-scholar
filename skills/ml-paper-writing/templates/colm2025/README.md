@@ -1,3 +1,5 @@
-# Template
+# COLM 2025 模板说明
 
-Template and style files for CoLM 2025
+这个目录包含 CoLM 2025 的模板与样式文件。
+
+使用时优先保留官方提供的 `.sty`、`.bst` 和示例 `.tex` 文件结构，不要随意改动样式层实现。若要投稿，建议在正式提交前再次核对 CoLM 官方模板仓库与最新作者说明。

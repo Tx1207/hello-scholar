@@ -1,12 +1,12 @@
 {{frontmatter}}
-# hello-scholar State
+# hello-scholar 状态
 
-- Active change: {{active_title}}
-- Change file: `{{active_file}}`
-- Route: `{{route}}`
-- Tier: `{{tier}}`
-- Updated: `{{updated}}`
+- 当前变更：{{active_title}}
+- 变更文件：`{{active_file}}`
+- Route：`{{route}}`
+- Tier：`{{tier}}`
+- 更新时间：`{{updated}}`
 
-## Recent Changes
+## 最近变更
 
 {{recent_changes}}

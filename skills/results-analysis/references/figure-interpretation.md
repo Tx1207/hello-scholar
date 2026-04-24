@@ -1,30 +1,30 @@
-# Figure Interpretation Guide
+# 图表解释指南
 
-A scientific figure is incomplete until the text answers:
-1. why the figure exists,
-2. what the reader should notice,
-3. why that observation matters.
+一张科研图只有在正文回答以下问题后才算完整：
+1. 这张图为什么存在；
+2. 读者应该注意什么；
+3. 这个观察为什么重要。
 
-## Minimal interpretation block
+## 最小解释块
 
-For each figure, provide:
-- **Purpose**: the research question this figure addresses
-- **Observation**: the concrete pattern seen in the plot
-- **Interpretation**: the mechanism or explanation supported by the evidence
-- **Implication**: what decision, next experiment, or claim changes because of it
+每张图都要提供：
+- **Purpose**：这张图回答的研究问题
+- **Observation**：图中看到的具体模式
+- **Interpretation**：证据支持的机制或解释
+- **Implication**：它会改变什么决策、下一步实验或主张
 
-## Caption checklist
+## Caption 检查清单
 
-A usable caption should specify:
-- what is plotted,
-- what each axis means,
-- sample size,
-- what error bars / ribbons represent,
-- any normalization or smoothing,
-- any significance marker convention.
+可用的 caption 应说明：
+- 图中画了什么，
+- 每条坐标轴表示什么，
+- 样本量，
+- error bars / ribbons 表示什么，
+- 是否做了归一化或平滑，
+- 显著性标记约定。
 
-## Anti-patterns
-- restating the axis labels as “interpretation”
-- giving only aesthetic comments
-- making causal claims unsupported by the plot
-- repeating the caption without adding insight
+## 反模式
+- 把坐标轴标签重复一遍就当成“解释”
+- 只给审美评论
+- 做出图表不支持的因果主张
+- 重复 caption，却没有增加洞察

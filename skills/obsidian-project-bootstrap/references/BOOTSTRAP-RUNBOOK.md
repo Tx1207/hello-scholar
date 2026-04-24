@@ -1,25 +1,26 @@
 # Bootstrap Runbook
 
-## Preflight decisions
+## 预检决策
 
-1. Run `detect` first.
-2. If the repo is already bound, stop and reuse the existing project.
-3. If the repo is not research-like, stop and ask for confirmation instead of forcing bootstrap.
-4. If `OBSIDIAN_VAULT_PATH` is missing, request it explicitly.
-5. In Codex, use the mode-matched `project_kb.py` helper path:
+1. 先运行 `detect`。
+2. 如果 repo 已经绑定，停止并复用现有项目。
+3. 如果 repo 看起来不像 research 项目，不要强行 bootstrap，先确认。
+4. 如果缺少 `OBSIDIAN_VAULT_PATH`，需要显式向用户索取。
+5. 在 Codex 中，使用与当前模式匹配的 `project_kb.py` 路径：
    - `standby`: `.hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py`
    - `global`: `$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py`
 
-## Common failure modes
+## 常见失败模式
 
-- `vault path missing` -> require explicit path or environment variable.
-- `already bound` -> do not rebuild by default.
-- `repo not research-like` -> do not create a vault structure automatically without confirmation.
-- `python interpreter mismatch` -> run with the available interpreter and state the path used.
+- `vault path missing` -> 需要显式路径或环境变量
+- `already bound` -> 默认不要重建
+- `repo not research-like` -> 未确认前不要自动创建 vault 结构
+- `python interpreter mismatch` -> 用当前可用解释器执行，并明确说明所用路径
 
-## Post-bootstrap verification
+## Bootstrap 后验证
 
-Check for these minimum artifacts:
+至少检查这些产物：
+
 - `hello-scholar/project-memory/registry.yaml`
 - `hello-scholar/project-memory/<project_id>.md`
 - `Research/{project-slug}/00-Hub.md`
@@ -27,4 +28,4 @@ Check for these minimum artifacts:
 - `Research/{project-slug}/Knowledge/Source-Inventory.md`
 - `Research/{project-slug}/Knowledge/Codebase-Overview.md`
 
-If the project still feels empty after bootstrap, continue with agent-first synthesis instead of adding placeholder notes.
+如果 bootstrap 后项目看起来仍然很空，不要继续堆 placeholder notes；转而采用 agent-first synthesis。

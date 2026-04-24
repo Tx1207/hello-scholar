@@ -1,361 +1,152 @@
-# Conference Paper Checklists
+# 会议论文 Checklist
 
-This reference documents the mandatory checklist requirements for major ML/AI conferences. All major venues now require paper checklists—missing them results in desk rejection.
-
----
-
-## Contents
-
-- [NeurIPS Paper Checklist](#neurips-paper-checklist)
-- [ICML Paper Checklist](#icml-paper-checklist)
-- [ICLR Requirements](#iclr-requirements)
-- [ACL Requirements](#acl-requirements)
-- [Universal Pre-Submission Checklist](#universal-pre-submission-checklist)
-
----
+本参考整理主要 ML/AI 会议的必备 checklist。NeurIPS、ICML、ICLR、ACL 等会议都要求作者说明可复现性、限制、伦理和格式合规；缺失关键 checklist 可能导致 desk rejection。
 
 ## NeurIPS Paper Checklist
 
-### Mandatory Components
+### 必备组成
 
-All NeurIPS submissions must include a completed paper checklist. Papers lacking this element face **automatic desk rejection**. The checklist appears after references and supplemental material, outside the page limit.
+NeurIPS 投稿必须包含完整 paper checklist。Checklist 通常放在 references 和 supplemental material 之后，不计入正文页数。
 
-### 16 Required Checklist Items
+### 16 个必查项目
 
-#### 1. Claims Alignment
-Authors must verify that abstract and introduction claims match theoretical and experimental results, with clearly stated contributions, assumptions, and limitations.
+1. **Claims alignment**：摘要和引言中的 claims 必须与理论和实验结果一致，贡献、假设和限制要写清楚。
+2. **Limitations discussion**：需要专门讨论强假设、鲁棒性、适用范围和可能失败条件。
+3. **Theory & proofs**：理论贡献必须给出完整假设和证明；主文可放直觉性 proof sketch，完整证明放 appendix。
+4. **Reproducibility**：说明如何验证结果，包括代码、运行说明、模型访问或 checkpoints。
+5. **Data & code access**：提供复现实验的命令、环境和数据访问方式。
+6. **Experimental details**：说明 train/val/test split、hyperparameters 和选择方法。
+7. **Statistical significance**：报告 error bars、confidence intervals 或 statistical tests，并说明计算方式。
+8. **Compute resources**：说明 CPU/GPU 类型、显存/内存、存储、单次运行时间和总计算量。
+9. **Ethics code compliance**：确认遵守 NeurIPS Code of Ethics，并说明任何偏离。
+10. **Broader impacts**：必要时讨论负面社会影响、fairness、privacy 和缓解策略。
+11. **Safeguards**：高风险模型或互联网抓取数据集需要 controlled release 和 usage guidelines。
+12. **License respect**：引用已有资产的作者、license 名称、URL、版本和 ToS。
+13. **Asset documentation**：新发布数据集或模型需要 datasheet / model card、训练数据和限制说明。
+14. **Human subjects**：众包或人类受试者实验要包含说明、截图、报酬和最低工资合规。
+15. **IRB approvals**：人类受试者研究需要 IRB 或等价审批，投稿时保持匿名。
+16. **LLM declaration**：LLM 作为核心方法组件时要披露；普通写作/编辑辅助通常不要求披露。
 
-**What to check:**
-- [ ] Abstract claims match actual results
-- [ ] Introduction doesn't overclaim
-- [ ] Contributions are specific and falsifiable
+作者每题选择 `yes`、`no` 或 `N/A`，并可给 1-2 句理由。诚实承认 limitation 不应被惩罚。
 
-#### 2. Limitations Discussion
-Papers should include a dedicated "Limitations" section addressing strong assumptions, robustness to violations, scope constraints, and performance-influencing factors.
+## ICML Checklist
 
-**What to include:**
-- [ ] Dedicated Limitations section
-- [ ] Honest assessment of scope
-- [ ] Conditions where method may fail
+ICML 通常要求 Broader Impact Statement，放在 references 前且不计入页数。
 
-#### 3. Theory & Proofs
-Theoretical contributions require full assumption statements and complete proofs (main paper or appendix with proof sketches for intuition).
+需要覆盖：
 
-**What to check:**
-- [ ] All assumptions stated formally
-- [ ] Complete proofs provided (main text or appendix)
-- [ ] Proof sketches for intuition in main text
+- 潜在正面影响
+- 潜在负面影响
+- 缓解策略
+- 可能受影响的人群
+- 数据划分、hyperparameters、搜索范围、选择方法
+- compute resources、code availability
+- error bars、std vs standard error、运行次数、significance tests
+- double-blind 匿名要求：无作者名、无致谢、无 grant number、无可识别仓库 URL
 
-#### 4. Reproducibility
-Authors must describe steps ensuring results verification through code release, detailed instructions, model access, or checkpoints appropriate to their contribution type.
+## ICLR 要求
 
-**What to provide:**
-- [ ] Clear reproducibility statement
-- [ ] Code availability information
-- [ ] Model checkpoints if applicable
+### LLM disclosure
 
-#### 5. Data & Code Access
-Instructions for reproducing main experimental results should be provided (supplemental material or URLs), including exact commands and environment specifications.
+如果 LLM 在 research ideation 或写作中发挥到可视为 contributor 的程度，需要在 appendix 单独说明其具体作用。
 
-**What to include:**
-- [ ] Exact commands to run experiments
-- [ ] Environment specifications (requirements.txt, conda env)
-- [ ] Data access instructions
+通常需要披露：
 
-#### 6. Experimental Details
-Papers must specify training details: data splits, hyperparameters, and selection methods in the main paper or supplementary materials.
+- LLM 用于重要 research ideation
+- LLM 用于大量写作
+- LLM 可被认为是 contributor
 
-**What to document:**
-- [ ] Train/val/test split details
-- [ ] All hyperparameters used
-- [ ] Hyperparameter selection method
+通常不需要披露：
 
-#### 7. Statistical Significance
-Results require error bars, confidence intervals, or statistical tests with clearly stated calculation methods and underlying assumptions.
+- grammar checking
+- minor editing
+- code completion
 
-**What to include:**
-- [ ] Error bars or confidence intervals
-- [ ] Number of runs/seeds
-- [ ] Calculation method (std dev vs std error)
+未披露可能导致 desk rejection 或发表后问题。
 
-#### 8. Compute Resources
-Specifications needed: compute worker types (CPU/GPU), memory, storage, execution time per run, and total project compute requirements.
+### 其他要求
 
-**What to document:**
-- [ ] GPU type and count
-- [ ] Training time per run
-- [ ] Total compute used
+- 推荐提供 reproducibility statement
+- 可选 ethics statement，不计入页数
+- 作者需要承担 reciprocal reviewing 义务
 
-#### 9. Ethics Code Compliance
-Authors confirm adherence to the NeurIPS Code of Ethics, noting any necessary deviations.
+## ACL 要求
 
-**What to verify:**
-- [ ] Read NeurIPS Code of Ethics
-- [ ] Confirm compliance
-- [ ] Note any deviations with justification
+ACL 明确要求 Limitations section，且不计入页数。
 
-#### 10. Broader Impacts
-Discussion of potential negative societal applications, fairness concerns, privacy risks, and possible mitigation strategies when applicable.
+需要说明：
 
-**What to address:**
-- [ ] Potential negative applications
-- [ ] Fairness considerations
-- [ ] Privacy implications
-- [ ] Mitigation strategies
+- 强假设
+- 适用范围限制
+- 方法可能失败的情况
+- generalization concerns
 
-#### 11. Safeguards
-High-risk models (language models, internet-scraped datasets) require controlled release mechanisms and usage guidelines.
+NLP 相关内容还应覆盖：
 
-**What to consider:**
-- [ ] Release strategy for sensitive models
-- [ ] Usage guidelines if needed
-- [ ] Access controls if appropriate
+- bias / fairness
+- dual-use concerns
+- multilingual considerations
+- human evaluation 中的 annotator、agreement 和 compensation
 
-#### 12. License Respect
-All existing assets require creator citations, license names, URLs, version numbers, and terms-of-service acknowledgment.
+## 通用投稿前 Checklist
 
-**What to document:**
-- [ ] Dataset licenses cited
-- [ ] Code licenses respected
-- [ ] Version numbers included
+### 内容
 
-#### 13. Asset Documentation
-New releases need structured templates documenting training details, limitations, consent procedures, and licensing information.
+- [ ] Abstract 符合字数限制
+- [ ] 正文在页数限制内
+- [ ] References 完整且已验证
+- [ ] 包含 Limitations section
+- [ ] 所有图表都有自包含 caption
+- [ ] 每个 claim 都有证据支撑
 
-**For new datasets/models:**
-- [ ] Datasheet or model card
-- [ ] Training data documentation
-- [ ] Known limitations
+### 格式
 
-#### 14. Human Subjects
-Crowdsourcing studies must include participant instructions, screenshots, compensation details, and comply with minimum wage requirements.
+- [ ] 使用正确会议和年份模板
+- [ ] 未修改 margins / font sizes
+- [ ] 满足 double-blind 要求
+- [ ] review 版本页码设置正确
 
-**What to include:**
-- [ ] Task instructions
-- [ ] Compensation details
-- [ ] Time estimates
+### 技术
 
-#### 15. IRB Approvals
-Human subjects research requires documented institutional review board approval or equivalent, with risk descriptions disclosed (maintaining anonymity at submission).
+- [ ] 包含 error bars
+- [ ] baselines 合理
+- [ ] hyperparameters 完整
+- [ ] compute resources 说明清楚
 
-**What to verify:**
-- [ ] IRB approval obtained
-- [ ] Risk assessment completed
-- [ ] Anonymized at submission
+### 可复现性
 
-#### 16. LLM Declaration
-Usage of large language models as core methodology components requires disclosure; writing/editing use doesn't require declaration.
+- [ ] code / data availability 已说明
+- [ ] 环境和运行命令已给出
+- [ ] checkpoints 或模型访问方式已说明
 
-**What to disclose:**
-- [ ] LLM used as core methodology component
-- [ ] How LLM was used
-- [ ] (Writing assistance doesn't require disclosure)
+### 伦理
 
-### Response Format
+- [ ] broader impacts 已考虑
+- [ ] limitations 诚实明确
+- [ ] license 合规
+- [ ] 人类受试者研究已获 IRB 或等价审批
 
-Authors select "yes," "no," or "N/A" per question, with optional 1-2 sentence justifications.
-
-**Important:** Reviewers are explicitly instructed not to penalize honest limitation acknowledgment.
-
----
-
-## ICML Paper Checklist
-
-### Broader Impact Statement
-
-ICML requires a Broader Impact Statement at the end of the paper, before references. This does NOT count toward the page limit.
-
-**Required elements:**
-- Potential positive impacts
-- Potential negative impacts
-- Mitigation strategies
-- Who may be affected
-
-### ICML Specific Requirements
-
-#### Reproducibility Checklist
-
-- [ ] Data splits clearly specified
-- [ ] Hyperparameters listed
-- [ ] Search ranges documented
-- [ ] Selection method explained
-- [ ] Compute resources specified
-- [ ] Code availability stated
-
-#### Statistical Reporting
-
-- [ ] Error bars on all figures
-- [ ] Standard deviation vs standard error specified
-- [ ] Number of runs stated
-- [ ] Significance tests if comparing methods
-
-#### Anonymization
-
-- [ ] No author names in paper
-- [ ] No acknowledgments
-- [ ] No grant numbers
-- [ ] Prior work cited in third person
-- [ ] No identifiable repository URLs
-
----
-
-## ICLR Requirements
-
-### LLM Disclosure Policy (New for 2026)
-
-ICLR has a specific LLM disclosure requirement:
-
-> "If LLMs played a significant role in research ideation and/or writing to the extent that they could be regarded as a contributor, authors must describe their precise role in a separate appendix section."
-
-**When disclosure is required:**
-- LLM used for significant research ideation
-- LLM used for substantial writing
-- LLM could be considered a contributor
-
-**When disclosure is NOT required:**
-- Grammar checking
-- Minor editing assistance
-- Code completion tools
-
-**Consequences of non-disclosure:**
-- Desk rejection
-- Potential post-publication issues
-
-### ICLR Specific Requirements
-
-#### Reproducibility Statement (Optional but Recommended)
-
-Add a statement referencing:
-- Supporting materials
-- Code availability
-- Data availability
-- Model checkpoints
-
-#### Ethics Statement (Optional)
-
-Address potential concerns in ≤1 page. Does not count toward page limit.
-
-#### Reciprocal Reviewing
-
-- Authors on 3+ papers must serve as reviewers for ≥6 papers
-- Each submission needs ≥1 author registered to review ≥3 papers
-
----
-
-## ACL Requirements
-
-### Limitations Section (Mandatory)
-
-ACL specifically requires a Limitations section:
-
-**What to include:**
-- Strong assumptions made
-- Scope limitations
-- When method may fail
-- Generalization concerns
-
-**Important:** The Limitations section does NOT count toward the page limit.
-
-### ACL Specific Checklist
-
-#### Responsible NLP
-
-- [ ] Bias considerations addressed
-- [ ] Fairness evaluated if applicable
-- [ ] Dual-use concerns discussed
-
-#### Multilingual Considerations
-
-If applicable:
-- [ ] Language diversity addressed
-- [ ] Non-English languages included
-- [ ] Translation quality verified
-
-#### Human Evaluation
-
-If applicable:
-- [ ] Annotator details provided
-- [ ] Agreement metrics reported
-- [ ] Compensation documented
-
----
-
-## Universal Pre-Submission Checklist
-
-### Before Every Submission
-
-#### Paper Content
-
-- [ ] Abstract ≤ word limit (usually 250-300 words)
-- [ ] Main content within page limit
-- [ ] References complete and verified
-- [ ] Limitations section included
-- [ ] All figures/tables have captions
-- [ ] Captions are self-contained
-
-#### Formatting
-
-- [ ] Correct template used (venue + year specific)
-- [ ] Margins not modified
-- [ ] Font sizes not modified
-- [ ] Double-blind requirements met
-- [ ] Page numbers (for review) or none (camera-ready)
-
-#### Technical
-
-- [ ] All claims supported by evidence
-- [ ] Error bars included
-- [ ] Baselines appropriate
-- [ ] Hyperparameters documented
-- [ ] Compute resources stated
-
-#### Reproducibility
-
-- [ ] Code will be available (or justification)
-- [ ] Data will be available (or justification)
-- [ ] Environment documented
-- [ ] Commands to reproduce provided
-
-#### Ethics
-
-- [ ] Broader impacts considered
-- [ ] Limitations honestly stated
-- [ ] Licenses respected
-- [ ] IRB obtained if needed
-
-#### Final Checks
-
-- [ ] PDF compiles without errors
-- [ ] All figures render correctly
-- [ ] All citations resolve
-- [ ] Supplementary material organized
-- [ ] Conference checklist completed
-
----
-
-## Quick Reference: Page Limits
+## 页数快速参考
 
 | Conference | Main Content | References | Appendix |
 |------------|-------------|------------|----------|
-| NeurIPS 2025 | 9 pages | Unlimited | Unlimited (checklist separate) |
-| ICML 2026 | 8 pages (+1 camera) | Unlimited | Unlimited |
-| ICLR 2026 | 9 pages (+1 camera) | Unlimited | Unlimited |
-| ACL 2025 | 8 pages (long) | Unlimited | Unlimited |
-| AAAI 2026 | 7 pages (+1 camera) | Unlimited | Unlimited |
-| COLM 2025 | 9 pages (+1 camera) | Unlimited | Unlimited |
+| NeurIPS 2025 | 9 pages | Unlimited | Unlimited（checklist separate） |
+| ICML 2026 | 8 pages（+1 camera） | Unlimited | Unlimited |
+| ICLR 2026 | 9 pages（+1 camera） | Unlimited | Unlimited |
+| ACL 2025 | 8 pages（long） | Unlimited | Unlimited |
+| AAAI 2026 | 7 pages（+1 camera） | Unlimited | Unlimited |
+| COLM 2025 | 9 pages（+1 camera） | Unlimited | Unlimited |
 
----
+## 模板位置
 
-## Template Locations
+会议模板位于 `templates/`：
 
-All conference templates are in the `templates/` directory:
-
-```
+```text
 templates/
-├── icml2026/       # ICML 2026 official
-├── iclr2026/       # ICLR 2026 official
-├── neurips2025/    # NeurIPS 2025
-├── acl/            # ACL style files
-├── aaai2026/       # AAAI 2026
-└── colm2025/       # COLM 2025
+├── icml2026/
+├── iclr2026/
+├── neurips2025/
+├── acl/
+├── aaai2026/
+└── colm2025/
 ```

@@ -1,12 +1,12 @@
-# Stack Detection
+# 技术栈识别
 
 ## Python
-Look for `pyproject.toml`, `uv.lock`, `requirements.txt`, or `pytest.ini`.
-Prefer `uv` commands when the repo is uv-managed.
+查找 `pyproject.toml`、`uv.lock`、`requirements.txt` 或 `pytest.ini`。
+如果仓库由 `uv` 管理，优先使用 `uv` 命令。
 
 ## Node.js / TypeScript
-Look for `package.json`, `pnpm-lock.yaml`, `tsconfig.json`.
-Use the package manager already used by the repo.
+查找 `package.json`、`pnpm-lock.yaml`、`tsconfig.json`。
+沿用仓库当前已经在使用的包管理器。
 
-## Mixed repos
-Run only the checks relevant to touched areas; do not force every language tool when the change is clearly scoped.
+## 混合仓库
+只运行与本次改动区域相关的检查；如果变更范围很明确，不要强行把每种语言的工具都跑一遍。

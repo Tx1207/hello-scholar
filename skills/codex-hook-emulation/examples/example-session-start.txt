@@ -1,7 +1,7 @@
 == Codex Session Start ==
 - Repo: /path/to/repo
 - Git: branch=codex ahead=2 behind=0 staged=0 modified=3 deleted=0 untracked=1
-- Project memory: bound (/path/to/repo/hello-scholar/project-memory/registry.yaml)
+- Project memory: 已绑定 (/path/to/repo/hello-scholar/project-memory/registry.yaml)
 - Recent TODO candidates:
   - plan/current.md
   - temp/notes.md

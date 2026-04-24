@@ -1,40 +1,40 @@
 ---
 name: checkpoint-manager
-description: Creates, verifies, and lists workflow checkpoints for tracking development progress via git snapshots.
+description: 通过 git snapshots 创建、验证并列出 workflow checkpoints，用于跟踪开发进度。
 tags: [Git, Workflow, Checkpoint, Development]
 ---
 
 # Checkpoint Manager
 
-Create, verify, and list workflow checkpoints to track development progress.
+创建、验证并列出 workflow checkpoints，以跟踪开发进展。
 
-## Operations
+## 操作
 
-### Create Checkpoint
+### 创建 Checkpoint
 
-When creating a checkpoint:
+创建 checkpoint 时：
 
-1. Run a quick verification to ensure current state is clean
-2. Create a git stash or commit with checkpoint name
-3. Log checkpoint to `hello-scholar/checkpoints.log`:
+1. 运行快速验证，确保当前状态可接受
+2. 使用 checkpoint 名称创建 git stash 或 commit
+3. 将 checkpoint 记录到 `hello-scholar/checkpoints.log`：
    ```bash
    mkdir -p hello-scholar
    echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> hello-scholar/checkpoints.log
    ```
-4. Report checkpoint created
+4. 报告 checkpoint 已创建
 
-### Verify Checkpoint
+### 验证 Checkpoint
 
-When verifying against a checkpoint:
+与 checkpoint 对比验证时：
 
-1. Read checkpoint from log
-2. Compare current state to checkpoint:
-   - Files added since checkpoint
-   - Files modified since checkpoint
-   - Test pass rate now vs then
-   - Coverage now vs then
-3. Report:
-   ```
+1. 从日志读取 checkpoint
+2. 比较当前状态与 checkpoint：
+   - checkpoint 之后新增的文件
+   - checkpoint 之后修改的文件
+   - 当前测试通过率 vs 当时测试通过率
+   - 当前覆盖率 vs 当时覆盖率
+3. 报告：
+   ```text
    CHECKPOINT COMPARISON: $NAME
    ============================
    Files changed: X
@@ -43,17 +43,17 @@ When verifying against a checkpoint:
    Build: [PASS/FAIL]
    ```
 
-### List Checkpoints
+### 列出 Checkpoints
 
-Show all checkpoints with:
-- Name
-- Timestamp
+展示所有 checkpoints：
+- 名称
+- 时间戳
 - Git SHA
-- Status (current, behind, ahead)
+- 状态（current、behind、ahead）
 
-## Typical Workflow
+## 典型工作流
 
-```
+```text
 [Start] --> create "feature-start"
    |
 [Implement] --> create "core-done"
@@ -65,9 +65,9 @@ Show all checkpoints with:
 [PR] --> verify "feature-start"
 ```
 
-## Options
+## 选项
 
-- `create <name>` - Create named checkpoint
-- `verify <name>` - Verify against named checkpoint
-- `list` - Show all checkpoints
-- `clear` - Remove old checkpoints (keeps last 5)
+- `create <name>`：创建命名 checkpoint
+- `verify <name>`：基于命名 checkpoint 验证
+- `list`：展示所有 checkpoints
+- `clear`：移除旧 checkpoints（保留最近 5 个）

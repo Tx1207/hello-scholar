@@ -1,26 +1,26 @@
-# Skill Evolution Review: {{candidate_id}}
+# Skill 演化评审：{{candidate_id}}
 
-- Status: `{{status}}`
-- Action: `{{action}}`
-- Target Skill: `{{target_skill}}`
-- Confidence: `{{confidence}}`
-- Source Change: `{{change_id}}`
-- Source Plan: `{{plan_id}}`
-- Route/Tier: `{{route}}` / `{{tier}}`
-- Evidence Target: `{{evidence_target}}`
+- 状态：`{{status}}`
+- 动作：`{{action}}`
+- 目标 Skill：`{{target_skill}}`
+- 置信度：`{{confidence}}`
+- 来源变更：`{{change_id}}`
+- 来源计划：`{{plan_id}}`
+- Route/Tier：`{{route}}` / `{{tier}}`
+- 证据目标：`{{evidence_target}}`
 
-## Review Summary
+## 评审摘要
 
 {{reasons}}
 
-## Extracted Workflow
+## 提取出的工作流
 
 {{workflow}}
 
-## Context Snapshot
+## 上下文快照
 
-- Active Bundles: {{bundles}}
-- Active Skills: {{active_skills}}
-- Affected Files: {{files}}
-- Verification Items: {{verification_count}}
-- Evidence Count: {{evidence_count}}
+- 当前启用 Bundles：{{bundles}}
+- 当前启用 Skills：{{active_skills}}
+- 影响文件：{{files}}
+- 验证项数量：{{verification_count}}
+- 证据数量：{{evidence_count}}

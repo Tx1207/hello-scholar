@@ -1,8 +1,8 @@
-# Agent Creation System Prompt
+# Agent 创建 System Prompt
 
-This is the exact system prompt used by Claude Code's agent generation feature, refined through extensive production use.
+这是 Claude Code 的 agent 生成功能所使用的原始 system prompt，经过大量生产环境使用后整理而成。
 
-## The Prompt
+## Prompt 正文
 
 ```
 You are an elite AI agent architect specializing in crafting high-performance agent configurations. Your expertise lies in translating user requirements into precisely-tuned agent specifications that maximize effectiveness and reliability.
@@ -70,40 +70,40 @@ Key principles for your system prompts:
 Remember: The agents you create should be autonomous experts capable of handling their designated tasks with minimal additional guidance. Your system prompts are their complete operational manual.
 ```
 
-## Usage Pattern
+## 使用模式
 
-Use this prompt to generate agent configurations:
+用这个 prompt 来生成 agent 配置：
 
 ```markdown
 **User input:** "I need an agent that reviews pull requests for code quality issues"
 
-**You send to Claude with the system prompt above:**
+**你把下面内容发给 Claude，并加载上面的 system prompt：**
 Create an agent configuration based on this request: "I need an agent that reviews pull requests for code quality issues"
 
-**Claude returns JSON:**
+**Claude 返回 JSON：**
 {
   "identifier": "pr-quality-reviewer",
-  "whenToUse": "Use this agent when the user asks to review a pull request, check code quality, or analyze PR changes. Examples:\n\n<example>\nContext: User has created a PR and wants quality review\nuser: \"Can you review PR #123 for code quality?\"\nassistant: \"I'll use the pr-quality-reviewer agent to analyze the PR.\"\n<commentary>\nPR review request triggers the pr-quality-reviewer agent.\n</commentary>\n</example>",
-  "systemPrompt": "You are an expert code quality reviewer...\n\n**Your Core Responsibilities:**\n1. Analyze code changes for quality issues\n2. Check adherence to best practices\n..."
+  "whenToUse": "当用户要求审查 pull request、检查代码质量，或分析 PR 改动时，使用此 agent。Examples:\n\n<example>\nContext: 用户已经创建了 PR，并希望做质量审查\nuser: \"你能帮我检查一下 PR #123 的代码质量吗？\"\nassistant: \"我会使用 pr-quality-reviewer agent 分析这个 PR。\"\n<commentary>\nPR 审查请求会触发 pr-quality-reviewer agent。\n</commentary>\n</example>",
+  "systemPrompt": "You are an expert code quality reviewer...\n\n**Your Core Responsibilities:**\n1. 分析代码改动中的质量问题\n2. 检查是否遵循最佳实践\n..."
 }
 ```
 
-## Converting to Agent File
+## 转换为 Agent 文件
 
-Take the JSON output and create the agent markdown file:
+把 JSON 输出转换成 agent markdown 文件：
 
-**agents/pr-quality-reviewer.md:**
+**agents/pr-quality-reviewer.md：**
 ```markdown
 ---
 name: pr-quality-reviewer
-description: Use this agent when the user asks to review a pull request, check code quality, or analyze PR changes. Examples:
+description: 当用户要求审查 pull request、检查代码质量，或分析 PR 改动时，使用此 agent。Examples:
 
 <example>
-Context: User has created a PR and wants quality review
-user: "Can you review PR #123 for code quality?"
-assistant: "I'll use the pr-quality-reviewer agent to analyze the PR."
+Context: 用户已经创建了 PR，并希望做质量审查
+user: "你能帮我检查一下 PR #123 的代码质量吗？"
+assistant: "我会使用 pr-quality-reviewer agent 分析这个 PR。"
 <commentary>
-PR review request triggers the pr-quality-reviewer agent.
+PR 审查请求会触发 pr-quality-reviewer agent。
 </commentary>
 </example>
 
@@ -114,18 +114,18 @@ color: blue
 You are an expert code quality reviewer...
 
 **Your Core Responsibilities:**
-1. Analyze code changes for quality issues
-2. Check adherence to best practices
+1. 分析代码改动中的质量问题
+2. 检查是否遵循最佳实践
 ...
 ```
 
-## Customization Tips
+## 自定义建议
 
-### Adapt the System Prompt
+### 调整 System Prompt
 
-The base prompt is excellent but can be enhanced for specific needs:
+基础 prompt 已经很好，但可以针对不同用途再增强：
 
-**For security-focused agents:**
+**面向安全的 agents：**
 ```
 Add after "Architect Comprehensive Instructions":
 - Include OWASP top 10 security considerations
@@ -133,7 +133,7 @@ Add after "Architect Comprehensive Instructions":
 - Validate input sanitization
 ```
 
-**For test-generation agents:**
+**面向测试生成的 agents：**
 ```
 Add after "Optimize for Performance":
 - Follow AAA pattern (Arrange, Act, Assert)
@@ -141,7 +141,7 @@ Add after "Optimize for Performance":
 - Ensure test isolation and cleanup
 ```
 
-**For documentation agents:**
+**面向文档的 agents：**
 ```
 Add after "Design Expert Persona":
 - Use clear, concise language
@@ -149,41 +149,41 @@ Add after "Design Expert Persona":
 - Follow project documentation standards from CLAUDE.md
 ```
 
-## Best Practices from Internal Implementation
+## 来自内部实现的最佳实践
 
-### 1. Consider Project Context
+### 1. 考虑项目上下文
 
-The prompt specifically mentions using CLAUDE.md context:
-- Agent should align with project patterns
-- Follow project-specific coding standards
-- Respect established practices
+这个 prompt 专门强调了要利用 `CLAUDE.md` 上下文：
+- 让 agent 与项目已有模式保持一致
+- 遵循项目特定编码规范
+- 尊重既有实践
 
-### 2. Proactive Agent Design
+### 2. 设计主动触发的 Agent
 
-Include examples showing proactive usage:
+建议加入展示“主动使用”的 examples：
 ```
 <example>
-Context: After writing code, agent should review proactively
+Context: 写完代码后，agent 应主动审查
 user: "Please write a function..."
 assistant: "[Writes function]"
 <commentary>
-Code written, now use review agent proactively.
+代码已经写完，此时主动使用 review agent。
 </commentary>
 assistant: "Now let me review this code with the code-reviewer agent"
 </example>
 ```
 
-### 3. Scope Assumptions
+### 3. 默认作用域假设
 
-For code review agents, assume "recently written code" not entire codebase:
+对于代码审查类 agent，默认理解为“最近写好的代码”，而不是整个代码库：
 ```
 For agents that review code, assume recent changes unless explicitly
 stated otherwise.
 ```
 
-### 4. Output Structure
+### 4. 定义输出结构
 
-Always define clear output format in system prompt:
+始终在 system prompt 里规定清楚输出格式：
 ```
 **Output Format:**
 Provide results as:
@@ -192,16 +192,16 @@ Provide results as:
 3. Recommendations (action items)
 ```
 
-## Integration with Plugin-Dev
+## 与 Plugin-Dev 集成
 
-Use this system prompt when creating agents for your plugins:
+在为你的插件创建 agent 时，可以这样使用这个 system prompt：
 
-1. Take user request for agent functionality
-2. Feed to Claude with this system prompt
-3. Get JSON output (identifier, whenToUse, systemPrompt)
-4. Convert to agent markdown file with frontmatter
-5. Validate with agent validation rules
-6. Test triggering conditions
-7. Add to plugin's `agents/` directory
+1. 获取用户对 agent 功能的需求
+2. 把需求和这个 system prompt 一起发给 Claude
+3. 得到 JSON 输出（`identifier`、`whenToUse`、`systemPrompt`）
+4. 转成带 frontmatter 的 agent markdown 文件
+5. 按 agent 校验规则验证
+6. 测试触发条件
+7. 放入插件的 `agents/` 目录
 
-This provides AI-assisted agent generation following proven patterns from Claude Code's internal implementation.
+这是一套基于 Claude Code 内部成熟模式的 AI 辅助 agent 生成工作流。

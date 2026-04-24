@@ -1,199 +1,153 @@
-# arXiv Literature Search Guide
+# arXiv 文献搜索指南
 
-## Overview
+## 概述
 
-This guide provides workflows for discovering and evaluating recent ML research papers on arXiv. Use this when conducting literature reviews, finding related work, or staying updated on recent publications.
+本指南用于在 arXiv 上发现和评估最新 ML 研究论文，适合做 literature review、找 related work，或持续跟踪近期工作。
 
----
+## 搜索策略
 
-## Search Strategies
+### 1. 基于关键词搜索
 
-### 1. Keyword-Based Search
+**arXiv Search URL 模式：**
 
-**arXiv Search URL Pattern:**
-```
+```text
 https://arxiv.org/search/?searchtype=all&query=KEYWORDS&abstracts=show&order=-announced_date_first
 ```
 
-**Common ML Search Keywords:**
-- **General ML**: `machine learning`, `deep learning`, `neural networks`
-- **Specific Areas**: `reinforcement learning`, `transformer`, `attention mechanism`, `graph neural networks`
-- **Applications**: `computer vision`, `natural language processing`, `reinforcement learning`
-- **Methods**: `self-supervised learning`, `contrastive learning`, `foundation models`
+**常见 ML 搜索关键词：**
 
-**Tips:**
-- Combine keywords with `+` for AND operation
-- Use `|` for OR operation
-- Put phrases in quotes for exact matches: `"attention is all you need"`
+- General ML：`machine learning`、`deep learning`、`neural networks`
+- Specific Areas：`reinforcement learning`、`transformer`、`attention mechanism`、`graph neural networks`
+- Applications：`computer vision`、`natural language processing`、`speech recognition`
+- Methods：`self-supervised learning`、`contrastive learning`、`foundation models`
 
-### 2. Category-Based Search
+技巧：
 
-**Recommended arXiv Categories for ML:**
-- `cs.LG` (Machine Learning)
-- `cs.AI` (Artificial Intelligence)
-- `cs.CV` (Computer Vision and Pattern Recognition)
-- `cs.CL` (Computation and Language)
-- `cs.NE` (Neural and Evolutionary Computing)
-- `stat.ML` (Machine Learning - Statistics)
+- 用 `+` 表示 AND
+- 用 `|` 表示 OR
+- 精确短语加引号，如 `"attention is all you need"`
 
-**Category Filter URL:**
-```
+### 2. 基于类别搜索
+
+推荐的 ML arXiv categories：
+
+- `cs.LG`
+- `cs.AI`
+- `cs.CV`
+- `cs.CL`
+- `cs.NE`
+- `stat.ML`
+
+**类别过滤 URL 示例：**
+
+```text
 https://arxiv.org/search/?cat:cs.LG+OR+cat:cs.AI+AND+all:transformer&abstracts=show&order=-announced_date_first
 ```
 
-### 3. Time-Based Filtering
+### 3. 基于时间过滤
 
-**Recent Papers (Last 3 Months):**
-- Use `order=-announced_date_first` for newest first
-- Manually filter by submission date
-- Check paper metadata for submission date
+关注最近 3 个月时：
 
----
+- 使用 `order=-announced_date_first`
+- 按 submission date 手动筛
+- 检查 paper metadata 中的日期
 
-## Using Chrome MCP for arXiv Search
+## 使用 Chrome MCP 搜索 arXiv
 
-When available, use Chrome MCP tools for automated arXiv searching:
+如果可用，优先使用 Chrome MCP：
 
-1. **Navigate to arXiv search** using Chrome MCP navigation
-2. **Extract paper information** from search results:
-   - Paper title
-   - Authors
+1. 导航到 arXiv 搜索页面
+2. 从结果页提取：
+   - 标题
+   - 作者
    - arXiv ID
-   - Abstract preview
-   - Publication date
+   - 摘要预览
+   - 日期
+3. 再进入单篇论文页面做详细 review
 
-3. **Navigate to individual papers** for detailed review
+## 论文质量评估
 
----
+可用 5 维框架：
 
-## Paper Quality Evaluation
+| 维度 | 权重 | 关注点 |
+|------|------|--------|
+| Innovation | 30% | 贡献新颖度 |
+| Method Completeness | 25% | 清晰度、严谨性、可复现性 |
+| Experimental Thoroughness | 25% | 验证深度 |
+| Writing Quality | 10% | 表达和组织 |
+| Relevance & Impact | 10% | 领域重要性和潜在影响 |
 
-Evaluate papers using the 5-dimension criteria below:
+常见流程：
 
-| Dimension | Weight | Key Points |
-|-----------|--------|------------|
-| **Innovation** | 30% | Novelty of contribution |
-| **Method Completeness** | 25% | Clarity and reproducibility |
-| **Experimental Thoroughness** | 25% | Validation depth |
-| **Writing Quality** | 10% | Clarity of expression |
-| **Relevance & Impact** | 10% | Domain importance |
+1. 先看 title / abstract 筛相关性
+2. 再进入全文做细审
+3. 对每个维度打分
+4. 计算加权总分
+5. 排序并选择重点论文
 
-### Scoring Guidelines (1-5 scale)
+## 提取论文元数据
 
-**Innovation (30%):**
-- 5: Breakthrough contribution, major impact
-- 4: Significant improvement, new insights
-- 3: Methodological innovation
-- 2: Incremental improvement
-- 1: Minor improvements
+从 arXiv abstract 页面（`https://arxiv.org/abs/ARXIV_ID`）可提取：
 
-**Method Completeness (25%):**
-- 5: Complete and rigorous, easily reproducible
-- 4: Very detailed, mostly reproducible
-- 3: Core method clear, basically reproducible
-- 2: Lacks key details
-- 1: Unclear description
+- Title
+- Authors
+- Abstract
+- Submission date
+- arXiv ID
+- Categories
+- Comments
+- Code repository（若摘要中有 GitHub 链接）
 
-**Experimental Thoroughness (25%):**
-- 5: Comprehensive multi-dataset, ablation studies
-- 4: Multiple datasets, reasonable ablations
-- 3: Main experiments complete
-- 2: Limited experiments
-- 1: Minimal validation
+## 与 citation workflow 集成
 
-**Writing Quality (10%):**
-- 5: Excellent clarity and rigor
-- 4: Clear and well-structured
-- 3: Understandable
-- 2: Some ambiguity
-- 1: Confusing
+找到相关论文后：
 
-**Relevance & Impact (10%):**
-- 5: Solves important problem, wide impact
-- 4: Important domain problem
-- 3: Meaningful contribution
-- 2: Niche problem
-- 1: Limited impact
+1. 用 Semantic Scholar API 验证 citation
+2. 通过 DOI 程序化获取 BibTeX
+3. 带验证状态写入 bibliography
 
-### Selection Process
+## 常见场景
 
-1. **Screen by title/abstract** for relevance
-2. **Navigate to full paper** for detailed review
-3. **Score each dimension** (1-5)
-4. **Calculate weighted total**
-5. **Rank and select** top papers
+### 找 related work
 
----
+可用于：
 
-## Extracting Paper Metadata
+1. 找最新同题论文
+2. 识别 state-of-the-art
+3. 找竞争方法
+4. 找 baseline comparisons
 
-**From arXiv Abstract Page (`https://arxiv.org/abs/ARXIV_ID`):**
+### 持续跟踪
 
-- Title (from `<h1>` tag)
-- Authors (from `.authors` element)
-- Abstract (from `blockquote.abstract`)
-- Submission date (from `.dateline`)
-- arXiv ID (from URL)
-- Categories (from `.subjects`)
-- Comments (if present)
-- Code repository (check abstract for GitHub links)
+为以下对象建立固定搜索：
 
----
+- 你的研究方向
+- 竞争实验室 / 作者
+- 你所在领域的新方法
+- 会议对应的 preprints
 
-## Integration with Citation Workflow
+### 做 literature review
 
-After finding relevant papers:
+推荐流程：
 
-1. **Verify citations** using Semantic Scholar API (see `../citation-workflow.md`)
-2. **Fetch BibTeX** programmatically via DOI
-3. **Store in bibliography** with verification status
+1. 从宽关键词开始
+2. 限制到最近 1-3 年
+3. 做 citation chaining（前向和后向）
+4. 评估并筛选高质量论文
+5. 按主题和贡献组织
 
----
+## 搜索建议
 
-## Common Use Cases
+1. 尽量用具体关键词，而不是泛泛大词
+2. 组合使用关键词、类别和时间过滤
+3. 检查 code availability
+4. 用 citation count 或 code stars 作为辅助信号
+5. 在读全文前认真看 abstract
 
-### Finding Related Work
+## 外部资源
 
-When writing a paper, use arXiv search to:
-1. Find recent papers on your topic
-2. Identify state-of-the-art methods
-3. Discover competing approaches
-4. Find baseline comparisons
-
-### Staying Updated
-
-Set up regular searches for:
-- Your specific research area
-- Competing labs/researchers
-- New methods in your domain
-- Conference proceedings (preprints)
-
-### Literature Reviews
-
-For comprehensive reviews:
-1. Start with broad keyword searches
-2. Filter by recent publications (last 1-3 years)
-3. Use citation chaining (forward and backward)
-4. Evaluate and select high-quality papers
-5. Organize by theme/contribution
-
----
-
-## Tips for Effective Searching
-
-1. **Use specific keywords** rather than broad terms
-2. **Combine techniques** (keywords + categories + time filters)
-3. **Check code availability** (many arXiv papers link to GitHub)
-4. **Look for citations** to understand impact
-5. **Read abstracts carefully** before full papers
-6. **Use paper metrics** (citation count, code stars) as indicators
-
----
-
-## External Resources
-
-- **arXiv**: https://arxiv.org/
-- **Semantic Scholar**: https://www.semanticscholar.org/
-- **Papers With Code**: https://paperswithcode.com/
-- **Connected Papers**: https://www.connectedpapers.com/
-- **arXiv API**: http://export.arxiv.org/api_help/
+- arXiv: https://arxiv.org/
+- Semantic Scholar: https://www.semanticscholar.org/
+- Papers With Code: https://paperswithcode.com/
+- Connected Papers: https://www.connectedpapers.com/
+- arXiv API: http://export.arxiv.org/api_help/

@@ -1,369 +1,72 @@
-# Migrating from Basic to Advanced Hooks
+# 从基础 Hook 迁移到高级 Hook
 
-This guide shows how to migrate from basic command hooks to advanced prompt-based hooks for better maintainability and flexibility.
+本指南说明如何把基础 command hook 迁移为 prompt-based hook，以提升可维护性和灵活性。
 
 ## Why Migrate?
 
-Prompt-based hooks offer several advantages:
+prompt-based hook 的优势：
+- 自然语言推理能力更强
+- 对 edge case 处理更灵活
+- 不一定需要 bash 脚本
+- 更容易扩展复杂校验规则
 
-- **Natural language reasoning**: LLM understands context and intent
-- **Better edge case handling**: Adapts to unexpected scenarios
-- **No bash scripting required**: Simpler to write and maintain
-- **More flexible validation**: Can handle complex logic without coding
+## 典型迁移思路
 
-## Migration Example: Bash Command Validation
+### Bash Command Validation
 
-### Before (Basic Command Hook)
+**旧方式：**
+- 在 shell 脚本里硬编码危险命令模式
+- 只能匹配字符串，难覆盖变体
 
-**Configuration:**
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash validate-bash.sh"
-        }
-      ]
-    }
-  ]
-}
-```
+**新方式：**
+- 在 prompt 中直接描述校验标准
+- 让 LLM 理解意图，而不是死匹配文本
 
-**Script (validate-bash.sh):**
-```bash
-#!/bin/bash
-input=$(cat)
-command=$(echo "$input" | jq -r '.tool_input.command')
+### File Write Validation
 
-# Hard-coded validation logic
-if [[ "$command" == *"rm -rf"* ]]; then
-  echo "Dangerous command detected" >&2
-  exit 2
-fi
-```
+**旧方式：**
+- 手工检查 `..`、`/etc/`、`.env` 等路径模式
 
-**Problems:**
-- Only checks for exact "rm -rf" pattern
-- Doesn't catch variations like `rm -fr` or `rm -r -f`
-- Misses other dangerous commands (`dd`, `mkfs`, etc.)
-- No context awareness
-- Requires bash scripting knowledge
-
-### After (Advanced Prompt Hook)
-
-**Configuration:**
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Command: $TOOL_INPUT.command. Analyze for: 1) Destructive operations (rm -rf, dd, mkfs, etc) 2) Privilege escalation (sudo) 3) Network operations without user consent. Return 'approve' or 'deny' with explanation.",
-          "timeout": 15
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Benefits:**
-- Catches all variations and patterns
-- Understands intent, not just literal strings
-- No script file needed
-- Easy to extend with new criteria
-- Context-aware decisions
-- Natural language explanation in denial
-
-## Migration Example: File Write Validation
-
-### Before (Basic Command Hook)
-
-**Configuration:**
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash validate-write.sh"
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Script (validate-write.sh):**
-```bash
-#!/bin/bash
-input=$(cat)
-file_path=$(echo "$input" | jq -r '.tool_input.file_path')
-
-# Check for path traversal
-if [[ "$file_path" == *".."* ]]; then
-  echo '{"decision": "deny", "reason": "Path traversal detected"}' >&2
-  exit 2
-fi
-
-# Check for system paths
-if [[ "$file_path" == "/etc/"* ]] || [[ "$file_path" == "/sys/"* ]]; then
-  echo '{"decision": "deny", "reason": "System file"}' >&2
-  exit 2
-fi
-```
-
-**Problems:**
-- Hard-coded path patterns
-- Doesn't understand symlinks
-- Missing edge cases (e.g., `/etc` vs `/etc/`)
-- No consideration of file content
-
-### After (Advanced Prompt Hook)
-
-**Configuration:**
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "File path: $TOOL_INPUT.file_path. Content preview: $TOOL_INPUT.content (first 200 chars). Verify: 1) Not system directories (/etc, /sys, /usr) 2) Not credentials (.env, tokens, secrets) 3) No path traversal 4) Content doesn't expose secrets. Return 'approve' or 'deny'."
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Benefits:**
-- Context-aware (considers content too)
-- Handles symlinks and edge cases
-- Natural understanding of "system directories"
-- Can detect secrets in content
-- Easy to extend criteria
+**新方式：**
+- 同时考虑文件路径和内容
+- 统一判断 system path、credential file、path traversal、secret leakage
 
 ## When to Keep Command Hooks
 
-Command hooks still have their place:
+以下场景仍适合 command hook：
 
-### 1. Deterministic Performance Checks
+1. **纯确定性检查**
+   - 文件大小
+   - 简单正则
+   - 固定格式验证
 
-```bash
-#!/bin/bash
-# Check file size quickly
-file_path=$(echo "$input" | jq -r '.tool_input.file_path')
-size=$(stat -f%z "$file_path" 2>/dev/null || stat -c%s "$file_path" 2>/dev/null)
+2. **外部工具集成**
+   - 调用 security scanner
+   - 查询本地工具返回结果
 
-if [ "$size" -gt 10000000 ]; then
-  echo '{"decision": "deny", "reason": "File too large"}' >&2
-  exit 2
-fi
-```
-
-**Use command hooks when:** Validation is purely mathematical or deterministic.
-
-### 2. External Tool Integration
-
-```bash
-#!/bin/bash
-# Run security scanner
-file_path=$(echo "$input" | jq -r '.tool_input.file_path')
-scan_result=$(security-scanner "$file_path")
-
-if [ "$?" -ne 0 ]; then
-  echo "Security scan failed: $scan_result" >&2
-  exit 2
-fi
-```
-
-**Use command hooks when:** Integrating with external tools that provide yes/no answers.
-
-### 3. Very Fast Checks (< 50ms)
-
-```bash
-#!/bin/bash
-# Quick regex check
-command=$(echo "$input" | jq -r '.tool_input.command')
-
-if [[ "$command" =~ ^(ls|pwd|echo)$ ]]; then
-  exit 0  # Safe commands
-fi
-```
-
-**Use command hooks when:** Performance is critical and logic is simple.
+3. **极快检查**
+   - 小于 50ms 的白名单判断
 
 ## Hybrid Approach
 
-Combine both for multi-stage validation:
+可以组合：
+- command hook 负责快速 deterministic check
+- prompt hook 负责复杂 reasoning
 
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/quick-check.sh",
-          "timeout": 5
-        },
-        {
-          "type": "prompt",
-          "prompt": "Deep analysis of bash command: $TOOL_INPUT",
-          "timeout": 15
-        }
-      ]
-    }
-  ]
-}
-```
-
-The command hook does fast deterministic checks, while the prompt hook handles complex reasoning.
+这样既保证性能，也保证复杂场景覆盖。
 
 ## Migration Checklist
 
-When migrating hooks:
-
-- [ ] Identify the validation logic in the command hook
-- [ ] Convert hard-coded patterns to natural language criteria
-- [ ] Test with edge cases the old hook missed
-- [ ] Verify LLM understands the intent
-- [ ] Set appropriate timeout (usually 15-30s for prompt hooks)
-- [ ] Document the new hook in README
-- [ ] Remove or archive old script files
+- [ ] 识别旧脚本中的校验逻辑
+- [ ] 把硬编码规则改写成自然语言标准
+- [ ] 用旧 hook 漏掉的 edge case 重新测试
+- [ ] 为 prompt hook 配合合理 timeout
+- [ ] 在 README 中记录迁移结果
+- [ ] 归档旧脚本，必要时保留参考
 
 ## Migration Tips
 
-1. **Start with one hook**: Don't migrate everything at once
-2. **Test thoroughly**: Verify prompt hook catches what command hook caught
-3. **Look for improvements**: Use migration as opportunity to enhance validation
-4. **Keep scripts for reference**: Archive old scripts in case you need to reference the logic
-5. **Document reasoning**: Explain why prompt hook is better in README
-
-## Complete Migration Example
-
-### Original Plugin Structure
-
-```
-my-plugin/
-├── .claude-plugin/plugin.json
-├── hooks/hooks.json
-└── scripts/
-    ├── validate-bash.sh
-    ├── validate-write.sh
-    └── check-tests.sh
-```
-
-### After Migration
-
-```
-my-plugin/
-├── .claude-plugin/plugin.json
-├── hooks/hooks.json      # Now uses prompt hooks
-└── scripts/              # Archive or delete
-    └── archive/
-        ├── validate-bash.sh
-        ├── validate-write.sh
-        └── check-tests.sh
-```
-
-### Updated hooks.json
-
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Validate bash command safety: destructive ops, privilege escalation, network access"
-        }
-      ]
-    },
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Validate file write safety: system paths, credentials, path traversal, content secrets"
-        }
-      ]
-    }
-  ],
-  "Stop": [
-    {
-      "matcher": "*",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Verify tests were run if code was modified"
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Result:** Simpler, more maintainable, more powerful.
-
-## Common Migration Patterns
-
-### Pattern: String Contains → Natural Language
-
-**Before:**
-```bash
-if [[ "$command" == *"sudo"* ]]; then
-  echo "Privilege escalation" >&2
-  exit 2
-fi
-```
-
-**After:**
-```
-"Check for privilege escalation (sudo, su, etc)"
-```
-
-### Pattern: Regex → Intent
-
-**Before:**
-```bash
-if [[ "$file" =~ \.(env|secret|key|token)$ ]]; then
-  echo "Credential file" >&2
-  exit 2
-fi
-```
-
-**After:**
-```
-"Verify not writing to credential files (.env, secrets, keys, tokens)"
-```
-
-### Pattern: Multiple Conditions → Criteria List
-
-**Before:**
-```bash
-if [ condition1 ] || [ condition2 ] || [ condition3 ]; then
-  echo "Invalid" >&2
-  exit 2
-fi
-```
-
-**After:**
-```
-"Check: 1) condition1 2) condition2 3) condition3. Deny if any fail."
-```
-
-## Conclusion
-
-Migrating to prompt-based hooks makes plugins more maintainable, flexible, and powerful. Reserve command hooks for deterministic checks and external tool integration.
+1. 一次只迁一个 hook
+2. 迁移后先验证它至少不比原来差
+3. 借迁移机会顺手提升校验质量
+4. 对真正快且确定的逻辑，不要强行改成 prompt hook

@@ -1,4 +1,4 @@
-# Results Analysis Usage
+# Results Analysis 使用说明
 
 本技能用于生成 **strict analysis bundle**，不是写论文 Results 草稿。
 

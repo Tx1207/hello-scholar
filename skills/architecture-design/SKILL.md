@@ -1,44 +1,44 @@
 ---
 name: architecture-design
-description: Use only when creating new registrable ML components that require Factory or Registry patterns.
+description: 仅在创建需要 Factory 或 Registry 模式的新 registrable ML 组件时使用。
 version: 1.2.0
 ---
 
-# Architecture Design - ML Project Template
+# 架构设计 - ML Project Template
 
-This skill defines the standard code architecture for machine learning projects based on the template structure. When modifying or extending code, follow these patterns to maintain consistency.
+该 skill 定义了基于模板结构的 machine learning 项目标准代码架构。在修改或扩展代码时，应遵循这些模式以维持一致性。
 
-## Overview
+## 概览
 
-The project follows a modular, extensible architecture with clear separation of concerns. Each module (data, model, trainer, analysis) is independently organized using factory and registry patterns for maximum flexibility.
+该项目采用模块化、可扩展的架构，并明确分离关注点。每个模块（data、model、trainer、analysis）都通过 factory 和 registry patterns 独立组织，以获得最大的灵活性。
 
-## When to Use
+## 何时使用
 
-Use this skill when:
-- Creating a new Dataset class that needs `@register_dataset`
-- Creating a new Model class that needs `@register_model`
-- Creating a new module directory with `__init__.py` factory wiring
-- Initializing a new ML project structure from scratch
-- Adding new component types such as Augmentation, CollateFunction, or Metrics
+在以下场景使用该 skill：
+- 创建需要 `@register_dataset` 的新 Dataset class
+- 创建需要 `@register_model` 的新 Model class
+- 创建带有 `__init__.py` factory wiring 的新模块目录
+- 从零初始化新的 ML 项目结构
+- 新增 Augmentation、CollateFunction 或 Metrics 等组件类型
 
-## When Not to Use
+## 何时不使用
 
-Do not use this skill when:
-- Modifying existing functions or methods
-- Fixing bugs in existing code
-- Adding helper functions or utilities
-- Refactoring without adding new registrable components
-- Making simple code changes to a single file
-- Modifying configuration files
-- Reading or understanding existing code
+在以下场景不要使用该 skill：
+- 修改已有函数或方法
+- 修复现有代码中的 bug
+- 添加 helper functions 或 utilities
+- 仅重构而不新增 registrable components
+- 对单文件做简单代码修改
+- 修改配置文件
+- 阅读或理解现有代码
 
-Key indicator: if the task does not require a `@register_*` decorator or a Factory pattern, skip this skill.
+关键判断标准：如果任务不需要 `@register_*` decorator 或 Factory pattern，就跳过这个 skill。
 
-## Core Design Patterns
+## 核心设计模式
 
 ### Factory Pattern
 
-Each module uses a factory to create instances dynamically:
+每个模块都使用 factory 动态创建实例：
 
 ```python
 # Example from data_module/dataset/__init__.py
@@ -52,11 +52,11 @@ def DatasetFactory(data_name: str):
     return dataset
 ```
 
-For detailed guidance, refer to `references/factory_pattern.md`.
+详细说明参见 `references/factory_pattern.md`。
 
 ### Registry Pattern
 
-Components register themselves via decorators:
+组件通过 decorators 注册自身：
 
 ```python
 # Example from data_module/dataset/simple_dataset.py
@@ -66,11 +66,11 @@ class SimpleDataset(Dataset):
         self.data = data
 ```
 
-For detailed guidance, refer to `references/registry_pattern.md`.
+详细说明参见 `references/registry_pattern.md`。
 
 ### Auto-Import Pattern
 
-Modules automatically discover and import submodules:
+模块会自动发现并导入子模块：
 
 ```python
 # Example from data_module/dataset/__init__.py
@@ -78,73 +78,73 @@ models_dir = os.path.dirname(__file__)
 import_modules(models_dir, "src.data_module.dataset")
 ```
 
-For detailed guidance, refer to `references/auto_import.md`.
+详细说明参见 `references/auto_import.md`。
 
-## Directory Structure
+## 目录结构
 
-```
+```text
 project/
-├── run/
-│   ├── pipeline/            # Main workflow scripts
-│   │   ├── training/        # Training pipelines
-│   │   ├── prepare_data/    # Data preparation pipelines
-│   │   └── analysis/        # Analysis pipelines
-│   └── conf/                # Hydra configuration files
-│       ├── training/        # Training configs
-│       ├── dataset/         # Dataset configs
-│       ├── model/           # Model configs
-│       ├── prepare_data/    # Data prep configs
-│       └── analysis/        # Analysis configs
-│
-├── src/
-│   ├── data_module/         # Data processing module
-│   │   ├── dataset/         # Dataset implementations
-│   │   ├── augmentation/    # Data augmentation
-│   │   ├── collate_fn/      # Collate functions
-│   │   ├── compute_metrics/ # Metrics computation
-│   │   ├── prepare_data/    # Data preparation logic
-│   │   ├── data_func/       # Data utility functions
-│   │   └── utils.py         # Module-specific utilities
-│   │
-│   ├── model_module/        # Model implementations
-│   │   ├── brain_decoder/   # Brain decoder models
-│   │   └── model/           # Alternative model location
-│   │
-│   ├── trainer_module/      # Training logic
-│   ├── analysis_module/     # Analysis and evaluation
-│   ├── llm/                 # LLM-related code
-│   └── utils/               # Shared utilities
-│
-├── data/
-│   ├── raw/                 # Original, immutable data
-│   ├── processed/           # Cleaned, transformed data
-│   └── external/            # Third-party data
-│
-├── outputs/
-│   ├── logs/                # Training and evaluation logs
-│   ├── checkpoints/         # Model checkpoints
-│   ├── tables/              # Result tables
-│   └── figures/             # Plots and visualizations
-│
-├── pyproject.toml           # Project configuration
-├── uv.lock                  # Dependency lock file
-├── TODO.md                  # Task tracking
-├── README.md                # Project documentation
-└── .gitignore               # Git ignore rules
+|- run/
+|  |- pipeline/            # 主工作流脚本
+|  |  |- training/        # 训练流水线
+|  |  |- prepare_data/    # 数据准备流水线
+|  |  \- analysis/        # 分析流水线
+|  \- conf/               # Hydra 配置文件
+|     |- training/        # 训练配置
+|     |- dataset/         # 数据集配置
+|     |- model/           # 模型配置
+|     |- prepare_data/    # 数据准备配置
+|     \- analysis/        # 分析配置
+|
+|- src/
+|  |- data_module/        # 数据处理模块
+|  |  |- dataset/         # 数据集实现
+|  |  |- augmentation/    # 数据增强
+|  |  |- collate_fn/      # Collate 函数
+|  |  |- compute_metrics/ # 指标计算
+|  |  |- prepare_data/    # 数据准备逻辑
+|  |  |- data_func/       # 数据工具函数
+|  |  \- utils.py         # 模块内部工具
+|  |
+|  |- model_module/       # 模型实现
+|  |  |- brain_decoder/   # Brain decoder 模型
+|  |  \- model/           # 备选模型目录
+|  |
+|  |- trainer_module/     # 训练逻辑
+|  |- analysis_module/    # 分析与评估
+|  |- llm/                # LLM 相关代码
+|  \- utils/              # 共享工具
+|
+|- data/
+|  |- raw/                # 原始、不可变数据
+|  |- processed/          # 清洗与转换后的数据
+|  \- external/           # 第三方数据
+|
+|- outputs/
+|  |- logs/               # 训练与评估日志
+|  |- checkpoints/        # 模型检查点
+|  |- tables/             # 结果表格
+|  \- figures/            # 图表与可视化
+|
+|- pyproject.toml         # 项目配置
+|- uv.lock                # 依赖锁文件
+|- TODO.md                # 任务跟踪
+|- README.md              # 项目文档
+\- .gitignore             # Git 忽略规则
 ```
 
-For detailed directory structure with file descriptions, refer to `references/structure.md`.
+更详细的目录说明参见 `references/structure.md`。
 
-## Module Organization
+## 模块组织
 
-### Creating a New Dataset
+### 创建新 Dataset
 
-When adding a new dataset:
+新增 dataset 时：
 
-1. Create file in `src/data_module/dataset/`
-2. Use `@register_dataset("name")` decorator
-3. Inherit from `torch.utils.data.Dataset`
-4. Implement `__init__`, `__len__`, `__getitem__`
+1. 在 `src/data_module/dataset/` 中创建文件
+2. 使用 `@register_dataset("name")` decorator
+3. 继承 `torch.utils.data.Dataset`
+4. 实现 `__init__`、`__len__`、`__getitem__`
 
 ```python
 from torch.utils.data import Dataset
@@ -164,17 +164,17 @@ class CustomDataset(Dataset):
         return self.data[i]
 ```
 
-### Creating a New Model
+### 创建新 Model
 
-**CRITICAL: Models use config-driven pattern**
+**CRITICAL：模型使用 config-driven 模式**
 
-When adding a new model:
+新增 model 时：
 
-1. Create file in `src/model_module/model/` or appropriate module subdirectory
-2. Use `@register_model('ModelName')` decorator
-3. `__init__` accepts **ONLY** `cfg` parameter - all hyperparameters come from config
-4. `forward()` returns dict: `{"loss": loss, "labels": labels, "logits": logits}`
-5. Handle training vs inference modes using `self.training`
+1. 在 `src/model_module/model/` 或对应子目录中创建文件
+2. 使用 `@register_model('ModelName')` decorator
+3. `__init__` **只能**接收 `cfg` 参数，所有超参数都来自配置
+4. `forward()` 返回 dict：`{"loss": loss, "labels": labels, "logits": logits}`
+5. 使用 `self.training` 处理训练与推理模式
 
 ```python
 from src.model_module.brain_decoder import register_model
@@ -201,74 +201,74 @@ class MyModel(nn.Module):
         return {"loss": loss, "labels": labels, "logits": logits}
 ```
 
-### Adding Data Augmentation
+### 添加数据增强
 
-When adding augmentation:
+新增 augmentation 时：
 
-1. Create file in `src/data_module/augmentation/`
-2. Implement transformation function
-3. Register with factory if needed
+1. 在 `src/data_module/augmentation/` 中创建文件
+2. 实现 transformation function
+3. 如有需要，通过 factory 注册
 
-## Code Style Guidelines
+## 代码风格指南
 
-For comprehensive style guidelines, refer to `references/code_style.md`.
+完整风格指南参见 `references/code_style.md`。
 
-**Key principles:**
-- Always use type hints for function signatures
-- Follow import order: standard library → third-party → local
-- Module `__init__.py` files contain factory/registry logic
-- Model classes must be config-driven
+**关键原则：**
+- 函数签名始终使用类型标注
+- 遵循 import 顺序：standard library -> third-party -> local
+- 模块 `__init__.py` 包含 factory / registry 逻辑
+- Model classes 必须是 config-driven
 
-## Configuration Management
+## 配置管理
 
-The project uses Hydra for configuration management:
+项目使用 Hydra 管理配置：
 
-- Config files in `run/conf/` organize by module
-- Each stage (training, analysis) has its own config structure
-- Use YAML files for all configuration
+- 配置文件放在 `run/conf/`，按模块组织
+- 每个 stage（training、analysis）都有独立配置结构
+- 所有配置均使用 YAML 文件
 
-## When Working on This Project
+## 在本项目中工作时
 
-### Before Modifying Code
+### 修改代码前
 
-1. Read the relevant module's factory/registry pattern
-2. Check existing implementations for consistency
-3. Follow the established directory structure
-4. Use registration decorators for new components
+1. 阅读相关模块的 factory / registry pattern
+2. 检查现有实现，确保一致性
+3. 遵循既定目录结构
+4. 为新组件使用 registration decorators
 
-### Adding New Features
+### 添加新特性时
 
-1. Determine which module the feature belongs to
-2. Check if similar functionality exists
-3. Follow factory/registry pattern if creating new component types
-4. Add configuration files if needed
-5. Update documentation
+1. 判断该功能属于哪个模块
+2. 检查是否已有类似功能
+3. 若创建新组件类型，遵循 factory / registry pattern
+4. 如有需要，补充配置文件
+5. 更新文档
 
-### Code Review Checklist
+### 代码审查清单
 
-- [ ] Uses factory/registry pattern appropriately
-- [ ] Follows module directory structure
-- [ ] Has proper type annotations
-- [ ] Imports are correctly ordered
-- [ ] Registration decorator is used
-- [ ] Configuration files are added if needed
+- [ ] 正确使用 factory / registry pattern
+- [ ] 遵循模块目录结构
+- [ ] 具备恰当类型标注
+- [ ] imports 顺序正确
+- [ ] 使用了 registration decorator
+- [ ] 在需要时补充了配置文件
 
-## Additional Resources
+## 额外资源
 
-### Reference Files
+### 参考文件
 
-For detailed information, consult:
-- **`references/structure.md`** - Detailed directory structure with file descriptions
-- **`references/factory_pattern.md`** - Factory pattern in-depth explanation
-- **`references/registry_pattern.md`** - Registry pattern in-depth explanation
-- **`references/auto_import.md`** - Auto-import pattern in-depth explanation
-- **`references/code_style.md`** - Comprehensive code style guidelines
+详细信息请查看：
+- **`references/structure.md`** - 带文件说明的详细目录结构
+- **`references/factory_pattern.md`** - Factory pattern 详解
+- **`references/registry_pattern.md`** - Registry pattern 详解
+- **`references/auto_import.md`** - Auto-import pattern 详解
+- **`references/code_style.md`** - 完整代码风格指南
 
-### Example Files
+### 示例文件
 
-Working examples in `examples/`:
-- **`examples/custom_dataset.py`** - Custom dataset implementation
-- **`examples/custom_model.py`** - Custom model implementation
-- **`examples/augmentation_example.py`** - Data augmentation example
-- **`examples/config_example.yaml`** - Configuration file example
-- **`examples/pipeline_example.sh`** - Pipeline script example
+`examples/` 中的可运行示例：
+- **`examples/custom_dataset.py`** - 自定义 dataset 实现
+- **`examples/custom_model.py`** - 自定义 model 实现
+- **`examples/augmentation_example.py`** - 数据增强示例
+- **`examples/config_example.yaml`** - 配置文件示例
+- **`examples/pipeline_example.sh`** - pipeline 脚本示例

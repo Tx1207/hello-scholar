@@ -1,32 +1,32 @@
 ---
 name: obsidian-synthesis-map
-description: Use this skill when generating higher-level synthesis notes such as literature reviews, comparison matrices, project summaries, or other cross-note summaries inside the project knowledge base.
+description: 当需要在项目知识库内部生成更高层次的综合型笔记时使用该 skill，例如 literature reviews、comparison matrices、project summaries 或其他跨笔记总结。
 ---
 
 # Obsidian Synthesis Map
 
-This is a **legacy compatibility helper**.
+这是一个 **legacy compatibility helper**。
 
-Despite the name, the current default workflow focuses on **synthesis notes**, not Bases or Canvas artifacts.
+虽然名字里有 map，但当前默认工作流聚焦的是 **synthesis notes**，而不是 Bases 或 Canvas artifacts。
 
-## Default outputs
+## 默认输出
 
-- `Writing/` synthesis notes
-- project summaries tied to `Knowledge/`, `Papers/`, `Experiments/`, and `Results/`
-- comparison notes that help writing, planning, or result interpretation
+- `Writing/` 中的 synthesis notes
+- 与 `Knowledge/`、`Papers/`、`Experiments/` 和 `Results/` 关联的项目摘要
+- 有助于写作、规划或结果解释的 comparison notes
 
-## Guidelines
+## 指南
 
-- Use `obsidian-project-memory` as the main workflow authority.
-- Use `$obsidian-markdown` for note quality.
-- Keep synthesis notes anchored to real papers, experiments, results, and project questions via wikilinks.
-- Prefer one durable synthesis note per purpose instead of many overlapping summaries.
-- If the user explicitly asks for `.base` or `.canvas` artifacts, treat them as optional add-ons, not default outputs.
+- 使用 `obsidian-project-memory` 作为主要工作流权威。
+- 使用 `$obsidian-markdown` 保证笔记质量。
+- 通过 wikilinks 将 synthesis notes 锚定到真实 papers、experiments、results 和 project questions。
+- 每种用途优先维护一份 durable synthesis note，而不是多个相互重叠的 summary。
+- 如果用户明确要求 `.base` 或 `.canvas` artifacts，把它们视为可选附加产物，而不是默认输出。
 
-## Default stance
+## 默认立场
 
-Do **not** generate:
+默认**不要**生成：
 - `Views/*.base`
 - `Maps/*.canvas`
 
-unless the user explicitly asks for those artifacts.
+除非用户明确要求这些 artifacts。

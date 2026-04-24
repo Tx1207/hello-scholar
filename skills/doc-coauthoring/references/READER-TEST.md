@@ -1,16 +1,19 @@
-# Reader Test
+# 读者测试
 
-## Goal
-Use a fresh-reader pass to find blind spots, unclear assumptions, and missing context.
+## 目标
 
-## Handoff package
-Provide the tester with:
-- document path,
-- intended audience,
-- expected action after reading,
-- any non-obvious constraints.
+用“新读者视角”检查文档中的盲点、不清楚的假设和缺失上下文。
 
-## Pass criteria
-- reader can explain the decision or proposal back accurately,
-- reader can identify next actions,
-- reader does not need hidden author context to follow the doc.
+## 交接包
+
+提供给测试读者：
+- 文档路径
+- 目标读者
+- 读完后的预期动作
+- 任何不显而易见的约束
+
+## 通过标准
+
+- 读者能准确复述决策或提案
+- 读者能识别下一步动作
+- 读者不需要作者的隐藏上下文也能读懂文档

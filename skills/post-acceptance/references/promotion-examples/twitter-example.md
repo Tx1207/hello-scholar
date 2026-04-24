@@ -1,34 +1,34 @@
-# Twitter/X Promotion Example
+# Twitter/X 推广示例
 
 学术推文示例
 
-## Example 1: Thread Format
+## 示例 1：Thread 格式
 
-**Tweet 1 (Hook)**
+**Tweet 1（开场钩子）**
 🎉 Excited to share our paper accepted at #NeurIPS2024! 
 
 We tackle the challenge of [problem] in [domain].
 
 Thread 👇
 
-**Tweet 2 (Problem)**
+**Tweet 2（问题）**
 Current methods struggle with [specific issue], leading to [consequence].
 
 Our key insight: [novel perspective]
 
-**Tweet 3 (Method)**
+**Tweet 3（方法）**
 We propose [method name], which:
 ✅ [Key feature 1]
 ✅ [Key feature 2]
 ✅ [Key feature 3]
 
-**Tweet 4 (Results)**
+**Tweet 4（结果）**
 Results on [benchmark]:
 📊 [Metric 1]: X% improvement
 📊 [Metric 2]: Y% faster
 📊 [Metric 3]: Z% better
 
-**Tweet 5 (CTA)**
+**Tweet 5（行动入口）**
 📄 Paper: [link]
 💻 Code: [link]
 🎯 Demo: [link]

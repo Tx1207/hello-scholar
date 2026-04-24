@@ -1,67 +1,67 @@
 ---
 name: ui-ux-pro-max
-description: This skill should be used when the user asks to design or review a UI, create a landing page or dashboard, choose colors or typography, improve accessibility, or implement polished frontend interfaces with a clear design system.
+description: 当用户要求设计或评审 UI、创建 landing page 或 dashboard、选择颜色或 typography、改善 accessibility，或实现带清晰设计系统的精致前端界面时使用该 skill。
 version: 0.2.0
 ---
 
 # UI/UX Pro Max
 
-Use this skill to turn a vague UI request into a **concrete design system plus implementation guidance**.
+使用该 skill，将模糊的 UI 请求转化为 **具体的 design system + 实施指导**。
 
-## Role
+## 角色
 
-This skill is for:
-- design-system selection,
-- palette and typography choices,
-- UX review and remediation,
-- stack-aware frontend implementation guidance,
-- lightweight design-system persistence for multi-page work.
+该 skill 适用于：
+- design-system 选择
+- palette 和 typography 选择
+- UX review 与修复建议
+- 结合技术栈的 frontend implementation guidance
+- 用于多页面工作的轻量 design-system 持久化
 
-It is **not** a replacement for product strategy or user research. Use it to make execution sharper after the product direction is already roughly known.
+它**不是** product strategy 或 user research 的替代品。应在产品方向已经大致明确后，使用它把执行做得更锋利。
 
-## Core workflow
+## 核心工作流
 
-### 1. Infer the request shape
+### 1. 先推断请求形态
 
-Extract the minimum design signals first:
-- product type,
-- industry,
-- style keywords,
-- target platform,
-- implementation stack.
+先提取最小设计信号：
+- product type
+- industry
+- style keywords
+- target platform
+- implementation stack
 
-If the user does not specify a stack, default to `html-tailwind`.
+如果用户没有指定 stack，默认使用 `html-tailwind`。
 
-### 2. Generate the design system first
+### 2. 先生成 design system
 
-Use the helper script to produce a compact design recommendation:
+使用 helper script 生成紧凑型设计建议：
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "<product_type> <industry> <keywords>" --design-system -p "Project Name"
 ```
 
-This produces:
-- recommended style direction,
-- palette family,
-- typography direction,
-- interaction / visual effects,
-- landing or layout bias,
-- anti-patterns to avoid.
+这会产出：
+- 推荐 style direction
+- palette family
+- typography direction
+- interaction / visual effects
+- landing 或 layout 偏向
+- 需要避免的 anti-patterns
 
-If the work spans multiple turns or pages, persist the design system:
+如果工作跨多个回合或多个页面，持久化该 design system：
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "<query>" --design-system --persist -p "Project Name"
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "<query>" --design-system --persist -p "Project Name" --page "dashboard"
 ```
 
-This creates:
+这会创建：
 - `design-system/MASTER.md`
-- optional page-level override notes under `design-system/pages/`
+- 可选的页面级覆盖说明，位于 `design-system/pages/`
 
-### 3. Pull targeted guidance only when needed
+### 3. 仅在需要时拉取针对性指导
 
-Use a focused search instead of loading everything at once:
+不要一次性加载所有内容，而是做 focused search：
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "glassmorphism dark" --domain style
@@ -70,7 +70,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "real-tim
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "elegant luxury serif" --domain typography
 ```
 
-Supported domains:
+支持的 domains：
 - `product`
 - `style`
 - `color`
@@ -79,13 +79,13 @@ Supported domains:
 - `chart`
 - `ux`
 
-### 4. Add stack-specific guidance before coding
+### 4. 编码前补足 stack-specific guidance
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/scripts/search.py" "forms table responsive" --stack html-tailwind
 ```
 
-Supported stacks:
+支持的 stacks：
 - `html-tailwind`
 - `react`
 - `nextjs`
@@ -97,40 +97,40 @@ Supported stacks:
 - `shadcn`
 - `jetpack-compose`
 
-### 5. Synthesize before implementation
+### 5. 实现前先做综合
 
-After gathering the design system, convert it into:
-- layout structure,
-- component rules,
-- visual tokens,
-- interaction rules,
-- accessibility constraints,
-- implementation notes for the chosen stack.
+在收集到 design system 后，将其转化为：
+- layout structure
+- component rules
+- visual tokens
+- interaction rules
+- accessibility constraints
+- 面向选定 stack 的 implementation notes
 
-Do not dump raw search output into the final answer. Use it to justify a coherent design direction.
+不要把原始 search 输出直接塞进最终答案。要把它综合成一个连贯的设计方向。
 
-## Default output shape
+## 默认输出形态
 
-A good response should usually include:
-1. product and UI framing,
-2. recommended style system,
-3. palette and typography,
-4. component and layout rules,
-5. accessibility and interaction checks,
-6. stack-aware implementation notes.
+一个好的回答通常应包含：
+1. product 和 UI framing
+2. 推荐的 style system
+3. palette 和 typography
+4. component 与 layout rules
+5. accessibility 和 interaction checks
+6. stack-aware implementation notes
 
-## Safety rules
+## 安全规则
 
-- Do not hardcode a design language without connecting it to the product type.
-- Do not use emoji as primary UI iconography.
-- Do not weaken text contrast for visual flair.
-- Do not scale interactive cards on hover if it destabilizes layout.
-- Do not use animation that violates `prefers-reduced-motion`.
-- Do not invent unsupported helper scripts or datasets; use the bundled `search.py` and `data/ui-reasoning.csv` only.
+- 不要在未连接 product type 的前提下硬套某种 design language。
+- 不要把 emoji 当作主要 UI iconography。
+- 不要为了视觉炫技而削弱文本对比度。
+- 不要在 hover 时让交互卡片缩放到破坏布局稳定性。
+- 不要使用违反 `prefers-reduced-motion` 的动画。
+- 不要虚构不存在的 helper scripts 或 datasets；只使用 bundled `search.py` 和 `data/ui-reasoning.csv`。
 
 ## References
 
-Load only what is needed:
-- `references/USAGE.md` - recommended command patterns and retrieval flow
-- `data/ui-reasoning.csv` - compact product-to-design heuristics used by the helper script
-- `scripts/search.py` - deterministic helper for design-system, domain, and stack lookup
+按需加载：
+- `references/USAGE.md` - 推荐命令模式与检索流程
+- `data/ui-reasoning.csv` - helper script 使用的紧凑型 product-to-design heuristics
+- `scripts/search.py` - 用于 design-system、domain 和 stack 查找的确定性 helper

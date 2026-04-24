@@ -1,140 +1,156 @@
-# Note Routing
+# Note 路由规则
 
-## First decide: durable note or raw material
+## 先判断：durable note 还是 raw material
 
 ### Durable note
 
-Treat content as a durable note when it is:
-- likely to be referenced again after days or weeks,
-- about a clearly bounded object,
-- already stable enough to stand on its own,
-- suitable to become the canonical note for that object.
+当内容满足以下条件时，应视为 durable note：
+
+- 几天或几周后仍可能被引用
+- 针对的是边界清晰的对象
+- 已足够稳定，可以独立存在
+- 适合成为该对象的 canonical note
 
 ### Raw material
 
-Treat content as raw material when it is:
-- a short-lived intermediate artifact,
-- a draft, memo, scratch note, or meeting fragment,
-- an unverified analysis dump,
-- incomplete support for a note that already exists.
+当内容满足以下条件时，应视为 raw material：
 
-Default rule: **raw material should be summarized before promotion**.
+- 只是短生命周期中间产物
+- draft、memo、scratch note 或 meeting fragment
+- 尚未验证的 analysis dump
+- 只是已有笔记的不完整补充
 
-## Route by knowledge type
+默认规则：**raw material 先总结，再 promote**。
+
+## 按知识类型路由
 
 ### Knowledge
 
-Write to `Knowledge/` when the content is stable and explanatory:
-- project background
-- research questions
-- dataset protocol
-- method landscape
+稳定且解释性的内容写到 `Knowledge/`，例如：
+
+- 项目背景
+- 研究问题
+- 数据协议
+- 方法图谱
 - source inventory
 - codebase overview
 
-Do not put these here by default:
-- temporary ideas,
-- unverified hypotheses with no stable framing,
-- daily execution logs.
+默认不要放：
+
+- 临时想法
+- 尚无稳定 framing 的未验证 hypothesis
+- daily 执行日志
 
 ### Papers
 
-Write to `Papers/` when the content is primarily literature-facing:
-- single paper notes
-- related-work summaries
-- paper-to-project relevance notes
-- reading notes and literature synthesis
+以文献为中心的内容写到 `Papers/`，例如：
 
-Do not put these here by default:
-- project-only summaries with no literature object,
-- raw meeting notes about papers,
-- unrelated implementation notes.
+- 单篇论文笔记
+- related-work 总结
+- 论文与项目关系说明
+- 阅读笔记和文献综合
+
+默认不要放：
+
+- 没有文献对象的项目内部总结
+- 关于论文的 raw meeting notes
+- 无关实现笔记
 
 ### Experiments
 
-Write to `Experiments/` when the content is about what was run or will be run:
+关于“已经运行或将要运行什么”的内容写到 `Experiments/`，例如：
+
 - experiment design
 - runbook
 - ablation
 - baseline comparison setup
 - freezing / transfer / screening study
 
-Do not put these here by default:
-- raw metric dumps with no interpretation,
-- broad project framing,
-- final cross-experiment claims that belong in `Results/`.
+默认不要放：
+
+- 没有解释的 raw metric dump
+- 宽泛的项目 framing
+- 应写到 `Results/` 的最终跨实验结论
 
 ### Results
 
-Write to `Results/` when the content captures a durable finding:
-- final comparison
-- mechanism conclusion
-- collapse diagnosis
-- figure and csv index
-- cross-experiment interpretation
-- stable canonical claim that should survive beyond one report
+能表达 durable finding 的内容写到 `Results/`，例如：
 
-Do not put these here by default:
-- unprocessed analysis output,
-- notes that merely restate the experiment setup,
-- temporary result speculation that still belongs in `Daily/`.
+- 最终比较
+- 机制结论
+- collapse diagnosis
+- 图表和 csv 索引
+- 跨实验解释
+- 能脱离单份报告长期存在的 canonical claim
+
+默认不要放：
+
+- 未处理的 analysis output
+- 只是重复 experiment setup 的笔记
+- 仍应留在 `Daily/` 的临时结果猜测
 
 ### Results Reports
 
-Write to `Results/Reports/` when the content is a **complete internal experiment summary report**:
-- one experiment round retrospective,
-- one batch report for a coherent experiment line,
-- one decision-oriented wrap-up note backed by analysis artifacts.
+完整的内部实验总结报告写到 `Results/Reports/`，例如：
 
-These notes should use the naming contract:
+- 单轮实验 retrospective
+- 一条连贯 experiment line 的 batch report
+- 由 analysis artifacts 支撑的、面向决策的 wrap-up note
+
+文件命名应遵循：
+
 - `YYYY-MM-DD--{experiment-line}--r{round}--{purpose}.md`
 
-Do not put these here by default:
-- manuscript-facing draft text,
-- raw metric dumps,
-- vague summaries without one date / line / round / purpose.
+默认不要放：
+
+- 面向 manuscript 的草稿文字
+- raw metric dumps
+- 没有明确 date / line / round / purpose 的模糊总结
 
 ### Writing
 
-Write to `Writing/` when the content is meant for external output:
+面向外部输出的内容写到 `Writing/`，例如：
+
 - paper draft fragments
 - slide narrative
 - rebuttal notes
 - proposal text
 
-Internal experiment reports do **not** belong here unless they are already external-facing writing artifacts.
+内部实验报告默认**不**放这里，除非它已经是对外写作产物。
 
 ### Daily
 
-Write to `Daily/` when the content is transient or process-oriented:
-- what happened today
-- short sync queue
+瞬时或过程性内容写到 `Daily/`，例如：
+
+- 今天发生了什么
+- 简短 sync 队列
 - quick scratch ideas
-- temporary planning fragments
-- lightweight meeting notes
+- 临时计划碎片
+- 轻量 meeting notes
 
-Do not let `Daily/` become the long-term home for canonical project knowledge. Promote durable content later.
+不要让 `Daily/` 长期承载 canonical project knowledge；耐久内容后续应 promote。
 
-## Main routing rule
+## 主路由规则
 
-If a note will still matter after several days or weeks, prefer `Knowledge/`, `Experiments/`, `Results/`, `Results/Reports/`, `Papers/`, or `Writing/`.
+如果一个 note 在几天或几周后仍重要，优先放到 `Knowledge/`、`Experiments/`、`Results/`、`Results/Reports/`、`Papers/` 或 `Writing/`。
 
-If the note is mainly about today's progress or temporary organization, prefer `Daily/`.
+如果它主要反映今天的进展或临时组织，优先放到 `Daily/`。
 
-## Cross-folder promotion defaults
+## 跨文件夹 promote 默认路径
 
-Treat these folders as a research pipeline, not as independent buckets:
+把这些文件夹视为 research pipeline，而不是彼此独立的桶：
 
-- `Papers/` should usually answer: what should we test, compare, or borrow?
-- `Experiments/` should usually answer: what exactly are we running, and what finding would matter?
-- `Results/` should usually answer: what do we now believe, with evidence?
-- `Results/Reports/` should usually answer: what happened in this round or batch, and what decision does it imply?
-- `Writing/` should usually answer: what should be said externally because of those results?
+- `Papers/` 通常回答：我们应该测试、比较或借鉴什么？
+- `Experiments/` 通常回答：到底在跑什么，以及什么发现才重要？
+- `Results/` 通常回答：基于证据，我们现在相信什么？
+- `Results/Reports/` 通常回答：这轮 / 这一批发生了什么，以及它意味着什么决策？
+- `Writing/` 通常回答：基于这些结果，对外应该写什么？
 
-Default promotion path:
+默认 promote 路径：
+
 - paper insight -> experiment note
 - stable experiment finding -> result note
 - coherent round/batch retrospective -> results report note
 - durable result claim -> writing note
 
-If a turn reaches only one stage, keep it there. But when the next stage is already clear, prefer updating the next canonical note instead of leaving the chain broken.
+如果一轮工作只到达其中一个阶段，就停在那里；但如果下一阶段已经很清楚，优先同步更新下游 canonical note，不要让链路断开。

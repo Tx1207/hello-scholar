@@ -1,4 +1,4 @@
-# Debugging Tools
+# 调试工具速查
 
 ## Python
 ```bash

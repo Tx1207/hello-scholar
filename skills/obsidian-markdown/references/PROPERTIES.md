@@ -1,6 +1,6 @@
-# Properties (Frontmatter) Reference
+# Properties（Frontmatter）参考
 
-Properties use YAML frontmatter at the start of a note:
+Properties 使用位于笔记开头的 YAML frontmatter：
 
 ```yaml
 ---
@@ -21,7 +21,7 @@ due: 2024-02-01T14:30:00
 ---
 ```
 
-## Property Types
+## Property 类型
 
 | Type | Example |
 |------|---------|
@@ -30,14 +30,14 @@ due: 2024-02-01T14:30:00
 | Checkbox | `completed: true` |
 | Date | `date: 2024-01-15` |
 | Date & Time | `due: 2024-01-15T14:30:00` |
-| List | `tags: [one, two]` or YAML list |
+| List | `tags: [one, two]` 或 YAML 列表 |
 | Links | `related: "[[Other Note]]"` |
 
-## Default Properties
+## 默认 Properties
 
-- `tags` - Note tags (searchable, shown in graph view)
-- `aliases` - Alternative names for the note (used in link suggestions)
-- `cssclasses` - CSS classes applied to the note in reading/editing view
+- `tags`：笔记标签，可搜索，也会出现在 graph view
+- `aliases`：笔记别名，会用于链接建议
+- `cssclasses`：应用到阅读/编辑视图中的 CSS classes
 
 ## Tags
 
@@ -48,9 +48,14 @@ due: 2024-02-01T14:30:00
 #tag_with_underscores
 ```
 
-Tags can contain: letters (any language), numbers (not first character), underscores `_`, hyphens `-`, forward slashes `/` (for nesting).
+Tags 可以包含：
+- 任意语言的字母
+- 数字（但不能作为首字符）
+- 下划线 `_`
+- 连字符 `-`
+- 正斜杠 `/`（用于嵌套）
 
-In frontmatter:
+在 frontmatter 中可这样写：
 
 ```yaml
 ---

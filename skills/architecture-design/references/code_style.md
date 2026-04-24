@@ -1,8 +1,8 @@
-# Code Style Guidelines
+# 代码风格指南
 
-## Type Annotations
+## 类型标注
 
-Always use type hints for function signatures and class attributes:
+函数签名和 class attributes 始终使用 type hints：
 
 ```python
 from typing import Dict, List, Optional, Tuple
@@ -25,9 +25,9 @@ class MyModel(nn.Module):
         self.output_dim: int = cfg.model.output_dim
 ```
 
-## Import Order
+## Import 顺序
 
-Organize imports in three sections with blank lines between:
+将 imports 分成三段，并在各段之间留空行：
 
 ```python
 # 1. Standard library imports
@@ -47,11 +47,11 @@ from src.utils.helpers import import_modules
 from src.model_module.brain_decoder import register_model
 ```
 
-## __init__.py Files
+## `__init__.py` 文件
 
-### Module __init__.py (with factory)
+### 模块级 `__init__.py`（带 factory）
 
-Contains factory/registry logic and auto-import:
+包含 factory / registry 逻辑和 auto-import：
 
 ```python
 # src/data_module/dataset/__init__.py
@@ -82,14 +82,14 @@ models_dir = os.path.dirname(__file__)
 import_modules(models_dir, "src.data_module.dataset")
 ```
 
-### Subpackage __init__.py (can be empty)
+### 子包 `__init__.py`（可为空）
 
 ```python
 # src/data_module/augmentation/__init__.py
 # Empty file - just marks as package
 ```
 
-Or with exports:
+或者仅用于导出：
 
 ```python
 # src/data_module/__init__.py
@@ -97,16 +97,16 @@ from .dataset import DatasetFactory, register_dataset
 from .augmentation import AugmentationFactory
 ```
 
-## Naming Conventions
+## 命名约定
 
-### Files
+### 文件
 
-- **Modules**: `simple_dataset.py`, `custom_model.py`
-- **Pipelines**: `training.sh`, `inference.sh`
-- **Configs**: `config.yaml`, `brain_decoder.yaml`
-- **Utilities**: `get_optimizer.py`, `helpers.py`, `compute_metrics.py`
+- **Modules**：`simple_dataset.py`、`custom_model.py`
+- **Pipelines**：`training.sh`、`inference.sh`
+- **Configs**：`config.yaml`、`brain_decoder.yaml`
+- **Utilities**：`get_optimizer.py`、`helpers.py`、`compute_metrics.py`
 
-### Classes and Functions
+### Classes 和 Functions
 
 ```python
 # Classes: PascalCase
@@ -127,7 +127,7 @@ learning_rate = 0.001
 batch_size = 32
 ```
 
-### Constants
+### 常量
 
 ```python
 # Constants: UPPER_SNAKE_CASE
@@ -138,7 +138,7 @@ LEARNING_RATE = 0.001
 
 ## Docstrings
 
-Use Google-style docstrings:
+使用 Google-style docstrings：
 
 ```python
 def DatasetFactory(data_name: str) -> type:
@@ -156,9 +156,9 @@ def DatasetFactory(data_name: str) -> type:
     pass
 ```
 
-## Configuration-Driven Classes
+## Config-Driven Classes
 
-Model classes must be config-driven:
+Model classes 必须是 config-driven：
 
 ```python
 @register_model('MyModel')
@@ -192,7 +192,7 @@ class MyModel(nn.Module):
         return {"loss": loss, "labels": labels, "logits": logits}
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 def DatasetFactory(data_name: str) -> type:
@@ -222,13 +222,13 @@ class CustomDataset(Dataset):
         logger.debug(f"Config: {cfg.dataset}")
 ```
 
-## Code Review Checklist
+## 代码审查清单
 
-- [ ] All functions have type hints
-- [ ] Imports are correctly ordered
-- [ ] Classes use PascalCase, functions use snake_case
-- [ ] Docstrings follow Google style
-- [ ] Model classes are config-driven
-- [ ] Registration decorators are used
-- [ ] Error messages are informative
-- [ ] Logging is added for key operations
+- [ ] 所有函数都有 type hints
+- [ ] imports 顺序正确
+- [ ] Classes 使用 PascalCase，functions 使用 snake_case
+- [ ] Docstrings 遵循 Google style
+- [ ] Model classes 是 config-driven
+- [ ] 使用了 registration decorators
+- [ ] 错误信息具有可读性
+- [ ] 关键操作加入 logging

@@ -1,29 +1,29 @@
 ---
 name: defuddle
-description: Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page.
+description: 使用 Defuddle CLI 从网页中提取干净 Markdown 内容，移除导航和杂乱内容以节省 tokens。当用户提供 URL 需要阅读或分析在线文档、文章、博客或标准网页时，优先用它替代 WebFetch。
 ---
 
 # Defuddle
 
-Use Defuddle CLI to extract clean readable content from web pages. Prefer over WebFetch for standard web pages — it removes navigation, ads, and clutter, reducing token usage.
+使用 Defuddle CLI 从网页中提取干净、可读内容。处理标准网页时优先于 WebFetch 使用，因为它能移除导航、广告和杂乱内容，减少 token 消耗。
 
-If not installed: `npm install -g defuddle`
+如未安装：`npm install -g defuddle`
 
-## Usage
+## 用法
 
-Always use `--md` for markdown output:
+始终使用 `--md` 输出 Markdown：
 
 ```bash
 defuddle parse <url> --md
 ```
 
-Save to file:
+保存到文件：
 
 ```bash
 defuddle parse <url> --md -o content.md
 ```
 
-Extract specific metadata:
+提取特定 metadata：
 
 ```bash
 defuddle parse <url> -p title
@@ -31,11 +31,11 @@ defuddle parse <url> -p description
 defuddle parse <url> -p domain
 ```
 
-## Output formats
+## 输出格式
 
 | Flag | Format |
 |------|--------|
-| `--md` | Markdown (default choice) |
-| `--json` | JSON with both HTML and markdown |
+| `--md` | Markdown（默认选择） |
+| `--json` | 包含 HTML 和 markdown 的 JSON |
 | (none) | HTML |
-| `-p <name>` | Specific metadata property |
+| `-p <name>` | 指定 metadata 属性 |

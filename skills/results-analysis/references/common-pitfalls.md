@@ -1,28 +1,28 @@
-# Common Pitfalls in Experimental Analysis
+# 实验分析常见陷阱
 
-## Statistical pitfalls
-- Reporting only the best run
-- Mixing seed-level and subject-level units
-- Running many contrasts without correction
-- Reporting significance without effect size
-- Using parametric tests after failed assumptions without explanation
+## 统计陷阱
+- 只报告 best run
+- 混用 seed-level 和 subject-level 分析单元
+- 多次对比却不做校正
+- 只报告显著性，不报告效应量
+- 假设检验未通过后仍使用参数检验，且不解释原因
 
-## Visualization pitfalls
-- No real figure despite readable data
-- Plot without uncertainty information
-- Overcrowded multi-panel figure with no message hierarchy
-- Caption missing n / error-bar meaning
-- Figure not referenced or interpreted in text
+## 可视化陷阱
+- 数据可读却没有画真实图
+- 图中没有不确定性信息
+- 多面板图过于拥挤且没有信息层级
+- Caption 缺少 n 或 error bar 含义
+- 正文没有引用或解释图
 
-## Reasoning pitfalls
-- Confusing correlation with mechanism
-- Treating trend as conclusion
-- Ignoring negative results
-- Hiding instability behind a mean value
-- Turning raw logs into durable conclusions too early
+## 推理陷阱
+- 把相关性误当机制
+- 把趋势当成结论
+- 忽略负结果
+- 用均值掩盖不稳定性
+- 过早把 raw logs 转成持久结论
 
-## Reporting pitfalls
-- Writing paper prose before evidence is stabilized
-- Mixing analysis artifact with final narrative artifact
-- Not separating blocker from conclusion
-- Forgetting to state what decision the analysis changes
+## 报告陷阱
+- 证据尚未稳定就写论文正文
+- 混淆 analysis artifact 和最终叙事产物
+- 没有区分 blocker 与 conclusion
+- 忘记说明该分析改变了什么决策

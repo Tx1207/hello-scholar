@@ -1,6 +1,6 @@
-- Intent understood
-- Correctness checked
-- Tests reviewed
-- Security checked
-- Performance checked
-- Decision recorded
+- 已理解变更意图
+- 已检查正确性
+- 已检查测试
+- 已检查安全性
+- 已检查性能
+- 已记录结论

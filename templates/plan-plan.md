@@ -1,8 +1,8 @@
-# Plan: {{title}}
+# 计划：{{title}}
 
-- Route: `{{route}}`
-- Tier: `{{tier}}`
+- Route：`{{route}}`
+- Tier：`{{tier}}`
 
-## Approach
+## 实施方案
 
 {{approach}}

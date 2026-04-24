@@ -1,11 +1,11 @@
 ## Summary
-- Scope:
-- Overall verdict:
+- 范围：
+- 总体结论：
 
 ## Strengths
 - 
 
-## Required changes
+## Required Changes
 - 
 
 ## Suggestions

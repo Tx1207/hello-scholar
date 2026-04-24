@@ -1,13 +1,13 @@
-# Statistical Appendix
+# 统计附录
 
-## Primary Metric
-- Word Error Rate (WER), lower is better.
+## 主要指标
+- Word Error Rate（WER），越低越好。
 
-## Sample Structure
-- Unit of analysis: seed-level run, paired by shared data split and subject pool.
-- Number of seeds per condition: 5.
+## 样本结构
+- 分析单元：seed-level run，按共享数据划分和 subject pool 配对。
+- 每个条件的 seed 数量：5。
 
-## Descriptive Statistics
+## 描述性统计
 
 | Condition | Mean WER | Std | 95% CI |
 |---|---:|---:|---:|
@@ -15,22 +15,22 @@
 | Subject Adapter | 33.2 | 1.3 | [32.1, 34.3] |
 | Frozen Encoder | 37.0 | 2.1 | [35.1, 38.9] |
 
-## Assumption Checks
+## 假设检查
 - Shapiro-Wilk on paired differences: `p = 0.19`
-- No strong evidence against normality for the primary contrast.
-- Given small n, interpretation remains conservative.
+- 对主要对比，没有强证据反对正态性假设。
+- 鉴于 n 较小，解释保持保守。
 
-## Inferential Tests
+## 推断检验
 
 | Contrast | Test | Statistic | p | Effect size | Correction |
 |---|---|---|---:|---:|---|
 | Subject Adapter vs Frozen Encoder | paired t-test | `t(4) = -4.11` | 0.014 | Cohen's `d = 1.84` | Holm |
 | Full fine-tuning vs Subject Adapter | paired t-test | `t(4) = -2.03` | 0.112 | Cohen's `d = 0.91` | Holm |
 
-## Interpretation Guardrails
-- First contrast is supported after correction.
-- Second contrast trends in favor of full fine-tuning but is not conclusive at this sample size.
+## 解释边界
+- 第一组对比在校正后仍得到支持。
+- 第二组对比趋势偏向 full fine-tuning，但在当前样本量下尚无定论。
 
-## Blockers / Limits
-- No subject-level bootstrap yet.
-- No calibration analysis available.
+## 阻塞项 / 限制
+- 尚未做 subject-level bootstrap。
+- 暂无 calibration analysis。

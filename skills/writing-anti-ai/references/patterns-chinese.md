@@ -1,6 +1,6 @@
 # 中文 AI 写作模式 - 完整参考
 
-Complete Chinese AI Writing Patterns Reference.
+完整的中文 AI 写作模式参考指南。
 
 ## 内容模式 (CONTENT PATTERNS)
 

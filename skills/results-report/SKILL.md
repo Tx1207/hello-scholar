@@ -1,56 +1,56 @@
 ---
 name: results-report
-description: This skill should be used when the user asks to "write an experiment report", "summarize experimental results", "do experiment retrospection", "write a results report", "写实验总结报告", "写实验复盘", or mentions turning completed experiment artifacts into a structured, decision-oriented research report. It assumes strict analysis should come from `results-analysis` first.
+description: 当用户要求 “write an experiment report”、“summarize experimental results”、“do experiment retrospection”、“write a results report”、“写实验总结报告” 或 “写实验复盘”，或提到希望把已完成实验产物整理成结构化、面向决策的研究报告时使用该 skill。它假设严格分析应首先由 `results-analysis` 完成。
 version: 0.1.0
 tags: [Research, Reporting, Experiments, Obsidian]
 ---
 
 # Results Report
 
-Write the **complete post-experiment summary report** after analysis artifacts are ready.
+在 analysis artifacts 准备好之后，撰写**完整的实验后总结报告**。
 
-This skill is for the stage **after** `results-analysis`.
+该 skill 适用于 `results-analysis` **之后**的阶段。
 
-## Role boundary
+## 角色边界
 
-### `results-analysis` does
-- strict statistics,
-- real figures,
-- figure interpretation scaffolding,
-- stats appendix.
+### `results-analysis` 负责
+- 严格统计
+- 真实 figures
+- 图表解释脚手架
+- stats appendix
 
-### `results-report` does
-- complete experiment wrap-up report,
-- decision-oriented narrative,
-- figure-by-figure interpretation inside a coherent structure,
-- limitations, failure cases, and next actions,
-- Obsidian write-back into `Results/Reports/`.
+### `results-report` 负责
+- 完整实验 wrap-up report
+- 面向决策的叙事
+- 在统一结构中的逐图解释
+- limitations、failure cases 和 next actions
+- 写回 Obsidian 的 `Results/Reports/`
 
-Do not replace strict analysis with confident prose. If the analysis bundle is missing, first identify the blocker and request or produce the missing bundle.
+不要用自信 prose 去替代严格分析。如果 analysis bundle 缺失，先识别阻塞项，再请求或生成缺失 bundle。
 
-## Default output
+## 默认输出
 
-The default report is an **internal research report**, not manuscript prose.
+默认报告是一份 **内部研究报告**，而不是 manuscript prose。
 
-It should be named as:
+文件名应采用：
 
 ```text
 YYYY-MM-DD--{experiment-line}--r{round}--{purpose}.md
 ```
 
-Example:
+示例：
 - `2026-03-18--freezing--r03--transfer-summary.md`
 - `2026-03-18--contrastive-adversarial--r02--ablation-report.md`
 
-The note title should be:
+笔记标题应为：
 
 ```text
 {Experiment Line} / Round {N} / {Purpose} / {YYYY-MM-DD}
 ```
 
-Read `references/report-naming.md` before finalizing the filename or note title.
+最终确定文件名或标题前，先阅读 `references/report-naming.md`。
 
-## Required frontmatter
+## 必需 frontmatter
 
 ```yaml
 ---
@@ -70,9 +70,9 @@ linked_results:
 ---
 ```
 
-## Default report structure
+## 默认报告结构
 
-The report must include all sections below.
+报告必须包含以下全部 sections：
 
 1. **Executive Summary**
 2. **Experiment Identity and Decision Context**
@@ -85,92 +85,92 @@ The report must include all sections below.
 9. **Next Actions**
 10. **Artifact and Reproducibility Index**
 
-Read `references/report-structure.md` before writing.
+写作前请阅读 `references/report-structure.md`。
 
-## Workflow
+## 工作流
 
-### 1. Confirm the report object
+### 1. 确认报告对象
 
-Lock these fields first:
-- date,
-- experiment line,
-- round,
-- purpose,
-- linked experiment note,
-- linked durable result note if one already exists.
+先锁定这些字段：
+- date
+- experiment line
+- round
+- purpose
+- linked experiment note
+- 如已存在，则锁定 durable result note
 
-If round is unknown, do not silently invent a semantic round. Use `r00` only as a temporary placeholder and state that it should be normalized later.
+如果 round 不明确，不要静默捏造语义化轮次。可暂时使用 `r00` 占位，但要明确说明后续需要规范化。
 
-### 2. Read the strict analysis bundle
+### 2. 读取严格分析 bundle
 
-Minimum required inputs:
+最小必需输入：
 - `analysis-report.md`
 - `stats-appendix.md`
 - `figure-catalog.md`
-- actual figures, if available
+- 实际 figures（如可用）
 
-If these are missing, either generate them first with `results-analysis` or explicitly state which claims cannot be supported.
+如果这些内容缺失，要么先通过 `results-analysis` 生成，要么明确说明哪些 claims 无法被支撑。
 
-### 3. Write the report as a decision object
+### 3. 把报告写成一个决策对象
 
-This report is not a transcript of outputs.
+这份报告不是对输出的流水账记录。
 
-Each section must answer a real question:
-- What did we test?
-- What changed numerically?
-- What is actually supported?
-- What failed or remains uncertain?
-- What should we do next?
+每个 section 都必须回答一个真实问题：
+- 我们测试了什么？
+- 数值上发生了什么变化？
+- 哪些结论真的被支撑？
+- 什么失败了或仍然不确定？
+- 下一步应该做什么？
 
-Read `references/decision-oriented-analysis.md` for the expected reasoning depth.
+关于需要达到的推理深度，阅读 `references/decision-oriented-analysis.md`。
 
-### 4. Interpret figures inside the report
+### 4. 在报告内部解释 figures
 
-Do not only attach figures.
+不要只附图。
 
-For each main figure:
-- introduce why it is included,
-- state the key observation,
-- explain the supported interpretation,
-- explain the decision implication.
+对每个主图：
+- 说明为什么放这张图
+- 指出关键观察
+- 解释被支撑的结论
+- 解释对决策的影响
 
-Read `references/figure-interpretation.md` and `references/statistical-completeness.md` as needed.
+必要时阅读 `references/figure-interpretation.md` 和 `references/statistical-completeness.md`。
 
-### 5. Choose the write target explicitly
+### 5. 显式选择写入目标
 
-If the current repo is bound to an Obsidian project knowledge base:
-- create or update `Results/Reports/{report-name}.md`,
-- link back to the relevant `Experiments/` note,
-- update the matching canonical `Results/` note when a durable conclusion is now supported,
-- append a short trace to today's `Daily/` note,
-- update `hello-scholar/project-memory/<project_id>.md`.
+如果当前 repo 已绑定 Obsidian project knowledge base：
+- 创建或更新 `Results/Reports/{report-name}.md`
+- 链接回对应的 `Experiments/` note
+- 当稳定结论成立时，更新匹配的 canonical `Results/` note
+- 在当天 `Daily/` note 中追加简短轨迹
+- 更新 `hello-scholar/project-memory/<project_id>.md`
 
-If the repo is **not** bound:
-- write the report as a local markdown artifact in the requested output location or next to the analysis bundle,
-- keep the same filename contract,
-- explicitly say that no Obsidian write-back was attempted.
+如果 repo **未绑定**：
+- 在用户要求的输出位置，或 analysis bundle 邻近路径下，写出本地 markdown artifact
+- 保持同样文件命名约定
+- 明确说明没有尝试 Obsidian write-back
 
-Use `obsidian-project-memory` conventions only for bound repos. Internal experiment reports belong in `Results/Reports/`, not `Writing/`.
+仅在 bound repo 中使用 `obsidian-project-memory` 约定。内部实验报告应放在 `Results/Reports/`，而不是 `Writing/`。
 
-### 6. End with explicit next actions
+### 6. 以明确的 next actions 结尾
 
-The report must end with operational decisions, for example:
-- stop a weak branch,
-- schedule one missing ablation,
-- promote a stable finding into manuscript-facing writing,
-- update the active plan.
+报告必须以操作性决策收尾，例如：
+- 停止一条弱分支
+- 安排一个缺失的 ablation
+- 将稳定发现提升到 manuscript-facing writing
+- 更新当前 active plan
 
-## Required quality bar
+## 必需质量标准
 
-- The report must be dateable, searchable, and attributable to one experiment line and one round.
-- The report must cite actual evidence from the analysis bundle.
-- The report must include negative results when they matter.
-- The report must separate stable conclusion from tentative interpretation.
-- The report must say what changed in project belief and what should happen next.
+- 报告必须可按日期检索，并可归因到一个 experiment line 和一个 round
+- 报告必须引用 analysis bundle 中的真实证据
+- 当负面结果重要时，必须包含 negative results
+- 报告必须区分稳定结论和暂时性解释
+- 报告必须明确：项目认知发生了什么变化，接下来应做什么
 
-## Reference files
+## 参考文件
 
-Load only what is needed:
+按需加载：
 - `references/report-structure.md`
 - `references/report-naming.md`
 - `references/figure-interpretation.md`

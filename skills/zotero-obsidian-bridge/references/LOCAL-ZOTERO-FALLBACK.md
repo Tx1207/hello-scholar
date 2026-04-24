@@ -1,22 +1,22 @@
-# Local Zotero Fallback
+# 本地 Zotero 回退方案
 
-Use this runbook when the Zotero MCP transport is unavailable but the user still wants a collection-level pass.
+当 Zotero MCP 传输层不可用，但用户仍希望按 collection 做一轮处理时，使用这份 runbook。
 
-## Preconditions
+## 前置条件
 
-- A local `zotero-mcp` checkout or installed Python package is available.
-- The local environment can read metadata/fulltext without mutating the Zotero library.
+- 本地可用 `zotero-mcp` 源码 checkout 或已安装的 Python 包。
+- 本地环境可以读取 metadata/fulltext，且不会修改 Zotero 库。
 
-## Default fallback sequence
+## 默认回退顺序
 
-1. Confirm that MCP transport is the failing layer, not the collection query itself.
-2. Switch to the local Python-backed path for metadata and fulltext retrieval.
-3. Continue creating or updating canonical paper notes.
-4. Run `verify_paper_notes.py` before closing the batch.
+1. 先确认失败的是 MCP 传输层，而不是 collection 查询本身。
+2. 切换到本地 Python 路径来获取 metadata 和 fulltext。
+3. 继续创建或更新规范 paper note。
+4. 在结束批处理前运行 `verify_paper_notes.py`。
 
-## Report explicitly
+## 必须明确报告
 
-Always state:
-- that MCP transport failed,
-- that the workflow continued through local fallback,
-- what remained unavailable, if anything.
+始终说明：
+- MCP 传输层失败了；
+- 工作流已经通过本地回退继续执行；
+- 如果仍有不可用部分，也要明确写出。

@@ -1,30 +1,30 @@
-# LaTeX Templates for ML/AI Conferences
+# ML/AI 会议 LaTeX 模板说明
 
-This directory contains official LaTeX templates for major machine learning and AI conferences.
+这个目录收录了常见 ML/AI 会议的 LaTeX 模板，便于在论文写作阶段直接选用官方或接近官方的模板骨架。
 
 ---
 
-## Compiling LaTeX to PDF
+## 如何把 LaTeX 编译成 PDF
 
-### Option 1: VS Code with LaTeX Workshop (Recommended)
+### 方案 1：VS Code + LaTeX Workshop（推荐）
 
-**Setup:**
-1. Install [TeX Live](https://www.tug.org/texlive/) (full distribution recommended)
-   - macOS: `brew install --cask mactex`
-   - Ubuntu: `sudo apt install texlive-full`
-   - Windows: Download from [tug.org/texlive](https://www.tug.org/texlive/)
+**环境准备：**
 
-2. Install VS Code extension: **LaTeX Workshop** by James Yu
-   - Open VS Code → Extensions (Cmd/Ctrl+Shift+X) → Search "LaTeX Workshop" → Install
+1. 安装 [TeX Live](https://www.tug.org/texlive/)。
+   - macOS：`brew install --cask mactex`
+   - Ubuntu：`sudo apt install texlive-full`
+   - Windows：从 [tug.org/texlive](https://www.tug.org/texlive/) 下载
+2. 在 VS Code 中安装扩展 **LaTeX Workshop**。
 
-**Usage:**
-- Open any `.tex` file in VS Code
-- Save the file (Cmd/Ctrl+S) → Auto-compiles to PDF
-- Click the green play button or use `Cmd/Ctrl+Alt+B` to build
-- View PDF: Click "View LaTeX PDF" icon or `Cmd/Ctrl+Alt+V`
-- Side-by-side view: `Cmd/Ctrl+Alt+V` then drag tab
+**基本用法：**
 
-**Settings** (add to VS Code `settings.json`):
+- 在 VS Code 中打开任意 `.tex` 文件
+- 保存文件后触发自动编译
+- 或使用 `Cmd/Ctrl+Alt+B` 手动 build
+- 用 `Cmd/Ctrl+Alt+V` 打开 PDF 预览
+
+**推荐设置**（写入 VS Code `settings.json`）：
+
 ```json
 {
   "latex-workshop.latex.autoBuild.run": "onSave",
@@ -38,210 +38,215 @@ This directory contains official LaTeX templates for major machine learning and 
 }
 ```
 
-### Option 2: Command Line
+### 方案 2：命令行
 
 ```bash
-# Basic compilation
+# 基础编译
 pdflatex main.tex
 
-# With bibliography (full workflow)
+# 含参考文献的标准流程
 pdflatex main.tex
 bibtex main
 pdflatex main.tex
 pdflatex main.tex
 
-# Using latexmk (handles dependencies automatically)
+# 使用 latexmk 自动处理依赖
 latexmk -pdf main.tex
 
-# Continuous compilation (watches for changes)
+# 持续编译
 latexmk -pdf -pvc main.tex
 ```
 
-### Option 3: Overleaf (Online)
+### 方案 3：Overleaf
 
-1. Go to [overleaf.com](https://www.overleaf.com)
-2. New Project → Upload Project → Upload the template folder as ZIP
-3. Edit online with real-time PDF preview
-4. No local installation needed
+1. 打开 [overleaf.com](https://www.overleaf.com)
+2. 新建项目并上传对应模板目录的 ZIP
+3. 在线编辑与编译
+4. 适合不想本地配置 LaTeX 的场景
 
-### Option 4: Other IDEs
+### 方案 4：其他 IDE
 
-| IDE | Extension/Plugin | Notes |
-|-----|------------------|-------|
-| **Cursor** | LaTeX Workshop | Same as VS Code |
-| **Sublime Text** | LaTeXTools | Popular, well-maintained |
-| **Vim/Neovim** | VimTeX | Powerful, keyboard-driven |
-| **Emacs** | AUCTeX | Comprehensive LaTeX environment |
-| **TeXstudio** | Built-in | Dedicated LaTeX IDE |
-| **Texmaker** | Built-in | Cross-platform LaTeX editor |
+| IDE | 扩展/插件 | 说明 |
+|-----|-----------|------|
+| Cursor | LaTeX Workshop | 用法与 VS Code 接近 |
+| Sublime Text | LaTeXTools | 生态成熟 |
+| Vim/Neovim | VimTeX | 适合键盘驱动工作流 |
+| Emacs | AUCTeX | 功能完整 |
+| TeXstudio | 内置 | 独立 LaTeX IDE |
+| Texmaker | 内置 | 跨平台 |
 
-### Troubleshooting Compilation
+### 常见编译问题
 
-**"File not found" errors:**
+**找不到文件：**
+
 ```bash
-# Ensure you're in the template directory
 cd templates/icml2026
 pdflatex example_paper.tex
 ```
 
-**Bibliography not appearing:**
+**参考文献没有出现：**
+
 ```bash
-# Run bibtex after first pdflatex
 pdflatex main.tex
-bibtex main        # Uses main.aux to find citations
-pdflatex main.tex  # Incorporates bibliography
-pdflatex main.tex  # Resolves references
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
 ```
 
-**Missing packages:**
+**缺少宏包：**
+
 ```bash
-# TeX Live package manager
 tlmgr install <package-name>
-
-# Or install full distribution to avoid this
 ```
+
+如果频繁遇到缺包，直接安装完整 TeX 发行版通常更省时间。
 
 ---
 
-## Available Templates
+## 可用模板
 
-| Conference | Directory | Year | Source |
-|------------|-----------|------|--------|
+| Conference | 目录 | 年份 | 来源 |
+|------------|------|------|------|
 | ICML | `icml2026/` | 2026 | [Official ICML](https://icml.cc/Conferences/2026/AuthorInstructions) |
 | ICLR | `iclr2026/` | 2026 | [Official GitHub](https://github.com/ICLR/Master-Template) |
-| NeurIPS | `neurips2025/` | 2025 | Community template |
+| NeurIPS | `neurips2025/` | 2025 | 社区模板 |
 | ACL | `acl/` | 2025+ | [Official ACL](https://github.com/acl-org/acl-style-files) |
 | AAAI | `aaai2026/` | 2026 | [AAAI Author Kit](https://aaai.org/authorkit26/) |
 | COLM | `colm2025/` | 2025 | [Official COLM](https://github.com/COLM-org/Template) |
 
-## Usage
+## 使用示例
 
 ### ICML 2026
 
 ```latex
 \documentclass{article}
-\usepackage{icml2026}  % For submission
-% \usepackage[accepted]{icml2026}  % For camera-ready
+\usepackage{icml2026}  % submission
+% \usepackage[accepted]{icml2026}  % camera-ready
 
 \begin{document}
 % Your paper content
 \end{document}
 ```
 
-Key files:
-- `icml2026.sty` - Style file
-- `icml2026.bst` - Bibliography style
-- `example_paper.tex` - Example document
+关键文件：
+
+- `icml2026.sty`：样式文件
+- `icml2026.bst`：参考文献样式
+- `example_paper.tex`：示例文档
 
 ### ICLR 2026
 
 ```latex
 \documentclass{article}
-\usepackage[submission]{iclr2026_conference}  % For submission
-% \usepackage[final]{iclr2026_conference}  % For camera-ready
+\usepackage[submission]{iclr2026_conference}
+% \usepackage[final]{iclr2026_conference}
 
 \begin{document}
 % Your paper content
 \end{document}
 ```
 
-Key files:
-- `iclr2026_conference.sty` - Style file
-- `iclr2026_conference.bst` - Bibliography style
-- `iclr2026_conference.tex` - Example document
+关键文件：
 
-### ACL Venues (ACL, EMNLP, NAACL)
+- `iclr2026_conference.sty`
+- `iclr2026_conference.bst`
+- `iclr2026_conference.tex`
+
+### ACL 系列会场（ACL / EMNLP / NAACL）
 
 ```latex
 \documentclass[11pt]{article}
-\usepackage[review]{acl}  % For review
-% \usepackage{acl}  % For camera-ready
+\usepackage[review]{acl}
+% \usepackage{acl}
 
 \begin{document}
 % Your paper content
 \end{document}
 ```
 
-Key files:
-- `acl.sty` - Style file
-- `acl_natbib.bst` - Bibliography style
-- `acl_latex.tex` - Example document
+关键文件：
+
+- `acl.sty`
+- `acl_natbib.bst`
+- `acl_latex.tex`
 
 ### AAAI 2026
 
 ```latex
 \documentclass[letterpaper]{article}
-\usepackage[submission]{aaai2026}  % For submission
-% \usepackage{aaai2026}  % For camera-ready
+\usepackage[submission]{aaai2026}
+% \usepackage{aaai2026}
 
 \begin{document}
 % Your paper content
 \end{document}
 ```
 
-Key files:
-- `aaai2026.sty` - Style file
-- `aaai2026.bst` - Bibliography style
+关键文件：
+
+- `aaai2026.sty`
+- `aaai2026.bst`
 
 ### COLM 2025
 
 ```latex
 \documentclass{article}
-\usepackage[submission]{colm2025_conference}  % For submission
-% \usepackage[final]{colm2025_conference}  % For camera-ready
+\usepackage[submission]{colm2025_conference}
+% \usepackage[final]{colm2025_conference}
 
 \begin{document}
 % Your paper content
 \end{document}
 ```
 
-Key files:
-- `colm2025_conference.sty` - Style file
-- `colm2025_conference.bst` - Bibliography style
+关键文件：
 
-## Page Limits Summary
+- `colm2025_conference.sty`
+- `colm2025_conference.bst`
 
-| Conference | Submission | Camera-Ready | Notes |
-|------------|-----------|--------------|-------|
-| ICML 2026 | 8 pages | 9 pages | +unlimited refs/appendix |
-| ICLR 2026 | 9 pages | 10 pages | +unlimited refs/appendix |
-| NeurIPS 2025 | 9 pages | 9 pages | +checklist outside limit |
-| ACL 2025 | 8 pages (long) | varies | +unlimited refs/appendix |
-| AAAI 2026 | 7 pages | 8 pages | +unlimited refs/appendix |
-| COLM 2025 | 9 pages | 10 pages | +unlimited refs/appendix |
+## 页数限制概览
 
-## Common Issues
+| Conference | Submission | Camera-ready | 备注 |
+|------------|------------|--------------|------|
+| ICML 2026 | 8 页 | 9 页 | 参考文献/附录通常不限页 |
+| ICLR 2026 | 9 页 | 10 页 | 参考文献/附录通常不限页 |
+| NeurIPS 2025 | 9 页 | 9 页 | checklist 不计入主文页数 |
+| ACL 2025 | 长文 8 页 | 视会场而定 | 参考文献/附录通常不限页 |
+| AAAI 2026 | 7 页 | 8 页 | 参考文献/附录通常不限页 |
+| COLM 2025 | 9 页 | 10 页 | 参考文献/附录通常不限页 |
 
-### Compilation Errors
+## 常见注意事项
 
-1. **Missing packages**: Install full TeX distribution (TeX Live Full or MikTeX)
-2. **Bibliography errors**: Use the provided `.bst` file with `\bibliographystyle{}`
-3. **Font warnings**: Install `cm-super` or use `\usepackage{lmodern}`
+### 编译问题
 
-### Anonymization
+1. **缺宏包**：优先安装完整 TeX 发行版，如 TeX Live Full 或 MikTeX。
+2. **参考文献报错**：使用模板自带 `.bst`，并确认 `\bibliographystyle{}` 配置正确。
+3. **字体警告**：可安装 `cm-super`，或尝试 `\usepackage{lmodern}`。
 
-For submission, ensure:
-- No author names in `\author{}`
-- No acknowledgments section
-- No grant numbers
-- Use anonymous repositories
-- Cite own work in third person
+### 匿名投稿
 
-### Common LaTeX Packages
+投稿版通常需要确认：
+
+- `\author{}` 中没有真实作者信息
+- 没有 acknowledgments
+- 没有基金编号
+- 代码仓库和补充链接做匿名处理
+- 引用自己工作时保持第三人称
+
+### 常用 LaTeX 宏包
 
 ```latex
-% Recommended packages (check compatibility with venue style)
-\usepackage{amsmath,amsthm,amssymb}  % Math
-\usepackage{graphicx}                 % Figures
-\usepackage{booktabs}                 % Tables
-\usepackage{hyperref}                 % Links
-\usepackage{algorithm,algorithmic}    % Algorithms
-\usepackage{natbib}                   % Citations
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{algorithm,algorithmic}
+\usepackage{natbib}
 ```
 
-## Updating Templates
+## 模板更新
 
-Templates are updated annually. Check official sources before each submission:
+会议模板每年都会更新。正式投稿前，最好再次核对官方来源：
 
 - ICML: https://icml.cc/
 - ICLR: https://iclr.cc/

@@ -1,13 +1,13 @@
-# hello-scholar Change Index
+# hello-scholar 变更索引
 
-- Refreshed: `{{refreshed_at}}`
-- Active change: {{active_change}}
-- Active status: `{{active_status}}`
+- 刷新时间：`{{refreshed_at}}`
+- 当前变更：{{active_change}}
+- 当前状态：`{{active_status}}`
 
-## Open Changes
+## 进行中的变更
 
 {{open_changes}}
 
-## Recent Changes
+## 最近变更
 
 {{recent_changes}}

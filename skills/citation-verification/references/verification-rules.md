@@ -1,8 +1,8 @@
-# 验证规则
+# 引用验证规则
 
 本文档详细说明四层验证机制的具体规则和匹配算法。
 
-## Layer 1: Format Validation (格式验证)
+## Layer 1: Format Validation（格式验证）
 
 ### BibTeX 格式检查
 
@@ -114,7 +114,7 @@ def check_citation_consistency(tex_keys, bib_keys):
     }
 ```
 
-## Layer 2: Existence Verification (存在性验证)
+## Layer 2: Existence Verification（存在性验证）
 
 ### API 验证流程
 
@@ -154,7 +154,7 @@ def verify_existence(citation_info):
     return {'exists': False, 'source': None}
 ```
 
-## Layer 3: Information Matching (信息匹配)
+## Layer 3: Information Matching（信息匹配）
 
 ### 匹配算法
 
@@ -237,7 +237,7 @@ def match_year(year1, year2, tolerance=1):
         return {'match': False, 'difference': None}
 ```
 
-## Layer 4: Content Validation (内容验证)
+## Layer 4: Content Validation（内容验证）
 
 ### 综合匹配评分
 

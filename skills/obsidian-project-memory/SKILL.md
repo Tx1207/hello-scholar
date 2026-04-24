@@ -1,30 +1,30 @@
 ---
 name: obsidian-project-memory
-description: This skill should be used when the user asks to maintain an Obsidian knowledge base for a research project, import an existing research repository into Obsidian, keep project memory or daily notes synchronized, summarize project context into durable notes, or update experiments, results, papers, writing, and plans in an Obsidian vault without requiring MCP.
+description: 当用户希望为科研项目维护 Obsidian knowledge base、把现有研究仓库导入 Obsidian、同步 project memory 或 daily notes、把项目上下文沉淀为 durable notes，或在无需 MCP 的情况下把实验、结果、论文、写作和计划写回 Obsidian vault 时使用。
 ---
 
 # Obsidian Project Memory
 
-Maintain a **filesystem-first, agent-driven** Obsidian knowledge base for a research project.
+为科研项目维护一个**filesystem-first、agent-driven** 的 Obsidian knowledge base。
 
-Default note output language follows the project's configured `note_language`; if no note language is configured, default to **English**. Keep technical terms, paper titles, and established folder names in their original form when that is clearer. Only switch note prose to another language when the user explicitly asks.
+默认笔记输出语言遵循项目配置中的 `note_language`；如果没有配置，默认使用**英文**。技术术语、论文标题和已建立的文件夹名称在原文更清晰时应保持不变。只有当用户明确要求时，才切换笔记正文语言。
 
-Prefer this skill when working inside a repository that:
-- already contains `hello-scholar/project-memory/registry.yaml`, or
-- clearly looks like a research project and should be bound to an Obsidian vault.
+在以下仓库中优先使用本 skill：
+- 已存在 `hello-scholar/project-memory/registry.yaml`
+- 明显属于科研项目，且应绑定到 Obsidian vault
 
 ## Core principles
 
-- Use **scripts for project state management**.
-- Use **agents for project understanding and synthesis**.
-- Write only **durable research knowledge** into a **small vault structure**.
-- Do **not** require MCP, API keys, REST plugins, or `.base` artifacts.
-- Do not depend on `.canvas` globally, but allow literature workflows to maintain `Maps/literature.canvas` as a default literature graph artifact.
-- Treat internal experiment summary reports as **durable result-facing notes** under `Results/Reports/`, not as `Writing/` notes.
+- **项目状态管理**优先使用脚本。
+- **项目理解与综合**优先交给 agent。
+- 只把**durable research knowledge** 写入**小而稳定的 vault 结构**。
+- **不依赖** MCP、API key、REST plugin 或 `.base` artifact。
+- 全局不依赖 `.canvas`，但文献工作流允许维护 `Maps/literature.canvas` 作为默认 literature graph artifact。
+- 内部实验总结报告应归类为 `Results/Reports/` 下的**durable、面向结果的笔记**，而不是 `Writing/` 笔记。
 
 ## Default vault structure
 
-Write into this project layout only:
+仅写入以下项目布局：
 
 ```text
 Research/{project-slug}/
@@ -40,15 +40,15 @@ Research/{project-slug}/
   Archive/
 ```
 
-Read [references/SCHEMA.md](references/SCHEMA.md) for the exact structure and note roles.
+精确结构与各类笔记职责见 [references/SCHEMA.md](references/SCHEMA.md)。
 
 ## Deterministic helper script
 
-Use the `project_kb.py` helper that matches the current mode:
+使用与当前模式匹配的 `project_kb.py` helper：
 - `standby`: `python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" ...`
 - `global`: `python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py" ...`
 
-Use it only for low-freedom operations such as detect, bootstrap, sync, and lifecycle management:
+它只应用于低自由度操作，例如 detect、bootstrap、sync 和 lifecycle management：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
@@ -61,33 +61,33 @@ python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" fi
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
 ```
 
-Do **not** expect the script to understand project meaning. It manages state; it does not replace synthesis.
+**不要**指望脚本理解项目语义。它负责状态管理，不负责知识综合。
 
-Read [references/SCRIPT-VS-AGENT.md](references/SCRIPT-VS-AGENT.md) when deciding whether a task belongs in the script or must stay agent-driven.
+需要判断任务应该交给脚本还是 agent 时，阅读 [references/SCRIPT-VS-AGENT.md](references/SCRIPT-VS-AGENT.md)。
 
 ## Default workflow
 
 ### 1. Detect and bind
 
-1. Run the current-mode `project_kb.py` helper with `detect --cwd "$PWD"`.
-2. If the repo is already bound, continue with the existing project.
-3. If the repo is not yet bound but is a strong research-project candidate, bootstrap it with the current-mode `project_kb.py` helper.
+1. 运行当前模式下的 `project_kb.py` helper，执行 `detect --cwd "$PWD"`。
+2. 如果仓库已绑定，继续使用现有项目。
+3. 如果尚未绑定，但明显是科研项目，则使用当前模式的 `project_kb.py` helper 完成 bootstrap。
 
-For the detailed lifecycle, read [references/WORKFLOW.md](references/WORKFLOW.md).
+详细生命周期见 [references/WORKFLOW.md](references/WORKFLOW.md)。
 
 ### 2. Read the minimum context
 
-Before writing anything, read only the minimum stable context:
+在写任何内容之前，只读取最小稳定上下文：
 - `hello-scholar/project-memory/<project_id>.md`
 - `00-Hub.md`
 - `01-Plan.md`
-- today's `Daily/YYYY-MM-DD.md` if it exists
+- 当天的 `Daily/YYYY-MM-DD.md`（如果存在）
 
-If the task is about project understanding, existing docs, or historical results, load more context selectively using the references below.
+如果任务涉及项目理解、已有文档或历史结果，再按需选择性加载更多上下文。
 
 ### 3. Classify the knowledge delta
 
-Route the current turn into one or more of these buckets:
+将当前回合归入以下一个或多个 bucket：
 - `knowledge`
 - `paper`
 - `experiment`
@@ -96,114 +96,114 @@ Route the current turn into one or more of these buckets:
 - `daily`
 - `project-structure`
 
-Read [references/NOTE-ROUTING.md](references/NOTE-ROUTING.md) before writing.
+写入前先阅读 [references/NOTE-ROUTING.md](references/NOTE-ROUTING.md)。
 
 ### 4. Follow the default durable research path
 
-Default path for substantive research work:
-- `Papers/` -> extract reusable ideas, baselines, and project relevance
-- `Experiments/` -> turn those into testable hypotheses, runbooks, or ablations
-- `Results/` -> promote stable findings with evidence and interpretation
-- `Results/Reports/` -> store one round or one batch's internal experiment report when a complete retrospective has been written
-- `Writing/` -> externalize durable claims into reviews, proposals, drafts, slides, or rebuttal notes
+实质性科研工作的默认路径：
+- `Papers/` -> 提炼可复用想法、baseline 和项目相关性
+- `Experiments/` -> 转成可验证的 hypothesis、runbook 或 ablation
+- `Results/` -> 提升为带证据和解释的稳定结论
+- `Results/Reports/` -> 一轮或一批实验的完整内部 retrospective 报告
+- `Writing/` -> 将稳定结论外化为 review、proposal、draft、slides 或 rebuttal notes
 
-Use `Daily/` as chronology and staging, not the final home for durable research knowledge.
+`Daily/` 只作为时间线和临时承接层，不作为 durable research knowledge 的最终归宿。
 
-Read [references/PAPERS-TO-WRITING.md](references/PAPERS-TO-WRITING.md) when deciding how a turn should advance along this path.
+当需要判断一轮工作应如何沿这条路径推进时，阅读 [references/PAPERS-TO-WRITING.md](references/PAPERS-TO-WRITING.md)。
 
 ### 5. Decide whether agent-first synthesis is required
 
-Use **agent-first import/synthesis** when:
-- importing an existing repository for the first time,
-- the user says the knowledge base is empty or lacks background,
-- multiple source documents must be synthesized into stable project knowledge,
-- the project needs a durable overview, research questions, experiment map, or results summary.
+在以下场景中，优先采用 **agent-first import/synthesis**：
+- 首次导入已有仓库
+- 用户明确表示知识库为空或缺少背景
+- 需要把多个源文档综合成稳定项目知识
+- 项目需要 durable overview、research question、experiment map 或 results summary
 
-In these cases, first use an agent to read key sources, then write the synthesized result back into Obsidian.
+这类情况应先由 agent 读取关键来源，再把综合结果写回 Obsidian。
 
-Read [references/AGENT-FIRST-IMPORT.md](references/AGENT-FIRST-IMPORT.md) for the recommended source-reading order.
+推荐的 source 阅读顺序见 [references/AGENT-FIRST-IMPORT.md](references/AGENT-FIRST-IMPORT.md)。
 
 ### 6. Write back minimally
 
-Always keep write-back conservative.
+始终保持保守写回。
 
-Write back at least:
-- today's `Daily/YYYY-MM-DD.md` when this turn changes project state,
-- `00-Hub.md` only when recent progress or top-level status truly changes,
-- `hello-scholar/project-memory/<project_id>.md` when project state changes.
+至少写回：
+- 当天 `Daily/YYYY-MM-DD.md`，当本轮工作改变了项目状态时
+- `00-Hub.md`，仅当近期进展或顶层状态确实变化时
+- `hello-scholar/project-memory/<project_id>.md`，当项目状态发生变化时
 
-Then write only the durable note that matches the bucket:
+然后只写入和 bucket 对应的 durable note：
 - `knowledge` -> `Knowledge/`
 - `paper` -> `Papers/`
 - `experiment` -> `Experiments/`
 - `result` -> `Results/`
 - `writing` -> `Writing/`
 - `daily` -> `Daily/`
-- `project-structure` -> usually `Knowledge/Project-Overview.md` or `Knowledge/Source-Inventory.md`
+- `project-structure` -> 通常写到 `Knowledge/Project-Overview.md` 或 `Knowledge/Source-Inventory.md`
 
-Internal experiment round reports should default to:
+内部实验轮次报告默认使用：
 - `Results/Reports/YYYY-MM-DD--{experiment-line}--r{round}--{purpose}.md`
 
-Read [references/NOTE-TEMPLATES.md](references/NOTE-TEMPLATES.md) when a note needs a stable shape.
+当笔记需要稳定模板时，阅读 [references/NOTE-TEMPLATES.md](references/NOTE-TEMPLATES.md)。
 
 ## Knowledge CRUD rules
 
-Treat the vault as a small set of **canonical notes** plus supporting daily context.
+把 vault 视为一组**canonical notes** 加上辅助性的 daily context。
 
 ### Create
 
-- Ingest new knowledge deliberately; do not equate every new Markdown file with a durable note.
-- Keep **one canonical note per durable object** whenever possible:
-  - one stable project overview,
-  - one stable experiment note per experiment line,
-  - one stable result note per durable finding,
-  - one stable paper note per paper.
-- For new Markdown files, default to **summarize first, then route**:
-  - promote directly only when the file is already stable and self-contained,
-  - otherwise merge into an existing canonical note or stage it in `Daily/`.
-- If the new durable object is a full internal experiment report, store it under `Results/Reports/` and link the matching `Experiments/` and canonical `Results/` notes.
+- 有意识地摄入新知识，不要把每个新 Markdown 文件都当作 durable note。
+- 尽量保持**一个 durable object 对应一个 canonical note**：
+  - 一个稳定的 project overview
+  - 每条 experiment line 一个稳定 experiment note
+  - 每个 durable finding 一个稳定 result note
+  - 每篇 paper 一个稳定 paper note
+- 对新的 Markdown 文件，默认采取**先总结，再路由**：
+  - 文件已经稳定且自洽时，才直接提升
+  - 否则并入已有 canonical note，或暂存到 `Daily/`
+- 如果新的 durable object 是完整内部实验报告，把它存入 `Results/Reports/`，并链接对应的 `Experiments/` 与 canonical `Results/` note
 
 ### Read
 
-- Query narrowly first:
-  - broad project questions -> `00-Hub.md` + key `Knowledge/` notes,
-  - active work questions -> `01-Plan.md` + today's `Daily/` + project memory,
-  - specific experiment/result/paper questions -> the matching canonical note first,
-  - specific internal experiment retrospective -> the matching note in `Results/Reports/` first.
-- Use agent synthesis only when the answer spans multiple durable sources or still depends on repo material after reading canonical notes.
+- 先做窄查询：
+  - 宽泛项目问题 -> `00-Hub.md` + 关键 `Knowledge/` notes
+  - 当前活跃工作 -> `01-Plan.md` + 当天 `Daily/` + project memory
+  - 特定 experiment / result / paper 问题 -> 先读对应 canonical note
+  - 特定内部实验 retrospective -> 先读 `Results/Reports/` 里的对应笔记
+- 只有当答案横跨多个 durable source，或读完 canonical notes 后仍依赖 repo 材料时，才使用 agent synthesis
 
 ### Update
 
-- Prefer **updating** an existing canonical note over creating a sibling note.
-- Treat raw material as input, not as a final vault object.
-- Allow fast append-only logging in `Daily/`, but keep durable knowledge in `Knowledge/`, `Papers/`, `Experiments/`, `Results/`, `Results/Reports/`, or `Writing/`.
+- 优先**更新**现有 canonical note，而不是创建同级 sibling note。
+- 把原始材料视为输入，不要直接把它当作最终 vault 对象。
+- `Daily/` 可以快速追加日志，但 durable knowledge 应落在 `Knowledge/`、`Papers/`、`Experiments/`、`Results/`、`Results/Reports/` 或 `Writing/`。
 
 ### Delete
 
-- Treat “remove”, “delete”, or “stop using” as **archive by default**.
-- Purge only when the user explicitly asks for permanent deletion.
-- When archiving or purging a durable note, repair direct links in `00-Hub.md`, `01-Plan.md`, and explicit index notes so the main working surface does not point to missing files.
+- 对“remove”“delete”“stop using”默认按**archive** 处理。
+- 只有用户明确要求永久删除时才 purge。
+- archive 或 purge durable note 时，要修复 `00-Hub.md`、`01-Plan.md` 和显式索引笔记中的直接链接，避免主工作面指向缺失文件。
 
 ## Safety rules
 
-- Do not mirror the whole repository into the vault.
-- Do not generate empty folder taxonomies or placeholder notes without real content.
-- Do not write every repo delta into a new note.
-- Do not treat every code change as a knowledge update.
-- Do not create `.base` files unless the user explicitly asks for them.
-- Do not create arbitrary `.canvas` sprawl; the main default exception is `Maps/literature.canvas` for literature workflows.
-- For engineering-only turns, prefer `Daily/` plus project memory unless there is a real experiment, result, or planning impact.
-- Treat “remove project knowledge” as **archive** by default; purge only when the user explicitly asks for permanent deletion.
+- 不要把整个仓库镜像进 vault。
+- 不要生成空洞的目录分类或无内容的 placeholder note。
+- 不要把每次 repo 变化都写成一个新笔记。
+- 不要把每一次代码修改都当成知识更新。
+- 除非用户明确要求，否则不要创建 `.base` 文件。
+- 不要制造无控制的 `.canvas` 扩散；默认唯一主要例外是文献工作流中的 `Maps/literature.canvas`。
+- 对纯工程回合，优先写 `Daily/` 加 project memory，除非确实影响 experiment、result 或 planning。
+- “删除项目知识”默认做 **archive**；只有用户明确要求永久删除时才 purge。
 
 ## Reference files
 
-Load only what is needed:
-- `references/SCHEMA.md` - vault structure and note roles
-- `references/WORKFLOW.md` - detect/bootstrap/sync/archive workflow
-- `references/PAPERS-TO-WRITING.md` - default handoff from literature to experiments, results, and writing
-- `references/SCRIPT-VS-AGENT.md` - boundary between low-freedom script operations and agent-only reasoning
-- `references/KNOWLEDGE-CRUD.md` - create/read/update/delete rules for durable research knowledge
-- `references/NOTE-ROUTING.md` - where each kind of knowledge should go
-- `references/NEW-MD-INGESTION.md` - how to ingest a newly created Markdown file
-- `references/AGENT-FIRST-IMPORT.md` - how to import an existing project with agent synthesis
-- `references/NOTE-TEMPLATES.md` - lightweight note shapes for common note types
+只按需加载：
+- `references/SCHEMA.md` - vault 结构与 note 角色
+- `references/WORKFLOW.md` - detect / bootstrap / sync / archive 工作流
+- `references/PAPERS-TO-WRITING.md` - 从 literature 到 experiments、results、writing 的默认传递路径
+- `references/SCRIPT-VS-AGENT.md` - 低自由度脚本操作与 agent 推理的边界
+- `references/KNOWLEDGE-CRUD.md` - durable research knowledge 的增删改查规则
+- `references/NOTE-ROUTING.md` - 各类知识应写到哪里
+- `references/NEW-MD-INGESTION.md` - 新创建 Markdown 文件的摄入方式
+- `references/AGENT-FIRST-IMPORT.md` - 如何借助 agent synthesis 导入已有项目
+- `references/NOTE-TEMPLATES.md` - 常见 note 类型的轻量模板

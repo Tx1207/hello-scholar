@@ -1,13 +1,13 @@
-# Paper Self-Review Example
+# 论文自审示例
 
-## Verdict
-- needs moderate revision
+## 最终结论
+- 需要中等幅度修改
 
-## Blocking issues
-1. Main claim is not tied to a statistical test.
-2. Baseline comparison is missing one obvious prior system.
-3. Figure 2 caption does not explain the metric.
+## 阻塞性问题
+1. 主结论没有和统计检验绑定。
+2. baseline 对比遗漏了一个显而易见的先前系统。
+3. Figure 2 的 caption 没有解释指标含义。
 
-## Non-blocking issues
-- abstract can quantify the gain more clearly
-- discussion should name one concrete limitation
+## 非阻塞问题
+- abstract 可以更明确量化收益
+- discussion 应点出一个具体局限

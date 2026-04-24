@@ -517,7 +517,7 @@
 
 ---
 
-## Original Summaries
+## 原始总结
 
 ### BirdCLEF 2024 - Bird Sound Identification (2024) - 2026-01-23
 **Source:** [Kaggle Competition](https://www.kaggle.com/competitions/birdclef-2024)
@@ -565,7 +565,7 @@
 
 ---
 
-## Code Templates
+## 代码模板
 
 ### Statistics T 噪声过滤（BirdCLEF 2024 - 1st Place）
 
@@ -1513,7 +1513,7 @@ predictions = np.mean(predictions, axis=0)
 
 ## Google Brain - Ventilator Pressure Prediction (2021)
 
-### Competition Brief (竞赛简介)
+### 竞赛简介
 
 **竞赛背景：**
 - **主办方**：Google Brain
@@ -1572,7 +1572,7 @@ predictions = np.mean(predictions, axis=0)
 
 ---
 
-### Original Summaries (原始总结)
+### 原始总结
 
 **前排方案概述：**
 
@@ -1995,7 +1995,7 @@ predictions = np.mean(predictions, axis=0)
 
 ---
 
-### Code Templates (代码模板)
+### 代码模板
 
 #### PID Controller Matching (1st Place 核心技巧)
 
@@ -2514,7 +2514,7 @@ def ensemble_predictions(predictions_list, weights=None):
 
 ---
 
-## Metadata
+## 元数据
 
 | Source | Date | Tags |
 |--------|------|------|

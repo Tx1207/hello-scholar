@@ -1,19 +1,19 @@
 ---
 name: obsidian-project-lifecycle
-description: Use this skill when the user wants to detach, archive, purge, or otherwise change the lifecycle state of an Obsidian project knowledge base.
+description: 当用户希望 detach、archive、purge，或以其他方式改变一个 Obsidian 项目知识库的生命周期状态时使用该 skill。
 ---
 
 # Obsidian Project Lifecycle
 
-Use the shared helper script for deterministic lifecycle operations.
+使用共享 helper script 执行确定性的 lifecycle 操作。
 
-## Role in the workflow
+## 在工作流中的角色
 
-This is a **supporting skill** under `obsidian-project-memory`.
+这是 `obsidian-project-memory` 之下的一个 **supporting skill**。
 
-Use it for project-level state changes and, when needed, note-level removal or rename flows.
+它用于项目级状态变化，也可在需要时处理 note 级删除或重命名流程。
 
-## Project-level commands
+## 项目级命令
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode detach
@@ -21,7 +21,7 @@ python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" li
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode purge
 ```
 
-## Note-level command
+## Note 级命令
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
@@ -29,17 +29,17 @@ python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" no
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode rename --note "Experiments/Old-Name.md" --dest "Experiments/New-Name.md"
 ```
 
-If the current mode is `global`, replace the helper path in the examples above with:
+如果当前模式是 `global`，将以上示例中的 helper path 替换为：
 
 ```bash
 $HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py
 ```
 
-## Policy
+## 策略
 
-- **Detach**: stop syncing, keep vault content.
-- **Archive**: default for “remove this project's knowledge”; move the project to `Archive/` and disable syncing.
-- **Purge**: only when the user explicitly requests permanent deletion.
-- **Rename / move**: treat as update plus link repair, not delete plus create.
+- **Detach**：停止同步，但保留 vault 内容。
+- **Archive**：这是对“remove this project's knowledge”的默认解释；把项目移到 `Archive/` 并禁用同步。
+- **Purge**：仅在用户明确要求永久删除时使用。
+- **Rename / move**：应视为 update + link repair，而不是 delete + create。
 
-Always summarize what was removed, what was preserved, and whether auto-sync remains enabled.
+始终总结：删除了什么、保留了什么，以及 auto-sync 是否仍启用。

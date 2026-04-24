@@ -7,7 +7,7 @@
 | master   | `master`          | 主分支，始终保持可发布状态 | 永久           |
 | develop  | `develop`         | 开发分支，集成最新开发代码 | 永久           |
 | feature  | `feature/功能名`  | 功能分支                   | 开发完成后删除 |
-| bugfix   | `bugfix/问题描述` | Bug修复分支                | 修复完成后删除 |
+| bugfix   | `bugfix/问题描述` | Bug 修复分支               | 修复完成后删除 |
 | hotfix   | `hotfix/问题描述` | 紧急修复分支               | 修复完成后删除 |
 | release  | `release/版本号`  | 发布分支                   | 发布完成后删除 |
 
@@ -17,14 +17,14 @@
 
 ```
 feature/user-management          # ✅ 用户管理功能
-feature/123-add-export          # ✅ 关联Issue的功能
+feature/123-add-export          # ✅ 关联 Issue 的功能
 ```
 
 ### Bug修复分支
 
 ```
 bugfix/login-error              # ✅ 登录错误修复
-bugfix/456-fix-timeout          # ✅ 关联Issue的修复
+bugfix/456-fix-timeout          # ✅ 关联 Issue 的修复
 ```
 
 ### 紧急修复分支

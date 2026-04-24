@@ -1,118 +1,118 @@
 ---
 name: review-response
-description: Systematic review response workflow from comment analysis to professional rebuttal writing. Use when the user asks to "write rebuttal", "respond to reviewers", "draft review response", or "analyze review comments". Improves paper acceptance rates.
+description: 从评论分析到专业 rebuttal 写作的系统化 review response workflow。当用户要求 “write rebuttal”、“respond to reviewers”、“draft review response” 或 “analyze review comments” 时使用。目标是提升论文接收概率。
 tags: [Research, Academic, Rebuttal, Paper Writing]
 version: 0.1.0
 ---
 
 # Review Response
 
-A systematic review response workflow that helps researchers efficiently and professionally reply to reviewer comments.
+一个系统化的 review response 工作流，帮助研究者高效、专业地回复 reviewer comments。
 
-## Core Features
+## 核心功能
 
-1. **Review Analysis** - Parse and classify reviewer comments (Major/Minor/Typo/Misunderstanding)
-2. **Response Strategy** - Develop response strategies for different comment types (Accept/Defend/Clarify/Experiment)
-3. **Rebuttal Writing** - Write structured, professional rebuttal documents
-4. **Tone Management** - Optimize tone to maintain professionalism, respect, and evidence-based arguments
+1. **Review Analysis** - 解析并分类 reviewer comments（Major / Minor / Typo / Misunderstanding）
+2. **Response Strategy** - 为不同评论类型制定回应策略（Accept / Defend / Clarify / Experiment）
+3. **Rebuttal Writing** - 撰写结构化、专业的 rebuttal 文档
+4. **Tone Management** - 优化语气，保持专业、尊重与基于证据的表达
 
-## Workflow
+## 工作流
 
-```
+```text
 Receive reviewer comments -> Parse and classify -> Develop strategy -> Write responses -> Tone check -> Final rebuttal
 ```
 
-## When to Use
+## 何时使用
 
-Use this skill when you need to:
-- "Help me write a rebuttal"
-- "How to respond to reviewer comments"
-- "Analyze these review comments"
-- "Develop a review response strategy"
+当你需要以下内容时使用该 skill：
+- “Help me write a rebuttal”
+- “How to respond to reviewer comments”
+- “Analyze these review comments”
+- “Develop a review response strategy”
 
-## Usage Steps
+## 使用步骤
 
-1. **Provide reviewer comments** - Share the reviewer comments text or file with Claude
-2. **Analysis and classification** - Claude automatically parses and classifies the comments
-3. **Strategy recommendations** - Receive response strategy suggestions for each comment
-4. **Write rebuttal** - Generate a structured rebuttal document based on the strategy
-5. **Optimize tone** - Review and optimize the professionalism and politeness of responses
+1. **提供 reviewer comments** - 把 reviewer comments 文本或文件交给 Claude
+2. **分析与分类** - Claude 自动解析并分类评论
+3. **策略建议** - 为每条评论提供回应策略建议
+4. **撰写 rebuttal** - 基于策略生成结构化 rebuttal 文档
+5. **优化语气** - 审阅并优化专业性与礼貌性
 
-## Core Principles
+## 核心原则
 
-- **Professionalism** - Maintain an academically professional tone and expression
-- **Respectfulness** - Respect the reviewers' opinions and time
-- **Evidence-based** - Support every response with sufficient reasoning and evidence
-- **Completeness** - Ensure all reviewer comments receive a response
+- **Professionalism** - 保持学术专业语气和表达
+- **Respectfulness** - 尊重 reviewers 的意见与时间
+- **Evidence-based** - 每一条回应都应有充分理由和证据支撑
+- **Completeness** - 确保每条 reviewer comment 都获得回应
 
-## Success Factors (Based on ICLR Spotlight Paper Analysis)
+## 成功因素（基于 ICLR Spotlight Paper 分析）
 
-Key lessons extracted from successful rebuttal cases:
+从成功 rebuttal 案例中提取的关键经验：
 
-### 1. Acknowledge Strengths, Respond Positively to Criticism
-- Reviewers will first acknowledge the paper's strengths (novelty, impact, practical applicability)
-- Even spotlight papers receive constructive criticism
-- **Strategy**: Thank reviewers for acknowledged strengths first, then address criticism specifically
+### 1. 先认可优点，再积极回应批评
+- Reviewers 通常会先肯定论文优点（novelty、impact、practical applicability）
+- 即使是 spotlight papers 也会收到建设性批评
+- **策略**：先感谢 reviewers 认可的优点，再针对批评逐条回应
 
-### 2. Provide Clarity and Intuitive Understanding
-- Even high-quality papers may have clarity issues
-- Need to provide intuition and detailed explanations for readers with different backgrounds
-- **Strategy**: Expand key sections, move technical details to appendix, add step-by-step walkthroughs
+### 2. 提供更强的清晰性和直觉理解
+- 即使高质量论文也可能存在 clarity 问题
+- 需要为不同背景读者补充直觉和更详细解释
+- **策略**：扩展关键 sections，把技术细节移到 appendix，并加入 step-by-step walkthroughs
 
-### 3. Thorough Justification of Experimental Setup
-- Need to justify experimental setup choices
-- Consider and discuss alternative metrics
-- Provide comprehensive experiments to support claims
-- **Strategy**: Add ablation studies, explain why specific experimental setups were chosen
+### 3. 充分论证实验设置
+- 需要解释为什么采用当前 experimental setup
+- 要考虑并讨论 alternative metrics
+- 需要用更完整实验支撑 claim
+- **策略**：加入 ablation studies，解释为什么做出当前实验设计选择
 
-### 4. Emphasis on Ethical Considerations
-- For research involving privacy, security, and other sensitive topics, ethical considerations are crucial
-- Reviewers pay special attention to ethical implications
-- **Strategy**: Proactively discuss ethical considerations, even if reviewers don't explicitly request it
+### 4. 重视伦理考虑
+- 对涉及 privacy、security 等敏感议题的研究，ethical considerations 很重要
+- Reviewers 会特别关注伦理影响
+- **策略**：即便 reviewers 没有明确要求，也应主动讨论伦理问题
 
-### 5. Highlight Practical Application Value
-- Reviewers value practical applicability and scalability of methods
-- "Easily applicable" and "scalable" are important strengths
-- **Strategy**: Emphasize practical benefits and scalability in the rebuttal
+### 5. 强调实际应用价值
+- Reviewers 会重视方法的 practical applicability 和 scalability
+- “easily applicable” 和 “scalable” 是常见加分点
+- **策略**：在 rebuttal 中强化方法的实际收益和可扩展性
 
-## Integration with paper-miner global writing memory
+## 与 `paper-miner` 全局 writing memory 的集成
 
-When the rebuttal task involves:
-- tone calibration,
-- rebuttal phrasing,
-- clarification language,
-- structuring multi-point responses,
-- or learning from strong prior paper/review writing,
+当 rebuttal 任务涉及：
+- tone calibration
+- rebuttal phrasing
+- clarification language
+- structuring multi-point responses
+- 或希望从过往优秀论文 / review 写作中学习
 
-read this file before drafting:
+在起草前先读取：
 
 - `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 
-### Default read order for rebuttal work
+### rebuttal 工作的默认读取顺序
 
-1. reviewer comments and paper context
+1. reviewer comments 和 paper context
 2. `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
 3. `references/response-strategies.md`
 4. `references/rebuttal-templates.md`
 5. `references/tone-guidelines.md`
 
-Read narrowly:
-- start with `How this helps our writing`,
-- then inspect `Reusable phrasing`,
-- then inspect `Venue-specific signals` if the rebuttal is venue-sensitive,
-- use `Writing patterns mined` only when the response needs stronger rhetorical structure.
+窄范围阅读：
+- 先看 `How this helps our writing`
+- 再看 `Reusable phrasing`
+- 如果 rebuttal 对 venue 敏感，再看 `Venue-specific signals`
+- 只有在需要更强修辞结构时才看 `Writing patterns mined`
 
-Do not quote the memory mechanically. Use it to improve structure, clarity, restraint, and professionalism.
+不要机械照搬 memory 内容。用它改善结构、清晰度、克制感和专业性。
 
-## Reference Documents
+## 参考文档
 
-For detailed guides, refer to:
-- `references/review-classification.md` - Review comment classification criteria
-- `references/response-strategies.md` - Response strategy library
-- `references/rebuttal-templates.md` - Rebuttal templates and examples
-- `references/tone-guidelines.md` - Tone and expression guidelines
+详细指南请参见：
+- `references/review-classification.md` - Review comment 分类标准
+- `references/response-strategies.md` - 回应策略库
+- `references/rebuttal-templates.md` - Rebuttal 模板与示例
+- `references/tone-guidelines.md` - 语气与表达指南
 
-## Related Tools
+## 相关工具
 
-- **Agent**: `rebuttal-writer` - Dedicated agent for rebuttal writing and optimization
-- **Command**: `/rebuttal <review_file>` - Quick-start the rebuttal workflow
+- **Agent**：`rebuttal-writer` - 专门用于 rebuttal 写作与优化的 agent
+- **Command**：`/rebuttal <review_file>` - 快速启动 rebuttal workflow

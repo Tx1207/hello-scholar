@@ -1,4 +1,4 @@
-# Wikipedia Source Note
+# Wikipedia 来源说明
 
-This skill is informed by Wikipedia's community-maintained guidance on common signs of AI writing.
-Use that source as pattern inspiration, not as a reason to copy phrasing mechanically.
+这个 skill 参考了 Wikipedia 社区维护的常见 AI 写作痕迹指南。
+应把该来源当作识别模式的灵感，而不是机械照搬措辞的依据。

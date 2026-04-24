@@ -1,236 +1,236 @@
-# Visual Inspection Checklist
+# 视觉检查清单
 
-This document is a comprehensive checklist of items to verify during web design visual inspection.
-
----
-
-## 1. Layout Verification
-
-### Structural Integrity
-
-- [ ] Header is correctly fixed/positioned at the top of the screen
-- [ ] Footer is positioned at the bottom of the screen or end of content
-- [ ] Main content area is center-aligned with appropriate width
-- [ ] Sidebar (if present) is positioned correctly
-- [ ] Navigation is displayed in the intended position
-
-### Overflow
-
-- [ ] Horizontal scrollbar is not unintentionally displayed
-- [ ] Content does not overflow from parent elements
-- [ ] Images fit within parent containers
-- [ ] Tables do not exceed container width
-- [ ] Code blocks wrap or scroll appropriately
-
-### Alignment
-
-- [ ] Grid items are evenly distributed
-- [ ] Flex item alignment is correct
-- [ ] Text alignment (left/center/right) is consistent
-- [ ] Icons and text are vertically aligned
-- [ ] Form labels and input fields are correctly positioned
+本文档汇总了网页设计做视觉检查时需要核对的项目。
 
 ---
 
-## 2. Typography Verification
+## 1. 布局检查
 
-### Readability
+### 结构完整性
 
-- [ ] Body text font size is sufficient (minimum 16px recommended)
-- [ ] Line height is appropriate (1.5-1.8 recommended)
-- [ ] Characters per line is appropriate (40-80 characters recommended)
-- [ ] Spacing between paragraphs is sufficient
-- [ ] Heading size hierarchy is clear
+- [ ] Header 已正确固定或定位在页面顶部
+- [ ] Footer 位于页面底部或内容末尾
+- [ ] 主内容区域已居中，宽度合理
+- [ ] Sidebar（如有）位置正确
+- [ ] 导航展示在预期位置
 
-### Text Handling
+### 溢出
 
-- [ ] Long words wrap appropriately
-- [ ] URLs and code are handled properly
-- [ ] No text clipping occurs
-- [ ] Ellipsis (...) displays correctly
-- [ ] Language-specific line breaking rules work correctly
+- [ ] 没有意外出现横向滚动条
+- [ ] 内容不会从父元素中溢出
+- [ ] 图片能完整落在父容器内
+- [ ] 表格不会超出容器宽度
+- [ ] 代码块会正确换行或滚动
 
-### Fonts
+### 对齐
 
-- [ ] Web fonts load correctly
-- [ ] Fallback fonts are appropriate
-- [ ] Font weights are as intended
-- [ ] Special characters and emoji display correctly
-
----
-
-## 3. Color & Contrast Verification
-
-### Accessibility (WCAG Standards)
-
-- [ ] Body text: Contrast ratio 4.5:1 or higher (AA)
-- [ ] Large text (18px+ bold or 24px+): 3:1 or higher
-- [ ] Interactive element borders: 3:1 or higher
-- [ ] Focus indicators: Sufficient contrast with background
-
-### Color Consistency
-
-- [ ] Brand colors are unified
-- [ ] Link colors are consistent
-- [ ] Error state red is unified
-- [ ] Success state green is unified
-- [ ] Hover/active state colors are appropriate
-
-### Color Vision Diversity
-
-- [ ] Information conveyed by shape and text, not just color
-- [ ] Charts and diagrams consider color vision diversity
-- [ ] Error messages don't rely solely on color
+- [ ] Grid 项分布均匀
+- [ ] Flex 项对齐正确
+- [ ] 文本对齐方式（左/中/右）保持一致
+- [ ] 图标与文字垂直对齐
+- [ ] 表单标签与输入框位置正确
 
 ---
 
-## 4. Responsive Verification
+## 2. 排版检查
 
-### Mobile (~640px)
+### 可读性
 
-- [ ] Content fits within screen width
-- [ ] Touch targets are 44x44px or larger
-- [ ] Text is readable size
-- [ ] No horizontal scrolling occurs
-- [ ] Navigation is mobile-friendly (hamburger menu, etc.)
-- [ ] Form inputs are easy to use
+- [ ] 正文字号足够（建议至少 16px）
+- [ ] 行高合适（建议 1.5-1.8）
+- [ ] 每行字符数合理（建议 40-80 个字符）
+- [ ] 段落间距足够
+- [ ] 标题字号层级清晰
 
-### Tablet (641px~1024px)
+### 文本处理
 
-- [ ] Layout is optimized for tablet
-- [ ] Two-column layouts display appropriately
-- [ ] Image sizes are appropriate
-- [ ] Sidebar show/hide is appropriate
+- [ ] 长单词会正确换行
+- [ ] URL 和代码文本处理得当
+- [ ] 不会出现文本裁切
+- [ ] 省略号（...）显示正确
+- [ ] 不同语言的换行规则工作正常
 
-### Desktop (1025px~)
+### 字体
 
-- [ ] Maximum width is set and doesn't break on extra-large screens
-- [ ] Spacing is sufficient
-- [ ] Multi-column layouts function correctly
-- [ ] Hover states are implemented
-
-### Breakpoint Transitions
-
-- [ ] Layout transitions smoothly when screen size changes
-- [ ] Layout doesn't break at intermediate sizes
-- [ ] No content disappears or duplicates
+- [ ] Web 字体加载正常
+- [ ] 后备字体合适
+- [ ] 字重符合预期
+- [ ] 特殊字符和 emoji 显示正常
 
 ---
 
-## 5. Interactive Element Verification
+## 3. 颜色与对比度检查
 
-### Buttons
+### 无障碍（WCAG 标准）
 
-- [ ] Default state is clear
-- [ ] Hover state exists (desktop)
-- [ ] Focus state is visually clear
-- [ ] Active (pressed) state exists
-- [ ] Disabled state is distinguishable
-- [ ] Loading state (if applicable)
+- [ ] 正文：对比度至少 4.5:1（AA）
+- [ ] 大字号文本（18px+ 粗体或 24px+）：至少 3:1
+- [ ] 交互元素边框：至少 3:1
+- [ ] 焦点指示与背景有足够对比
 
-### Links
+### 颜色一致性
 
-- [ ] Links are visually identifiable
-- [ ] Visited links are distinguishable (if needed)
-- [ ] Hover state exists
-- [ ] Focus state is clear
+- [ ] 品牌色统一
+- [ ] 链接颜色一致
+- [ ] 错误态红色统一
+- [ ] 成功态绿色统一
+- [ ] Hover/active 态颜色合理
 
-### Form Elements
+### 色觉差异适配
 
-- [ ] Input field boundaries are clear
-- [ ] Placeholder text contrast is appropriate
-- [ ] Visual feedback on focus
-- [ ] Error state display
-- [ ] Required field indication
-- [ ] Dropdowns function correctly
+- [ ] 信息通过形状和文字传达，不只依赖颜色
+- [ ] 图表考虑了色觉差异
+- [ ] 错误提示不只靠颜色区分
 
 ---
 
-## 6. Images & Media Verification
+## 4. 响应式检查
 
-### Images
+### Mobile（约 640px）
 
-- [ ] Images display at appropriate size
-- [ ] Aspect ratio is maintained
-- [ ] High resolution display support (@2x)
-- [ ] Display when image fails to load
-- [ ] Lazy loading behavior works
+- [ ] 内容能完整落在屏幕宽度内
+- [ ] 触控目标至少 44x44px
+- [ ] 文本大小可读
+- [ ] 不会出现横向滚动
+- [ ] 导航适合移动端（汉堡菜单等）
+- [ ] 表单输入易于操作
 
-### Video & Embeds
+### Tablet（641px~1024px）
 
-- [ ] Videos fit within containers
-- [ ] Aspect ratio is maintained
-- [ ] Embedded content is responsive
-- [ ] iframes don't overflow
+- [ ] 布局已针对平板优化
+- [ ] 双栏布局显示正常
+- [ ] 图片尺寸合适
+- [ ] Sidebar 的显示/隐藏逻辑合理
 
----
+### Desktop（1025px 以上）
 
-## 7. Accessibility Verification
+- [ ] 设置了最大宽度，超大屏下不会失衡
+- [ ] 间距充足
+- [ ] 多栏布局工作正常
+- [ ] 已实现 Hover 状态
 
-### Keyboard Navigation
+### 断点过渡
 
-- [ ] All interactive elements accessible via Tab key
-- [ ] Focus order is logical
-- [ ] Focus traps are appropriate (modals, etc.)
-- [ ] Skip to content link exists
-
-### Screen Reader Support
-
-- [ ] Images have alt text
-- [ ] Forms have labels
-- [ ] ARIA labels are appropriately set
-- [ ] Heading hierarchy is correct (h1→h2→h3...)
-
-### Motion
-
-- [ ] Animations are not excessive
-- [ ] prefers-reduced-motion is supported (if possible)
+- [ ] 屏幕尺寸变化时布局过渡平滑
+- [ ] 中间尺寸下布局不会断裂
+- [ ] 不会出现内容消失或重复
 
 ---
 
-## 8. Performance-related Visual Issues
+## 5. 交互元素检查
 
-### Loading
+### 按钮
 
-- [ ] Font FOUT/FOIT is minimal
-- [ ] No layout shift (CLS) occurs
-- [ ] No jumping when images load
-- [ ] Skeleton screens are appropriate (if applicable)
+- [ ] 默认态清晰
+- [ ] 存在 Hover 态（桌面端）
+- [ ] Focus 态视觉清晰
+- [ ] 存在 Active（按下）态
+- [ ] Disabled 态可区分
+- [ ] 存在 Loading 态（如适用）
 
-### Animation
+### 链接
 
-- [ ] Animations are smooth (60fps)
-- [ ] No performance issues when scrolling
-- [ ] Transitions are natural
+- [ ] 链接在视觉上可识别
+- [ ] 已访问链接可区分（如需要）
+- [ ] 存在 Hover 态
+- [ ] Focus 态清晰
+
+### 表单元素
+
+- [ ] 输入框边界清晰
+- [ ] Placeholder 文本对比度合适
+- [ ] 聚焦时有明确反馈
+- [ ] 错误态展示清楚
+- [ ] 必填字段标识明确
+- [ ] 下拉框工作正常
 
 ---
 
-## Priority Matrix
+## 6. 图片与媒体检查
+
+### 图片
+
+- [ ] 图片显示尺寸合适
+- [ ] 宽高比保持正确
+- [ ] 支持高分辨率显示（@2x）
+- [ ] 图片加载失败时有合理表现
+- [ ] 懒加载行为正常
+
+### 视频与嵌入内容
+
+- [ ] 视频能完整落在容器内
+- [ ] 宽高比保持正确
+- [ ] 嵌入内容具备响应式表现
+- [ ] iframe 不会溢出
+
+---
+
+## 7. 无障碍检查
+
+### 键盘导航
+
+- [ ] 所有交互元素都可通过 Tab 访问
+- [ ] 焦点顺序合理
+- [ ] Focus trap 使用得当（模态框等）
+- [ ] 存在跳转到正文的链接
+
+### 屏幕阅读器支持
+
+- [ ] 图片有 alt 文本
+- [ ] 表单有 label
+- [ ] ARIA label 设置合理
+- [ ] 标题层级正确（h1→h2→h3...）
+
+### 动效
+
+- [ ] 动画不过量
+- [ ] 支持 prefers-reduced-motion（如可行）
+
+---
+
+## 8. 与性能相关的视觉问题
+
+### 加载
+
+- [ ] 字体 FOUT/FOIT 尽量轻微
+- [ ] 不出现布局偏移（CLS）
+- [ ] 图片加载时不会跳动
+- [ ] Skeleton 屏合适（如适用）
+
+### 动画
+
+- [ ] 动画流畅（60fps）
+- [ ] 滚动时没有明显性能问题
+- [ ] 过渡自然
+
+---
+
+## 优先级矩阵
 
 | Priority | Category | Examples |
 |----------|----------|----------|
-| P0 (Critical) | Functionality breaking | Complete element overlap, content disappearance |
-| P1 (High) | Serious UX issues | Unreadable text, inoperable buttons |
-| P2 (Medium) | Moderate issues | Alignment issues, spacing inconsistencies |
-| P3 (Low) | Minor issues | Slight positioning differences, minor color variations |
+| P0 (Critical) | 功能损坏 | 元素完全重叠、内容消失 |
+| P1 (High) | 严重 UX 问题 | 文本不可读、按钮无法操作 |
+| P2 (Medium) | 中等问题 | 对齐异常、间距不一致 |
+| P3 (Low) | 轻微问题 | 位置略有偏差、颜色细微差异 |
 
 ---
 
-## Verification Tools
+## 验证工具
 
-### Browser DevTools
+### 浏览器 DevTools
 
-- Elements panel: DOM and style inspection
-- Lighthouse: Performance and accessibility audits
-- Device toolbar: Responsive testing
+- Elements 面板：检查 DOM 和样式
+- Lighthouse：性能与无障碍审计
+- Device toolbar：响应式测试
 
-### Accessibility Tools
+### 无障碍工具
 
 - axe DevTools
 - WAVE
 - Color Contrast Analyzer
 
-### Automation Tools
+### 自动化工具
 
-- Playwright (screenshot comparison)
-- Percy / Chromatic (Visual Regression Testing)
+- Playwright（截图对比）
+- Percy / Chromatic（视觉回归测试）

@@ -1,19 +1,19 @@
-# Code Review Best Practices
+# Code Review 最佳实践
 
-## Default review order
-1. Understand intent and scope.
-2. Check architecture and correctness.
-3. Check tests and failure handling.
-4. Check security and performance risks.
-5. Leave clear, prioritized comments.
+## 默认 review 顺序
+1. 先理解意图和范围。
+2. 再检查架构与正确性。
+3. 再看测试与失败处理。
+4. 再查安全与性能风险。
+5. 最后留下清晰、分级的评论。
 
-## Comment severity
-- `blocking` - correctness, security, data loss, major maintainability issue
-- `important` - should be fixed before merge if practical
-- `nit` - polish only
+## Comment Severity
+- `blocking` - 正确性、安全、数据丢失或重大可维护性问题
+- `important` - 如果现实可行，应在 merge 前修复
+- `nit` - 仅润色，不阻塞
 
-## Good reviewer habits
-- summarize first,
-- separate required changes from suggestions,
-- quote the code path or failure mode,
-- praise good decisions when they matter.
+## Good Reviewer Habits
+- 先给总体总结，
+- 把必改项和建议项分开，
+- 明确指出代码路径或失败模式，
+- 在确实值得强调时认可好的设计决定。

@@ -1,45 +1,47 @@
-# Literature Canvas Workflow
+# Literature Canvas 工作流
 
-## Default output
+## 默认输出
 
 - `Maps/literature.canvas`
 
-## Purpose
+## 目标
 
-Provide a default Obsidian literature graph that:
-- keeps `Papers/` as the canonical paper-note surface,
-- keeps `Knowledge/` as the canonical synthesis surface,
-- visualizes paper-to-paper and paper-to-knowledge relationships,
-- stays lightweight enough to refresh after each major Zotero ingestion.
+提供默认的 Obsidian literature graph，使其：
 
-## Default behavior
+- 以 `Papers/` 作为 canonical paper-note surface
+- 以 `Knowledge/` 作为 canonical synthesis surface
+- 可视化 paper-to-paper 和 paper-to-knowledge 关系
+- 足够轻量，便于每次大规模 Zotero 导入后刷新
 
-- Use paper-note frontmatter and wikilinks as the primary graph source.
-- Use `Papers/*.md` and relevant `Knowledge/*.md` as file nodes.
-- Create `.canvas` by default for literature ingestion and review workflows.
-- Treat Mermaid or markdown graph notes as optional legacy companions, not the default graph artifact.
-- Prefer argument-map structure with `paper`, `claim`, `method`, and `gap` nodes over raw all-to-all paper linking.
-- Thin edges aggressively; keep only the main reasoning chain and a small number of explicit semantic paper-to-paper relations.
-- Hide or down-rank side branches when they clutter the display graph.
+## 默认行为
 
-## Refresh triggers
+- 以 paper-note 的 frontmatter 和 wikilinks 作为主要图来源
+- 以 `Papers/*.md` 和相关 `Knowledge/*.md` 作为 file nodes
+- 文献导入和 review 工作流默认生成 `.canvas`
+- Mermaid 或 markdown graph note 只作为兼容性补充，不是默认主产物
+- 优先使用 `paper`、`claim`、`method`、`gap` 组成的 argument-map 结构，而不是论文两两全连
+- 强力稀疏化边，只保留主要推理链和少量明确的 semantic paper-to-paper 关系
+- 当支线让显示图变乱时，应隐藏或降权
 
-Refresh the literature canvas when:
-- new Zotero-sourced paper notes are added,
-- paper notes gain new `linked_knowledge` edges or meaningful wikilinks,
-- knowledge synthesis notes are updated after a literature pass,
-- a batch Zotero review or note-ingestion pass finishes,
-- a full-collection normalization pass changes many paper-note relationships.
+## 刷新触发条件
 
-## Recommended command
+以下情况应刷新 literature canvas：
+
+- 新增 Zotero 来源的 paper notes
+- paper notes 增加了新的 `linked_knowledge` 边或重要 wikilinks
+- 做完一轮文献综合后更新了 knowledge notes
+- 完成一轮批量 Zotero review 或 note ingestion
+- 全 collection 规范化导致大量 paper-note 关系变化
+
+## 推荐命令
 
 ```bash
 LITERATURE_CANVAS_SCRIPT="${CODEX_HOME:-$HOME/.codex}/skills/obsidian-literature-workflow/scripts/build_literature_canvas.py"
 python3 "$LITERATURE_CANVAS_SCRIPT" --cwd "$PWD"
 ```
 
-If the installed Codex skill path does not exist, point `LITERATURE_CANVAS_SCRIPT` at the checked-out Claude Scholar repo explicitly. Do not assume `${CLAUDE_PLUGIN_ROOT}` exists in Codex.
+如果安装后的 Codex skill 路径不存在，就显式指向当前 checkout 的仓库路径。不要假设 `${CLAUDE_PLUGIN_ROOT}` 一定存在于 Codex。
 
-## Display rule
+## 展示规则
 
-- If a second lightweight showcase graph is useful, maintain `Maps/literature-main.canvas` as a filtered presentation copy rather than bloating the default working canvas.
+- 如果确实需要第二张更轻的展示图，就维护 `Maps/literature-main.canvas` 作为过滤后的 presentation copy，不要把默认工作 canvas 越堆越重。

@@ -1,28 +1,28 @@
-# Hook Mapping: Claude Code -> Codex
+# Hook 映射：Claude Code -> Codex
 
-## Core principle
+## 核心原则
 
-Codex has no native hook runtime, so emulate hooks through:
-1. deterministic helper scripts,
-2. AGENTS-level mandatory protocols,
-3. skill-triggered enforcement.
+Codex 没有原生 hook runtime，因此通过以下方式模拟 hooks：
+1. 确定性的 helper scripts
+2. AGENTS 层的强制协议
+3. 由 skill 触发的执行约束
 
-## Mapping table
+## 映射表
 
-| Claude Code hook | Codex substitute | Trigger point |
+| Claude Code hook | Codex 替代方案 | 触发点 |
 |---|---|---|
-| `SessionStart` | `python3 "<current-mode-helper>" session-start` | first substantive turn in a repo |
-| `PreToolUse` | `python3 "<current-mode-helper>" preflight ...` | before destructive or high-risk operations |
-| `PostToolUse` | `python3 "<current-mode-helper>" post-edit ...` | after meaningful edits |
-| `Stop` | `python3 "<current-mode-helper>" session-end` | before ending a task or session |
-| `SessionEnd` | `session-end` + `session-wrap-up` | explicit wrap-up or closeout |
+| `SessionStart` | `python3 "<current-mode-helper>" session-start` | 仓库中的第一个实质性回合 |
+| `PreToolUse` | `python3 "<current-mode-helper>" preflight ...` | 破坏性或高风险操作前 |
+| `PostToolUse` | `python3 "<current-mode-helper>" post-edit ...` | 有意义编辑后 |
+| `Stop` | `python3 "<current-mode-helper>" session-end` | 任务或会话结束前 |
+| `SessionEnd` | `session-end` + `session-wrap-up` | 显式 wrap-up 或 closeout |
 
-## Recommended scope
+## 推荐范围
 
-Focus on the high-value hook behaviors:
-- safety gating,
-- session context loading,
-- post-edit verification,
-- closeout discipline.
+聚焦高价值 hook 行为：
+- 安全闸门
+- session 上下文加载
+- post-edit 验证
+- closeout 纪律
 
-Do not try to fake full runtime interception.
+不要尝试伪造完整运行时拦截。

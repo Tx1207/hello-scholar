@@ -1,56 +1,56 @@
 ---
 name: git-commit
-description: Stages and commits changes using Conventional Commits format (local only, no push).
+description: 使用 Conventional Commits 格式暂存并提交变更（仅本地，不 push）。
 tags: [Git, Commit, Development, Workflow]
 ---
 
 # Git Commit
 
-Stage and commit changes using Conventional Commits format. This skill handles local commits only and does not push to remote.
+使用 Conventional Commits 格式暂存并提交变更。该 skill 只处理本地 commit，不会 push 到远端。
 
-## Instructions
+## 操作说明
 
-1. **Check Git Status**
-   - Run `git status` to review all changes
-   - Run `git diff` to inspect modifications
+1. **检查 Git 状态**
+   - 运行 `git status` 查看全部变更
+   - 运行 `git diff` 检查修改内容
 
-2. **Analyze Changes**
-   - Review changed files and their content
-   - Determine commit type and scope
-   - Draft a concise commit message
+2. **分析变更**
+   - 审阅已变更文件及其内容
+   - 判断 commit type 和 scope
+   - 起草简洁的 commit message
 
-3. **Commit Type Reference**
+3. **Commit Type 参考**
+   ```text
+   feat     - 新功能
+   fix      - Bug 修复
+   docs     - 仅文档
+   style    - 代码风格（格式、分号等）
+   refactor - 代码重构（不含新功能/修复）
+   perf     - 性能优化
+   test     - 新增或更新测试
+   chore    - 构建、CI、工具链、依赖
    ```
-   feat     - New feature
-   fix      - Bug fix
-   docs     - Documentation only
-   style    - Code style (formatting, semicolons, etc.)
-   refactor - Code refactoring (no feature/fix)
-   perf     - Performance improvement
-   test     - Adding or updating tests
-   chore    - Build, CI, tooling, dependencies
-   ```
 
-4. **Commit Message Format**
-   ```
+4. **Commit Message 格式**
+   ```text
    <type>(<scope>): <subject>
 
    <body>
 
    Co-Authored-By: Claude <noreply@anthropic.com>
    ```
-   - Subject: imperative mood, no period, max 72 chars
-   - Body: explain what and why (optional for small changes)
-   - Scope: affected module (data, model, config, trainer, utils, workflow)
+   - Subject：祈使句，不加句号，最长 72 字符
+   - Body：解释做了什么以及为什么做（小改动可省略）
+   - Scope：受影响模块（data、model、config、trainer、utils、workflow）
 
-5. **Stage and Commit**
-   - Stage relevant files with `git add`
-   - Do NOT stage files containing secrets (.env, credentials, tokens)
-   - Create commit with formatted message
-   - Verify with `git log --oneline -1`
+5. **暂存并提交**
+   - 用 `git add` 暂存相关文件
+   - 不要暂存包含 secrets 的文件（`.env`、credentials、tokens）
+   - 使用格式化 message 创建 commit
+   - 用 `git log --oneline -1` 验证
 
-## Notes
+## 注意事项
 
-- This skill only commits locally. Use the git-push skill to also push to remote.
-- Always confirm the commit message with the user before committing.
-- If unsure about type or scope, ask the user.
+- 该 skill 只做本地 commit。如需 push，请使用 `git-push` skill。
+- 提交前始终向用户确认 commit message。
+- 如果不确定 type 或 scope，先询问用户。

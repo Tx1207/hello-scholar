@@ -1,104 +1,48 @@
-# Advanced Plugin Example
+# 进阶插件示例
 
-A complex, enterprise-grade plugin with MCP integration and advanced organization.
+这是一个带 MCP 集成和复杂组织结构的企业级插件示例。
 
-## Directory Structure
+## 目录结构
 
 ```
 enterprise-devops/
-├── .claude-plugin/
-│   └── plugin.json
+├── .claude-plugin/plugin.json
 ├── commands/
-│   ├── ci/
-│   │   ├── build.md
-│   │   ├── test.md
-│   │   └── deploy.md
-│   ├── monitoring/
-│   │   ├── status.md
-│   │   └── logs.md
-│   └── admin/
-│       ├── configure.md
-│       └── manage.md
+│   ├── ci/build.md
+│   ├── ci/test.md
+│   ├── ci/deploy.md
+│   ├── monitoring/status.md
+│   ├── monitoring/logs.md
+│   ├── admin/configure.md
+│   └── admin/manage.md
 ├── agents/
-│   ├── orchestration/
-│   │   ├── deployment-orchestrator.md
-│   │   └── rollback-manager.md
-│   └── specialized/
-│       ├── kubernetes-expert.md
-│       ├── terraform-expert.md
-│       └── security-auditor.md
+│   ├── orchestration/deployment-orchestrator.md
+│   ├── orchestration/rollback-manager.md
+│   ├── specialized/kubernetes-expert.md
+│   ├── specialized/terraform-expert.md
+│   └── specialized/security-auditor.md
 ├── skills/
 │   ├── kubernetes-ops/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   │   ├── deployment-patterns.md
-│   │   │   ├── troubleshooting.md
-│   │   │   └── security.md
-│   │   ├── examples/
-│   │   │   ├── basic-deployment.yaml
-│   │   │   ├── stateful-set.yaml
-│   │   │   └── ingress-config.yaml
-│   │   └── scripts/
-│   │       ├── validate-manifest.sh
-│   │       └── health-check.sh
 │   ├── terraform-iac/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   │   └── best-practices.md
-│   │   └── examples/
-│   │       └── module-template/
 │   └── ci-cd-pipelines/
-│       ├── SKILL.md
-│       └── references/
-│           └── pipeline-patterns.md
 ├── hooks/
 │   ├── hooks.json
 │   └── scripts/
-│       ├── security/
-│       │   ├── scan-secrets.sh
-│       │   ├── validate-permissions.sh
-│       │   └── audit-changes.sh
-│       ├── quality/
-│       │   ├── check-config.sh
-│       │   └── verify-tests.sh
-│       └── workflow/
-│           ├── notify-team.sh
-│           └── update-status.sh
 ├── .mcp.json
 ├── servers/
 │   ├── kubernetes-mcp/
-│   │   ├── index.js
-│   │   ├── package.json
-│   │   └── lib/
 │   ├── terraform-mcp/
-│   │   ├── main.py
-│   │   └── requirements.txt
 │   └── github-actions-mcp/
-│       ├── server.js
-│       └── package.json
 ├── lib/
 │   ├── core/
-│   │   ├── logger.js
-│   │   ├── config.js
-│   │   └── auth.js
 │   ├── integrations/
-│   │   ├── slack.js
-│   │   ├── pagerduty.js
-│   │   └── datadog.js
 │   └── utils/
-│       ├── retry.js
-│       └── validation.js
 └── config/
     ├── environments/
-    │   ├── production.json
-    │   ├── staging.json
-    │   └── development.json
     └── templates/
-        ├── deployment.yaml
-        └── service.yaml
 ```
 
-## File Contents
+## 核心文件
 
 ### .claude-plugin/plugin.json
 
@@ -106,7 +50,7 @@ enterprise-devops/
 {
   "name": "enterprise-devops",
   "version": "2.3.1",
-  "description": "Comprehensive DevOps automation for enterprise CI/CD pipelines, infrastructure management, and monitoring",
+  "description": "面向企业 CI/CD、基础设施管理和监控的综合 DevOps 自动化插件",
   "author": {
     "name": "DevOps Platform Team",
     "email": "devops-platform@company.com",
@@ -118,25 +62,9 @@ enterprise-devops/
     "url": "https://github.com/company/devops-plugin.git"
   },
   "license": "Apache-2.0",
-  "keywords": [
-    "devops",
-    "ci-cd",
-    "kubernetes",
-    "terraform",
-    "automation",
-    "infrastructure",
-    "deployment",
-    "monitoring"
-  ],
-  "commands": [
-    "./commands/ci",
-    "./commands/monitoring",
-    "./commands/admin"
-  ],
-  "agents": [
-    "./agents/orchestration",
-    "./agents/specialized"
-  ],
+  "keywords": ["devops", "ci-cd", "kubernetes", "terraform", "automation", "infrastructure", "deployment", "monitoring"],
+  "commands": ["./commands/ci", "./commands/monitoring", "./commands/admin"],
+  "agents": ["./agents/orchestration", "./agents/specialized"],
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"
 }
@@ -180,586 +108,133 @@ enterprise-devops/
 ```markdown
 ---
 name: build
-description: Trigger and monitor CI build pipeline
+description: 触发并监控 CI build pipeline
 ---
 
 # Build Command
 
-Trigger CI/CD build pipeline and monitor progress in real-time.
+触发 CI/CD build pipeline，并实时监控进度。
 
 ## Process
 
-1. **Validation**: Check prerequisites
-   - Verify branch status
-   - Check for uncommitted changes
-   - Validate configuration files
-
-2. **Trigger**: Start build via MCP server
-   \`\`\`javascript
-   // Uses github-actions MCP server
-   const build = await tools.github_actions_trigger_workflow({
-     workflow: 'build.yml',
-     ref: currentBranch
-   })
-   \`\`\`
-
-3. **Monitor**: Track build progress
-   - Display real-time logs
-   - Show test results as they complete
-   - Alert on failures
-
-4. **Report**: Summarize results
-   - Build status
-   - Test coverage
-   - Performance metrics
-   - Deploy readiness
+1. **Validation**：检查前置条件，包括分支状态、未提交改动和配置文件。
+2. **Trigger**：通过 MCP server 启动 build。
+3. **Monitor**：实时展示日志、测试进度和失败告警。
+4. **Report**：汇总 build 状态、覆盖率、性能指标和部署就绪度。
 
 ## Integration
 
-After successful build:
-- Offer to deploy to staging
-- Suggest performance optimizations
-- Generate deployment checklist
+Build 成功后，可以继续：
+- 提议部署到 staging
+- 建议性能优化
+- 生成 deployment checklist
 ```
 
 ### agents/orchestration/deployment-orchestrator.md
 
 ```markdown
 ---
-description: Orchestrates complex multi-environment deployments with rollback capabilities and health monitoring
+description: 编排带 rollback 和健康监控能力的多环境部署
 capabilities:
-  - Plan and execute multi-stage deployments
-  - Coordinate service dependencies
-  - Monitor deployment health
-  - Execute automated rollbacks
-  - Manage deployment approvals
+  - 规划并执行多阶段部署
+  - 协调服务依赖
+  - 监控部署健康状态
+  - 执行自动 rollback
+  - 管理部署审批
 ---
 
 # Deployment Orchestrator Agent
 
-Specialized agent for orchestrating complex deployments across multiple environments.
+用于跨多个环境编排复杂部署的专用 agent。
 
 ## Expertise
 
-- **Deployment strategies**: Blue-green, canary, rolling updates
-- **Dependency management**: Service startup ordering, dependency injection
-- **Health monitoring**: Service health checks, metric validation
-- **Rollback automation**: Automatic rollback on failure detection
-- **Approval workflows**: Multi-stage approval processes
+- **Deployment strategies**：blue-green、canary、rolling updates
+- **Dependency management**：服务启动顺序和依赖注入
+- **Health monitoring**：服务健康检查和指标验证
+- **Rollback automation**：检测失败后自动 rollback
+- **Approval workflows**：多阶段审批流程
 
 ## Orchestration Process
 
-1. **Planning Phase**
-   - Analyze deployment requirements
-   - Identify service dependencies
-   - Generate deployment plan
-   - Calculate rollback strategy
-
-2. **Validation Phase**
-   - Verify environment readiness
-   - Check resource availability
-   - Validate configurations
-   - Run pre-deployment tests
-
-3. **Execution Phase**
-   - Deploy services in dependency order
-   - Monitor health after each stage
-   - Validate metrics and logs
-   - Proceed to next stage on success
-
-4. **Verification Phase**
-   - Run smoke tests
-   - Validate service integration
-   - Check performance metrics
-   - Confirm deployment success
-
-5. **Rollback Phase** (if needed)
-   - Detect failure conditions
-   - Execute rollback plan
-   - Restore previous state
-   - Notify stakeholders
+1. **Planning Phase**：分析部署需求、服务依赖、部署计划和 rollback 策略。
+2. **Validation Phase**：检查环境就绪度、资源、配置和 pre-deployment tests。
+3. **Execution Phase**：按依赖顺序部署服务，并在每个阶段后检查健康状态。
+4. **Verification Phase**：运行 smoke tests，验证集成、性能指标和部署结果。
+5. **Rollback Phase**：必要时检测失败条件、执行 rollback、恢复状态并通知相关人员。
 
 ## MCP Integration
 
-Uses multiple MCP servers:
-- `kubernetes`: Deploy and manage containers
-- `terraform`: Provision infrastructure
-- `github-actions`: Trigger deployment pipelines
-
-## Monitoring Integration
-
-Integrates with monitoring tools via lib:
-\`\`\`javascript
-const { DatadogClient } = require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/datadog')
-const metrics = await DatadogClient.getMetrics(service, timeRange)
-\`\`\`
-
-## Notification Integration
-
-Sends updates via Slack and PagerDuty:
-\`\`\`javascript
-const { SlackClient } = require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/slack')
-await SlackClient.notify({
-  channel: '#deployments',
-  message: 'Deployment started',
-  metadata: deploymentPlan
-})
-\`\`\`
+使用多个 MCP servers：
+- `kubernetes`：部署和管理容器
+- `terraform`：供应基础设施
+- `github-actions`：触发部署 pipeline
 ```
 
-### skills/kubernetes-ops/SKILL.md
+## 关键特性
 
-```markdown
----
-name: Kubernetes Operations
-description: This skill should be used when deploying to Kubernetes, managing K8s resources, troubleshooting cluster issues, configuring ingress/services, scaling deployments, or working with Kubernetes manifests. Provides comprehensive Kubernetes operational knowledge and best practices.
-version: 2.0.0
----
+### 多层级组织
 
-# Kubernetes Operations
+- **Commands**：按功能划分为 CI、monitoring、admin
+- **Agents**：按角色划分为 orchestration 与 specialized
+- **Skills**：包含 references、examples、scripts 等丰富资源
 
-Comprehensive operational knowledge for managing Kubernetes clusters and workloads.
+### MCP 集成
 
-## Overview
+三个自定义 MCP servers：
+- **Kubernetes**：集群操作
+- **Terraform**：基础设施供应
+- **GitHub Actions**：CI/CD 自动化
 
-Manage Kubernetes infrastructure effectively through:
-- Deployment strategies and patterns
-- Resource configuration and optimization
-- Troubleshooting and debugging
-- Security best practices
-- Performance tuning
+### 共享库
 
-## Core Concepts
+`lib/` 中存放可复用代码：
+- **Core**：日志、配置、认证等通用能力
+- **Integrations**：Slack、Datadog 等外部服务
+- **Utils**：retry、validation 等辅助函数
 
-### Resource Management
+### 配置管理
 
-**Deployments**: Use for stateless applications
-- Rolling updates for zero-downtime deployments
-- Rollback capabilities for failed deployments
-- Replica management for scaling
+`config/` 中存放环境配置：
+- **Environments**：按环境区分的设置
+- **Templates**：可复用部署模板
 
-**StatefulSets**: Use for stateful applications
-- Stable network identities
-- Persistent storage
-- Ordered deployment and scaling
+### 安全自动化
 
-**DaemonSets**: Use for node-level services
-- Log collectors
-- Monitoring agents
-- Network plugins
+多个安全 hooks：
+- 写入前扫描 secrets
+- session start 时校验权限
+- 任务完成时审计配置
 
-### Configuration
+### 监控集成
 
-**ConfigMaps**: Store non-sensitive configuration
-- Environment-specific settings
-- Application configuration files
-- Feature flags
+通过 lib integrations 内置监控：
+- Datadog 用于 metrics
+- PagerDuty 用于 alerts
+- Slack 用于 notifications
 
-**Secrets**: Store sensitive data
-- API keys and tokens
-- Database credentials
-- TLS certificates
+## 使用场景
 
-Use external secret management (Vault, AWS Secrets Manager) for production.
+1. **多环境部署**：跨 dev/staging/prod 编排发布
+2. **Infrastructure as code**：带 state 管理的 Terraform 自动化
+3. **CI/CD 自动化**：build、test、deploy pipeline
+4. **监控与可观测性**：集成 metrics 与 alerting
+5. **安全约束**：自动安全扫描和验证
+6. **团队协作**：Slack 通知和状态更新
 
-### Networking
+## 什么时候适合这种模式
 
-**Services**: Expose applications internally
-- ClusterIP for internal communication
-- NodePort for external access (non-production)
-- LoadBalancer for external access (production)
+- 大规模企业部署
+- 多环境管理
+- 复杂 CI/CD 工作流
+- 集成监控需求
+- 安全敏感基础设施
+- 团队协作需求
 
-**Ingress**: HTTP/HTTPS routing
-- Path-based routing
-- Host-based routing
-- TLS termination
-- Load balancing
+## 扩展性考虑
 
-## Deployment Strategies
-
-### Rolling Update
-
-Default strategy, gradual replacement:
-\`\`\`yaml
-strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 0
-\`\`\`
-
-**When to use**: Standard deployments, minor updates
-
-### Recreate
-
-Stop all pods, then create new ones:
-\`\`\`yaml
-strategy:
-  type: Recreate
-\`\`\`
-
-**When to use**: Stateful apps that can't run multiple versions
-
-### Blue-Green
-
-Run two complete environments, switch traffic:
-1. Deploy new version (green)
-2. Test green environment
-3. Switch traffic to green
-4. Keep blue for quick rollback
-
-**When to use**: Critical services, need instant rollback
-
-### Canary
-
-Gradually roll out to subset of users:
-1. Deploy canary version (10% traffic)
-2. Monitor metrics and errors
-3. Increase traffic gradually
-4. Complete rollout or rollback
-
-**When to use**: High-risk changes, want gradual validation
-
-## Resource Configuration
-
-### Resource Requests and Limits
-
-Always set for production workloads:
-\`\`\`yaml
-resources:
-  requests:
-    memory: "256Mi"
-    cpu: "250m"
-  limits:
-    memory: "512Mi"
-    cpu: "500m"
-\`\`\`
-
-**Requests**: Guaranteed resources
-**Limits**: Maximum allowed resources
-
-### Health Checks
-
-Essential for reliability:
-\`\`\`yaml
-livenessProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 10
-
-readinessProbe:
-  httpGet:
-    path: /ready
-    port: 8080
-  initialDelaySeconds: 5
-  periodSeconds: 5
-\`\`\`
-
-**Liveness**: Restart unhealthy pods
-**Readiness**: Remove unready pods from service
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Pods not starting**
-   - Check: `kubectl describe pod <name>`
-   - Look for: Image pull errors, resource constraints
-   - Fix: Verify image name, increase resources
-
-2. **Service not reachable**
-   - Check: `kubectl get svc`, `kubectl get endpoints`
-   - Look for: No endpoints, wrong selector
-   - Fix: Verify pod labels match service selector
-
-3. **High memory usage**
-   - Check: `kubectl top pods`
-   - Look for: Pods near memory limit
-   - Fix: Increase limits, optimize application
-
-4. **Frequent restarts**
-   - Check: `kubectl get pods`, `kubectl logs <name>`
-   - Look for: Liveness probe failures, OOMKilled
-   - Fix: Adjust health checks, increase memory
-
-### Debugging Commands
-
-Get pod details:
-\`\`\`bash
-kubectl describe pod <name>
-kubectl logs <name>
-kubectl logs <name> --previous  # logs from crashed container
-\`\`\`
-
-Execute commands in pod:
-\`\`\`bash
-kubectl exec -it <name> -- /bin/sh
-kubectl exec <name> -- env
-\`\`\`
-
-Check resource usage:
-\`\`\`bash
-kubectl top nodes
-kubectl top pods
-\`\`\`
-
-## Security Best Practices
-
-### Pod Security
-
-- Run as non-root user
-- Use read-only root filesystem
-- Drop unnecessary capabilities
-- Use security contexts
-
-Example:
-\`\`\`yaml
-securityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  readOnlyRootFilesystem: true
-  capabilities:
-    drop:
-      - ALL
-\`\`\`
-
-### Network Policies
-
-Restrict pod communication:
-\`\`\`yaml
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: api-allow
-spec:
-  podSelector:
-    matchLabels:
-      app: api
-  ingress:
-    - from:
-      - podSelector:
-          matchLabels:
-            app: frontend
-\`\`\`
-
-### Secrets Management
-
-- Never commit secrets to git
-- Use external secret managers
-- Rotate secrets regularly
-- Limit secret access with RBAC
-
-## Performance Optimization
-
-### Resource Tuning
-
-1. **Start conservative**: Set low limits initially
-2. **Monitor usage**: Track actual resource consumption
-3. **Adjust gradually**: Increase based on metrics
-4. **Set appropriate requests**: Match typical usage
-5. **Set safe limits**: 2x requests for headroom
-
-### Horizontal Pod Autoscaling
-
-Automatically scale based on metrics:
-\`\`\`yaml
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: api-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: api
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-\`\`\`
-
-## MCP Server Integration
-
-This skill works with the kubernetes MCP server for operations:
-
-**List pods**:
-\`\`\`javascript
-const pods = await tools.k8s_list_pods({ namespace: 'default' })
-\`\`\`
-
-**Get pod logs**:
-\`\`\`javascript
-const logs = await tools.k8s_get_logs({ pod: 'api-xyz', container: 'app' })
-\`\`\`
-
-**Apply manifests**:
-\`\`\`javascript
-const result = await tools.k8s_apply_manifest({ file: 'deployment.yaml' })
-\`\`\`
-
-## Detailed References
-
-For in-depth information:
-- **Deployment patterns**: `references/deployment-patterns.md`
-- **Troubleshooting guide**: `references/troubleshooting.md`
-- **Security hardening**: `references/security.md`
-
-## Example Manifests
-
-For copy-paste examples:
-- **Basic deployment**: `examples/basic-deployment.yaml`
-- **StatefulSet**: `examples/stateful-set.yaml`
-- **Ingress config**: `examples/ingress-config.yaml`
-
-## Validation Scripts
-
-For manifest validation:
-\`\`\`bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/kubernetes-ops/scripts/validate-manifest.sh deployment.yaml
-\`\`\`
-```
-
-### hooks/hooks.json
-
-```json
-{
-  "PreToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/security/scan-secrets.sh",
-          "timeout": 30
-        }
-      ]
-    },
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Evaluate if this bash command is safe for production environment. Check for destructive operations, missing safeguards, and potential security issues. Commands should be idempotent and reversible.",
-          "timeout": 20
-        }
-      ]
-    }
-  ],
-  "PostToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/workflow/update-status.sh",
-          "timeout": 15
-        }
-      ]
-    }
-  ],
-  "Stop": [
-    {
-      "matcher": ".*",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/quality/check-config.sh",
-          "timeout": 45
-        },
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/workflow/notify-team.sh",
-          "timeout": 30
-        }
-      ]
-    }
-  ],
-  "SessionStart": [
-    {
-      "matcher": ".*",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/security/validate-permissions.sh",
-          "timeout": 20
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Key Features
-
-### Multi-Level Organization
-
-**Commands**: Organized by function (CI, monitoring, admin)
-**Agents**: Separated by role (orchestration vs. specialized)
-**Skills**: Rich resources (references, examples, scripts)
-
-### MCP Integration
-
-Three custom MCP servers:
-- **Kubernetes**: Cluster operations
-- **Terraform**: Infrastructure provisioning
-- **GitHub Actions**: CI/CD automation
-
-### Shared Libraries
-
-Reusable code in `lib/`:
-- **Core**: Common utilities (logging, config, auth)
-- **Integrations**: External services (Slack, Datadog)
-- **Utils**: Helper functions (retry, validation)
-
-### Configuration Management
-
-Environment-specific configs in `config/`:
-- **Environments**: Per-environment settings
-- **Templates**: Reusable deployment templates
-
-### Security Automation
-
-Multiple security hooks:
-- Secret scanning before writes
-- Permission validation on session start
-- Configuration auditing on completion
-
-### Monitoring Integration
-
-Built-in monitoring via lib integrations:
-- Datadog for metrics
-- PagerDuty for alerts
-- Slack for notifications
-
-## Use Cases
-
-1. **Multi-environment deployments**: Orchestrated rollouts across dev/staging/prod
-2. **Infrastructure as code**: Terraform automation with state management
-3. **CI/CD automation**: Build, test, deploy pipelines
-4. **Monitoring and observability**: Integrated metrics and alerting
-5. **Security enforcement**: Automated security scanning and validation
-6. **Team collaboration**: Slack notifications and status updates
-
-## When to Use This Pattern
-
-- Large-scale enterprise deployments
-- Multiple environment management
-- Complex CI/CD workflows
-- Integrated monitoring requirements
-- Security-critical infrastructure
-- Team collaboration needs
-
-## Scaling Considerations
-
-- **Performance**: Separate MCP servers for parallel operations
-- **Organization**: Multi-level directories for scalability
-- **Maintainability**: Shared libraries reduce duplication
-- **Flexibility**: Environment configs enable customization
-- **Security**: Layered security hooks and validation
+- **Performance**：用独立 MCP servers 支持并行操作
+- **Organization**：多层目录结构便于扩展
+- **Maintainability**：共享库减少重复代码
+- **Flexibility**：环境配置支持定制
+- **Security**：多层安全 hooks 和验证

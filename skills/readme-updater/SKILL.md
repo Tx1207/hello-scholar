@@ -1,31 +1,31 @@
 ---
 name: readme-updater
-description: Updates README.md with latest project information by analyzing recent code changes and documentation gaps.
+description: 通过分析最近代码变更和文档缺口，更新 README.md 以反映最新项目信息。
 tags: [Documentation, README, Git, Development]
 ---
 
-# README Updater
+# README 更新器
 
-Update README.md file with latest project information based on recent code changes.
+根据最近的代码变更，更新 `README.md` 中的项目最新信息。
 
-## Instructions
+## 操作说明
 
-1. **Analyze Current State**
-   - Read existing README.md
-   - Check recent code changes (git log)
-   - Identify documentation gaps
+1. **分析当前状态**
+   - 阅读现有 `README.md`
+   - 检查最近代码变更（`git log`）
+   - 识别文档缺口
 
-2. **Determine Updates Needed**
-   Check for:
-   - New features added
-   - Configuration changes
-   - Dependencies updated
-   - Installation instructions
-   - Usage examples
-   - API changes
+2. **判断需要更新的内容**
+   检查：
+   - 新增功能
+   - 配置变化
+   - 依赖更新
+   - 安装说明
+   - 使用示例
+   - API 变化
 
-3. **Propose README Updates**
-   Show sections that need updating:
+3. **提出 README 更新建议**
+   展示需要更新的 sections：
    ```markdown
    Proposed changes:
    - [ ] Update Installation section (new dependencies)
@@ -34,25 +34,25 @@ Update README.md file with latest project information based on recent code chang
    - [ ] Fix broken links
    ```
 
-4. **Update README**
-   - Apply proposed changes
-   - Maintain markdown formatting
-   - Keep language consistent
-   - Preserve structure
+4. **更新 README**
+   - 应用建议修改
+   - 保持 markdown 格式
+   - 保持语言风格一致
+   - 保留结构稳定
 
-5. **Commit and Push**
-   - Use `docs(readme):` commit type
-   - Example commit: `docs(readme): update README documentation`
+5. **Commit 并 Push**
+   - 使用 `docs(readme):` commit type
+   - 示例：`docs(readme): update README documentation`
 
-## Update Modes
+## 更新模式
 
-- `--full` - Complete README rewrite
-- `--quick` - Only update critical sections (installation, usage)
-- Specific section name - Update that section only
+- `--full` - 完整重写 README
+- `--quick` - 只更新关键部分（installation、usage）
+- 指定 section 名称 - 只更新该部分
 
-## README Structure Template
+## README 结构模板
 
-When updating README, follow this structure:
+更新 README 时，遵循以下结构：
 
 ```markdown
 # Project Name
@@ -68,7 +68,7 @@ Short description of the project.
 ### Steps
 uv sync
 
-## Usage
+## 用法
 
 ### Basic Usage
 # Example code
@@ -99,6 +99,6 @@ Pull requests welcome.
 MIT License
 ```
 
-## Integration
+## 集成
 
-After updating README, this skill automatically triggers the git-push workflow with `docs(readme):` commit type.
+更新 README 后，该 skill 会自动触发 `git-push` workflow，并使用 `docs(readme):` commit type。

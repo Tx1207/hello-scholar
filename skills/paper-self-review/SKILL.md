@@ -1,61 +1,61 @@
 ---
 name: paper-self-review
-description: This skill should be used when the user asks to "review paper quality", "check paper completeness", "validate paper structure", "self-review before submission", or mentions systematic paper quality checking. Provides comprehensive quality assurance checklist for academic papers.
+description: 当用户要求 “review paper quality”、“check paper completeness”、“validate paper structure”、“self-review before submission”，或提到系统化论文质量检查时使用该 skill。它提供面向学术论文的完整质量保障清单。
 version: 0.1.0
 ---
 
 # Paper Self-Review
 
-A systematic paper quality checking tool that helps researchers conduct comprehensive self-review before submission.
+一个系统化的论文质量检查工具，帮助研究者在投稿前进行全面自审。
 
-## Core Features
+## 核心功能
 
-### 1. Structure Review
+### 1. 结构审查
 
-Check whether all sections of the paper are complete and conform to academic standards:
-- Does the Abstract include problem, method, results, and contributions?
-- Does the Introduction clearly articulate research motivation and background?
-- Is the Method detailed enough to be reproducible?
-- Do the Results sufficiently support the conclusions?
-- Does the Discussion address limitations and future work?
+检查论文各部分是否完整，并符合学术规范：
+- Abstract 是否包含问题、方法、结果和贡献？
+- Introduction 是否清晰陈述研究动机和背景？
+- Method 是否足够详细，可被复现？
+- Results 是否充分支撑结论？
+- Discussion 是否讨论了局限和未来工作？
 
-### 2. Logic Consistency Check
+### 2. 逻辑一致性检查
 
-Verify the logical coherence of the paper:
-- Do research questions match the methodology?
-- Does the experimental design support the research hypotheses?
-- Are result interpretations reasonable?
-- Are conclusions supported by evidence?
+验证论文逻辑是否自洽：
+- 研究问题是否与方法对应？
+- 实验设计是否支撑研究假设？
+- 对结果的解释是否合理？
+- 结论是否有证据支持？
 
-### 3. Citation Completeness
+### 3. 引用完整性
 
-Check the completeness and accuracy of citations:
-- Are all citations present in the references?
-- Is the reference format consistent?
-- Are key related works cited?
-- Do citations accurately reflect the original content?
+检查 citations 的完整性和准确性：
+- 所有引用是否都出现在 references 中？
+- 参考文献格式是否一致？
+- 是否引用了关键相关工作？
+- 引用是否准确反映原文内容？
 
-### 4. Figure/Table Quality
+### 4. Figure / Table 质量
 
-Evaluate the quality and effectiveness of figures and tables:
-- Do all figures/tables have clear titles and captions?
-- Do figures/tables support the text narrative?
-- Are figures/tables clear and readable?
-- Do formats comply with journal/conference requirements?
+评估 figures 和 tables 的质量与有效性：
+- 所有 figures / tables 是否都有清晰标题和 captions？
+- Figures / tables 是否支撑正文叙述？
+- Figures / tables 是否清晰可读？
+- 格式是否符合 journal / conference 要求？
 
-### 5. Writing Clarity
+### 5. 写作清晰度
 
-Check writing clarity and readability:
-- Is the language concise and clear?
-- Is technical terminology used appropriately?
-- Are sentence structures clear?
-- Is paragraph organization logical?
+检查写作清晰度和可读性：
+- 语言是否简洁清楚？
+- 技术术语使用是否恰当？
+- 句子结构是否清晰？
+- 段落组织是否合理？
 
-## Quality Checklist
+## 质量检查清单
 
-Use this checklist for systematic paper self-review:
+使用以下清单做系统化自审：
 
-```
+```text
 Paper Quality Checklist:
 - [ ] Abstract includes problem, method, results, contributions
 - [ ] Introduction clearly states research motivation
@@ -66,67 +66,66 @@ Paper Quality Checklist:
 - [ ] Citations are complete and accurate
 ```
 
-## When to Use
+## 何时使用
 
-Use this skill in the following scenarios:
+在以下场景使用：
 
-- **Pre-submission check** - Final review before submitting to a journal or conference
-- **After first draft** - Systematic review after completing the first draft
-- **Before advisor review** - Self-check before requesting advisor feedback to improve quality
-- **Post-revision verification** - After revising based on reviewer comments, verify all issues are addressed
-- **Collaborator review** - Quality check before sending to collaborators
+- **投稿前检查** - 向 journal 或 conference 提交前做最终审查
+- **初稿完成后** - 完成 first draft 后做系统化 review
+- **导师 review 前** - 在请求导师反馈前先做自查，提高质量
+- **修订后复核** - 根据 reviewer comments 修订后，验证所有问题是否已处理
+- **发给合作者前** - 在发给 collaborators 前做质量检查
 
-## Review Process
+## 审查流程
 
-Follow these steps for systematic paper review:
+按以下步骤进行系统化论文审查：
 
-### Step 1: Structure Review
-Start with the overall structure, checking if all sections are complete and logically coherent.
+### Step 1: 结构审查
+先看整体结构，检查各部分是否完整且逻辑连贯。
 
-### Step 2: Content Review
-Dive into each section, checking content accuracy and completeness.
+### Step 2: 内容审查
+深入每个 section，检查内容准确性与完整性。
 
-### Step 3: Citation Check
-Verify the completeness and accuracy of all citations.
+### Step 3: Citation 检查
+验证所有 citations 的完整性与准确性。
 
-### Step 4: Figure/Table Review
-Check the quality and captions of all figures and tables.
+### Step 4: Figure / Table 审查
+检查所有图表的质量和 captions。
 
-### Step 5: Writing Quality
-Review language expression and writing clarity.
+### Step 5: 写作质量
+审查语言表达和写作清晰度。
 
-### Step 6: Final Checklist
-Use the quality checklist for final verification.
+### Step 6: 最终清单
+使用质量清单完成最终核验。
 
-## Best Practices
+## 最佳实践
 
-### Review Timing
-- **Spaced review** - Wait 1-2 days after completing the draft before reviewing to maintain objectivity
-- **Multiple rounds** - Conduct multiple review rounds, focusing on different aspects each time
-- **Print review** - Print a hard copy for review; issues are easier to spot on paper
+### 审查时机
+- **间隔审查** - 初稿完成后等待 1-2 天再审，保持客观性
+- **多轮审查** - 进行多轮 review，每轮聚焦不同方面
+- **打印审查** - 打印纸质版往往更容易发现问题
 
-### Review Techniques
-- **Reverse reading** - Read from conclusion backwards to check logical coherence
-- **Read aloud** - Reading the paper aloud helps identify language issues
-- **Reviewer perspective** - Assume you are a reviewer and read critically
+### 审查技巧
+- **逆向阅读** - 从 conclusion 倒着看，检查逻辑链条
+- **朗读** - 大声读出来更容易发现语言问题
+- **Reviewer 视角** - 假设自己是 reviewer，用批判性视角阅读
 
-### Common Issues
-- Abstract too brief or too verbose
-- Introduction lacks clear research question statement
-- Method lacks sufficient detail for reproduction
-- Results lack statistical significance tests
-- Discussion doesn't address research limitations
-- Figures/tables lack clear titles and captions
-- Inconsistent citation formatting
+### 常见问题
+- Abstract 过短或过长
+- Introduction 没有清楚给出研究问题
+- Method 细节不足，无法复现
+- Results 缺少统计显著性检验
+- Discussion 没有讨论研究局限
+- Figures / tables 缺少清晰标题和 captions
+- Citation 格式不一致
 
-## Summary
+## 总结
 
-The Paper Self-Review skill provides a systematic paper quality checking process, helping researchers identify and resolve issues before submission, improving paper quality and acceptance rates.
+`Paper Self-Review` skill 提供了系统化的论文质量检查流程，帮助研究者在投稿前发现并解决问题，从而提升论文质量和接收率。
 
+## 参考文件
 
-## Reference Files
-
-Load only what is needed:
-- `references/SECTION-CHECKLIST.md` - section-by-section review questions
-- `references/FINAL-VERDICT.md` - how to summarize submission readiness and blocking issues
-- `examples/example-self-review.md` - example review output
+按需加载：
+- `references/SECTION-CHECKLIST.md` - 分 section 的审查问题
+- `references/FINAL-VERDICT.md` - 如何总结投稿准备度与阻塞问题
+- `examples/example-self-review.md` - 自审输出示例

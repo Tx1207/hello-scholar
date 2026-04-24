@@ -1,303 +1,155 @@
-# ML Paper Quality Evaluation Criteria
+# ML 论文质量评估标准
 
-## Overview
+## 概述
 
-Use these criteria to evaluate ML research papers found during literature search or when selecting papers for detailed review. The 5-dimension framework provides structured assessment for paper selection and comparison.
+使用这些标准评估 literature search 中发现的 ML 论文，或在选定需要精读的论文时使用。5 维框架适合做结构化筛选和横向比较。
 
----
-
-## Evaluation Dimensions
+## 评估维度
 
 | Dimension | Weight | Description |
 |-----------|--------|-------------|
-| **Innovation** | 30% | Novelty and originality of contribution |
-| **Method Completeness** | 25% | Clarity, rigor, and reproducibility |
-| **Experimental Thoroughness** | 25% | Validation depth and analysis quality |
-| **Writing Quality** | 10% | Clarity and presentation |
-| **Relevance & Impact** | 10% | Domain importance and potential impact |
+| **Innovation** | 30% | 贡献的新颖性与原创性 |
+| **Method Completeness** | 25% | 方法描述的清晰度、严谨性和可复现性 |
+| **Experimental Thoroughness** | 25% | 验证深度与分析质量 |
+| **Writing Quality** | 10% | 写作清晰度与呈现质量 |
+| **Relevance & Impact** | 10% | 领域重要性与潜在影响 |
 
----
+## 详细评分 Rubric
 
-## Detailed Scoring Rubrics
+### 1. Innovation（30%）
 
-### 1. Innovation (30%)
+- **5 分**：范式级突破、解决长期 open problem、预期影响很大
+- **4 分**：显著创新、对现有方法有明显推进
+- **3 分**：有合理的新方法或新视角，但偏增量
+- **2 分**：小改进、novelty 有限
+- **1 分**：贡献轻微、几乎是显然扩展
 
-**Score 5 - Breakthrough:**
-- Proposes entirely new paradigm or framework
-- Solves long-standing open problem
-- Major impact expected on the field
-- Challenges fundamental assumptions
+检查问题：
 
-**Score 4 - Significant Innovation:**
-- Substantial improvement over existing methods
-- New insights or perspectives
-- Novel combination of techniques
-- Clear advancement over state-of-the-art
+- 是否真的提出了新东西？
+- 是否推动了 SOTA 或提供了重要新 insight？
+- 未来工作会不会引用或沿用它？
 
-**Score 3 - Methodological Innovation:**
-- New method or architecture proposed
-- Some novelty but incremental
-- Reasonable contribution
-- Standard type of innovation
+### 2. Method Completeness（25%）
 
-**Score 2 - Incremental Improvement:**
-- Minor improvements to existing methods
-- Limited novelty
-- Small advancement
-- Mostly derivative
+- **5 分**：数学推导、算法细节、hyperparameters、代码都很完整
+- **4 分**：方法描述很详细，仅有少量细节空缺
+- **3 分**：核心方法清楚，但实现上仍要花力气补细节
+- **2 分**：缺关键细节，复现困难
+- **1 分**：描述不清，无法判断方法是否成立
 
-**Score 1 - Trivial:**
-- Minimal contribution
-- Obvious extension
-- No real innovation
-- Known results
+检查问题：
 
-**Evaluation Questions:**
-- Does this paper propose something genuinely new?
-- Does it advance the state-of-the-art?
-- Will this influence future work?
-- Is the contribution significant or marginal?
+- 别的研究者能否复现？
+- 关键细节是否写全？
+- 数学推导是否可靠？
+- 代码是否可用、是否可理解？
 
----
+### 3. Experimental Thoroughness（25%）
 
-### 2. Method Completeness (25%)
+- **5 分**：多数据集、强 baseline、ablation、统计检验都很充分
+- **4 分**：实验比较全面，ablation 和 baseline 合理
+- **3 分**：主体实验完成，结果基本可信
+- **2 分**：实验范围有限，baseline 弱
+- **1 分**：验证很少，结论不够可信
 
-**Score 5 - Complete and Rigorous:**
-- Full mathematical derivation
-- All hyperparameters specified
-- Complete algorithmic details
-- Easily reproducible
-- Code available
+检查问题：
 
-**Score 4 - Very Complete:**
-- Detailed method description
-- Most important details included
-- Mostly reproducible
-- Minor gaps in documentation
+- 实验是否全面？
+- baselines 是否强且合适？
+- 是否有统计检验和误差表示？
+- 是否有消融分析？
+- 是否在标准数据集上做了验证？
 
-**Score 3 - Reproducible:**
-- Core method clearly described
-- Key details present
-- Can be reproduced with effort
-- Some ambiguity in details
+### 4. Writing Quality（10%）
 
-**Score 2 - Lacks Details:**
-- Key details missing
-- Difficult to reproduce
-- Incomplete description
-- Ambiguous in important areas
+- **5 分**：表达清楚、结构紧凑、图表质量高
+- **4 分**：整体清晰，只有少量组织问题
+- **3 分**：基本可读，但需要读者花力气跟
+- **2 分**：有明显模糊和组织问题
+- **1 分**：很难理解
 
-**Score 1 - Unclear:**
-- Method description unclear
-- Missing critical information
-- Cannot determine validity
-- Poorly explained
+检查问题：
 
-**Evaluation Questions:**
-- Can another researcher reproduce this work?
-- Are all important details specified?
-- Is mathematical derivation sound?
-- Is code available and documented?
+- 是否容易理解？
+- 结构是否逻辑清楚？
+- 图表和表格是否清楚？
+- 文风是否专业？
 
----
+### 5. Relevance & Impact（10%）
 
-### 3. Experimental Thoroughness (25%)
+- **5 分**：解决重要问题，影响面广
+- **4 分**：在本领域很重要
+- **3 分**：有意义，影响中等
+- **2 分**：较 niche
+- **1 分**：影响有限
 
-**Score 5 - Comprehensive:**
-- Multiple diverse datasets
-- Extensive ablation studies
-- Statistical significance testing
-- Thorough analysis and discussion
-- Comparison with strong baselines
+检查问题：
 
-**Score 4 - Very Thorough:**
-- Multiple datasets
-- Reasonable ablation studies
-- Proper baseline comparisons
-- Good analysis
+- 这个问题重要吗？
+- 会影响后续工作吗？
+- 是否对当前研究需求相关？
+- 是否解决了真正有价值的挑战？
 
-**Score 3 - Adequate:**
-- Main experiments complete
-- Standard datasets
-- Basic baselines
-- Results are credible
+## 加权计算
 
-**Score 2 - Limited:**
-- Limited experiments
-- Few datasets
-- Weak baselines
-- Minimal analysis
-
-**Score 1 - Insufficient:**
-- Minimal validation
-- Toy examples only
-- No meaningful comparisons
-- Results not convincing
-
-**Evaluation Questions:**
-- Are experiments comprehensive?
-- Are baselines strong and appropriate?
-- Are statistical tests used?
-- Is there ablation analysis?
-- Are results on standard datasets?
-
----
-
-### 4. Writing Quality (10%)
-
-**Score 5 - Excellent:**
-- Clear, precise, well-structured
-- Logical flow throughout
-- Professional presentation
-- High-quality figures
-- No ambiguity
-
-**Score 4 - Very Good:**
-- Clear and well-written
-- Mostly logical structure
-- Good presentation
-- Minor issues
-
-**Score 3 - Understandable:**
-- Basically clear
-- Some organizational issues
-- Acceptable presentation
-- Understandable with effort
-
-**Score 2 - Fair:**
-- Some confusing sections
-- Organization problems
-- Presentation issues
-- Hard to follow at times
-
-**Score 1 - Poor:**
-- Unclear or confusing
-- Poor organization
-- Difficult to understand
-- Major presentation problems
-
-**Evaluation Questions:**
-- Is the paper easy to understand?
-- Is the structure logical?
-- Are figures/tables clear?
-- Is the writing professional?
-
----
-
-### 5. Relevance & Impact (10%)
-
-**Score 5 - High Impact:**
-- Solves important problem
-- Broad applicability
-- Expected wide influence
-- Addresses fundamental challenge
-
-**Score 4 - Domain Important:**
-- Important problem in field
-- Significant potential impact
-- Relevant to many researchers
-
-**Score 3 - Meaningful:**
-- Meaningful contribution
-- Moderate impact expected
-- Relevant to subset of field
-
-**Score 2 - Niche:**
-- Specialized problem
-- Limited applicability
-- Narrow impact
-
-**Score 1 - Limited:**
-- Very narrow problem
-- Minimal impact expected
-- Limited relevance
-
-**Evaluation Questions:**
-- Is this an important problem?
-- Will this influence future work?
-- Is it relevant to current research needs?
-- Does it address a significant challenge?
-
----
-
-## Scoring Calculation
-
-**Weighted Total:**
-```
-Total = (Innovation × 0.30) + (Method × 0.25) + (Experiments × 0.25) + (Writing × 0.10) + (Impact × 0.10)
+```text
+Total = (Innovation × 0.30)
+      + (Method × 0.25)
+      + (Experiments × 0.25)
+      + (Writing × 0.10)
+      + (Impact × 0.10)
 ```
 
-**Example Calculation:**
-- Innovation: 4/5
-- Method: 3/5
-- Experiments: 4/5
-- Writing: 3/5
-- Impact: 4/5
+## 筛选流程
 
-```
-Total = (4 × 0.30) + (3 × 0.25) + (4 × 0.25) + (3 × 0.10) + (4 × 0.10)
-      = 1.20 + 0.75 + 1.00 + 0.30 + 0.40
-      = 3.65 / 5.0
-```
+### 用于 literature review
 
----
+1. 按 title / abstract 做相关性初筛
+2. 对潜在相关论文做 full review
+3. 用 5 个维度打分
+4. 按总分排序
+5. 选择 top papers 做精读
 
-## Selection Process
+### 质量阈值
 
-### For Literature Reviews
+- **Excellent**：4.0+，应优先纳入
+- **Good**：3.5-3.9，若相关则纳入
+- **Fair**：3.0-3.4，只有高度相关时才纳入
+- **Poor**：<3.0，通常剔除
 
-1. **Screen papers** by title/abstract for relevance
-2. **Full review** of potentially relevant papers
-3. **Score each paper** using all 5 dimensions
-4. **Rank by total score**
-5. **Select top papers** for detailed review
+## 快速筛查信号
 
-### Quality Thresholds
+### 正面信号
 
-- **Excellent**: 4.0+ (include definitely)
-- **Good**: 3.5-3.9 (include if relevant)
-- **Fair**: 3.0-3.4 (include if highly relevant)
-- **Poor**: <3.0 (exclude unless essential)
+- 发表在顶会（NeurIPS、ICML、ICLR 等）
+- 被高质量论文引用
+- 有公开代码且质量不错
+- 作者来自强研究组
+- abstract 中能清楚看出 novelty
 
----
+### 负面信号
 
-## Quick Screening Indicators
+- abstract 很空泛
+- 没提实验规模或 baseline
+- 写作质量在 abstract 阶段就很差
+- 只有模糊 incremental claims
 
-Before detailed review, check:
+## 与 paper discovery 集成
 
-**Positive Indicators:**
-- Published at top venue (NeurIPS, ICML, ICLR)
-- Citations in top papers
-- Code available with stars
-- Authors from top labs
-- Clear novelty in abstract
+使用 `arxiv-search-guide.md` 时，可采用：
 
-**Negative Indicators:**
-- Vague abstract
-- Limited experiments mentioned
-- No baselines mentioned
-- Poor writing in abstract
-- incremental claims only
+1. 搜索
+2. 提取 metadata
+3. 按 abstract 快速筛
+4. 精读高潜力论文
+5. 用本标准打分
+6. 排序并选出重点候选
 
----
+## 备注
 
-## Integration with Paper Discovery
-
-When using arXiv search (`arxiv-search-guide.md`):
-
-1. **Search** for relevant papers
-2. **Extract metadata** from arXiv pages
-3. **Quick screen** by abstract/relevance
-4. **Detailed review** of promising papers
-5. **Score using** these criteria
-6. **Rank and select** top candidates
-
----
-
-## Notes
-
-- These criteria are designed for ML papers specifically
-- Adjust weights based on your specific needs
-- Use scores as relative comparisons, not absolute judgments
-- Consider venue reputation as additional signal
-- Code availability is increasingly important for reproducibility
+- 这些标准是专门为 ML 论文设计的
+- 权重可按你自己的任务做微调
+- 分数更适合相对比较，不要把它们当绝对真理
+- 会议声誉可以作为附加信号
+- code availability 对可复现性越来越重要

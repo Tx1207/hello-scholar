@@ -1,39 +1,39 @@
-# Analysis Depth Guide
+# 分析深度指南
 
-Move beyond “method A > method B”.
+不要停留在 “method A > method B”。
 
-## Four-layer depth ladder
+## 四层深度阶梯
 
-### 1. Observation
-What changed?
-- absolute gap
-- relative gap
-- stability change
-- subgroup pattern
+### 1. 观察
+发生了什么变化？
+- 绝对差距
+- 相对差距
+- 稳定性变化
+- 子群体模式
 
-### 2. Interpretation
-What is the most defensible explanation?
-- optimization stability
-- inductive bias match
-- subject/domain shift handling
-- data scarcity sensitivity
+### 2. 解释
+最稳妥的解释是什么？
+- 优化稳定性
+- inductive bias 匹配
+- subject/domain shift 处理
+- 数据稀缺敏感性
 
-### 3. Constraint
-What prevents overclaiming?
-- low sample size
-- only one dataset
-- missing subgroup coverage
-- no robustness sweep
+### 3. 约束
+哪些因素限制了过度宣称？
+- 样本量低
+- 只有一个数据集
+- 缺少子群体覆盖
+- 没有鲁棒性 sweep
 
-### 4. Decision
-What should happen next?
-- promote into durable result note
-- run an ablation
-- stop an unpromising branch
-- update the active plan
+### 4. 决策
+下一步应该做什么？
+- 推进为持久化结果笔记
+- 运行消融实验
+- 停止无前景分支
+- 更新当前计划
 
-## Good report sentence pattern
-- “We observe X.”
-- “This supports Y because Z evidence is present.”
-- “However, the claim is bounded by A.”
-- “Therefore the next decision is B.”
+## 好的报告句式
+- “我们观察到 X。”
+- “这支持 Y，因为存在 Z 证据。”
+- “不过，该结论受 A 限制。”
+- “因此，下一步决策是 B。”

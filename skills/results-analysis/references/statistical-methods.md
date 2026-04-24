@@ -1,4 +1,4 @@
-# Statistical Methods for ML/AI Experiments
+# ML/AI 实验统计方法
 
 完整的统计分析方法指南，用于 ML/AI 实验结果分析。
 

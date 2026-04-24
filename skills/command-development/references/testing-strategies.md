@@ -1,702 +1,276 @@
-# Command Testing Strategies
+# Command 测试策略
 
-Comprehensive strategies for testing slash commands before deployment and distribution.
+这是在发布和分发前测试 slash commands 的完整策略。
 
-## Overview
+## 概览
 
-Testing commands ensures they work correctly, handle edge cases, and provide good user experience. A systematic testing approach catches issues early and builds confidence in command reliability.
+测试 command 的目标是确保它：
+- 功能正确
+- 能处理 edge cases
+- 用户体验合理
+- 在分发后具有稳定性
 
-## Testing Levels
+系统化测试可以尽早暴露问题，并提升对 command 可靠性的信心。
 
-### Level 1: Syntax and Structure Validation
+## 测试层级
 
-**What to test:**
-- YAML frontmatter syntax
-- Markdown format
-- File location and naming
+### Level 1：语法与结构校验
 
-**How to test:**
+要检查：
+- YAML frontmatter 语法
+- Markdown 格式
+- 文件位置与命名
+
+典型检查：
 
 ```bash
-# Validate YAML frontmatter
 head -n 20 .codex/commands/my-command.md | grep -A 10 "^---"
-
-# Check for closing frontmatter marker
-head -n 20 .codex/commands/my-command.md | grep -c "^---" # Should be 2
-
-# Verify file has .md extension
 ls .codex/commands/*.md
-
-# Check file is in correct location
 test -f .codex/commands/my-command.md && echo "Found" || echo "Missing"
 ```
 
-**Automated validation script:**
-
-```bash
-#!/bin/bash
-# validate-command.sh
-
-COMMAND_FILE="$1"
-
-if [ ! -f "$COMMAND_FILE" ]; then
-  echo "ERROR: File not found: $COMMAND_FILE"
-  exit 1
-fi
-
-# Check .md extension
-if [[ ! "$COMMAND_FILE" =~ \.md$ ]]; then
-  echo "ERROR: File must have .md extension"
-  exit 1
-fi
-
-# Validate YAML frontmatter if present
-if head -n 1 "$COMMAND_FILE" | grep -q "^---"; then
-  # Count frontmatter markers
-  MARKERS=$(head -n 50 "$COMMAND_FILE" | grep -c "^---")
-  if [ "$MARKERS" -ne 2 ]; then
-    echo "ERROR: Invalid YAML frontmatter (need exactly 2 '---' markers)"
-    exit 1
-  fi
-  echo "✓ YAML frontmatter syntax valid"
-fi
-
-# Check for empty file
-if [ ! -s "$COMMAND_FILE" ]; then
-  echo "ERROR: File is empty"
-  exit 1
-fi
-
-echo "✓ Command file structure valid"
-```
-
-### Level 2: Frontmatter Field Validation
-
-**What to test:**
-- Field types correct
-- Values in valid ranges
-- Required fields present (if any)
-
-**Validation script:**
-
-```bash
-#!/bin/bash
-# validate-frontmatter.sh
-
-COMMAND_FILE="$1"
-
-# Extract YAML frontmatter
-FRONTMATTER=$(sed -n '/^---$/,/^---$/p' "$COMMAND_FILE" | sed '1d;$d')
-
-if [ -z "$FRONTMATTER" ]; then
-  echo "No frontmatter to validate"
-  exit 0
-fi
-
-# Check 'model' field if present
-if echo "$FRONTMATTER" | grep -q "^model:"; then
-  MODEL=$(echo "$FRONTMATTER" | grep "^model:" | cut -d: -f2 | tr -d ' ')
-  if ! echo "sonnet opus haiku" | grep -qw "$MODEL"; then
-    echo "ERROR: Invalid model '$MODEL' (must be sonnet, opus, or haiku)"
-    exit 1
-  fi
-  echo "✓ Model field valid: $MODEL"
-fi
-
-# Check 'allowed-tools' field format
-if echo "$FRONTMATTER" | grep -q "^allowed-tools:"; then
-  echo "✓ allowed-tools field present"
-  # Could add more sophisticated validation here
-fi
-
-# Check 'description' length
-if echo "$FRONTMATTER" | grep -q "^description:"; then
-  DESC=$(echo "$FRONTMATTER" | grep "^description:" | cut -d: -f2-)
-  LENGTH=${#DESC}
-  if [ "$LENGTH" -gt 80 ]; then
-    echo "WARNING: Description length $LENGTH (recommend < 60 chars)"
-  else
-    echo "✓ Description length acceptable: $LENGTH chars"
-  fi
-fi
-
-echo "✓ Frontmatter fields valid"
-```
-
-### Level 3: Manual Command Invocation
-
-**What to test:**
-- Command appears in `/help`
-- Command executes without errors
-- Output is as expected
-
-**Test procedure:**
-
-```bash
-# 1. Start Claude Code
-claude --debug
-
-# 2. Check command appears in help
-> /help
-# Look for your command in the list
-
-# 3. Invoke command without arguments
-> /my-command
-# Check for reasonable error or behavior
-
-# 4. Invoke with valid arguments
-> /my-command arg1 arg2
-# Verify expected behavior
-
-# 5. Check debug logs
-tail -f ~/.codex/debug-logs/latest
-# Look for errors or warnings
-```
-
-### Level 4: Argument Testing
-
-**What to test:**
-- Positional arguments work ($1, $2, etc.)
-- $ARGUMENTS captures all arguments
-- Missing arguments handled gracefully
-- Invalid arguments detected
-
-**Test matrix:**
-
-| Test Case | Command | Expected Result |
-|-----------|---------|-----------------|
-| No args | `/cmd` | Graceful handling or useful message |
-| One arg | `/cmd arg1` | $1 substituted correctly |
-| Two args | `/cmd arg1 arg2` | $1 and $2 substituted |
-| Extra args | `/cmd a b c d` | All captured or extras ignored appropriately |
-| Special chars | `/cmd "arg with spaces"` | Quotes handled correctly |
-| Empty arg | `/cmd ""` | Empty string handled |
-
-**Test script:**
-
-```bash
-#!/bin/bash
-# test-command-arguments.sh
-
-COMMAND="$1"
-
-echo "Testing argument handling for /$COMMAND"
-echo
-
-echo "Test 1: No arguments"
-echo "  Command: /$COMMAND"
-echo "  Expected: [describe expected behavior]"
-echo "  Manual test required"
-echo
-
-echo "Test 2: Single argument"
-echo "  Command: /$COMMAND test-value"
-echo "  Expected: 'test-value' appears in output"
-echo "  Manual test required"
-echo
-
-echo "Test 3: Multiple arguments"
-echo "  Command: /$COMMAND arg1 arg2 arg3"
-echo "  Expected: All arguments used appropriately"
-echo "  Manual test required"
-echo
-
-echo "Test 4: Special characters"
-echo "  Command: /$COMMAND \"value with spaces\""
-echo "  Expected: Entire phrase captured"
-echo "  Manual test required"
-```
-
-### Level 5: File Reference Testing
-
-**What to test:**
-- @ syntax loads file contents
-- Non-existent files handled
-- Large files handled appropriately
-- Multiple file references work
-
-**Test procedure:**
-
-```bash
-# Create test files
-echo "Test content" > /tmp/test-file.txt
-echo "Second file" > /tmp/test-file-2.txt
-
-# Test single file reference
-> /my-command /tmp/test-file.txt
-# Verify file content is read
-
-# Test non-existent file
-> /my-command /tmp/nonexistent.txt
-# Verify graceful error handling
-
-# Test multiple files
-> /my-command /tmp/test-file.txt /tmp/test-file-2.txt
-# Verify both files processed
-
-# Test large file
-dd if=/dev/zero of=/tmp/large-file.bin bs=1M count=100
-> /my-command /tmp/large-file.bin
-# Verify reasonable behavior (may truncate or warn)
-
-# Cleanup
-rm /tmp/test-file*.txt /tmp/large-file.bin
-```
-
-### Level 6: Bash Execution Testing
-
-**What to test:**
-- !` commands execute correctly
-- Command output included in prompt
-- Command failures handled
-- Security: only allowed commands run
-
-**Test procedure:**
-
-```bash
-# Create test command with bash execution
-cat > .codex/commands/test-bash.md << 'EOF'
----
-description: Test bash execution
-allowed-tools: Bash(echo:*), Bash(date:*)
----
-
-Current date: !`date`
-Test output: !`echo "Hello from bash"`
-
-Analysis of output above...
-EOF
-
-# Test in Claude Code
-> /test-bash
-# Verify:
-# 1. Date appears correctly
-# 2. Echo output appears
-# 3. No errors in debug logs
-
-# Test with disallowed command (should fail or be blocked)
-cat > .codex/commands/test-forbidden.md << 'EOF'
----
-description: Test forbidden command
-allowed-tools: Bash(echo:*)
----
-
-Trying forbidden: !`ls -la /`
-EOF
-
-> /test-forbidden
-# Verify: Permission denied or appropriate error
-```
-
-### Level 7: Integration Testing
-
-**What to test:**
-- Commands work with other plugin components
-- Commands interact correctly with each other
-- State management works across invocations
-- Workflow commands execute in sequence
-
-**Test scenarios:**
-
-**Scenario 1: Command + Hook Integration**
-
-```bash
-# Setup: Command that triggers a hook
-# Test: Invoke command, verify hook executes
-
-# Command: .codex/commands/risky-operation.md
-# Hook: PreToolUse that validates the operation
-
-> /risky-operation
-# Verify: Hook executes and validates before command completes
-```
-
-**Scenario 2: Command Sequence**
-
-```bash
-# Setup: Multi-command workflow
-> /workflow-init
-# Verify: State file created
-
-> /workflow-step2
-# Verify: State file read, step 2 executes
-
-> /workflow-complete
-# Verify: State file cleaned up
-```
-
-**Scenario 3: Command + MCP Integration**
-
-```bash
-# Setup: Command uses MCP tools
-# Test: Verify MCP server accessible
-
-> /mcp-command
-# Verify:
-# 1. MCP server starts (if stdio)
-# 2. Tool calls succeed
-# 3. Results included in output
-```
-
-## Automated Testing Approaches
+也可以写自动校验脚本，检查：
+- 文件是否存在
+- 是否为 `.md`
+- frontmatter 是否成对闭合
+- 文件是否为空
+
+### Level 2：Frontmatter 字段校验
+
+要检查：
+- 字段类型是否正确
+- 值是否在合法范围内
+- 必需字段是否存在
+
+例如检查：
+- `model` 是否为合法值
+- `allowed-tools` 是否存在且格式合理
+- `description` 是否过长
+
+### Level 3：手动调用测试
+
+要检查：
+- command 是否出现在 `/help`
+- command 执行是否报错
+- 输出是否符合预期
+
+典型流程：
+1. 启动 `claude --debug`
+2. 用 `/help` 确认 command 已加载
+3. 无参数执行一次
+4. 有效参数执行一次
+5. 查看 debug logs
+
+### Level 4：参数测试
+
+要检查：
+- `$1`、`$2` 等位置参数是否正确替换
+- `$ARGUMENTS` 是否能捕获全部参数
+- 缺少参数时是否优雅处理
+- 非法参数是否被识别
+
+建议测试矩阵：
+- 无参数
+- 单参数
+- 多参数
+- 多余参数
+- 带空格参数
+- 空字符串参数
+
+### Level 5：文件引用测试
+
+要检查：
+- `@file` 是否能读取内容
+- 文件不存在时是否优雅报错
+- 大文件是否处理得当
+- 多文件引用是否正常
+
+应分别测试：
+- 存在文件
+- 不存在文件
+- 多文件
+- 大文件
+
+### Level 6：Bash 执行测试
+
+要检查：
+- `!`` 命令是否正常执行
+- 输出是否被注入 prompt
+- 失败命令是否被正确处理
+- 只允许已声明的命令运行
+
+特别要测：
+- 正常命令
+- 被禁止命令
+- 返回非零退出码的命令
+
+### Level 7：集成测试
+
+要检查：
+- command 与其他插件组件是否协同正常
+- command 之间的顺序工作流是否能跑通
+- 状态文件能否跨多次调用工作
+- MCP、hooks、agents 等集成是否正常
+
+典型场景：
+1. command + hook
+2. 多 command 顺序执行
+3. command + MCP integration
+
+## 自动化测试方法
 
 ### Command Test Suite
 
-Create a test suite script:
-
-```bash
-#!/bin/bash
-# test-commands.sh - Command test suite
-
-TEST_DIR=".codex/commands"
-FAILED_TESTS=0
-
-echo "Command Test Suite"
-echo "=================="
-echo
-
-for cmd_file in "$TEST_DIR"/*.md; do
-  cmd_name=$(basename "$cmd_file" .md)
-  echo "Testing: $cmd_name"
-
-  # Validate structure
-  if ./validate-command.sh "$cmd_file"; then
-    echo "  ✓ Structure valid"
-  else
-    echo "  ✗ Structure invalid"
-    ((FAILED_TESTS++))
-  fi
-
-  # Validate frontmatter
-  if ./validate-frontmatter.sh "$cmd_file"; then
-    echo "  ✓ Frontmatter valid"
-  else
-    echo "  ✗ Frontmatter invalid"
-    ((FAILED_TESTS++))
-  fi
-
-  echo
-done
-
-echo "=================="
-echo "Tests complete"
-echo "Failed: $FAILED_TESTS"
-
-exit $FAILED_TESTS
-```
+可以写统一测试脚本，对每个 `.md` command 批量做：
+- 结构校验
+- frontmatter 校验
+- 基础输出检查
 
 ### Pre-Commit Hook
 
-Validate commands before committing:
-
-```bash
-#!/bin/bash
-# .git/hooks/pre-commit
-
-echo "Validating commands..."
-
-COMMANDS_CHANGED=$(git diff --cached --name-only | grep "\.codex/commands/.*\.md")
-
-if [ -z "$COMMANDS_CHANGED" ]; then
-  echo "No commands changed"
-  exit 0
-fi
-
-for cmd in $COMMANDS_CHANGED; do
-  echo "Checking: $cmd"
-
-  if ! ./scripts/validate-command.sh "$cmd"; then
-    echo "ERROR: Command validation failed: $cmd"
-    exit 1
-  fi
-done
-
-echo "✓ All commands valid"
-```
+可在 `.git/hooks/pre-commit` 中加入 command 校验，防止损坏的 command 被提交。
 
 ### Continuous Testing
 
-Test commands in CI/CD:
+在 CI/CD 中执行：
+- command 结构检查
+- frontmatter 检查
+- TODO 检查
 
-```yaml
-# .github/workflows/test-commands.yml
-name: Test Commands
+## Edge Case 测试
 
-on: [push, pull_request]
+重点覆盖：
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+### 参数边界
 
-      - name: Validate command structure
-        run: |
-          for cmd in .codex/commands/*.md; do
-            echo "Testing: $cmd"
-            ./scripts/validate-command.sh "$cmd"
-          done
+- 空参数：`/cmd ""`
+- 特殊字符：空格、引号、斜杠、下划线
+- 超长参数
+- 奇怪路径：`./file`、`../file`、`~/file`、带空格路径
 
-      - name: Validate frontmatter
-        run: |
-          for cmd in .codex/commands/*.md; do
-            ./scripts/validate-frontmatter.sh "$cmd"
-          done
+### Bash 边界
 
-      - name: Check for TODOs
-        run: |
-          if grep -r "TODO" .codex/commands/; then
-            echo "ERROR: TODOs found in commands"
-            exit 1
-          fi
-```
+- `exit 1`
+- `false`
+- 不存在的命令
+- 空输出
+- 大量输出
 
-## Edge Case Testing
+## 性能测试
 
-### Test Edge Cases
+### 响应时间
 
-**Empty arguments:**
-```bash
-> /cmd ""
-> /cmd '' ''
-```
+关注：
+- command 平均响应时间
+- 多次运行的波动
+- 快速 command 是否能控制在可接受阈值内
 
-**Special characters:**
-```bash
-> /cmd "arg with spaces"
-> /cmd arg-with-dashes
-> /cmd arg_with_underscores
-> /cmd arg/with/slashes
-> /cmd 'arg with "quotes"'
-```
+### 资源占用
 
-**Long arguments:**
-```bash
-> /cmd $(python -c "print('a' * 10000)")
-```
+可在一个终端运行 `claude --debug`，另一个终端观察：
+- 内存
+- CPU
+- 进程数
 
-**Unusual file paths:**
-```bash
-> /cmd ./file
-> /cmd ../file
-> /cmd ~/file
-> /cmd "/path with spaces/file"
-```
-
-**Bash command edge cases:**
-```markdown
-# Commands that might fail
-!`exit 1`
-!`false`
-!`command-that-does-not-exist`
-
-# Commands with special output
-!`echo ""`
-!`cat /dev/null`
-!`yes | head -n 1000000`
-```
-
-## Performance Testing
-
-### Response Time Testing
-
-```bash
-#!/bin/bash
-# test-command-performance.sh
-
-COMMAND="$1"
-
-echo "Testing performance of /$COMMAND"
-echo
-
-for i in {1..5}; do
-  echo "Run $i:"
-  START=$(date +%s%N)
-
-  # Invoke command (manual step - record time)
-  echo "  Invoke: /$COMMAND"
-  echo "  Start time: $START"
-  echo "  (Record end time manually)"
-  echo
-done
-
-echo "Analyze results:"
-echo "  - Average response time"
-echo "  - Variance"
-echo "  - Acceptable threshold: < 3 seconds for fast commands"
-```
-
-### Resource Usage Testing
-
-```bash
-# Monitor Claude Code during command execution
-# In terminal 1:
-claude --debug
-
-# In terminal 2:
-watch -n 1 'ps aux | grep claude'
-
-# Execute command and observe:
-# - Memory usage
-# - CPU usage
-# - Process count
-```
-
-## User Experience Testing
+## 用户体验测试
 
 ### Usability Checklist
 
-- [ ] Command name is intuitive
-- [ ] Description is clear in `/help`
-- [ ] Arguments are well-documented
-- [ ] Error messages are helpful
-- [ ] Output is formatted readably
-- [ ] Long-running commands show progress
-- [ ] Results are actionable
-- [ ] Edge cases have good UX
+- [ ] 命令名直观
+- [ ] `/help` 中 description 清楚
+- [ ] 参数说明明确
+- [ ] 错误消息有帮助
+- [ ] 输出易读
+- [ ] 长任务有进度提示
+- [ ] 结果可执行
+- [ ] edge cases 下 UX 不崩
 
 ### User Acceptance Testing
 
-Recruit testers:
+可以找 beta testers 试用，并收集：
+1. 是否容易理解
+2. 输出是否符合预期
+3. 最想修改什么
+4. 是否愿意常用
 
-```markdown
-# Testing Guide for Beta Testers
-
-## Command: /my-new-command
-
-### Test Scenarios
-
-1. **Basic usage:**
-   - Run: `/my-new-command`
-   - Expected: [describe]
-   - Rate clarity: 1-5
-
-2. **With arguments:**
-   - Run: `/my-new-command arg1 arg2`
-   - Expected: [describe]
-   - Rate usefulness: 1-5
-
-3. **Error case:**
-   - Run: `/my-new-command invalid-input`
-   - Expected: Helpful error message
-   - Rate error message: 1-5
-
-### Feedback Questions
-
-1. Was the command easy to understand?
-2. Did the output meet your expectations?
-3. What would you change?
-4. Would you use this command regularly?
-```
-
-## Testing Checklist
-
-Before releasing a command:
+## 发布前检查清单
 
 ### Structure
-- [ ] File in correct location
-- [ ] Correct .md extension
-- [ ] Valid YAML frontmatter (if present)
-- [ ] Markdown syntax correct
+
+- [ ] 文件位置正确
+- [ ] `.md` 扩展名正确
+- [ ] YAML frontmatter 合法
+- [ ] Markdown 语法正确
 
 ### Functionality
-- [ ] Command appears in `/help`
-- [ ] Description is clear
-- [ ] Command executes without errors
-- [ ] Arguments work as expected
-- [ ] File references work
-- [ ] Bash execution works (if used)
+
+- [ ] command 出现在 `/help`
+- [ ] description 清楚
+- [ ] 执行无错误
+- [ ] arguments 工作正常
+- [ ] 文件引用正常
+- [ ] Bash 执行正常（若使用）
 
 ### Edge Cases
-- [ ] Missing arguments handled
-- [ ] Invalid arguments detected
-- [ ] Non-existent files handled
-- [ ] Special characters work
-- [ ] Long inputs handled
+
+- [ ] 缺参处理正常
+- [ ] 非法参数可识别
+- [ ] 不存在文件可处理
+- [ ] 特殊字符可处理
+- [ ] 长输入可处理
 
 ### Integration
-- [ ] Works with other commands
-- [ ] Works with hooks (if applicable)
-- [ ] Works with MCP (if applicable)
-- [ ] State management works
+
+- [ ] 与其他 commands 协同正常
+- [ ] 与 hooks 协同正常
+- [ ] 与 MCP 协同正常
+- [ ] 状态管理正常
 
 ### Quality
-- [ ] Performance acceptable
-- [ ] No security issues
-- [ ] Error messages helpful
-- [ ] Output formatted well
-- [ ] Documentation complete
+
+- [ ] 性能可接受
+- [ ] 无明显安全问题
+- [ ] 错误消息有帮助
+- [ ] 输出格式清晰
+- [ ] 文档完整
 
 ### Distribution
-- [ ] Tested by others
-- [ ] Feedback incorporated
-- [ ] README updated
-- [ ] Examples provided
 
-## Debugging Failed Tests
+- [ ] 已找他人测试
+- [ ] 已吸收反馈
+- [ ] README 更新
+- [ ] 提供 examples
 
-### Common Issues and Solutions
+## 调试失败测试
 
-**Issue: Command not appearing in /help**
+### 常见问题
 
-```bash
-# Check file location
-ls -la .codex/commands/my-command.md
+**command 没出现在 `/help`：**
+- 检查文件位置
+- 检查权限
+- 检查 frontmatter / Markdown 是否损坏
+- 重启 Claude Code
 
-# Check permissions
-chmod 644 .codex/commands/my-command.md
+**参数没替换：**
+- 检查 `$1`、`$2`、`$ARGUMENTS` 写法
+- 先用最小示例验证
 
-# Check syntax
-head -n 20 .codex/commands/my-command.md
+**Bash 没执行：**
+- 检查 `allowed-tools`
+- 检查 `!`` 语法
+- 手工先跑一次命令本身
 
-# Restart Claude Code
-claude --debug
-```
+**文件引用失效：**
+- 检查 `@` 语法
+- 检查目标文件是否存在
+- 检查读取权限
 
-**Issue: Arguments not substituting**
+## 最佳实践
 
-```bash
-# Verify syntax
-grep '\$1' .codex/commands/my-command.md
-grep '\$ARGUMENTS' .codex/commands/my-command.md
-
-# Test with simple command first
-echo "Test: \$1 and \$2" > .codex/commands/test-args.md
-```
-
-**Issue: Bash commands not executing**
-
-```bash
-# Check allowed-tools
-grep "allowed-tools" .codex/commands/my-command.md
-
-# Verify command syntax
-grep '!\`' .codex/commands/my-command.md
-
-# Test command manually
-date
-echo "test"
-```
-
-**Issue: File references not working**
-
-```bash
-# Check @ syntax
-grep '@' .codex/commands/my-command.md
-
-# Verify file exists
-ls -la /path/to/referenced/file
-
-# Check permissions
-chmod 644 /path/to/referenced/file
-```
-
-## Best Practices
-
-1. **Test early, test often**: Validate as you develop
-2. **Automate validation**: Use scripts for repeatable checks
-3. **Test edge cases**: Don't just test the happy path
-4. **Get feedback**: Have others test before wide release
-5. **Document tests**: Keep test scenarios for regression testing
-6. **Monitor in production**: Watch for issues after release
-7. **Iterate**: Improve based on real usage data
+1. 早测、频测，不要最后一起补
+2. 能自动化的检查尽量自动化
+3. 不只测 happy path，也测坏路径
+4. 发布前让别人试用
+5. 保留测试场景，便于回归测试
+6. 发布后继续观察真实使用情况
+7. 根据反馈持续迭代

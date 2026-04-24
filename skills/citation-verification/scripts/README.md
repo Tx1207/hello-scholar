@@ -1,10 +1,10 @@
-# Citation Verification Scripts
+# 引用验证脚本
 
 ## 状态说明
 
 **这些脚本是参考实现，不是主要工作流的一部分。**
 
-本目录中的Python脚本提供了基于API的引用验证实现，但**实际的引用验证工作流使用WebSearch和Google Scholar**，而不是这些脚本。
+本目录中的 Python 脚本提供了基于 API 的引用验证参考实现，但**实际引用验证以 `ml-paper-writing` 的 citation workflow 为准**，不要把这些脚本当作默认流程。
 
 ## 为什么保留这些脚本？
 
@@ -32,14 +32,14 @@
 
 完整的引用验证脚本，包含：
 - 四层验证机制（格式、存在性、信息匹配、内容验证）
-- 多API支持（CrossRef、arXiv、Semantic Scholar）
+- 多 API 支持（CrossRef、arXiv、Semantic Scholar）
 - 报告生成
 
 **用途**: 参考实现，了解完整的验证逻辑
 
 ### api-clients.py
 
-API客户端库，包含：
+API 客户端库，包含：
 - CrossRefClient - DOI验证
 - ArXivClient - arXiv论文验证
 - SemanticScholarClient - 通用学术搜索

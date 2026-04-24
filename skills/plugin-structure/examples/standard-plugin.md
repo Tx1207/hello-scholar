@@ -1,8 +1,8 @@
-# Standard Plugin Example
+# 标准插件示例
 
-A well-structured plugin with commands, agents, and skills.
+一个结构清晰、同时包含 commands、agents 和 skills 的插件。
 
-## Directory Structure
+## 目录结构
 
 ```
 code-quality/
@@ -34,7 +34,7 @@ code-quality/
     └── generate-report.py
 ```
 
-## File Contents
+## 文件内容
 
 ### .claude-plugin/plugin.json
 
@@ -42,7 +42,7 @@ code-quality/
 {
   "name": "code-quality",
   "version": "1.0.0",
-  "description": "Comprehensive code quality tools including linting, testing, and review automation",
+  "description": "提供 lint、test 与 review 自动化的综合代码质量工具",
   "author": {
     "name": "Quality Team",
     "email": "quality@example.com"
@@ -59,37 +59,37 @@ code-quality/
 ```markdown
 ---
 name: lint
-description: Run linting checks on the codebase
+description: 对代码库执行 lint 检查
 ---
 
 # Lint Command
 
-Run comprehensive linting checks on the project codebase.
+对项目代码库执行完整 lint 检查。
 
 ## Process
 
-1. Detect project type and installed linters
-2. Run appropriate linters (ESLint, Pylint, RuboCop, etc.)
-3. Collect and format results
-4. Report issues with file locations and severity
+1. 识别项目类型和已安装的 linter
+2. 运行合适的 linter（ESLint、Pylint、RuboCop 等）
+3. 收集并格式化结果
+4. 按文件位置和严重程度报告问题
 
 ## Implementation
 
-Execute the linting script:
+执行 lint 脚本：
 
 \`\`\`bash
 bash ${CLAUDE_PLUGIN_ROOT}/scripts/run-linter.sh
 \`\`\`
 
-Parse the output and present issues organized by:
-- Critical issues (must fix)
-- Warnings (should fix)
-- Style suggestions (optional)
+解析输出，并按以下维度整理问题：
+- Critical issues（必须修复）
+- Warnings（建议修复）
+- Style suggestions（可选优化）
 
-For each issue, show:
-- File path and line number
-- Issue description
-- Suggested fix (if available)
+每个问题都应展示：
+- 文件路径和行号
+- 问题描述
+- 修复建议（如果有）
 ```
 
 ### commands/test.md
@@ -97,330 +97,128 @@ For each issue, show:
 ```markdown
 ---
 name: test
-description: Run test suite with coverage reporting
+description: 运行测试套件并生成覆盖率报告
 ---
 
 # Test Command
 
-Execute the project test suite and generate coverage reports.
+执行项目测试，并生成覆盖率结果。
 
 ## Process
 
-1. Identify test framework (Jest, pytest, RSpec, etc.)
-2. Run all tests
-3. Generate coverage report
-4. Identify untested code
+1. 识别测试框架（Jest、pytest、RSpec 等）
+2. 运行全部测试
+3. 生成覆盖率报告
+4. 找出未覆盖代码
 
 ## Output
 
-Present results in structured format:
-- Test summary (passed/failed/skipped)
-- Coverage percentage by file
-- Critical untested areas
-- Failed test details
+结构化展示结果：
+- 测试摘要（passed/failed/skipped）
+- 按文件统计的覆盖率
+- 关键未覆盖区域
+- 失败测试详情
 
 ## Integration
 
-After test completion, offer to:
-- Fix failing tests
-- Generate tests for untested code (using test-generator agent)
-- Update documentation based on test changes
+测试结束后，可以继续提供：
+- 修复失败测试
+- 为未覆盖代码生成测试（使用 test-generator agent）
+- 按测试变化更新文档
 ```
 
 ### agents/code-reviewer.md
 
 ```markdown
 ---
-description: Expert code reviewer specializing in identifying bugs, security issues, and improvement opportunities
+description: 擅长识别 bug、安全问题和改进空间的代码审查 agent
 capabilities:
-  - Analyze code for potential bugs and logic errors
-  - Identify security vulnerabilities
-  - Suggest performance improvements
-  - Ensure code follows project standards
-  - Review test coverage adequacy
+  - 分析潜在 bug 和逻辑错误
+  - 识别安全漏洞
+  - 提出性能优化建议
+  - 检查代码是否符合项目规范
+  - 评估测试覆盖是否充分
 ---
 
 # Code Reviewer Agent
 
-Specialized agent for comprehensive code review.
+用于做完整代码审查的专用 agent。
 
 ## Expertise
 
-- **Bug detection**: Logic errors, edge cases, error handling
-- **Security analysis**: Injection vulnerabilities, authentication issues, data exposure
-- **Performance**: Algorithm efficiency, resource usage, optimization opportunities
-- **Standards compliance**: Style guide adherence, naming conventions, documentation
-- **Test coverage**: Adequacy of test cases, missing scenarios
+- **Bug detection**：逻辑错误、边界情况、错误处理
+- **Security analysis**：注入漏洞、认证问题、数据暴露
+- **Performance**：算法效率、资源使用、优化机会
+- **Standards compliance**：风格规范、命名约定、文档
+- **Test coverage**：测试场景是否充分、是否遗漏
 
 ## Review Process
 
-1. **Initial scan**: Quick pass for obvious issues
-2. **Deep analysis**: Line-by-line review of changed code
-3. **Context evaluation**: Check impact on related code
-4. **Best practices**: Compare against project and language standards
-5. **Recommendations**: Prioritized list of improvements
+1. **Initial scan**：快速扫一遍明显问题
+2. **Deep analysis**：逐行分析改动代码
+3. **Context evaluation**：检查对相关代码的影响
+4. **Best practices**：与项目规范和语言规范对照
+5. **Recommendations**：给出按优先级排序的改进建议
 
 ## Integration with Skills
 
-Automatically loads `code-standards` skill for project-specific guidelines.
+自动加载 `code-standards` skill，读取项目特定规范。
 
 ## Output Format
 
-For each file reviewed:
-- Overall assessment
-- Critical issues (must fix before merge)
-- Important issues (should fix)
-- Suggestions (nice to have)
-- Positive feedback (what was done well)
+对每个被审查文件输出：
+- 总体评价
+- Critical issues（合并前必须修复）
+- Important issues（建议修复）
+- Suggestions（可选改进）
+- Positive feedback（做得好的地方）
 ```
 
 ### agents/test-generator.md
 
 ```markdown
 ---
-description: Generates comprehensive test suites from code analysis
+description: 基于代码分析生成完整测试套件
 capabilities:
-  - Analyze code structure and logic flow
-  - Generate unit tests for functions and methods
-  - Create integration tests for modules
-  - Design edge case and error condition tests
-  - Suggest test fixtures and mocks
+  - 分析代码结构和逻辑流
+  - 为函数和方法生成单元测试
+  - 为模块创建集成测试
+  - 设计边界情况与异常测试
+  - 建议合适的 fixtures 和 mocks
 ---
 
 # Test Generator Agent
 
-Specialized agent for generating comprehensive test suites.
+用于生成完整测试套件的专用 agent。
 
 ## Expertise
 
-- **Unit testing**: Individual function/method tests
-- **Integration testing**: Module interaction tests
-- **Edge cases**: Boundary conditions, error paths
-- **Test organization**: Proper test structure and naming
-- **Mocking**: Appropriate use of mocks and stubs
+- **Unit testing**：函数/方法级测试
+- **Integration testing**：模块交互测试
+- **Edge cases**：边界条件、错误路径
+- **Test organization**：测试结构与命名
+- **Mocking**：合理使用 mocks 和 stubs
 
 ## Generation Process
 
-1. **Code analysis**: Understand function purpose and logic
-2. **Path identification**: Map all execution paths
-3. **Input design**: Create test inputs covering all paths
-4. **Assertion design**: Define expected outputs
-5. **Test generation**: Write tests in project's framework
+1. **Code analysis**：理解函数目的和逻辑
+2. **Path identification**：梳理所有执行路径
+3. **Input design**：设计覆盖路径的输入
+4. **Assertion design**：定义预期输出
+5. **Test generation**：按项目测试框架生成测试
 
 ## Integration with Skills
 
-Automatically loads `testing-patterns` skill for project-specific test conventions.
+自动加载 `testing-patterns` skill，遵循项目测试约定。
 
 ## Test Quality
 
-Generated tests include:
-- Happy path scenarios
-- Edge cases and boundary conditions
-- Error handling verification
-- Mock data for external dependencies
-- Clear test descriptions
-```
-
-### skills/code-standards/SKILL.md
-
-```markdown
----
-name: Code Standards
-description: This skill should be used when reviewing code, enforcing style guidelines, checking naming conventions, or ensuring code quality standards. Provides project-specific coding standards and best practices.
-version: 1.0.0
----
-
-# Code Standards
-
-Comprehensive coding standards and best practices for maintaining code quality.
-
-## Overview
-
-Enforce consistent code quality through standardized conventions for:
-- Code style and formatting
-- Naming conventions
-- Documentation requirements
-- Error handling patterns
-- Security practices
-
-## Style Guidelines
-
-### Formatting
-
-- **Indentation**: 2 spaces (JavaScript/TypeScript), 4 spaces (Python)
-- **Line length**: Maximum 100 characters
-- **Braces**: Same line for opening brace (K&R style)
-- **Whitespace**: Space after commas, around operators
-
-### Naming Conventions
-
-- **Variables**: camelCase for JavaScript, snake_case for Python
-- **Functions**: camelCase, descriptive verb-noun pairs
-- **Classes**: PascalCase
-- **Constants**: UPPER_SNAKE_CASE
-- **Files**: kebab-case for modules
-
-## Documentation Requirements
-
-### Function Documentation
-
-Every function must include:
-- Purpose description
-- Parameter descriptions with types
-- Return value description with type
-- Example usage (for public functions)
-
-### Module Documentation
-
-Every module must include:
-- Module purpose
-- Public API overview
-- Usage examples
-- Dependencies
-
-## Error Handling
-
-### Required Practices
-
-- Never swallow errors silently
-- Always log errors with context
-- Use specific error types
-- Provide actionable error messages
-- Clean up resources in finally blocks
-
-### Example Pattern
-
-\`\`\`javascript
-async function processData(data) {
-  try {
-    const result = await transform(data)
-    return result
-  } catch (error) {
-    logger.error('Data processing failed', {
-      data: sanitize(data),
-      error: error.message,
-      stack: error.stack
-    })
-    throw new DataProcessingError('Failed to process data', { cause: error })
-  }
-}
-\`\`\`
-
-## Security Practices
-
-- Validate all external input
-- Sanitize data before output
-- Use parameterized queries
-- Never log sensitive information
-- Keep dependencies updated
-
-## Detailed Guidelines
-
-For comprehensive style guides by language, see:
-- `references/style-guide.md`
-```
-
-### skills/code-standards/references/style-guide.md
-
-```markdown
-# Comprehensive Style Guide
-
-Detailed style guidelines for all supported languages.
-
-## JavaScript/TypeScript
-
-### Variable Declarations
-
-Use `const` by default, `let` when reassignment needed, never `var`:
-
-\`\`\`javascript
-// Good
-const MAX_RETRIES = 3
-let currentTry = 0
-
-// Bad
-var MAX_RETRIES = 3
-\`\`\`
-
-### Function Declarations
-
-Use function expressions for consistency:
-
-\`\`\`javascript
-// Good
-const calculateTotal = (items) => {
-  return items.reduce((sum, item) => sum + item.price, 0)
-}
-
-// Bad (inconsistent style)
-function calculateTotal(items) {
-  return items.reduce((sum, item) => sum + item.price, 0)
-}
-\`\`\`
-
-### Async/Await
-
-Prefer async/await over promise chains:
-
-\`\`\`javascript
-// Good
-async function fetchUserData(userId) {
-  const user = await db.getUser(userId)
-  const orders = await db.getOrders(user.id)
-  return { user, orders }
-}
-
-// Bad
-function fetchUserData(userId) {
-  return db.getUser(userId)
-    .then(user => db.getOrders(user.id)
-      .then(orders => ({ user, orders })))
-}
-\`\`\`
-
-## Python
-
-### Import Organization
-
-Order imports: standard library, third-party, local:
-
-\`\`\`python
-# Good
-import os
-import sys
-
-import numpy as np
-import pandas as pd
-
-from app.models import User
-from app.utils import helper
-
-# Bad - mixed order
-from app.models import User
-import numpy as np
-import os
-\`\`\`
-
-### Type Hints
-
-Use type hints for all function signatures:
-
-\`\`\`python
-# Good
-def calculate_average(numbers: list[float]) -> float:
-    return sum(numbers) / len(numbers)
-
-# Bad
-def calculate_average(numbers):
-    return sum(numbers) / len(numbers)
-\`\`\`
-
-## Additional Languages
-
-See language-specific guides for:
-- Go: `references/go-style.md`
-- Rust: `references/rust-style.md`
-- Ruby: `references/ruby-style.md`
+生成结果应包含：
+- Happy path 场景
+- 边界和极端情况
+- 错误处理验证
+- 外部依赖的 mock 数据
+- 清晰的测试描述
 ```
 
 ### hooks/hooks.json
@@ -433,7 +231,7 @@ See language-specific guides for:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Before modifying code, verify it meets our coding standards from the code-standards skill. Check formatting, naming conventions, and documentation. If standards aren't met, suggest improvements.",
+          "prompt": "在修改代码前，先根据 code-standards skill 检查是否符合编码规范，包括格式、命名和文档要求；若不满足，先给出改进建议。",
           "timeout": 30
         }
       ]
@@ -454,78 +252,29 @@ See language-specific guides for:
 }
 ```
 
-### hooks/scripts/validate-commit.sh
+## 使用示例
 
-```bash
-#!/bin/bash
-# Validate code quality before task completion
-
-set -e
-
-# Check if there are any uncommitted changes
-if [[ -z $(git status -s) ]]; then
-  echo '{"systemMessage": "No changes to validate. Task complete."}'
-  exit 0
-fi
-
-# Run linter on changed files
-CHANGED_FILES=$(git diff --name-only --cached | grep -E '\.(js|ts|py)$' || true)
-
-if [[ -z "$CHANGED_FILES" ]]; then
-  echo '{"systemMessage": "No code files changed. Validation passed."}'
-  exit 0
-fi
-
-# Run appropriate linters
-ISSUES=0
-
-for file in $CHANGED_FILES; do
-  case "$file" in
-    *.js|*.ts)
-      if ! npx eslint "$file" --quiet; then
-        ISSUES=$((ISSUES + 1))
-      fi
-      ;;
-    *.py)
-      if ! python -m pylint "$file" --errors-only; then
-        ISSUES=$((ISSUES + 1))
-      fi
-      ;;
-  esac
-done
-
-if [[ $ISSUES -gt 0 ]]; then
-  echo "{\"systemMessage\": \"Found $ISSUES code quality issues. Please fix before completing.\"}"
-  exit 1
-fi
-
-echo '{"systemMessage": "Code quality checks passed. Ready to commit."}'
-exit 0
-```
-
-## Usage Examples
-
-### Running Commands
+### 运行 Commands
 
 ```
 $ claude
 > /lint
-Running linter checks...
+正在运行 lint 检查...
 
 Critical Issues (2):
-  src/api/users.js:45 - SQL injection vulnerability
-  src/utils/helpers.js:12 - Unhandled promise rejection
+  src/api/users.js:45 - SQL injection 漏洞
+  src/utils/helpers.js:12 - 未处理的 promise rejection
 
 Warnings (5):
-  src/components/Button.tsx:23 - Missing PropTypes
+  src/components/Button.tsx:23 - 缺少 PropTypes
   ...
 
 Style Suggestions (8):
-  src/index.js:1 - Use const instead of let
+  src/index.js:1 - 建议使用 const 替代 let
   ...
 
 > /test
-Running test suite...
+正在运行测试...
 
 Test Results:
   ✓ 245 passed
@@ -533,55 +282,35 @@ Test Results:
   ○ 2 skipped
 
 Coverage: 87.3%
-
-Untested Files:
-  src/utils/cache.js - 0% coverage
-  src/api/webhooks.js - 23% coverage
-
-Failed Tests:
-  1. User API › GET /users › should handle pagination
-     Expected 200, received 500
-  ...
 ```
 
-### Using Agents
+### 使用 Agents
 
 ```
 > Review the changes in src/api/users.js
 
-[code-reviewer agent selected automatically]
+[自动选择 code-reviewer agent]
 
 Code Review: src/api/users.js
 
 Critical Issues:
-  1. Line 45: SQL injection vulnerability
-     - Using string concatenation for SQL query
-     - Replace with parameterized query
+  1. Line 45: SQL injection 漏洞
+     - 使用字符串拼接构造 SQL 查询
+     - 应改为 parameterized query
      - Priority: CRITICAL
-
-  2. Line 67: Missing error handling
-     - Database query without try/catch
-     - Could crash server on DB error
-     - Priority: HIGH
-
-Suggestions:
-  1. Line 23: Consider caching user data
-     - Frequent DB queries for same users
-     - Add Redis caching layer
-     - Priority: MEDIUM
 ```
 
-## Key Points
+## 关键点
 
-1. **Complete manifest**: All recommended metadata fields
-2. **Multiple components**: Commands, agents, skills, hooks
-3. **Rich skills**: References and examples for detailed information
-4. **Automation**: Hooks enforce standards automatically
-5. **Integration**: Components work together cohesively
+1. **完整 manifest**：包含推荐 metadata
+2. **多组件协作**：commands、agents、skills、hooks 配合工作
+3. **丰富的 skill 资源**：通过 references 和 examples 补充细节
+4. **自动化约束**：hooks 自动执行规范检查
+5. **整体联动**：各组件可以串成一致工作流
 
-## When to Use This Pattern
+## 什么时候适合这种模式
 
-- Production plugins for distribution
-- Team collaboration tools
-- Plugins requiring consistency enforcement
-- Complex workflows with multiple entry points
+- 要分发的生产级插件
+- 团队协作工具
+- 需要一致性约束的插件
+- 拥有多个入口点的复杂工作流

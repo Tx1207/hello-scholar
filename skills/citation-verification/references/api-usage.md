@@ -63,13 +63,13 @@ print(f"Citations: {paper.citationCount}")
 
 ### 字段说明
 
-**返回的主要字段:**
+**返回的主要字段：**
 - `paperId` - Semantic Scholar 内部 ID
 - `title` - 论文标题
 - `authors` - 作者列表
 - `year` - 发表年份
-- `venue` - 发表场所(会议/期刊)
-- `externalIds` - 外部标识符(DOI, arXiv, PubMed 等)
+- `venue` - 发表场所（会议 / 期刊）
+- `externalIds` - 外部标识符（DOI、arXiv、PubMed 等）
 - `citationCount` - 引用次数
 - `abstract` - 摘要
 
@@ -369,5 +369,5 @@ class APICache:
 
 1. **CrossRef (DOI)** - 最可靠
 2. **arXiv (arXiv ID)** - 可靠
-3. **Semantic Scholar (标题搜索)** - 较可靠,需要人工确认
+3. **Semantic Scholar (标题搜索)** - 较可靠，但需要人工确认
 

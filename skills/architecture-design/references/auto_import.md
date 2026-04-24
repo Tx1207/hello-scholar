@@ -1,10 +1,10 @@
 # Auto-Import Pattern
 
-## Overview
+## 概览
 
-The Auto-Import pattern automatically discovers and imports all submodules in a directory, ensuring all components are registered without manual imports.
+Auto-Import pattern 会自动发现并导入目录下所有子模块，从而确保所有组件都完成注册，而不需要手工 import。
 
-## Structure
+## 结构
 
 ```python
 # In module __init__.py (e.g., data_module/dataset/__init__.py)
@@ -44,40 +44,40 @@ def import_modules(models_dir: str, package_name: str) -> List[str]:
     return imported
 ```
 
-## Benefits
+## 优点
 
-- **Zero maintenance**: Adding new file = auto-registration
-- **No遗漏**: Cannot forget to import new component
-- **Consistent**: All components follow same discovery path
-- **Scalable**: Works for any number of submodules
+- **Zero maintenance**：新增文件即可自动注册
+- **No遗漏**：不会忘记导入新组件
+- **Consistent**：所有组件沿用同一发现路径
+- **Scalable**：适用于任意数量子模块
 
-## Implementation Details
+## 实现细节
 
-1. Scan directory for `.py` files
-2. Skip files starting with `_` (private)
-3. Import each module using full package path
-4. Import triggers decorator registration
+1. 扫描目录中的 `.py` 文件
+2. 跳过以下划线开头的文件（私有）
+3. 通过完整 package path 导入每个模块
+4. 模块导入后触发 decorator registration
 
-## Directory Structure Example
+## 目录结构示例
 
-```
+```text
 dataset/
-├── __init__.py          # Contains import_modules() call
-├── simple_dataset.py    # Auto-imported, registers "simple"
-├── custom_dataset.py    # Auto-imported, registers "custom"
-└── _private.py          # NOT imported (starts with _)
+|- __init__.py          # Contains import_modules() call
+|- simple_dataset.py    # Auto-imported, registers "simple"
+|- custom_dataset.py    # Auto-imported, registers "custom"
+\- _private.py          # NOT imported (starts with _)
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Skip private files**: Files starting with `_` are not imported
-- **Full package paths**: Use dot-notation for correct imports
-- **Idempotent**: Safe to call multiple times
-- **Error handling**: Import errors propagate for debugging
+- **Skip private files**：下划线开头的文件默认不导入
+- **Full package paths**：使用点号表示的完整 package 路径
+- **Idempotent**：允许安全地多次调用
+- **Error handling**：让 import errors 直接暴露，便于调试
 
-## Common Patterns
+## 常见模式
 
-### Conditional Import
+### 条件导入
 
 ```python
 def import_modules(models_dir: str, package_name: str, skip: List[str] = None):
@@ -87,7 +87,7 @@ def import_modules(models_dir: str, package_name: str, skip: List[str] = None):
             importlib.import_module(f"{package_name}.{name}")
 ```
 
-### Recursive Import
+### 递归导入
 
 ```python
 def import_modules_recursive(models_dir: str, package_name: str):
@@ -97,7 +97,7 @@ def import_modules_recursive(models_dir: str, package_name: str):
             importlib.import_module(name)
 ```
 
-### Dry-Run Mode
+### Dry-Run 模式
 
 ```python
 def import_modules(models_dir: str, package_name: str, dry_run: bool = False):
@@ -107,11 +107,11 @@ def import_modules(models_dir: str, package_name: str, dry_run: bool = False):
     # ... actual import logic
 ```
 
-## Integration with Registry
+## 与 Registry 的集成
 
-The auto-import pattern is typically used WITH registry pattern:
+Auto-Import pattern 通常与 Registry pattern 配套使用：
 
-1. **Import time**: `import_modules()` imports all files
-2. **Decorator execution**: `@register_dataset()` runs
-3. **Factory population**: `DATASET_FACTORY` dict populated
-4. **Runtime**: `DatasetFactory()` looks up registered classes
+1. **Import time**：`import_modules()` 导入所有文件
+2. **Decorator execution**：`@register_dataset()` 执行
+3. **Factory population**：填充 `DATASET_FACTORY` dict
+4. **Runtime**：`DatasetFactory()` 查找已注册 classes

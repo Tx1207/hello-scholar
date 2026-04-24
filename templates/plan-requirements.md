@@ -1,13 +1,13 @@
-# Requirements: {{title}}
+# 需求：{{title}}
 
-## Goal
+## 目标
 
 {{goal}}
 
-## Constraints
+## 约束
 
 {{constraints}}
 
-## Non-goals
+## 非目标
 
 {{non_goals}}

@@ -1,65 +1,68 @@
-# Workflow
+# 工作流
 
 ## 1. Detect
 
-Run:
+运行：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" detect --cwd "$PWD"
 ```
 
-Use this to decide whether the repo:
-- is already bound,
-- should be bootstrapped,
-- or should be left alone.
+用它判断 repo：
+
+- 是否已经绑定
+- 是否应该 bootstrap
+- 或者是否应该保持不动
 
 ## 2. Bootstrap
 
-Bootstrap only when the repository is a strong research-project candidate and no binding exists yet.
+只有当仓库明显属于 research-project，且尚未绑定时，才进行 bootstrap。
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH"
 ```
 
-Bootstrap should create only the compact schema from `SCHEMA.md`, including `Results/Reports/` for internal experiment reports.
+Bootstrap 只应创建 `SCHEMA.md` 中定义的紧凑结构，包括内部实验报告使用的 `Results/Reports/`。
 
-To bootstrap Chinese notes explicitly:
+如果要显式生成中文笔记：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" bootstrap --cwd "$PWD" --vault-path "$OBSIDIAN_VAULT_PATH" --note-language zh-CN
 ```
 
-If the current mode is `global`, replace the helper path in the examples above and below with:
+如果当前模式是 `global`，就把上面命令中的 helper path 替换成：
 
 ```bash
 $HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/obsidian-project-memory/scripts/project_kb.py
 ```
 
-Language priority for generated/synced notes:
-1. per-project `note_language` in `hello-scholar/project-memory/registry.yaml`
-2. environment variable `OBSIDIAN_NOTE_LANGUAGE`
-3. default `en`
+生成 / 同步笔记的语言优先级：
 
-Section updates remain compatible with both English and Chinese headings so older notes can still sync safely after switching the configured language.
+1. `hello-scholar/project-memory/registry.yaml` 中的项目级 `note_language`
+2. 环境变量 `OBSIDIAN_NOTE_LANGUAGE`
+3. 默认 `en`
 
-## 3. Daily or repo-driven sync
+即使切换了语言配置，section update 仍需兼容中英文 heading，保证旧笔记仍可安全同步。
 
-Use:
+## 3. Daily 或 repo-driven sync
+
+使用：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" sync --cwd "$PWD" --scope auto
 ```
 
-Use sync for deterministic state maintenance only:
-- refresh `00-Hub.md`
-- refresh `01-Plan.md`
-- refresh project memory
-- write daily sync information
-- keep source inventory and codebase overview fresh
+sync 只用于确定性的状态维护：
 
-Do not rely on sync to derive project meaning from raw files.
+- 刷新 `00-Hub.md`
+- 刷新 `01-Plan.md`
+- 刷新 project memory
+- 写入 daily sync 信息
+- 保持 source inventory 和 codebase overview 新鲜
 
-For read-side assistance or single-note lifecycle operations, use:
+不要依赖 sync 从原始文件自动“理解”项目含义。
+
+读侧辅助或单 note 生命周期操作可用：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" query-context --cwd "$PWD" --kind broad
@@ -68,78 +71,84 @@ python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" fi
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" note-lifecycle --cwd "$PWD" --mode archive --note "Results/Old-Result.md"
 ```
 
-## 4. Agent-first import or synthesis
+## 4. Agent-first import 或 synthesis
 
-When the vault lacks background or context, do not extend the script first.
+当 vault 缺少背景知识或上下文时，不要先扩展脚本。
 
-Instead:
-1. ask an agent to read the most informative project sources,
-2. synthesize project-level knowledge,
-3. write durable notes back into `Knowledge/`, `Experiments/`, `Results/`, `Results/Reports/`, or `Papers/`.
+应优先：
 
-## 5. Advance along the main research path
+1. 让 agent 读取最有信息量的项目资料
+2. 综合出 project-level knowledge
+3. 将 durable notes 写回 `Knowledge/`、`Experiments/`、`Results/`、`Results/Reports/` 或 `Papers/`
 
-For substantive research turns, prefer advancing knowledge along this path:
+## 5. 沿主研究路径推进
+
+实质性科研回合优先沿这条路径推进：
 
 ```text
 Papers -> Experiments -> Results -> Writing
 ```
 
-Typical progression:
-- new paper understanding -> update `Papers/` and decide whether an experiment note should absorb a new hypothesis, baseline, or evaluation rule
-- experiment planning or execution -> update `Experiments/` and decide what evidence would justify a result note
-- stable finding -> update `Results/` and decide whether a round or batch retrospective should be written under `Results/Reports/`
-- draft or review work -> update `Writing/` and keep links back to supporting results and papers
+典型推进方式：
 
-Do not treat these folders as isolated silos. The default durable workflow is to move knowledge forward across them when the turn supports it.
+- 理解新论文 -> 更新 `Papers/`，并决定是否要在 experiment note 中吸收 hypothesis、baseline 或 evaluation rule
+- 规划 / 执行实验 -> 更新 `Experiments/`，并决定什么证据足以支持新的 result note
+- 发现稳定结论 -> 更新 `Results/`，并决定是否要在 `Results/Reports/` 写 round retrospective
+- 草稿或 review 工作 -> 更新 `Writing/`，并保持到 supporting results 和 papers 的链接
 
-## 6. Incremental update rule
+不要把这些文件夹当成孤立 silo。默认 durable workflow 是在一轮工作支持的情况下，把知识沿路径向前推进。
 
-For most turns, write the minimum durable delta only.
+## 6. 增量更新规则
 
-Examples:
-- small engineering change -> `Daily/` plus project memory
-- new experiment design -> `Experiments/`
-- new result interpretation -> `Results/`
-- new internal experiment retrospective -> `Results/Reports/`
-- new project framing -> `Knowledge/`
-- new paper note -> `Papers/`
+多数回合只写**最小 durable delta**。
 
-## 7. Ingest a new Markdown file
+例如：
 
-When a new `.md` file appears, do not route it by path alone.
+- 小工程改动 -> `Daily/` + project memory
+- 新实验设计 -> `Experiments/`
+- 新结果解释 -> `Results/`
+- 新的内部实验复盘 -> `Results/Reports/`
+- 新项目 framing -> `Knowledge/`
+- 新 paper note -> `Papers/`
 
-Use this sequence:
-1. classify it as `knowledge`, `paper`, `experiment`, `result`, `writing`, or `daily`,
-2. decide whether it is a **durable note** or **raw material**,
-3. choose one of:
-   - **promote** into the matching top-level folder,
-   - **merge** into an existing canonical note,
-   - **stage to Daily** when it is still unstable.
+## 7. 摄入新的 Markdown 文件
 
-Examples:
-- new `plan/new_idea.md` -> usually summarize first, then update `01-Plan.md` or `Knowledge/Research-Questions.md`
-- a complete experiment summary -> usually promote to `Results/Reports/`, and update `Results/` if a stable conclusion is now supported
-- a scratch meeting memo -> usually stage in `Daily/`
+新的 `.md` 文件出现时，不要只按路径路由。
 
-`project_kb.py` may manage state around this process, but it does not decide promote vs merge.
+应按以下顺序处理：
 
-## 8. Update / archive / purge durable notes
+1. 判断其属于 `knowledge`、`paper`、`experiment`、`result`、`writing` 还是 `daily`
+2. 判断它是 **durable note** 还是 **raw material**
+3. 执行以下之一：
+   - **promote** 到匹配的顶层目录
+   - **merge** 到已有 canonical note
+   - 不稳定时先 **stage to Daily**
 
-For durable notes:
-- update the canonical note when the object already exists,
-- create a new note only when the object is genuinely distinct,
-- archive by default when the user wants to remove something,
-- purge only on explicit permanent-delete intent.
+例如：
 
-When archiving or purging, repair direct links in `00-Hub.md`, `01-Plan.md`, and explicit index notes.
+- 新 `plan/new_idea.md` -> 通常先总结，再更新 `01-Plan.md` 或 `Knowledge/Research-Questions.md`
+- 完整实验总结 -> 通常提升到 `Results/Reports/`，若结论已稳定，再同步更新 `Results/`
+- 临时会议备忘录 -> 通常先放到 `Daily/`
 
-## 9. Lifecycle actions
+`project_kb.py` 可以维护这一过程的状态，但不应替代 promote vs merge 的判断。
 
-Default removal behavior is archive:
+## 8. 更新 / archive / purge durable notes
+
+对于 durable notes：
+
+- 对象已存在时更新 canonical note
+- 只有对象确实不同才创建新 note
+- 用户说“移除”时默认 archive
+- 只有明确永久删除意图时才 purge
+
+archive 或 purge 后，要修复 `00-Hub.md`、`01-Plan.md` 和显式索引中的直接链接。
+
+## 9. 生命周期操作
+
+默认移除行为是 archive：
 
 ```bash
 python3 ".hello-scholar/skills/obsidian-project-memory/scripts/project_kb.py" lifecycle --cwd "$PWD" --mode archive
 ```
 
-Only purge when the user explicitly asks for permanent deletion.
+只有当用户明确要求永久删除时才 purge。

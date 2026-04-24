@@ -17,65 +17,66 @@ linked_results:
 
 # Freezing / Round 3 / transfer-summary / 2026-03-18
 
-## Executive Summary
-- Round 3 tested whether a subject adapter recovers the performance lost by freezing most of the encoder.
-- Across 5 seeds per condition, the adapter reduced mean WER by **3.8 absolute points** relative to the frozen encoder baseline.
-- The current evidence supports keeping the adapter branch active, while pure freezing should be deprioritized.
+## 执行摘要
+- Round 3 测试 subject adapter 是否能恢复“冻结大部分 encoder”带来的性能损失。
+- 每个条件 5 个 seeds，adapter 相比 frozen encoder baseline 将平均 WER 降低了 **3.8 个绝对点**。
+- 当前证据支持继续保留 adapter branch，而 pure freezing 应降低优先级。
 
-## Experiment Identity and Decision Context
-- Experiment line: freezing
-- Round: 3
-- Purpose: resolve whether the freezing gap is best handled by lightweight adaptation or by abandoning the freezing branch.
-- Decision pressure: choose the next transfer branch before scheduling the next low-resource run block.
+## 实验身份与决策上下文
+- Experiment line：freezing
+- Round：3
+- Purpose：判断 freezing gap 更适合用 lightweight adaptation 解决，还是直接放弃 freezing branch。
+- Decision pressure：在安排下一个 low-resource run block 前，需要选择下一条 transfer branch。
 
-## Setup and Evaluation Protocol
-- Same subject pool and split as rounds 1-2.
-- 5 seeds per condition.
-- Primary metric: WER (lower is better).
-- Compared methods: Full fine-tuning, Subject Adapter, Frozen Encoder.
-- Statistical unit: seed-level final WER.
+## 设置与评估协议
+- subject pool 和 split 与 rounds 1-2 相同。
+- 每个条件 5 个 seeds。
+- 主指标：WER，越低越好。
+- 对比方法：Full fine-tuning、Subject Adapter、Frozen Encoder。
+- 统计单元：seed-level final WER。
 
-## Main Findings
-- Subject Adapter: **27.6 ± 1.0 WER**, 95% CI **[26.4, 28.8]**.
-- Frozen Encoder: **31.4 ± 1.5 WER**, 95% CI **[29.6, 33.2]**.
-- Full fine-tuning: **25.9 ± 0.8 WER**, 95% CI **[24.9, 26.9]**.
-- Adapter beats Frozen Encoder in all 5 paired seed comparisons.
+## 主要发现
+- Subject Adapter：**27.6 ± 1.0 WER**，95% CI **[26.4, 28.8]**。
+- Frozen Encoder：**31.4 ± 1.5 WER**，95% CI **[29.6, 33.2]**。
+- Full fine-tuning：**25.9 ± 0.8 WER**，95% CI **[24.9, 26.9]**。
+- Adapter 在全部 5 个 paired seed comparisons 中都优于 Frozen Encoder。
 
-## Statistical Validation
-- Adapter vs Frozen Encoder: paired Wilcoxon signed-rank test, **p = 0.031**, Holm-corrected **p = 0.047**, matched-rank biserial effect size **r = 0.90**.
-- Full fine-tuning vs Adapter: paired t-test, **p = 0.11**, Cohen's **d = 0.64**.
-- Interpretation: the adapter gain over pure freezing is supported at current `n = 5`; the gap to full fine-tuning is directionally consistent but still underpowered.
-- Unsupported claim boundary: this report does **not** claim generalization beyond the current subject pool or low-resource regime.
+## 统计验证
+- Adapter vs Frozen Encoder：paired Wilcoxon signed-rank test，**p = 0.031**，Holm-corrected **p = 0.047**，matched-rank biserial effect size **r = 0.90**。
+- Full fine-tuning vs Adapter：paired t-test，**p = 0.11**，Cohen's **d = 0.64**。
+- 解释：在当前 `n = 5` 下，adapter 相对 pure freezing 的收益已有支持；与 full fine-tuning 的差距方向一致但统计功效仍不足。
+- 不支持的 claim 边界：本报告不声称能泛化到当前 subject pool 或 low-resource regime 之外。
 
-## Figure-by-Figure Interpretation
-### Figure 1 — Main comparison
-- Why included: this is the core decision figure.
-- Evidence carried in: mean WER, 95% CI, and paired-seed comparisons.
-- Supported interpretation: lightweight subject adaptation closes most of the freezing gap.
-- Decision implication: future transfer experiments should center on adapter design, not frozen-only variants.
+## 逐图解释
 
-### Figure 2 — Training dynamics
-- Why included: to explain stability differences.
-- Evidence carried in: per-epoch validation traces across seeds.
-- Supported interpretation: the frozen baseline oscillates more after epoch 8, matching its wider uncertainty interval.
-- Decision implication: branch weakness is not only lower final accuracy but also worse optimization stability.
+### Figure 1 - 主对比
+- 纳入原因：这是核心决策图。
+- 承载证据：mean WER、95% CI 和 paired-seed comparisons。
+- 支持解释：lightweight subject adaptation 关闭了大部分 freezing gap。
+- 决策含义：后续 transfer 实验应聚焦 adapter design，而不是 frozen-only variants。
 
-## Failure Cases / Negative Results / Limitations
-- Full fine-tuning still leads in absolute WER.
-- The evidence is limited to one subject pool and 5 seeds.
-- No low-resource stress test or out-of-domain subject split has been run yet.
-- Adapter width was fixed in this round, so capacity trade-offs remain unresolved.
+### Figure 2 - 训练动态
+- 纳入原因：解释稳定性差异。
+- 承载证据：跨 seeds 的 per-epoch validation traces。
+- 支持解释：frozen baseline 在 epoch 8 后震荡更明显，与更宽的 uncertainty interval 一致。
+- 决策含义：该 branch 的弱点不只是 final accuracy 更低，也包括 optimization stability 更差。
 
-## What Changed Our Belief
-- Before round 3, it was plausible that freezing should be abandoned entirely.
-- After round 3, the better hypothesis is that freezing alone is too rigid, but freezing plus lightweight adaptation remains viable.
+## 失败案例 / 负结果 / 局限
+- Full fine-tuning 在绝对 WER 上仍领先。
+- 证据只覆盖一个 subject pool 和 5 个 seeds。
+- 还没有 low-resource stress test 或 out-of-domain subject split。
+- 本轮 adapter width 固定，capacity trade-off 仍未解决。
 
-## Next Actions
-- Run one low-resource robustness check for the adapter branch.
-- Add a width ablation around the current best adapter size.
-- Update the canonical result note for adapter-improves-transfer.
+## 哪些结果改变了我们的判断
+- Round 3 之前，完全放弃 freezing 仍是合理假设。
+- Round 3 之后，更合理的判断是：freezing alone 过于僵硬，但 freezing + lightweight adaptation 仍有希望。
 
-## Artifact and Reproducibility Index
+## 下一步
+- 为 adapter branch 跑一个 low-resource robustness check。
+- 围绕当前最佳 adapter size 做 width ablation。
+- 更新 canonical result note：adapter-improves-transfer。
+
+## Artifact 与可复现索引
 - `analysis-output/analysis-report.md`
 - `analysis-output/stats-appendix.md`
 - `analysis-output/figure-catalog.md`

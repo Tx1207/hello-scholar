@@ -1,10 +1,10 @@
 # Registry Pattern
 
-## Overview
+## 概览
 
-The Registry pattern allows components to register themselves via decorators, enabling automatic discovery and centralized management of available types.
+Registry pattern 允许组件通过 decorators 自注册，从而实现可用类型的自动发现和集中管理。
 
-## Structure
+## 结构
 
 ```python
 # In module __init__.py (e.g., data_module/dataset/__init__.py)
@@ -22,7 +22,7 @@ def register_dataset(name: str) -> Callable[[T], T]:
     return decorator
 ```
 
-## Usage
+## 用法
 
 ```python
 # In implementation file (e.g., simple_dataset.py)
@@ -35,23 +35,23 @@ class SimpleDataset(Dataset):
         pass
 ```
 
-## Benefits
+## 优点
 
-- **Automatic registration**: Components register themselves on import
-- **Declarative**: Single decorator line replaces manual registration code
-- **Import-time discovery**: Auto-import pattern finds all implementations
-- **Type-safe**: Preserves original class type
+- **Automatic registration**：组件在 import 时自动注册自身
+- **Declarative**：一行 decorator 替代手工注册逻辑
+- **Import-time discovery**：auto-import pattern 能找到全部实现
+- **Type-safe**：保留原始 class 类型
 
-## Implementation Details
+## 实现细节
 
-1. Decorator returns the class unchanged (for immediate use)
-2. Side effect: adds class to factory dict
-3. Name parameter must be unique per module
-4. Registration happens at module import time
+1. Decorator 原样返回 class（便于直接使用）
+2. 副作用是把 class 加入 factory dict
+3. `name` 参数在同一模块中必须唯一
+4. 注册发生在模块 import 时
 
-## Advanced Patterns
+## 高级模式
 
-### Registration with Config
+### 带配置的注册
 
 ```python
 def register_model(name: str):
@@ -63,7 +63,7 @@ def register_model(name: str):
     return decorator
 ```
 
-### Conditional Registration
+### 条件注册
 
 ```python
 def register_dataset(name: str, experimental: bool = False):
@@ -94,9 +94,9 @@ def register_augmentation(name: str):
     return decorator
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Unique names**: Use descriptive, unique registration names
-- **Documentation**: Document required parameters in class docstring
-- **Validation**: Validate config in `__init__`, not in decorator
-- **Consistency**: Use same naming convention across modules
+- **Unique names**：使用具描述性且唯一的注册名
+- **Documentation**：在 class docstring 中记录必需参数
+- **Validation**：在 `__init__` 中做 config 校验，而不是在 decorator 里
+- **Consistency**：跨模块使用一致命名约定

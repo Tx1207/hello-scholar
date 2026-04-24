@@ -1,27 +1,27 @@
 ---
 name: git-push
-description: Commits and pushes changes to GitHub remote repository using Conventional Commits format.
+description: 使用 Conventional Commits 格式将变更提交并 push 到 GitHub 远程仓库。
 tags: [Git, GitHub, Push, Development, Workflow]
 ---
 
 # Git Push
 
-Commit uncommitted changes and push to remote GitHub repository. Handles the complete flow: stage, commit, and push.
+提交未提交变更，并 push 到远程 GitHub 仓库。处理完整流程：stage、commit 和 push。
 
-## Instructions
+## 操作说明
 
-1. **Check Git Status**
-   - Run `git status`
-   - Show all uncommitted changes
+1. **检查 Git 状态**
+   - 运行 `git status`
+   - 展示所有未提交变更
 
-2. **Analyze Changes**
-   - Review changed files
-   - Determine commit type (feat/fix/docs/refactor/test/chore)
-   - Determine scope (affected module/component)
+2. **分析变更**
+   - 审阅已变更文件
+   - 判断 commit type（feat/fix/docs/refactor/test/chore）
+   - 判断 scope（受影响模块 / 组件）
 
-3. **Create Commit Message**
-   Follow Conventional Commits format:
-   ```
+3. **创建 Commit Message**
+   遵循 Conventional Commits 格式：
+   ```text
    <type>(<scope>): <subject>
 
    <body>
@@ -29,38 +29,38 @@ Commit uncommitted changes and push to remote GitHub repository. Handles the com
    <footer>
    ```
 
-   Types:
-   - `feat`: New feature
-   - `fix`: Bug fix
-   - `docs`: Documentation update
-   - `refactor`: Code refactoring
-   - `perf`: Performance optimization
-   - `test`: Test related
-   - `chore`: Other changes
+   Types：
+   - `feat`：新功能
+   - `fix`：Bug 修复
+   - `docs`：文档更新
+   - `refactor`：代码重构
+   - `perf`：性能优化
+   - `test`：测试相关
+   - `chore`：其他变更
 
-4. **Stage and Commit**
-   - Run `git add` for affected files
-   - Create commit with formatted message
-   - Include `Co-Authored-By: Claude <noreply@anthropic.com>` in footer
+4. **暂存并提交**
+   - 对受影响文件运行 `git add`
+   - 使用格式化 message 创建 commit
+   - 在 footer 中包含 `Co-Authored-By: Claude <noreply@anthropic.com>`
 
-5. **Push to Remote**
-   - Run `git push`
-   - If rejected, pull with rebase first:
+5. **Push 到远端**
+   - 运行 `git push`
+   - 如果被拒绝，先 pull with rebase：
      ```bash
      git pull --rebase origin $(git branch --show-current)
      git push
      ```
 
-6. **Verify Success**
-   - Show commit SHA
-   - Show remote branch status
+6. **验证成功**
+   - 展示 commit SHA
+   - 展示远程分支状态
 
-## Options
+## 选项
 
-- `--amend` - Amend last commit instead of creating new one
-- `--no-verify` - Skip pre-commit hooks
-- Custom commit message can be provided directly in `<type>(<scope>): <message>` format
+- `--amend`：修改上一个 commit，而不是创建新 commit
+- `--no-verify`：跳过 pre-commit hooks
+- 可直接提供 `<type>(<scope>): <message>` 格式的自定义 commit message
 
-## Integration
+## 集成
 
-This skill uses the same Conventional Commits format as git-commit but focuses on the complete flow: stage, commit, and push.
+该 skill 使用与 `git-commit` 相同的 Conventional Commits 格式，但聚焦完整流程：stage、commit 和 push。

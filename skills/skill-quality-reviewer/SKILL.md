@@ -1,27 +1,30 @@
 ---
 name: skill-quality-reviewer
-description: This skill should be used when the user asks to "analyze skill quality", "evaluate this skill", "review skill quality", "check my skill", or "generate quality report". Evaluates local skills across description quality, content organization, writing style, and structural integrity.
+description: 当用户要求“analyze skill quality”、“evaluate this skill”、“review skill quality”、“check my skill” 或 “generate quality report” 时使用。它会从 description quality、内容组织、写作风格和结构完整性四个维度评估本地 skill。
 version: 0.1.0
 ---
 
 # Skill Quality Reviewer
 
-## Overview
+## 概览
 
-A meta-skill for evaluating the quality of Claude Skills. Perform comprehensive analysis across four key dimensions—description quality (25%), content organization (30%), writing style (20%), and structural integrity (25%)—to generate weighted scores, letter grades, and actionable improvement plans.
+这是一个用于评估 Claude Skills 质量的 meta-skill。它会围绕四个核心维度进行综合分析：description quality（25%）、content organization（30%）、writing style（20%）和 structural integrity（25%），并生成加权分数、letter grade 与可执行的 improvement plan。
 
-Use this skill to validate skills before sharing, identify improvement opportunities, or ensure compliance with skill development best practices.
+用它来：
+- 在分享 skill 之前做质量验证
+- 识别改进空间
+- 检查是否符合 skill development best practices
 
 ## When to Use This Skill
 
-**Invoke this skill when:**
-- Analyzing a skill's quality before distribution
-- Reviewing skill documentation for best practices
-- Evaluating adherence to skill development standards
-- Generating improvement recommendations for existing skills
-- Validating skill structure and completeness
+**适用场景：**
+- 在分发前分析一个 skill 的质量
+- 审查 skill 文档是否符合最佳实践
+- 检查是否满足 skill development 标准
+- 为已有 skill 生成改进建议
+- 验证 skill 结构与完整性
 
-**Trigger phrases:**
+**触发短语：**
 - "Analyze skill quality for ./my-skill"
 - "Evaluate this skill: ./skills/api-helper"
 - "Review skill quality of git-workflow"
@@ -30,116 +33,116 @@ Use this skill to validate skills before sharing, identify improvement opportuni
 
 ## Review Modes
 
-Use one of three review modes depending on the task:
+根据任务选择三种 review mode 之一：
 
 1. **score-only**
-   - fast first-pass grading for one skill.
+   - 快速给单个 skill 做首轮评分
 2. **remediation-backlog**
-   - convert findings into P0 / P1 / P2 fix queues with concrete evidence.
+   - 把发现转成带证据的 P0 / P1 / P2 修复队列
 3. **batch-portfolio**
-   - review multiple skills together, cluster repeated issues, and produce a prioritized shortlist.
+   - 批量审查多个 skill，聚类重复问题，并给出优先修复短名单
 
-Prefer `remediation-backlog` when the user asks what to fix next.
-Prefer `batch-portfolio` when auditing many skills at once.
+如果用户问“下一步先修什么”，优先使用 `remediation-backlog`。
+如果用户要一次审很多 skill，优先使用 `batch-portfolio`。
 
 ## Analysis Workflow
 
 ### Step 1: Load the Skill
 
-Accept skill path as input. Verify the path exists and contains `SKILL.md`. Read the complete skill directory structure.
+接收 skill 路径作为输入，确认路径存在且包含 `SKILL.md`，然后读取完整 skill 目录结构。
 
 ```bash
 # Example invocation
 ls -la ./skills/target-skill/
 ```
 
-**Validate:**
-- SKILL.md exists
-- Directory is readable
-- Path points to a valid skill
+**验证：**
+- `SKILL.md` 存在
+- 目录可读
+- 路径确实指向一个合法 skill
 
 ### Step 2: Parse YAML Frontmatter
 
-Extract and validate the YAML frontmatter from SKILL.md.
+提取并校验 `SKILL.md` 中的 YAML frontmatter。
 
-**Required fields:**
-- `name` - Skill identifier
-- `description` - Trigger description with phrases
+**必需字段：**
+- `name` - skill 标识符
+- `description` - 含触发短语的描述
 
-**Check for:**
-- Valid YAML syntax
-- No prohibited fields
-- Proper formatting
+**检查点：**
+- YAML 语法合法
+- 没有被禁止的字段
+- 格式正确
 
 ### Step 3: Evaluate Description Quality (25%)
 
-Assess the quality and effectiveness of the frontmatter description.
+评估 frontmatter description 的质量和触发效果。
 
-**Scoring breakdown:**
+**评分细则：**
 
 | Criterion | Points | Evaluation |
 |-----------|--------|------------|
-| Trigger phrases clarity | 25 | 3-5 specific user phrases present |
-| Third-person format | 25 | Uses "This skill should be used when..." |
-| Description length | 25 | 100-300 characters optimal |
-| Specific scenarios | 25 | Concrete use cases, not vague |
+| Trigger phrases clarity | 25 | 是否有 3-5 个具体用户短语 |
+| Third-person format | 25 | 是否使用 “This skill should be used when...” |
+| Description length | 25 | 100-300 字符最优 |
+| Specific scenarios | 25 | 是否给出具体 use case，而非空泛描述 |
 
-**Red flags:**
-- Vague triggers like "helps with tasks"
-- Second-person descriptions ("Use this when you...")
-- Missing or generic descriptions
-- No actionable trigger phrases
+**红旗信号：**
+- 模糊触发语，如 “helps with tasks”
+- 第二人称描述（“Use this when you...”）
+- description 缺失或过于泛化
+- 没有可操作的 trigger phrase
 
-**Reference:** `references/examples-good.md` for exemplary descriptions
+参考：`references/examples-good.md`
 
 ### Step 4: Evaluate Content Organization (30%)
 
-Assess adherence to progressive disclosure principles.
+评估是否遵循 progressive disclosure 原则。
 
-**Scoring breakdown:**
+**评分细则：**
 
 | Criterion | Points | Evaluation |
 |-----------|--------|------------|
-| Progressive disclosure | 30 | SKILL.md lean, details in references/ |
-| SKILL.md length | 25 | Under 5,000 words (1,500-2,000 ideal) |
-| References/ usage | 25 | Detailed content properly moved |
-| Logical organization | 20 | Clear sections, good flow |
+| Progressive disclosure | 30 | `SKILL.md` 精炼，细节放在 `references/` |
+| `SKILL.md` length | 25 | 小于 5,000 词（1,500-2,000 最理想） |
+| `references/` usage | 25 | 详细内容是否正确下放 |
+| Logical organization | 20 | 分节清楚、流转合理 |
 
-**Check:**
-- SKILL.md body is concise and focused
-- Detailed content moved to `references/`
-- Examples and templates in appropriate directories
-- No information duplication across files
+**检查点：**
+- `SKILL.md` 本体是否简洁聚焦
+- 详细内容是否迁移到 `references/`
+- example 和 template 是否放在合适目录
+- 文件间是否存在重复信息
 
-**Reference:** `references/scoring-criteria.md` for detailed rubrics
+参考：`references/scoring-criteria.md`
 
 ### Step 5: Evaluate Writing Style (20%)
 
-Verify adherence to skill writing conventions.
+检查是否符合 skill 写作规范。
 
-**Scoring breakdown:**
+**评分细则：**
 
 | Criterion | Points | Evaluation |
 |-----------|--------|------------|
-| Imperative form | 40 | Verb-first instructions throughout |
-| No second person in body | 30 | Avoids conversational second person in the main workflow body |
-| Objective language | 30 | Factual, instructional tone |
+| Imperative form | 40 | 是否通篇使用动词开头指令式 |
+| No second person in body | 30 | workflow 正文中避免 conversational second person |
+| Objective language | 30 | 语气客观、说明性强 |
 
-**Check for:**
-- Imperative verbs: "Create the file", "Validate input", "Check structure"
-- Absence of: "You should", "You can", "You need to"
-- Objective, instructional language
-- Consistent style throughout
+**检查点：**
+- 是否使用祈使句，如 “Create the file”“Validate input”“Check structure”
+- 是否避免 “You should”“You can”“You need to”
+- 是否保持客观 instruction tone
+- 风格是否前后一致
 
-**Good examples:**
-```
+**好例子：**
+```text
 Create the skill directory structure.
 Validate the YAML frontmatter.
 Check for required fields.
 ```
 
-**Bad examples:**
-```
+**坏例子：**
+```text
 You should create the directory.
 You need to validate the frontmatter.
 Check if the fields are there.
@@ -147,41 +150,41 @@ Check if the fields are there.
 
 ### Step 6: Evaluate Structural Integrity (25%)
 
-Verify the skill's physical structure and completeness.
+验证 skill 的物理结构与完整度。
 
-**Scoring breakdown:**
+**评分细则：**
 
 | Criterion | Points | Evaluation |
 |-----------|--------|------------|
-| YAML frontmatter | 30 | All required fields present |
-| Directory structure | 30 | Proper organization |
-| Resource references | 40 | All referenced files exist |
+| YAML frontmatter | 30 | 必需字段是否齐全 |
+| Directory structure | 30 | 组织是否规范 |
+| Resource references | 40 | 所有引用文件是否真实存在 |
 
-**Validate:**
-- YAML frontmatter contains `name` and `description`
-- Directory structure follows conventions:
-  ```
+**验证内容：**
+- YAML frontmatter 是否包含 `name` 和 `description`
+- 目录结构是否符合约定：
+  ```text
   skill-name/
   ├── SKILL.md
   ├── references/ (optional)
   ├── examples/ (optional)
   └── scripts/ (optional)
   ```
-- All files referenced in SKILL.md actually exist
-- Examples are complete and working
-- Scripts are executable
+- `SKILL.md` 中提到的文件是否都存在
+- example 是否完整可用
+- script 是否可执行
 
 ### Step 7: Calculate Weighted Score
 
-Compute the overall quality score using weighted dimensions.
+根据加权维度计算总分。
 
-**Formula:**
-```
+**公式：**
+```text
 Overall Score = (Description × 0.25) + (Organization × 0.30) +
                 (Style × 0.20) + (Structure × 0.25)
 ```
 
-**Letter grade mapping:**
+**Letter grade 映射：**
 
 | Score Range | Grade | Meaning |
 |-------------|-------|---------|
@@ -201,22 +204,22 @@ Overall Score = (Description × 0.25) + (Organization × 0.30) +
 
 ### Step 8: Generate Reports
 
-Create two output documents in the current working directory.
+在当前工作目录创建两个输出文件。
 
-**1. Quality Report** (`quality-report-{skill-name}.md`)
-- Executive summary with overall score and grade
-- Dimension-by-dimension breakdown
-- Strengths and weaknesses for each dimension
-- Grade breakdown table
-- Link to improvement plan
+**1. Quality Report**（`quality-report-{skill-name}.md`）
+- Executive summary：总分与等级
+- 按维度拆分评分
+- 每个维度的 strengths / weaknesses
+- 评分贡献表
+- 指向 improvement plan 的链接
 
-**2. Improvement Plan** (`improvement-plan-{skill-name}.md`)
-- Prioritized improvement list (High/Medium/Low)
-- Specific file locations and line numbers for issues
-- Current vs. suggested content comparisons
-- Estimated impact on scores
-- Time estimates for fixes
-- Expected score improvement
+**2. Improvement Plan**（`improvement-plan-{skill-name}.md`）
+- 按优先级排序的改进列表（High / Medium / Low）
+- 问题对应的具体文件位置与行号
+- 当前内容与建议内容的对比
+- 预计分数提升
+- 修复时间估算
+- 预期总分改善
 
 ## Output Templates
 
@@ -310,116 +313,116 @@ See `improvement-plan-{skill-name}.md` for detailed improvement suggestions.
 
 ### Reference Files
 
-For detailed evaluation criteria and examples, consult:
+需要详细评分标准和示例时，查看：
 
-- **`references/scoring-criteria.md`** - Comprehensive scoring rubrics for each dimension
-- **`references/examples-good.md`** - Exemplary skills demonstrating best practices
-- **`references/examples-bad.md`** - Common anti-patterns to avoid
+- **`references/scoring-criteria.md`** - 各维度详细评分 rubric
+- **`references/examples-good.md`** - 高质量 skill 示例
+- **`references/examples-bad.md`** - 应避免的常见反模式
 
 ### Scripts
 
-- **`scripts/extract-yaml.sh`** - Utility for extracting YAML frontmatter from SKILL.md
-- **`scripts/skill-audit.py`** - Lightweight integrity audit for missing references, word count, and sibling-path checks
+- **`scripts/extract-yaml.sh`** - 从 `SKILL.md` 提取 YAML frontmatter
+- **`scripts/skill-audit.py`** - 轻量完整性审计，检查缺失引用、字数和 sibling path
 
 ### Related Skills
 
-- **`skill-development`** - Comprehensive guide for creating skills
-- **`code-review-excellence`** - Best practices for code review
+- **`skill-development`** - 创建 skill 的完整指南
+- **`code-review-excellence`** - code review 最佳实践
 
-## Best Practices
+## 最佳实践
 
 ### When Analyzing Skills
 
-1. **Be objective and specific** - Base scores on observable criteria, not opinions
-2. **Provide actionable feedback** - Each recommendation should be concrete and implementable
-3. **Include examples** - Show current vs. suggested content for clarity
-4. **Estimate impact** - Help users understand which changes matter most
-5. **Be constructive** - Frame feedback as opportunities for improvement
+1. **客观且具体** - 评分基于可观察标准，而不是个人喜好
+2. **反馈必须可执行** - 每条建议都应明确、能落地
+3. **附示例** - 用当前内容与建议内容对照说明
+4. **估计影响** - 让用户知道哪些改动最值得先做
+5. **保持建设性** - 把反馈表述为改进机会
 
 ### Common Quality Issues
 
-**Description Quality:**
-- Vague or generic trigger phrases
-- Second-person descriptions
-- Missing concrete use cases
+**Description Quality：**
+- trigger phrase 模糊或过泛
+- 使用第二人称描述
+- 缺少具体 use case
 
-**Content Organization:**
-- SKILL.md too long (>5,000 words)
-- Detailed content not moved to references/
-- Poor information hierarchy
+**Content Organization：**
+- `SKILL.md` 过长（>5,000 词）
+- 细节没有下放到 `references/`
+- 信息层级混乱
 
-**Writing Style:**
-- Second-person language ("you", "your")
-- Mixed imperative and descriptive styles
-- Subjective or conversational tone
+**Writing Style：**
+- 出现第二人称（`you`、`your`）
+- 祈使句和描述句混用
+- 语气主观或口语化
 
-**Structural Integrity:**
-- Missing required YAML fields
-- Referenced files don't exist
-- Incomplete examples or broken scripts
+**Structural Integrity：**
+- 缺失必填 YAML 字段
+- 被引用文件不存在
+- example 不完整或 script 已损坏
 
 ### Grade Benchmarks
 
-**A grade (90-100)**: Exemplary skills serving as templates for others
-- All dimensions score 85+
-- Clear, specific descriptions
-- Excellent progressive disclosure
-- Consistent imperative style
-- Complete, well-organized structure
+**A 档（90-100）**：可作为范本的高质量 skill
+- 四个维度基本都在 85+
+- description 清晰具体
+- progressive disclosure 做得好
+- imperative style 一致
+- 结构完整且组织良好
 
-**B grade (80-89)**: High-quality skills with minor improvements needed
-- Most dimensions score 75+
-- Good descriptions and organization
-- Generally follows best practices
-- May have minor style inconsistencies
+**B 档（80-89）**：高质量，但还有少量可改进点
+- 大多数维度在 75+
+- description 与组织都较好
+- 基本遵循最佳实践
+- 可能存在轻微风格不一致
 
-**C grade (70-79)**: Acceptable skills requiring moderate improvements
-- Key areas meet minimum standards
-- Some weaknesses in organization or style
-- Functional but not exemplary
+**C 档（70-79）**：可接受，但仍需中等强度改进
+- 核心区域达到最低标准
+- 在组织或风格上存在明显短板
+- 功能可用，但不够优秀
 
-**D/F grade (below 70)**: Skills needing significant work
-- Multiple dimensions below 70
-- Major structural or style issues
-- Requires comprehensive revision
+**D/F 档（70 以下）**：需要大修
+- 多个维度低于 70
+- 存在明显结构或风格问题
+- 需要系统性返工
 
 ## Usage Examples
 
-**Example 1: Analyze a local skill**
-```
+**Example 1: 分析本地 skill**
+```text
 User: "Analyze skill quality for ./skills/git-workflow"
 
-[Claude executes the 8-step workflow and generates:]
+[Claude 执行 8 步流程，并生成：]
 - quality-report-git-workflow.md
 - improvement-plan-git-workflow.md
 ```
 
-**Example 2: Review before sharing**
-```
+**Example 2: 发布前审查**
+```text
 User: "Review my new skill before I publish it"
 
-[Claude analyzes the skill and provides:]
-- Detailed quality assessment
-- Specific improvement recommendations
-- Expected score after implementing fixes
+[Claude 会提供：]
+- 详细质量评估
+- 具体改进建议
+- 落地修改后的预期分数
 ```
 
-**Example 3: Quality check for existing skill**
-```
+**Example 3: 检查已有 skill**
+```text
 User: "Check skill quality of api-helper"
 
-[Claude evaluates and reports:]
-- Current grade and score
-- Top improvement opportunities
-- Quick wins for easy score gains
+[Claude 会报告：]
+- 当前等级和分数
+- 最值得优先修改的点
+- 可快速提分的 quick wins
 ```
 
 **Example 4: Batch portfolio review**
-```
+```text
 User: "Review all skills in ./skills and tell me what to fix first"
 
-[Claude evaluates and reports:]
+[Claude 会输出：]
 - portfolio matrix
 - grouped issue clusters
-- shortlist for second-pass remediation
+- second-pass remediation shortlist
 ```

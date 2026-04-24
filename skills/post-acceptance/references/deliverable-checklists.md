@@ -1,16 +1,16 @@
-# Deliverable Checklists
+# 交付物检查清单
 
 ## Slides
-- one key message per slide
-- readable from the back of the room
-- backup slides for likely questions
+- 每页只传达一个关键信息
+- 后排观众也能看清
+- 为高概率问题准备 backup slides
 
 ## Poster
-- readable from 4-6 feet
-- visual hierarchy clear
-- QR code or artifact link present
+- 在 4-6 英尺距离内可读
+- 视觉层级清楚
+- 包含 QR code 或 artifact link
 
 ## Promotion
-- one-sentence hook
-- one clear figure or graphic
-- platform-specific tone and length respected
+- 有一句话 hook
+- 有一张清晰 figure 或 graphic
+- 语气和长度符合目标平台

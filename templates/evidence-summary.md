@@ -1,8 +1,8 @@
-# Evidence Summary: {{target_id}}
+# 证据汇总：{{target_id}}
 
-- Updated: `{{updated_at}}`
-- Entries: `{{entry_count}}`
+- 更新时间：`{{updated_at}}`
+- 条目数：`{{entry_count}}`
 
-## Evidence
+## 证据
 
 {{entries}}

@@ -1,37 +1,37 @@
 # Paper-Miner Writing Memory
 
-This is the **canonical global writing memory** maintained by `paper-miner`.
+这是由 `paper-miner` 维护的**全局规范写作记忆**。
 
-It stores reusable academic writing knowledge mined from papers across venues and projects.
+它用于沉淀从不同 venue、不同项目论文中提炼出的可复用学术写作知识。
 
-## Rules
+## 规则
 
-- This is the **only maintained paper-miner writing memory**.
-- `paper-miner` writes here even when invoked inside a specific project.
-- Do **not** create project-specific paper-miner writing memory.
-- Do **not** split new mined knowledge across multiple maintained category files.
-- Keep source attribution explicit and avoid duplicate entries.
+- 这是当前**唯一维护中的 paper-miner 写作记忆文件**。
+- 即使 `paper-miner` 是在某个具体项目里被调用，也统一写入这里。
+- 不要再创建项目级的 paper-miner 专属写作记忆文件。
+- 不要把新挖掘出的写作知识拆散到多个“长期维护”的分类文件中。
+- 必须保留清晰的来源归因，并避免重复条目。
 
-## Writing patterns mined
+## 已挖掘写作模式
 
-<!-- paper-miner adds reusable rhetorical patterns here -->
+<!-- paper-miner 在这里补充可复用的修辞结构、叙述套路和表达模板 -->
 
-## Structure signals
+## 结构信号
 
-<!-- paper-miner adds section-flow and organization signals here -->
+<!-- paper-miner 在这里补充章节推进方式、段落组织模式和常见结构线索 -->
 
-## Reusable phrasing
+## 可复用表达
 
-<!-- paper-miner adds concise reusable phrasing and transition templates here -->
+<!-- paper-miner 在这里补充简洁的过渡句、论证句和常见衔接模板 -->
 
-## Venue-specific signals
+## Venue 特定信号
 
-<!-- paper-miner adds venue-facing style and convention signals here -->
+<!-- paper-miner 在这里补充不同 venue 的风格偏好、约定表达和常见审稿关注点 -->
 
-## How this helps our writing
+## 这些知识如何帮助写作
 
-<!-- paper-miner explains how mined signals can inform future writing decisions here -->
+<!-- paper-miner 在这里说明这些模式如何反向指导后续论文写作决策 -->
 
-## Source index
+## 来源索引
 
-<!-- one short source entry per analyzed paper -->
+<!-- 每篇已分析论文对应一条简短来源记录 -->

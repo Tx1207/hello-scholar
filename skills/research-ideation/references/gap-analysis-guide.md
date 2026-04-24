@@ -1,4 +1,4 @@
-# Gap Analysis Guide for Research
+# 研究 Gap Analysis 指南
 
 ## 概述
 

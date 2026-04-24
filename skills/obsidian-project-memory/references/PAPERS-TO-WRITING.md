@@ -1,112 +1,129 @@
 # Papers -> Experiments -> Results -> Writing
 
-Use this as the default durable research pipeline inside the project knowledge base.
+把它作为项目知识库中的默认 durable research pipeline。
 
-## Why this pipeline matters
+## 为什么这条流水线重要
 
-The vault should not treat literature, experiments, results, and writing as isolated folders.
+vault 不应把 literature、experiments、results 和 writing 当成彼此孤立的文件夹。
 
-Default expectation:
-1. `Papers/` produces hypotheses, reusable methods, baselines, and evaluation criteria.
-2. `Experiments/` turns those into actionable test plans or updates an existing experiment line.
-3. `Results/` captures the durable findings that survive beyond one run or one day.
-4. `Writing/` turns those findings into external-facing synthesis: literature review, proposal text, draft claims, slides, rebuttal notes.
+默认预期：
 
-`Daily/` is the staging area for temporary work and chronology, not the final destination for durable research objects.
+1. `Papers/` 产出 hypotheses、可复用方法、baselines 和 evaluation criteria
+2. `Experiments/` 将它们转成可执行测试计划，或吸收到已有实验线
+3. `Results/` 记录能跨越单次运行和单天时间线的 durable findings
+4. `Writing/` 将这些 findings 变成对外表达：literature review、proposal、draft claims、slides、rebuttal notes
 
-## Default handoff rules
+`Daily/` 是临时工作和时间序列的 staging area，不是 durable research object 的终点。
+
+## 默认交接规则
 
 ### Papers -> Experiments
 
-Promote from `Papers/` to `Experiments/` when a paper note yields:
-- a testable hypothesis,
-- a method variation worth implementing,
-- a baseline worth reproducing,
-- an ablation worth adding,
-- an evaluation protocol or metric worth adopting.
+当 paper note 产生以下内容时，应从 `Papers/` 推进到 `Experiments/`：
 
-Default action:
-- update the existing canonical experiment note if the idea belongs to an existing experiment line,
-- otherwise create one new experiment note for the distinct experiment line,
-- add a short back-link from the paper note to that experiment note.
+- 可测试 hypothesis
+- 值得实现的方法变体
+- 值得复现的 baseline
+- 值得补充的 ablation
+- 值得采用的 evaluation protocol 或 metric
 
-Do not stop at “this paper is relevant”; push at least to “what should we test because of it?” when the turn supports that level of specificity.
+默认动作：
+
+- 如果它属于现有 experiment line，就更新已有 canonical experiment note
+- 否则为这个独立 experiment line 新建一个 experiment note
+- 从 paper note 回链到对应 experiment note
+
+不要停在“这篇论文很相关”。只要当前回合支持，就至少推进到“因此我们应该测试什么”。
 
 ### Experiments -> Results
 
-Promote from `Experiments/` to `Results/` when an experiment yields:
-- a stable comparison,
-- a repeatable failure pattern,
-- a durable negative result,
-- a mechanism insight,
-- a decision-changing observation.
+当 experiment 产出以下内容时，应从 `Experiments/` 推进到 `Results/`：
 
-Default action:
-- keep transient run noise in `Daily/` or inside the experiment note,
-- create or update a result note only when the observation is stable enough to cite later,
-- link the result note back to the experiment note and vice versa.
+- 稳定对比
+- 可重复失败模式
+- durable negative result
+- 机制 insight
+- 会改变决策的观察
 
-Do not create a result note for every run. Create one when the finding survives beyond raw logs.
+默认动作：
+
+- 将瞬时 run 噪声保留在 `Daily/` 或 experiment note 中
+- 只有当观察稳定到足以被后续引用时，才创建或更新 result note
+- result note 与 experiment note 之间要双向链接
+
+不要为每次 run 都建 result note。只有当发现能脱离 raw logs 独立存在时才建。
 
 ### Results -> Writing
 
-Promote from `Results/` to `Writing/` when a result yields:
-- a claim that belongs in a paper, report, slide, or proposal,
-- a useful comparison matrix,
-- a project narrative update,
-- a conclusion that should appear in a literature review or discussion section.
+当 result 产出以下内容时，应从 `Results/` 推进到 `Writing/`：
 
-Default action:
-- update an existing writing note when the output object already exists,
-- otherwise create one writing note per external object (review, proposal, draft section, slide outline, rebuttal block),
-- keep links back to the result notes and key paper notes that support the claim.
+- 可写进论文、报告、slides 或 proposal 的 claim
+- 有用的 comparison matrix
+- 项目叙事更新
+- 应出现在 literature review 或 discussion 中的结论
 
-Do not let writing drift away from evidence. Every durable writing claim should link back to supporting results, and when useful, to the motivating papers.
+默认动作：
 
-## Folder-by-folder default questions
+- 如果写作对象已存在，就更新现有 writing note
+- 否则每个外部对象建一个 writing note（review、proposal、draft section、slide outline、rebuttal block）
+- 维持到 supporting results 和 key paper notes 的链接
 
-### For a paper note
-Ask:
-- What is the main reusable idea?
-- Does it change what we should test?
-- Which existing experiment line should absorb it?
-- Does it belong in the active writing narrative yet?
+不要让 writing 脱离证据。每个 durable writing claim 都应能回链到 supporting results，必要时也回链到 motivating papers。
 
-### For an experiment note
-Ask:
-- Which paper or prior result motivated this experiment?
-- What decision would this experiment change?
-- What evidence would justify promotion into `Results/`?
-- What writing object would benefit if this experiment succeeds or fails?
+## 按文件夹默认提问
 
-### For a result note
-Ask:
-- What is the durable claim?
-- What evidence supports it?
-- Which experiments and papers does it connect?
-- Which writing artifact should absorb this claim next?
+### 对 paper note
 
-### For a writing note
-Ask:
-- Which result notes support this text?
-- Which paper notes provide context or comparison?
-- Is this writing object current, or should it be updated from newer results?
+问：
 
-## Main anti-patterns
+- 最值得复用的想法是什么？
+- 它是否改变了我们该测试什么？
+- 哪条 experiment line 应吸收它？
+- 它现在是否已经进入 active writing narrative？
 
-Avoid these weak workflows:
-- paper notes that never produce experiment decisions,
-- experiment notes that never clarify what finding would count as durable,
-- result notes that never feed any writing object,
-- writing notes that drift away from linked evidence,
-- keeping durable insights in `Daily/` instead of promoting them.
+### 对 experiment note
 
-## Default promotion heuristic
+问：
 
-When unsure, use this order:
-1. update the existing paper note,
-2. if it changes what should be tested, update or create the experiment note,
-3. if it changes what is now believed, update or create the result note,
-4. if it changes what should be said externally, update the writing note.
+- 哪篇 paper 或 prior result 促成了这个实验？
+- 这个实验会改变什么决策？
+- 什么证据足以把它推进到 `Results/`？
+- 如果成功或失败，哪个 writing object 会受益？
 
-This is the default durable research path unless the user clearly wants a narrower operation.
+### 对 result note
+
+问：
+
+- durable claim 是什么？
+- 哪些证据支撑它？
+- 它连接了哪些 experiments 和 papers？
+- 下一步哪个 writing artifact 应吸收它？
+
+### 对 writing note
+
+问：
+
+- 哪些 result notes 支撑这段文字？
+- 哪些 paper notes 提供背景或比较？
+- 这个 writing object 还是最新的吗，还是应该吸收更新的 results？
+
+## 主要反模式
+
+避免以下弱工作流：
+
+- paper notes 从不产出 experiment 决策
+- experiment notes 从不说明什么发现才算 durable
+- result notes 从不流向任何 writing object
+- writing notes 脱离链接证据漂移
+- 把 durable insight 长期留在 `Daily/` 而不 promote
+
+## 默认 promote heuristic
+
+当拿不准时，按这个顺序：
+
+1. 更新已有 paper note
+2. 如果它改变了要测试的内容，更新或创建 experiment note
+3. 如果它改变了当前相信的内容，更新或创建 result note
+4. 如果它改变了对外表达内容，更新 writing note
+
+除非用户明确要求更窄的操作，否则这就是默认 durable research path。

@@ -1,6 +1,6 @@
 ---
 name: ml-paper-writing
-description: Write publication-ready ML/AI papers for NeurIPS, ICML, ICLR, ACL, AAAI, COLM. Use when drafting papers from research repos, conducting literature reviews, finding related work, verifying citations, or preparing camera-ready submissions. Includes LaTeX templates, citation verification workflows, and paper discovery/evaluation criteria.
+description: 为 NeurIPS、ICML、ICLR、ACL、AAAI、COLM 撰写 publication-ready 的 ML/AI 论文。用于从 research repo 起草论文、做 literature review、寻找 related work、验证 citation，或准备 camera-ready submission。包含 LaTeX template、citation verification workflow 和论文发现 / 评估标准。
 version: 1.0.0
 author: Orchestra Research
 license: MIT
@@ -10,909 +10,380 @@ dependencies: [semanticscholar, arxiv, habanero, requests]
 
 # ML Paper Writing for Top AI Conferences
 
-Expert-level guidance for writing publication-ready papers targeting **NeurIPS, ICML, ICLR, ACL, AAAI, and COLM**. This skill combines writing philosophy from top researchers (Nanda, Farquhar, Karpathy, Lipton, Steinhardt) with practical tools: LaTeX templates, citation verification APIs, and conference checklists.
+面向 **NeurIPS、ICML、ICLR、ACL、AAAI、COLM** 的 ML/AI 论文写作指南。该 skill 结合顶级研究者的写作理念（Nanda、Farquhar、Karpathy、Lipton、Steinhardt）与实际工具：LaTeX template、citation verification API、conference checklist。
 
-## Default operating order
+## Default Operating Order
 
-Use this skill in the following order unless the task is unusually narrow:
-1. lock the operating mode from `references/OPERATING-MODES.md`,
-2. understand the repo or draft context,
-3. use `references/citation-workflow.md` as the **canonical citation authority**,
-4. load venue- or template-specific references only after the main writing path is clear.
+除非任务非常窄，否则按以下顺序执行：
 
-Google Scholar may still help with manual discovery, but it is **not** the canonical verification authority in this skill. Default verification should use programmatic sources such as Semantic Scholar, CrossRef, and arXiv.
+1. 先从 `references/OPERATING-MODES.md` 锁定当前 operating mode
+2. 理解 repo 或 draft 的上下文
+3. 把 `references/citation-workflow.md` 作为**唯一默认 citation authority**
+4. 主写作路径明确后，再加载 venue / template 相关 reference
+
+Google Scholar 可以作为人工发现入口，但不是本 skill 的 canonical verification authority。默认验证应使用 Semantic Scholar、CrossRef、arXiv 等 programmatic sources。
 
 ## Core Philosophy: Collaborative Writing
 
-**Paper writing is collaborative, but Claude should be proactive in delivering drafts.**
+**论文写作是协作过程，但 Claude 应主动交付草稿。**
 
-The typical workflow starts with a research repository containing code, results, and experimental artifacts. Claude's role is to:
+典型输入是一个 research repository，其中包含代码、结果和实验 artifact。Claude 的职责是：
 
-1. **Understand the project** by exploring the repo, results, and existing documentation
-2. **Deliver a complete first draft** when confident about the contribution
-3. **Search literature** using web search and APIs to find relevant citations
-4. **Refine through feedback cycles** when the scientist provides input
-5. **Ask for clarification** only when genuinely uncertain about key decisions
+1. 探索 repo、结果和已有文档，理解项目
+2. 当 contribution 足够清楚时，直接交付完整 first draft
+3. 用 web search 和 API 搜索相关文献
+4. 根据 scientist 反馈迭代
+5. 只有关键决策确实不确定时才提问
 
-**Key Principle**: Be proactive. If the repo and results are clear, deliver a full draft. Don't block waiting for feedback on every section—scientists are busy. Produce something concrete they can react to, then iterate based on their response.
+**关键原则**：主动交付。repo 和结果清楚时，不要逐节等待确认；先给出可反应的完整草稿，再迭代。
 
----
+## Critical Rule: Never Hallucinate Citations
 
-## ⚠️ CRITICAL: Never Hallucinate Citations
+AI 生成引用有很高错误率。虚构论文、错误作者、错误年份、伪造 DOI 都属于严重学术风险，可能导致 desk rejection 或 retraction。
 
-**This is the most important rule in academic writing with AI assistance.**
+**绝不要凭记忆生成 BibTeX。必须程序化查询、验证、导出。**
 
-### The Problem
-AI-generated citations have a **~40% error rate**. Hallucinated references—papers that don't exist, wrong authors, incorrect years, fabricated DOIs—are a serious form of academic misconduct that can result in desk rejection or retraction.
+| Situation | Action |
+|-----------|--------|
+| 添加引用 | Search API → verify → fetch BibTeX |
+| 不确定论文是否存在 | 标记 `[CITATION NEEDED]` |
+| 找不到精确论文 | 标记 placeholder，不要编 |
 
-### The Rule
-**NEVER generate BibTeX entries from memory. ALWAYS fetch programmatically.**
-
-| Action | ✅ Correct | ❌ Wrong |
-|--------|-----------|----------|
-| Adding a citation | Search API → verify → fetch BibTeX | Write BibTeX from memory |
-| Uncertain about a paper | Mark as `[CITATION NEEDED]` | Guess the reference |
-| Can't find exact paper | Note: "placeholder - verify" | Invent similar-sounding paper |
-
-### When You Can't Verify a Citation
-
-If you cannot programmatically verify a citation, you MUST:
+无法验证时使用显式占位：
 
 ```latex
 % EXPLICIT PLACEHOLDER - requires human verification
 \cite{PLACEHOLDER_author2024_verify_this}  % TODO: Verify this citation exists
 ```
 
-**Always tell the scientist**: "I've marked [X] citations as placeholders that need verification. I could not confirm these papers exist."
-
-### Recommended: Install Exa MCP for Paper Search
-
-For the best paper search experience, install **Exa MCP** which provides real-time academic search:
-
-**Claude Code:**
-```bash
-claude mcp add exa -- npx -y mcp-remote "https://mcp.exa.ai/mcp"
-```
-
-**Cursor / VS Code** (add to MCP settings):
-```json
-{
-  "mcpServers": {
-    "exa": {
-      "type": "http",
-      "url": "https://mcp.exa.ai/mcp"
-    }
-  }
-}
-```
-
-Exa MCP enables searches like:
-- "Find papers on RLHF for language models published after 2023"
-- "Search for transformer architecture papers by Vaswani"
-- "Get recent work on sparse autoencoders for interpretability"
-
-Then verify results with Semantic Scholar API and fetch BibTeX via DOI.
-
----
+必须告诉 scientist：哪些 citation 是 placeholder，哪些无法确认。
 
 ## Workflow 0: Starting from a Research Repository
 
-When beginning paper writing, start by understanding the project:
-
-```
+```text
 Project Understanding:
-- [ ] Step 1: Explore the repository structure
-- [ ] Step 2: Read README, existing docs, and key results
-- [ ] Step 3: Identify the main contribution with the scientist
+- [ ] Step 1: Explore repository structure
+- [ ] Step 2: Read README, docs, and key results
+- [ ] Step 3: Identify main contribution with the scientist
 - [ ] Step 4: Find papers already cited in the codebase
-- [ ] Step 5: Search for additional relevant literature
-- [ ] Step 6: Outline the paper structure together
-- [ ] Step 7: Draft sections iteratively with feedback
+- [ ] Step 5: Search additional related literature
+- [ ] Step 6: Outline paper structure
+- [ ] Step 7: Draft and iterate
 ```
 
-**Step 1: Explore the Repository**
+### Explore the Repository
 
 ```bash
-# Understand project structure
 ls -la
 find . -name "*.py" | head -20
 find . -name "*.md" -o -name "*.txt" | xargs grep -l -i "result\|conclusion\|finding"
 ```
 
-Look for:
-- `README.md` - Project overview and claims
-- `results/`, `outputs/`, `experiments/` - Key findings
-- `configs/` - Experimental settings
-- Existing `.bib` files or citation references
-- Any draft documents or notes
+重点查找：
+- `README.md`
+- `results/`、`outputs/`、`experiments/`
+- `configs/`
+- `.bib` 文件或 citation references
+- 任何 draft / notes
 
-**Step 2: Identify Existing Citations**
-
-Check for papers already referenced in the codebase:
+### Identify Existing Citations
 
 ```bash
-# Find existing citations
 grep -r "arxiv\|doi\|cite" --include="*.md" --include="*.bib" --include="*.py"
 find . -name "*.bib"
 ```
 
-These are high-signal starting points for Related Work—the scientist has already deemed them relevant.
+这些 citation 是 Related Work 的高信号起点。
 
-**Step 3: Clarify the Contribution**
+### Clarify the Contribution
 
-Before writing, explicitly confirm with the scientist:
+写作前必须明确主贡献：
 
-> "Based on my understanding of the repo, the main contribution appears to be [X].
-> The key results show [Y]. Is this the framing you want for the paper,
-> or should we emphasize different aspects?"
-
-**Never assume the narrative—always verify with the human.**
-
-**Step 4: Search for Additional Literature**
-
-Use web search to find relevant papers:
-
-```
-Search queries to try:
-- "[main technique] + [application domain]"
-- "[baseline method] comparison"
-- "[problem name] state-of-the-art"
-- Author names from existing citations
+```text
+Based on my understanding of the repo, the main contribution appears to be [X].
+The key results show [Y]. Is this the framing you want for the paper,
+or should we emphasize different aspects?
 ```
 
-Then verify and retrieve BibTeX using the citation workflow below.
-
-**Step 5: Deliver a First Draft**
-
-**Be proactive—deliver a complete draft rather than asking permission for each section.**
-
-If the repo provides clear results and the contribution is apparent:
-1. Write the full first draft end-to-end
-2. Present the complete draft for feedback
-3. Iterate based on scientist's response
-
-If genuinely uncertain about framing or major claims:
-1. Draft what you can confidently
-2. Flag specific uncertainties: "I framed X as the main contribution—let me know if you'd prefer to emphasize Y instead"
-3. Continue with the draft rather than blocking
-
-**Questions to include with the draft** (not before):
-- "I emphasized X as the main contribution—adjust if needed"
-- "I highlighted results A, B, C—let me know if others are more important"
-- "Related work section includes [papers]—add any I missed"
-
----
+不要擅自假设 narrative。
 
 ## When to Use This Skill
 
-Use this skill when:
-- **Starting from a research repo** to write a paper
-- **Drafting or revising** specific sections
-- **Conducting literature reviews** and finding related work
-- **Discovering recent papers** in your research area
-- **Finding and verifying citations** for related work
-- **Formatting** for conference submission
-- **Resubmitting** to a different venue (format conversion)
-- **Iterating** on drafts with scientist feedback
+- 从 research repo 写论文
+- 起草或修改论文 section
+- 做 literature review 和 related work
+- 发现近期论文
+- 查找并验证 citation
+- 准备 conference submission
+- 转投不同 venue 做格式转换
+- 根据 scientist feedback 迭代 draft
 
-**Always remember**: First drafts are starting points for discussion, not final outputs.
+first draft 是讨论起点，不是最终稿。
 
----
-
-## Workflow: Literature Research & Paper Discovery
-
-When conducting literature reviews, finding related work, or discovering recent papers, use this workflow to systematically search, evaluate, and select ML papers.
+## Literature Research & Paper Discovery
 
 ### Workflow 5: Finding and Evaluating Papers
 
-```
+```text
 Literature Research Process:
 - [ ] Step 1: Define search scope and keywords
 - [ ] Step 2: Search arXiv and academic databases
 - [ ] Step 3: Screen papers by title/abstract
-- [ ] Step 4: Evaluate paper quality (5 dimensions)
+- [ ] Step 4: Evaluate paper quality
 - [ ] Step 5: Select top papers and extract citations
 - [ ] Step 6: Verify citations programmatically
 ```
 
-**Step 1: Define Search Scope**
+### Search Scope
 
-Identify specific research areas, methods, or applications:
-- **Technique-focused**: `transformer architecture`, `graph neural networks`, `self-supervised learning`
-- **Application-focused**: `medical image analysis`, `reinforcement learning for robotics`, `language model alignment`
-- **Problem-focused**: `out-of-distribution generalization`, `continual learning`, `fairness in ML`
+- **Technique-focused**：`transformer architecture`、`graph neural networks`
+- **Application-focused**：`medical image analysis`、`language model alignment`
+- **Problem-focused**：`out-of-distribution generalization`、`continual learning`
 
-**Step 2: Search arXiv**
-
-Use arXiv search with targeted keywords:
-```
-URL Pattern:
-https://arxiv.org/search/?searchtype=all&query=KEYWORDS&abstracts=show&order=-announced_date_first
-
-Example Searches:
-- https://arxiv.org/search/?searchtype=all&query=graph+neural+networks&abstracts=show&order=-announced_date_first
-- https://arxiv.org/search/?cat:cs.LG+AND+all:transformer&abstracts=show&order=-announced_date_first
-```
-
-**Tips:**
-- Combine keywords with `+` for AND
-- Filter by categories: `cs.LG`, `cs.AI`, `cs.CV`, `cs.CL`
-- Sort by `announced_date_first` for recent papers
-- Use Chrome MCP tools when available for automation
-
-**Step 3: Screen Papers**
-
-Quick screening by title and abstract:
-- Relevance to research topic
-- Novelty of contribution
-- Venue/reputation of authors
-- Code availability (check for GitHub links)
-
-**Step 4: Evaluate Quality**
-
-Use the 5-dimension quality criteria:
-
-| Dimension | Weight | Evaluation Focus |
-|-----------|--------|------------------|
-| **Innovation** | 30% | Novelty and originality |
-| **Method Completeness** | 25% | Clarity and reproducibility |
-| **Experimental Thoroughness** | 25% | Validation depth |
-| **Writing Quality** | 10% | Presentation clarity |
-| **Relevance & Impact** | 10% | Domain importance |
-
-**Scoring**: Rate each dimension 1-5, calculate weighted total
-
-**Step 5: Select and Extract**
-
-- Rank papers by total score
-- Select top papers for detailed review
-- Extract metadata: title, authors, arXiv ID, abstract
-- Note code repository links
-
-**Step 6: Verify Citations**
-
-For selected papers, verify citations using Semantic Scholar API:
-- Fetch BibTeX programmatically via DOI
-- Mark unverified citations as `[CITATION NEEDED]`
-- Store in bibliography with verification status
-
-### When to Use Literature Research
-
-Use this workflow when:
-- **Starting a new project**: Find related work and baselines
-- **Writing Related Work section**: Discover recent papers in your area
-- **Staying updated**: Track recent publications in your field
-- **Finding baselines**: Identify state-of-the-art methods for comparison
-- **Literature review**: Comprehensive survey of research area
-
-### Quality Thresholds
-
-- **Excellent**: 4.0+ (include definitely)
-- **Good**: 3.5-3.9 (include if relevant)
-- **Fair**: 3.0-3.4 (include if highly relevant)
-- **Poor**: <3.0 (exclude unless essential)
-
-### Reference Files
-
-For detailed literature research guidance:
-- **`references/literature-research/arxiv-search-guide.md`** - arXiv search strategies and URL patterns
-- **`references/literature-research/paper-quality-criteria.md`** - Detailed 5-dimension evaluation rubrics
-
----
-
-## Knowledge Base: Paper-Miner Global Writing Memory
-
-This skill consumes a **single canonical writing memory** maintained by `paper-miner`:
-
-- `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
-
-This memory is **global**, not project-specific.
-
-Even when `paper-miner` is invoked while working inside a specific repository, it still writes mined writing knowledge only into this one global memory. It does **not** maintain project-local writing memory.
-The writable store lives outside the installed skill tree so uninstalling hello-scholar does not delete accumulated writing knowledge.
-
-### Canonical memory structure
-
-The maintained memory contains these sections:
-
-| Section | Purpose |
-|----------|---------|
-| `Writing patterns mined` | Reusable rhetorical and claim-evidence patterns |
-| `Structure signals` | Section flow, paragraph progression, and paper organization signals |
-| `Reusable phrasing` | Transition phrases, framing templates, and concise wording |
-| `Venue-specific signals` | Visible venue-facing style and convention cues |
-| `How this helps our writing` | Practical guidance for future drafts, reports, and rebuttals |
-| `Source index` | Source attribution for mined papers |
-
-### How the memory is maintained
-
-The **paper-miner agent** reads papers and merges reusable writing knowledge into this one file:
+### arXiv Search
 
 ```text
-You: "Learn writing patterns from this paper: path/to/paper.pdf"
-↓
-paper-miner analyzes the paper
-↓
-Extracts reusable writing signals
-↓
-Updates `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
-↓
-ml-paper-writing reuses that memory later
+https://arxiv.org/search/?searchtype=all&query=KEYWORDS&abstracts=show&order=-announced_date_first
 ```
 
-### When to use this memory
+建议：
+- 用 `+` 组合关键词
+- 按 `cs.LG`、`cs.AI`、`cs.CV`、`cs.CL` 过滤
+- 用 `announced_date_first` 看近期论文
 
-Use the global paper-miner memory when you need:
-- structure inspiration for intros, methods, results, or discussion,
-- reusable transition phrases or framing templates,
-- venue-facing writing signals,
-- rebuttal phrasing and response structure ideas,
-- examples of how strong papers support and sequence claims.
+### Paper Quality Evaluation
 
-### Default read order
+| Dimension | Weight | Focus |
+|-----------|--------|-------|
+| **Innovation** | 30% | novelty 与 originality |
+| **Method Completeness** | 25% | 清晰度和可复现性 |
+| **Experimental Thoroughness** | 25% | 验证深度 |
+| **Writing Quality** | 10% | 表达清晰度 |
+| **Relevance & Impact** | 10% | 领域重要性 |
 
-When drafting or revising with `ml-paper-writing`, read this memory **before** writing if the task involves:
-- introduction framing,
-- related work organization,
-- method exposition style,
-- results narration,
-- discussion framing,
-- venue-facing polishing.
+评分阈值：
+- 4.0+：强烈纳入
+- 3.5-3.9：相关时纳入
+- 3.0-3.4：高度相关时纳入
+- <3.0：除非必要，否则排除
 
-Use this read order:
+详细指南：
+- `references/literature-research/arxiv-search-guide.md`
+- `references/literature-research/paper-quality-criteria.md`
+
+## Paper-Miner Global Writing Memory
+
+本 skill 会读取由 `paper-miner` 维护的单一全局 writing memory：
+
+```text
+~/.hello-scholar/knowledge/paper-miner-writing-memory.md
+```
+
+这是 global memory，不是项目局部 memory。卸载 hello-scholar 不应删除累计写作知识。
+
+默认读取顺序：
 1. `~/.hello-scholar/knowledge/paper-miner-writing-memory.md`
-2. repo-local evidence and experiment artifacts
-3. cited papers or notes if needed
-4. venue template and formatting constraints
+2. repo-local evidence 和 experiment artifact
+3. 必要时读取已引用论文或 notes
+4. venue template 和 formatting constraints
 
-Read narrowly, not exhaustively:
-- first scan `How this helps our writing`,
-- then check `Writing patterns mined` and `Structure signals`,
-- then inspect `Reusable phrasing` only for concrete wording help,
-- use `Venue-specific signals` when targeting a known venue.
+读取时先看：
+- `How this helps our writing`
+- `Writing patterns mined`
+- `Structure signals`
+- `Reusable phrasing`
+- `Venue-specific signals`
 
-### Contribution rule
-
-Every paper mined by `paper-miner` should improve the same global memory.
-
-Do not scatter newly mined knowledge across multiple maintained files.
-Do not create project-specific paper-miner memory.
-Do not duplicate near-identical patterns from the same source.
-
-See `references/knowledge/README.md` for the detailed knowledge-base contract.
+不要把新挖掘的 paper-miner 知识散落到多个 maintained file 中。
 
 ## Balancing Proactivity and Collaboration
 
-**Default: Be proactive. Deliver drafts, then iterate.**
-
 | Confidence Level | Action |
 |-----------------|--------|
-| **High** (clear repo, obvious contribution) | Write full draft, deliver, iterate on feedback |
-| **Medium** (some ambiguity) | Write draft with flagged uncertainties, continue |
-| **Low** (major unknowns) | Ask 1-2 targeted questions, then draft |
+| **High** | 写完整 draft，交付后按反馈迭代 |
+| **Medium** | 写 draft，并标注不确定点 |
+| **Low** | 问 1-2 个针对性问题，然后继续 draft |
 
-**Draft first, ask with the draft** (not before):
+默认先写，再把问题随 draft 一起提出。
 
-| Section | Draft Autonomously | Flag With Draft |
-|---------|-------------------|-----------------|
-| Abstract | Yes | "Framed contribution as X—adjust if needed" |
-| Introduction | Yes | "Emphasized problem Y—correct if wrong" |
-| Methods | Yes | "Included details A, B, C—add missing pieces" |
-| Experiments | Yes | "Highlighted results 1, 2, 3—reorder if needed" |
-| Related Work | Yes | "Cited papers X, Y, Z—add any I missed" |
+只有以下情况才阻塞等待输入：
+- target venue 不明确
+- 多个互相冲突的 framing 都合理
+- 结果不完整或相互矛盾
+- 用户明确要求先 review 再继续
 
-**Only block for input when:**
-- Target venue is unclear (affects page limits, framing)
-- Multiple contradictory framings seem equally valid
-- Results seem incomplete or inconsistent
-- Explicit request to review before continuing
-
-**Don't block for:**
-- Word choice decisions
-- Section ordering
-- Which specific results to show (make a choice, flag it)
-- Citation completeness (draft with what you find, note gaps)
-
----
+不要因为措辞、section 顺序、结果排序或 citation completeness 阻塞。
 
 ## The Narrative Principle
 
-**The single most critical insight**: Your paper is not a collection of experiments—it's a story with one clear contribution supported by evidence.
+论文不是实验集合，而是由 evidence 支撑的一条清晰 technical story。
 
-Every successful ML paper centers on what Neel Nanda calls "the narrative": a short, rigorous, evidence-based technical story with a takeaway readers care about.
+Introduction 结束前必须清楚三点：
 
-**Three Pillars (must be crystal clear by end of introduction):**
+| Pillar | Description |
+|--------|-------------|
+| **The What** | 1-3 个具体、成体系的新 claim |
+| **The Why** | 严格 empirical evidence 支撑 |
+| **The So What** | 为什么社区应关心 |
 
-| Pillar | Description | Example |
-|--------|-------------|---------|
-| **The What** | 1-3 specific novel claims within cohesive theme | "We prove that X achieves Y under condition Z" |
-| **The Why** | Rigorous empirical evidence supporting claims | Strong baselines, experiments distinguishing hypotheses |
-| **The So What** | Why readers should care | Connection to recognized community problems |
-
-**If you cannot state your contribution in one sentence, you don't yet have a paper.**
-
----
+如果无法用一句话说清 contribution，就还没有形成 paper。
 
 ## Paper Structure Workflow
 
-### Workflow 1: Writing a Complete Paper (Iterative)
-
-Copy this checklist and track progress. **Each step involves drafting → feedback → revision:**
-
-```
+```text
 Paper Writing Progress:
-- [ ] Step 1: Define the one-sentence contribution (with scientist)
-- [ ] Step 2: Draft Figure 1 → get feedback → revise
-- [ ] Step 3: Draft abstract → get feedback → revise
-- [ ] Step 4: Draft introduction → get feedback → revise
-- [ ] Step 5: Draft methods → get feedback → revise
-- [ ] Step 6: Draft experiments → get feedback → revise
-- [ ] Step 7: Draft related work → get feedback → revise
-- [ ] Step 8: Draft limitations → get feedback → revise
-- [ ] Step 9: Complete paper checklist (required)
-- [ ] Step 10: Final review cycle and submission
+- [ ] Step 1: Define the one-sentence contribution
+- [ ] Step 2: Draft Figure 1
+- [ ] Step 3: Draft abstract
+- [ ] Step 4: Draft introduction
+- [ ] Step 5: Draft methods
+- [ ] Step 6: Draft experiments
+- [ ] Step 7: Draft related work
+- [ ] Step 8: Draft limitations
+- [ ] Step 9: Complete paper checklist
+- [ ] Step 10: Final review and submission
 ```
 
-**Step 1: Define the One-Sentence Contribution**
+### Abstract: 5-Sentence Formula
 
-**This step requires explicit confirmation from the scientist.**
+1. 你做成了什么：`We introduce...` / `We prove...` / `We demonstrate...`
+2. 为什么难且重要
+3. 方法是什么，并包含可检索关键词
+4. 有什么证据
+5. 最重要的数字或结果
 
-Before writing anything, articulate and verify:
-- What is the single thing your paper contributes?
-- What was not obvious or present before your work?
+删掉任何可以放在任意 ML 论文开头的泛化句。
 
-> "I propose framing the contribution as: '[one sentence]'. Does this capture
-> what you see as the main takeaway? Should we adjust the emphasis?"
+### Introduction
 
-**Step 2: Draft Figure 1**
+必须包含：
+- 2-4 条 contribution bullet
+- 清晰 problem statement
+- 简短 approach overview
+- 方法最好在第 2-3 页前开始
 
-Figure 1 deserves special attention—many readers skip directly to it.
-- Convey core idea, approach, or most compelling result
-- Use vector graphics (PDF/EPS for plots)
-- Write captions that stand alone without main text
-- Ensure readability in black-and-white (8% of men have color vision deficiency)
+### Methods
 
-**Step 3: Write Abstract (5-Sentence Formula)**
+目标是让他人能复现：
+- 概念 outline 或 pseudocode
+- 全部 hyperparameters
+- 足够架构细节
+- 只讲最终设计，ablation 放到 experiments
 
-From Sebastian Farquhar (DeepMind):
+### Experiments
 
-```
-1. What you achieved: "We introduce...", "We prove...", "We demonstrate..."
-2. Why this is hard and important
-3. How you do it (with specialist keywords for discoverability)
-4. What evidence you have
-5. Your most remarkable number/result
-```
+每个实验都要说清：
+- 支撑哪个 claim
+- 与主贡献如何关联
+- experimental setting
+- 图或表中应该观察什么
 
-**Delete** generic openings like "Large language models have achieved remarkable success..."
+必须包含：
+- error bar 和计算方式
+- run / seed 数量
+- 主要比较的 statistical test
+- baseline、ablation、robustness
 
-**Step 4: Write Introduction (1-1.5 pages max)**
+## Writing Principles
 
-Must include:
-- 2-4 bullet contribution list (max 1-2 lines each in two-column format)
-- Clear problem statement
-- Brief approach overview
-- Methods should start by page 2-3 maximum
+- 先给 context，再给新信息
+- claim 与 evidence 紧邻
+- 术语保持一致
+- 主动语态优先
+- 具体词优先，不用泛泛的 “performance”
+- 删除 filler word 和 hedging
+- figure caption 要能独立理解
+- 不要把关键结果藏到 appendix
 
-**Step 5: Methods Section**
+## What Reviewers Actually Read
 
-Enable reimplementation:
-- Conceptual outline or pseudocode
-- All hyperparameters listed
-- Architectural details sufficient for reproduction
-- Present final design decisions; ablations go in experiments
-
-**Step 6: Experiments Section**
-
-For each experiment, explicitly state:
-- What claim it supports
-- How it connects to main contribution
-- Experimental setting (details in appendix)
-- What to observe: "the blue line shows X, which demonstrates Y"
-
-Requirements:
-- Error bars with methodology (standard deviation vs standard error)
-- Hyperparameter search ranges
-- Compute infrastructure (GPU type, total hours)
-- Seed-setting methods
-
-**Step 7: Related Work**
-
-Organize methodologically, not paper-by-paper:
-
-**Good:** "One line of work uses Floogledoodle's assumption [refs] whereas we use Doobersnoddle's assumption because..."
-
-**Bad:** "Snap et al. introduced X while Crackle et al. introduced Y."
-
-Cite generously—reviewers likely authored relevant papers.
-
-**Step 8: Limitations Section (REQUIRED)**
-
-All major conferences require this. Counter-intuitively, honesty helps:
-- Reviewers are instructed not to penalize honest limitation acknowledgment
-- Pre-empt criticisms by identifying weaknesses first
-- Explain why limitations don't undermine core claims
-
-**Step 9: Paper Checklist**
-
-NeurIPS, ICML, and ICLR all require paper checklists. See [references/checklists.md](references/checklists.md).
-
----
-
-## Writing Philosophy for Top ML Conferences
-
-**This section distills the most important writing principles from leading ML researchers.** These aren't optional style suggestions—they're what separates accepted papers from rejected ones.
-
-> "A paper is a short, rigorous, evidence-based technical story with a takeaway readers care about." — Neel Nanda
-
-### The Sources Behind This Guidance
-
-This skill synthesizes writing philosophy from researchers who have published extensively at top venues:
-
-| Source | Key Contribution | Link |
-|--------|-----------------|------|
-| **Neel Nanda** (Google DeepMind) | The Narrative Principle, What/Why/So What framework | [How to Write ML Papers](https://www.alignmentforum.org/posts/eJGptPbbFPZGLpjsp/highly-opinionated-advice-on-how-to-write-ml-papers) |
-| **Sebastian Farquhar** (DeepMind) | 5-sentence abstract formula | [How to Write ML Papers](https://sebastianfarquhar.com/on-research/2024/11/04/how_to_write_ml_papers/) |
-| **Gopen & Swan** | 7 principles of reader expectations | [Science of Scientific Writing](https://cseweb.ucsd.edu/~swanson/papers/science-of-writing.pdf) |
-| **Zachary Lipton** | Word choice, eliminating hedging | [Heuristics for Scientific Writing](https://www.approximatelycorrect.com/2018/01/29/heuristics-technical-scientific-writing-machine-learning-perspective/) |
-| **Jacob Steinhardt** (UC Berkeley) | Precision, consistent terminology | [Writing Tips](https://bounded-regret.ghost.io/) |
-| **Ethan Perez** (Anthropic) | Micro-level clarity tips | [Easy Paper Writing Tips](https://ethanperez.net/easy-paper-writing-tips/) |
-| **Andrej Karpathy** | Single contribution focus | Various lectures |
-
-**For deeper dives into any of these, see:**
-- [references/writing-guide.md](references/writing-guide.md) - Full explanations with examples
-- [references/sources.md](references/sources.md) - Complete bibliography
-
-### Time Allocation (From Neel Nanda)
-
-Spend approximately **equal time** on each of:
-1. The abstract
-2. The introduction
-3. The figures
-4. Everything else combined
-
-**Why?** Most reviewers form judgments before reaching your methods. Readers encounter your paper as: **title → abstract → introduction → figures → maybe the rest.**
-
-### Writing Style Guidelines
-
-#### Sentence-Level Clarity (Gopen & Swan's 7 Principles)
-
-These principles are based on how readers actually process prose. Violating them forces readers to spend cognitive effort on structure rather than content.
-
-| Principle | Rule | Example |
-|-----------|------|---------|
-| **Subject-verb proximity** | Keep subject and verb close | ❌ "The model, which was trained on..., achieves" → ✅ "The model achieves... after training on..." |
-| **Stress position** | Place emphasis at sentence ends | ❌ "Accuracy improves by 15% when using attention" → ✅ "When using attention, accuracy improves by **15%**" |
-| **Topic position** | Put context first, new info after | ✅ "Given these constraints, we propose..." |
-| **Old before new** | Familiar info → unfamiliar info | Link backward, then introduce new |
-| **One unit, one function** | Each paragraph makes one point | Split multi-point paragraphs |
-| **Action in verb** | Use verbs, not nominalizations | ❌ "We performed an analysis" → ✅ "We analyzed" |
-| **Context before new** | Set stage before presenting | Explain before showing equation |
-
-**Full 7 principles with detailed examples:** See [references/writing-guide.md](references/writing-guide.md#the-7-principles-of-reader-expectations)
-
-#### Micro-Level Tips (Ethan Perez)
-
-These small changes accumulate into significantly clearer prose:
-
-- **Minimize pronouns**: ❌ "This shows..." → ✅ "This result shows..."
-- **Verbs early**: Position verbs near sentence start
-- **Unfold apostrophes**: ❌ "X's Y" → ✅ "The Y of X" (when awkward)
-- **Delete filler words**: "actually," "a bit," "very," "really," "basically," "quite," "essentially"
-
-**Full micro-tips with examples:** See [references/writing-guide.md](references/writing-guide.md#micro-level-writing-tips)
-
-#### Word Choice (Zachary Lipton)
-
-- **Be specific**: ❌ "performance" → ✅ "accuracy" or "latency" (say what you mean)
-- **Eliminate hedging**: Drop "may" and "can" unless genuinely uncertain
-- **Avoid incremental vocabulary**: ❌ "combine," "modify," "expand" → ✅ "develop," "propose," "introduce"
-- **Delete intensifiers**: ❌ "provides *very* tight approximation" → ✅ "provides tight approximation"
-
-#### Precision Over Brevity (Jacob Steinhardt)
-
-- **Consistent terminology**: Different terms for same concept creates confusion. Pick one and stick with it.
-- **State assumptions formally**: Before theorems, list all assumptions explicitly
-- **Intuition + rigor**: Provide intuitive explanations alongside formal proofs
-
-### What Reviewers Actually Read
-
-Understanding reviewer behavior helps prioritize your effort:
-
-| Paper Section | % Reviewers Who Read | Implication |
-|---------------|---------------------|-------------|
-| Abstract | 100% | Must be perfect |
-| Introduction | 90%+ (skimmed) | Front-load contribution |
-| Figures | Examined before methods | Figure 1 is critical |
-| Methods | Only if interested | Don't bury the lede |
-| Appendix | Rarely | Put only supplementary details |
-
-**Bottom line**: If your abstract and intro don't hook reviewers, they may never read your brilliant methods section.
-
----
+| Paper Section | Reviewer Behavior | Implication |
+|---------------|-------------------|-------------|
+| Abstract | 几乎都会读 | 必须非常强 |
+| Introduction | 大多会快速读 | contribution 前置 |
+| Figures | 经常先看 | Figure 1 极关键 |
+| Methods | 有兴趣才细读 | 不要埋主线 |
+| Appendix | 很少保证阅读 | 只放补充细节 |
 
 ## Conference Requirements Quick Reference
 
 | Conference | Page Limit | Extra for Camera-Ready | Key Requirement |
 |------------|------------|------------------------|-----------------|
-| **NeurIPS 2025** | 9 pages | +0 | Mandatory checklist, lay summary for accepted |
-| **ICML 2026** | 8 pages | +1 | Broader Impact Statement required |
-| **ICLR 2026** | 9 pages | +1 | LLM disclosure required, reciprocal reviewing |
+| **NeurIPS 2025** | 9 pages | +0 | checklist，accepted 后 lay summary |
+| **ICML 2026** | 8 pages | +1 | Broader Impact Statement |
+| **ICLR 2026** | 9 pages | +1 | LLM disclosure，reciprocal reviewing |
 | **ACL 2025** | 8 pages (long) | varies | Limitations section mandatory |
-| **AAAI 2026** | 7 pages | +1 | Strict style file adherence |
-| **COLM 2025** | 9 pages | +1 | Focus on language models |
+| **AAAI 2026** | 7 pages | +1 | 严格遵守 style file |
+| **COLM 2025** | 9 pages | +1 | 聚焦 language models |
 
-**Universal Requirements:**
-- Double-blind review (anonymize submissions)
-- References don't count toward page limit
-- Appendices unlimited but reviewers not required to read
-- LaTeX required for all venues
-
-**LaTeX Templates:** See [templates/](templates/) directory for all conference templates.
-
----
+通用要求：
+- double-blind review
+- references 不计入页数
+- appendix 通常不限，但 reviewer 不保证读
+- 所有 venue 均要求 LaTeX
 
 ## Using LaTeX Templates Properly
 
-### Workflow 4: Starting a New Paper from Template
+**总原则：先复制完整 template directory，再在里面写。**
 
-**Always copy the entire template directory first, then write within it.**
-
-```
+```text
 Template Setup Checklist:
-- [ ] Step 1: Copy entire template directory to new project
-- [ ] Step 2: Verify template compiles as-is (before any changes)
-- [ ] Step 3: Read the template's example content to understand structure
-- [ ] Step 4: Replace example content section by section
-- [ ] Step 5: Keep template comments/examples as reference until done
-- [ ] Step 6: Clean up template artifacts only at the end
+- [ ] Copy entire template directory
+- [ ] Compile template as-is
+- [ ] Read example content
+- [ ] Replace content section by section
+- [ ] Keep examples as comments until stable
+- [ ] Clean up at the end
 ```
 
-**Step 1: Copy the Full Template**
+不要只复制 `main.tex`。template 还包含 `.sty`、`.bst`、example content 和 Makefile。
+
+编译检查：
 
 ```bash
-# Create your paper directory with the complete template
-cp -r templates/neurips2025/ ~/papers/my-new-paper/
-cd ~/papers/my-new-paper/
-
-# Verify structure is complete
-ls -la
-# Should see: main.tex, neurips.sty, Makefile, etc.
-```
-
-**⚠️ IMPORTANT**: Copy the ENTIRE directory, not just `main.tex`. Templates include:
-- Style files (`.sty`) - required for compilation
-- Bibliography styles (`.bst`) - required for references
-- Example content - useful as reference
-- Makefiles - for easy compilation
-
-**Step 2: Verify Template Compiles First**
-
-Before making ANY changes, compile the template as-is:
-
-```bash
-# Using latexmk (recommended)
 latexmk -pdf main.tex
-
-# Or manual compilation
-pdflatex main.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
 ```
 
-If the unmodified template doesn't compile, fix that first. Common issues:
-- Missing TeX packages → install via `tlmgr install <package>`
-- Wrong TeX distribution → use TeX Live (recommended)
-
-**Step 3: Keep Template Content as Reference**
-
-Don't immediately delete all example content. Instead:
-
-```latex
-% KEEP template examples commented out as you write
-% This shows you the expected format
-
-% Template example (keep for reference):
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=0.8\linewidth]{example-image}
-%   \caption{Template shows caption style}
-% \end{figure}
-
-% Your actual figure:
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.8\linewidth]{your-figure.pdf}
-  \caption{Your caption following the same style.}
-\end{figure}
-```
-
-**Step 4: Replace Content Section by Section**
-
-Work through the paper systematically:
-
-```
-Replacement Order:
-1. Title and authors (anonymize for submission)
-2. Abstract
-3. Introduction
-4. Methods
-5. Experiments
-6. Related Work
-7. Conclusion
-8. References (your .bib file)
-9. Appendix
-```
-
-For each section:
-1. Read the template's example content
-2. Note any special formatting or macros used
-3. Replace with your content following the same patterns
-4. Compile frequently to catch errors early
-
-**Step 5: Use Template Macros**
-
-Templates often define useful macros. Check the preamble for:
-
-```latex
-% Common template macros to use:
-\newcommand{\method}{YourMethodName}  % Consistent method naming
-\newcommand{\eg}{e.g.,\xspace}        % Proper abbreviations
-\newcommand{\ie}{i.e.,\xspace}
-\newcommand{\etal}{\textit{et al.}\xspace}
-```
-
-**Step 6: Clean Up Only at the End**
-
-Only remove template artifacts when paper is nearly complete:
-
-```latex
-% BEFORE SUBMISSION - remove these:
-% - Commented-out template examples
-% - Unused packages
-% - Template's example figures/tables
-% - Lorem ipsum or placeholder text
-
-% KEEP these:
-% - All style files (.sty)
-% - Bibliography style (.bst)
-% - Required packages from template
-% - Any custom macros you're using
-```
-
-### Template Pitfalls to Avoid
-
-| Pitfall | Problem | Solution |
-|---------|---------|----------|
-| Copying only `main.tex` | Missing `.sty`, won't compile | Copy entire directory |
-| Modifying `.sty` files | Breaks conference formatting | Never edit style files |
-| Adding random packages | Conflicts, breaks template | Only add if necessary |
-| Deleting template content too early | Lose formatting reference | Keep as comments until done |
-| Not compiling frequently | Errors accumulate | Compile after each section |
-
-### Quick Template Reference
-
-| Conference | Main File | Key Style File | Notes |
-|------------|-----------|----------------|-------|
-| NeurIPS 2025 | `main.tex` | `neurips.sty` | Has Makefile |
-| ICML 2026 | `example_paper.tex` | `icml2026.sty` | Includes algorithm packages |
-| ICLR 2026 | `iclr2026_conference.tex` | `iclr2026_conference.sty` | Has math_commands.tex |
-| ACL | `acl_latex.tex` | `acl.sty` | Strict formatting |
-| AAAI 2026 | `aaai2026-unified-template.tex` | `aaai2026.sty` | Very strict compliance |
-| COLM 2025 | `colm2025_conference.tex` | `colm2025_conference.sty` | Similar to ICLR |
-
----
+常见坑：
+- 只复制 `main.tex`
+- 修改 `.sty`
+- 随便加 package
+- 太早删除 template example
+- 不频繁编译
 
 ## Conference Resubmission & Format Conversion
 
-When a paper is rejected or withdrawn from one venue and resubmitted to another, format conversion is required. This is a common workflow in ML research.
-
-### Workflow 3: Converting Between Conference Formats
-
-```
+```text
 Format Conversion Checklist:
-- [ ] Step 1: Identify source and target template differences
-- [ ] Step 2: Create new project with target template
-- [ ] Step 3: Copy content sections (not preamble)
-- [ ] Step 4: Adjust page limits and content
-- [ ] Step 5: Update conference-specific requirements
-- [ ] Step 6: Verify compilation and formatting
+- [ ] Identify source and target template differences
+- [ ] Create new project with target template
+- [ ] Copy content sections, not preamble
+- [ ] Adjust page limits and content
+- [ ] Update venue-specific requirements
+- [ ] Verify compilation and formatting
 ```
 
-**Step 1: Key Template Differences**
+**绝不要把不同 conference 的 LaTeX preamble 混在一起。** 应从 target template 新建项目，只迁移正文、figures、tables 和 bibliography entries。
 
-| From → To | Page Change | Key Adjustments |
-|-----------|-------------|-----------------|
-| NeurIPS → ICML | 9 → 8 pages | Cut 1 page, add Broader Impact if missing |
-| ICML → ICLR | 8 → 9 pages | Can expand experiments, add LLM disclosure |
-| NeurIPS → ACL | 9 → 8 pages | Restructure for NLP conventions, add Limitations |
-| ICLR → AAAI | 9 → 7 pages | Significant cuts needed, strict style adherence |
-| Any → COLM | varies → 9 | Reframe for language model focus |
+常见要求：
+- ICML：Broader Impact Statement
+- ICLR：LLM usage disclosure
+- ACL / EMNLP：Limitations section、Ethics Statement
+- AAAI：不得修改 style file
+- NeurIPS：Paper checklist
 
-**Step 2: Content Migration (NOT Template Merge)**
+## Citation Workflow
 
-**Never copy LaTeX preambles between templates.** Instead:
+`references/citation-workflow.md` 是默认 authority。
 
-```bash
-# 1. Start fresh with target template
-cp -r templates/icml2026/ new_submission/
+默认路径：
+1. 用 Semantic Scholar / CrossRef / arXiv / OpenAlex 搜索
+2. 重要 claim 用两个来源确认 paper existence
+3. 通过 DOI 或可信导出路径获取 BibTeX
+4. 引用具体 claim 时，核对原文是否支持
+5. 验证后再加入 bibliography
 
-# 2. Copy ONLY content sections from old paper
-# - Abstract text
-# - Section content (between \section{} commands)
-# - Figures and tables
-# - Bibliography entries
-
-# 3. Paste into target template structure
-```
-
-**Step 3: Adjusting for Page Limits**
-
-When cutting pages (e.g., NeurIPS 9 → AAAI 7):
-- Move detailed proofs to appendix
-- Condense related work (cite surveys instead of individual papers)
-- Combine similar experiments into unified tables
-- Use smaller figure sizes with subfigures
-- Tighten writing: eliminate redundancy, use active voice
-
-When expanding (e.g., ICML 8 → ICLR 9):
-- Add ablation studies reviewers requested
-- Expand limitations discussion
-- Include additional baselines
-- Add qualitative examples
-
-**Step 4: Conference-Specific Adjustments**
-
-| Target Venue | Required Additions |
-|--------------|-------------------|
-| **ICML** | Broader Impact Statement (after conclusion) |
-| **ICLR** | LLM usage disclosure, reciprocal reviewing agreement |
-| **ACL/EMNLP** | Limitations section (mandatory), Ethics Statement |
-| **AAAI** | Strict adherence to style file (no modifications) |
-| **NeurIPS** | Paper checklist (appendix), lay summary if accepted |
-
-**Step 5: Update References**
-
-```latex
-% Remove self-citations that reveal identity (for blind review)
-% Update any "under review" citations to published versions
-% Add new relevant work published since last submission
-```
-
-**Step 6: Addressing Previous Reviews**
-
-When resubmitting after rejection:
-- **Do** address reviewer concerns in the new version
-- **Do** add experiments/clarifications reviewers requested
-- **Don't** include a "changes from previous submission" section (blind review)
-- **Don't** reference the previous submission or reviews
-
-**Common Conversion Pitfalls:**
-- ❌ Copying `\usepackage` commands (causes conflicts)
-- ❌ Keeping old conference header/footer commands
-- ❌ Forgetting to update `\bibliography{}` path
-- ❌ Missing conference-specific required sections
-- ❌ Exceeding page limit after format change
-
----
-
-## Citation Workflow (Hallucination Prevention)
-
-**⚠️ CRITICAL**: AI-generated citations are a high-risk failure mode. **Never write BibTeX from memory.**
-
-### Canonical authority
-
-Use `references/citation-workflow.md` as the default authority for citation verification.
-
-The default verification path is:
-1. **Search programmatically** with Semantic Scholar / CrossRef / arXiv / OpenAlex when appropriate.
-2. **Verify existence** in two sources when the claim is important.
-3. **Retrieve BibTeX programmatically** from DOI or a trusted source.
-4. **Validate the claim** against the actual paper content when the citation supports a specific statement.
-5. **Add the citation** only after the metadata and claim are verified.
-
-### The golden rule
+黄金规则：
 
 ```text
 IF you cannot verify a citation programmatically:
@@ -921,188 +392,82 @@ IF you cannot verify a citation programmatically:
     -> NEVER invent a plausible-sounding reference
 ```
 
-### Workflow 2: Adding citations
-
-```text
-Citation verification:
-- [ ] Step 1: Search with Semantic Scholar / CrossRef / arXiv / OpenAlex as appropriate
-- [ ] Step 2: Confirm title, authors, year, and venue
-- [ ] Step 3: Retrieve BibTeX from DOI, arXiv, or another trusted export path
-- [ ] Step 4: Verify that the claim being cited actually appears in the source
-- [ ] Step 5: Add verified BibTeX to the bibliography
-- [ ] Step 6: If any step fails -> mark as placeholder and report it explicitly
-```
-
-### Discovery vs authority
-
-- **Programmatic APIs** are the canonical verification path.
-- **Google Scholar** may still be used as a manual discovery surface when coverage is weak, but not as the primary authority.
-- If Google Scholar finds something that the canonical APIs do not, treat it as a lead that still requires explicit verification.
-
-### Summary: citation rules
-
-| Situation | Action |
-|-----------|--------|
-| Verified metadata + verified BibTeX + verified claim | ✅ Use the citation |
-| Verified paper exists but the claim was not checked | ⚠️ Use only for general attribution, not for precise technical claims |
-| Discovery surface suggests a paper but metadata is still weak | ⚠️ Keep as lead, not as final citation |
-| Cannot verify programmatically | ❌ Mark `[CITATION NEEDED]`, inform the scientist |
-
-**🚨 NEVER generate BibTeX from memory. Use the programmatic workflow in `references/citation-workflow.md`. 🚨**
-
-### Complete Citation Workflow Example
-
-**Scenario**: You need to cite the Transformer paper.
-
-```text
-Step 1: Search programmatically
-- Semantic Scholar query: "Attention is All You Need Vaswani 2017"
-- Result: title, authors, year, and DOI align
-
-Step 2: Verify existence
-- CrossRef confirms DOI metadata
-- Semantic Scholar record matches the same paper
-
-Step 3: Retrieve BibTeX
-- Fetch BibTeX from the DOI / trusted export path
-
-Step 4: Verify the claim
-- Read the abstract or paper section that supports the cited statement
-- Confirm that the claim being cited is actually present
-
-Step 5: Add to bibliography
-- Paste verified BibTeX into the .bib file
-- Cite with the verified key
-
-Step 6: If any step fails
-- mark the citation as [PLACEHOLDER - VERIFY]
-- tell the scientist explicitly what remains unverified
-```
-
----
-
 ## Common Issues and Solutions
 
-**Issue: Abstract too generic**
+**Abstract 太泛**：删除第一句泛泛背景，直接从具体贡献开始。
 
-Delete first sentence if it could be prepended to any ML paper. Start with your specific contribution.
+**Introduction 超过 1.5 页**：把背景移到 Related Work，前置 contribution bullet。
 
-**Issue: Introduction exceeds 1.5 pages**
+**Experiments 没有明确 claim**：每个实验前加一句 “This experiment tests whether ...”。
 
-Split background into Related Work. Front-load contribution bullets. Methods should start by page 2-3.
+**Reviewer 觉得难跟**：加 signposting，统一术语，强化 standalone caption。
 
-**Issue: Experiments lack explicit claims**
-
-Add sentence before each experiment: "This experiment tests whether [specific claim]..."
-
-**Issue: Reviewers find paper hard to follow**
-
-- Add explicit signposting: "In this section, we show X"
-- Use consistent terminology throughout
-- Include figure captions that stand alone
-
-**Issue: Missing statistical significance**
-
-Always include:
-- Error bars (specify: std dev or std error)
-- Number of runs
-- Statistical tests if comparing methods
-
----
+**缺少 statistical significance**：补 error bar、run 数、统计检验。
 
 ## Reviewer Evaluation Criteria
 
-Reviewers assess papers on four dimensions:
-
 | Criterion | What Reviewers Look For |
 |-----------|------------------------|
-| **Quality** | Technical soundness, well-supported claims |
-| **Clarity** | Clear writing, reproducible by experts |
-| **Significance** | Community impact, advances understanding |
-| **Originality** | New insights (doesn't require new method) |
+| **Quality** | 技术可靠，claim 有支撑 |
+| **Clarity** | 写作清楚，专家可复现 |
+| **Significance** | 对社区有影响 |
+| **Originality** | 有新 insight，不一定要新方法 |
 
-**Scoring (NeurIPS 6-point scale):**
-- 6: Strong Accept - Groundbreaking, flawless
-- 5: Accept - Technically solid, high impact
-- 4: Borderline Accept - Solid, limited evaluation
-- 3: Borderline Reject - Solid but weaknesses outweigh
-- 2: Reject - Technical flaws
-- 1: Strong Reject - Known results or ethics issues
-
-See [references/reviewer-guidelines.md](references/reviewer-guidelines.md) for detailed reviewer instructions.
-
----
+NeurIPS 6 分制：
+- 6：Strong Accept
+- 5：Accept
+- 4：Borderline Accept
+- 3：Borderline Reject
+- 2：Reject
+- 1：Strong Reject
 
 ## Tables and Figures
 
 ### Tables
 
-Use `booktabs` LaTeX package for professional tables:
-
-```latex
-\usepackage{booktabs}
-\begin{tabular}{lcc}
-\toprule
-Method & Accuracy ↑ & Latency ↓ \\
-\midrule
-Baseline & 85.2 & 45ms \\
-\textbf{Ours} & \textbf{92.1} & 38ms \\
-\bottomrule
-\end{tabular}
-```
-
-**Rules:**
-- Bold best value per metric
-- Include direction symbols (↑ higher is better, ↓ lower is better)
-- Right-align numerical columns
-- Consistent decimal precision
+- 使用 `booktabs`
+- 每个 metric 加方向符号（↑ / ↓）
+- 最优值加粗
+- 数值列右对齐
+- 小数位一致
 
 ### Figures
 
-- **Vector graphics** (PDF, EPS) for all plots and diagrams
-- **Raster** (PNG 600 DPI) only for photographs
-- Use **colorblind-safe palettes** (Okabe-Ito or Paul Tol)
-- Verify **grayscale readability** (8% of men have color vision deficiency)
-- **No title inside figure**—the caption serves this function
-- **Self-contained captions**—reader should understand without main text
-
----
+- plot 和 diagram 用 vector graphics（PDF / EPS）
+- 照片才用高分辨率 raster
+- 使用 colorblind-safe palette
+- 检查灰度可读性
+- 不要在图内放 title
+- caption 必须自洽
 
 ## References & Resources
 
-### Reference Documents (Deep Dives)
+### Reference Documents
 
 | Document | Contents |
 |----------|----------|
-| [writing-guide.md](references/writing-guide.md) | Gopen & Swan 7 principles, Ethan Perez micro-tips, word choice |
-| [citation-workflow.md](references/citation-workflow.md) | Citation APIs, Python code, BibTeX management |
-| [checklists.md](references/checklists.md) | NeurIPS 16-item, ICML, ICLR, ACL requirements |
-| [reviewer-guidelines.md](references/reviewer-guidelines.md) | Evaluation criteria, scoring, rebuttals |
-| [sources.md](references/sources.md) | Complete bibliography of all sources |
-| **Literature Research:** |
-| [arxiv-search-guide.md](references/literature-research/arxiv-search-guide.md) | arXiv search strategies, URL patterns, Chrome MCP automation |
-| [paper-quality-criteria.md](references/literature-research/paper-quality-criteria.md) | 5-dimension paper evaluation rubrics (innovation, method, experiments, writing, impact) |
+| `references/writing-guide.md` | Gopen & Swan 原则、Ethan Perez micro-tips、word choice |
+| `references/citation-workflow.md` | Citation API、Python code、BibTeX 管理 |
+| `references/checklists.md` | NeurIPS、ICML、ICLR、ACL checklist |
+| `references/reviewer-guidelines.md` | 评审标准、评分、rebuttal |
+| `references/sources.md` | 本 skill 的来源索引 |
+| `references/literature-research/arxiv-search-guide.md` | arXiv 检索策略 |
+| `references/literature-research/paper-quality-criteria.md` | 5 维论文质量评估 |
 
 ### LaTeX Templates
 
-Templates in `templates/` directory: **ICML 2026**, **ICLR 2026**, **NeurIPS 2025**, **ACL/EMNLP**, **AAAI 2026**, **COLM 2025**.
+`templates/` 目录包含：**ICML 2026**、**ICLR 2026**、**NeurIPS 2025**、**ACL/EMNLP**、**AAAI 2026**、**COLM 2025**。
 
-**Compiling to PDF:**
-- **VS Code/Cursor**: Install LaTeX Workshop extension + TeX Live → Save to auto-compile
-- **Command line**: `latexmk -pdf main.tex` or `pdflatex` + `bibtex` workflow
-- **Online**: Upload to [Overleaf](https://overleaf.com)
-
-See [templates/README.md](templates/README.md) for detailed setup instructions.
+编译方式：
+- VS Code / Cursor：LaTeX Workshop + TeX Live
+- 命令行：`latexmk -pdf main.tex`
+- 在线：Overleaf
 
 ### Key External Sources
 
-**Writing Philosophy:**
-- [Neel Nanda: How to Write ML Papers](https://www.alignmentforum.org/posts/eJGptPbbFPZGLpjsp/highly-opinionated-advice-on-how-to-write-ml-papers) - Narrative, "What/Why/So What"
-- [Farquhar: How to Write ML Papers](https://sebastianfarquhar.com/on-research/2024/11/04/how_to_write_ml_papers/) - 5-sentence abstract
-- [Gopen & Swan: Science of Scientific Writing](https://cseweb.ucsd.edu/~swanson/papers/science-of-writing.pdf) - 7 reader expectation principles
-- [Lipton: Heuristics for Scientific Writing](https://www.approximatelycorrect.com/2018/01/29/heuristics-technical-scientific-writing-machine-learning-perspective/) - Word choice
-- [Perez: Easy Paper Writing Tips](https://ethanperez.net/easy-paper-writing-tips/) - Micro-level clarity
-
-**APIs:** [Semantic Scholar](https://api.semanticscholar.org/api-docs/) | [CrossRef](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) | [arXiv](https://info.arxiv.org/help/api/basics.html)
-
-**Venues:** [NeurIPS](https://neurips.cc/Conferences/2025/PaperInformation/StyleFiles) | [ICML](https://icml.cc/Conferences/2025/AuthorInstructions) | [ICLR](https://iclr.cc/Conferences/2026/AuthorGuide) | [ACL](https://github.com/acl-org/acl-style-files)
+- Neel Nanda: narrative、What / Why / So What
+- Sebastian Farquhar: 5-sentence abstract
+- Gopen & Swan: reader expectation principles
+- Zachary Lipton: scientific writing heuristics
+- Ethan Perez: micro-level clarity
+- APIs: Semantic Scholar、CrossRef、arXiv

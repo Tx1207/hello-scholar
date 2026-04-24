@@ -1,8 +1,8 @@
-# Minimal Plugin Example
+# 最简插件示例
 
-A bare-bones plugin with a single command.
+一个只有单个 command 的基础插件。
 
-## Directory Structure
+## 目录结构
 
 ```
 hello-world/
@@ -12,7 +12,7 @@ hello-world/
     └── hello.md
 ```
 
-## File Contents
+## 文件内容
 
 ### .claude-plugin/plugin.json
 
@@ -27,27 +27,27 @@ hello-world/
 ```markdown
 ---
 name: hello
-description: Prints a friendly greeting message
+description: 输出一条友好的问候消息
 ---
 
 # Hello Command
 
-Print a friendly greeting to the user.
+向用户输出一条友好的问候。
 
 ## Implementation
 
-Output the following message to the user:
+向用户输出下面这段消息：
 
 > Hello! This is a simple command from the hello-world plugin.
 >
 > Use this as a starting point for building more complex plugins.
 
-Include the current timestamp in the greeting to show the command executed successfully.
+在问候中带上当前时间戳，用来说明这个 command 已成功执行。
 ```
 
-## Usage
+## 使用方式
 
-After installing the plugin:
+安装插件后：
 
 ```
 $ claude
@@ -59,25 +59,25 @@ Use this as a starting point for building more complex plugins.
 Executed at: 2025-01-15 14:30:22 UTC
 ```
 
-## Key Points
+## 关键点
 
-1. **Minimal manifest**: Only the required `name` field
-2. **Single command**: One markdown file in `commands/` directory
-3. **Auto-discovery**: Claude Code finds the command automatically
-4. **No dependencies**: No scripts, hooks, or external resources
+1. **最小 manifest**：只包含必须的 `name` 字段
+2. **单个 command**：`commands/` 目录里只有一个 markdown 文件
+3. **自动发现**：Claude Code 会自动找到这个 command
+4. **无依赖**：不需要 scripts、hooks 或外部资源
 
-## When to Use This Pattern
+## 什么时候适合这种模式
 
-- Quick prototypes
-- Single-purpose utilities
-- Learning plugin development
-- Internal team tools with one specific function
+- 快速原型
+- 单一用途的小工具
+- 学习插件开发
+- 团队内部只有一个明确功能点的工具
 
-## Extending This Plugin
+## 如何扩展这个插件
 
-To add more functionality:
+如果要继续加功能：
 
-1. **Add commands**: Create more `.md` files in `commands/`
-2. **Add metadata**: Update `plugin.json` with version, description, author
-3. **Add agents**: Create `agents/` directory with agent definitions
-4. **Add hooks**: Create `hooks/hooks.json` for event handling
+1. **增加 commands**：在 `commands/` 中继续创建更多 `.md` 文件
+2. **增加 metadata**：在 `plugin.json` 中补充 version、description、author
+3. **增加 agents**：创建 `agents/` 目录并加入 agent 定义
+4. **增加 hooks**：创建 `hooks/hooks.json` 处理事件

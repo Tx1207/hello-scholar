@@ -1,14 +1,14 @@
-# Skill Evolution Apply Report: {{candidate_id}}
+# Skill 演化应用报告：{{candidate_id}}
 
-- Action: `{{action}}`
-- Target Skill: `{{target_skill}}`
-- Overlay Root: `{{overlay_root}}`
-- Source Layer: `{{source_layer}}`
+- 动作：`{{action}}`
+- 目标 Skill：`{{target_skill}}`
+- Overlay 根目录：`{{overlay_root}}`
+- 源层：`{{source_layer}}`
 
-## Touched Files
+## 变更文件
 
 {{files}}
 
-## Integrity Checks
+## 完整性检查
 
 {{checks}}
