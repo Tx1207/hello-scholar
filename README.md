@@ -85,6 +85,20 @@ hello-scholar cleanup codex --global
 
 ## Runtime Layout
 
+Repository skills are organized by canonical capability domain. Profiles are manifests and do not duplicate skill folders:
+
+- `skills/core/`
+- `skills/research/`
+- `skills/development/`
+- `skills/writing/`
+- `skills/review/`
+- `skills/submission/`
+- `skills/post-acceptance/`
+- `skills/memory/`
+- `skills/meta/`
+- `skills/profiles/`
+- `skills/commands/`
+
 Project mode:
 
 - `.hello-scholar/modules.json`

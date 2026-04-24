@@ -4,6 +4,27 @@ import { join } from 'node:path'
 import { getOverlayPaths, getRuntimeContext } from './cli-config.mjs'
 import { readJson, readText } from './cli-utils.mjs'
 
+const INTERNAL_SKILL_DIRS = new Set([
+  '_meta',
+  'commands',
+  'profiles',
+  'helloagents',
+  'hello-api',
+  'hello-arch',
+  'hello-data',
+  'hello-debug',
+  'hello-errors',
+  'hello-perf',
+  'hello-reflect',
+  'hello-review',
+  'hello-security',
+  'hello-subagent',
+  'hello-test',
+  'hello-ui',
+  'hello-verify',
+  'hello-write',
+])
+
 export function loadCatalog(pkgRoot, options = {}) {
   const base = readJson(join(pkgRoot, 'catalog', 'base.json'), null)
   const bundles = readJson(join(pkgRoot, 'catalog', 'bundles.json'), null)
@@ -166,7 +187,7 @@ function hydrateStaticSkills(pkgRoot, skills) {
   return skills.map((entry) => ({
     ...entry,
     sourceLayer: 'repo',
-    sourceRoot: join(pkgRoot, 'skills', entry.id),
+    sourceRoot: join(pkgRoot, entry.path || `skills/${entry.id}`),
     dynamic: false,
   }))
 }
@@ -191,20 +212,21 @@ function hydrateDynamicSkills(pkgRoot, skills, options) {
 
 function readDynamicSkills(rootPath, sourceLayer) {
   const entries = []
-  for (const skillId of readModuleDirectories(rootPath)) {
-    const frontmatter = parseFrontmatter(readJsonAsText(join(rootPath, skillId, 'SKILL.md')))
+  for (const entry of readSkillDirectories(rootPath, sourceLayer)) {
+    const skillId = entry.id
+    const frontmatter = parseFrontmatter(readJsonAsText(join(entry.sourceRoot, 'SKILL.md')))
     entries.push({
       id: skillId,
       name: frontmatter.name || skillId,
       description: frontmatter.description || '',
-      path: join(rootPath, skillId).replace(/\\/g, '/'),
+      path: entry.path,
       layer: sourceLayer === 'overlay' ? 'overlay' : 'bundle',
-      category: sourceLayer === 'overlay' ? 'overlay' : 'unassigned',
+      category: sourceLayer === 'overlay' ? 'overlay' : (entry.domain || 'unassigned'),
       bundleIds: [],
       dependencies: [],
       optionalDependencies: [],
       sourceLayer,
-      sourceRoot: join(rootPath, skillId),
+      sourceRoot: entry.sourceRoot,
       dynamic: true,
     })
   }
@@ -213,6 +235,15 @@ function readDynamicSkills(rootPath, sourceLayer) {
 
 function mergeSkillEntry(previous, nextEntry) {
   if (!previous) return nextEntry
+  if (nextEntry.sourceLayer !== 'overlay') {
+    return {
+      ...previous,
+      name: previous.name || nextEntry.name,
+      description: previous.description || nextEntry.description,
+      sourceRoot: previous.sourceRoot || nextEntry.sourceRoot,
+      dynamic: previous.dynamic,
+    }
+  }
   return {
     ...previous,
     name: nextEntry.name || previous.name,
@@ -233,6 +264,39 @@ function readModuleDirectories(rootPath) {
       .sort()
   } catch {
     return []
+  }
+}
+
+function readSkillDirectories(rootPath, sourceLayer) {
+  if (sourceLayer === 'overlay') {
+    return readModuleDirectories(rootPath).map((skillId) => ({
+      id: skillId,
+      path: join(rootPath, skillId).replace(/\\/g, '/'),
+      sourceRoot: join(rootPath, skillId),
+      domain: 'overlay',
+    }))
+  }
+
+  const entries = []
+  walkRepoSkillDirectories(rootPath, [], entries)
+  return entries
+}
+
+function walkRepoSkillDirectories(rootPath, segments, entries) {
+  for (const entry of readModuleDirectories(rootPath)) {
+    if (segments.length === 0 && INTERNAL_SKILL_DIRS.has(entry)) continue
+    const sourceRoot = join(rootPath, entry)
+    const nextSegments = [...segments, entry]
+    if (readJsonAsText(join(sourceRoot, 'SKILL.md')).trim()) {
+      entries.push({
+        id: entry,
+        path: sourceRoot.replace(/\\/g, '/'),
+        sourceRoot,
+        domain: segments.length > 0 ? segments[0] : '',
+      })
+      continue
+    }
+    walkRepoSkillDirectories(sourceRoot, nextSegments, entries)
   }
 }
 

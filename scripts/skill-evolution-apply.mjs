@@ -1,3 +1,4 @@
+import { readdirSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -147,7 +148,7 @@ function loadApplyContext(cwd, args, options) {
   if (!skillId) throw new Error('Candidate is missing targetSkillId')
 
   const overlaySkillRoot = join(overlayPaths.overlaySkillsRoot, skillId)
-  const repoSkillRoot = join(effectivePkgRoot, 'skills', skillId)
+  const repoSkillRoot = findRepoSkillRoot(join(effectivePkgRoot, 'skills'), skillId) || join(effectivePkgRoot, 'skills', skillId)
   const patchPlanFile = join('hello-scholar', 'evolution', 'candidates', candidate.id, 'patch-plan.md')
 
   return {
@@ -400,6 +401,18 @@ function buildDescription(context) {
 function collectReferencedPaths(skillText) {
   const matches = skillText.match(/(?:references|examples|scripts|assets)\/[A-Za-z0-9._/-]+/g) || []
   return [...new Set(matches)]
+}
+
+function findRepoSkillRoot(rootPath, skillId) {
+  if (!pathExists(rootPath)) return ''
+  for (const entry of readdirSync(rootPath)) {
+    const entryPath = join(rootPath, entry)
+    if (!statSync(entryPath).isDirectory()) continue
+    if (entry === skillId && pathExists(join(entryPath, 'SKILL.md'))) return entryPath
+    const nested = findRepoSkillRoot(entryPath, skillId)
+    if (nested) return nested
+  }
+  return ''
 }
 
 function formatSkillTitle(skillId) {

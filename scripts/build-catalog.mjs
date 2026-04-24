@@ -60,17 +60,18 @@ for (const bundle of bundles) {
   for (const agentId of bundle.agents) pushMembership(bundleAgentMembership, agentId, bundle.id)
 }
 
-const skills = readModuleDirectories(join(pkgRoot, 'skills'))
-  .map((skillId) => {
-    const skillPath = join(pkgRoot, 'skills', skillId, 'SKILL.md')
+const skills = readSkillDirectories(join(pkgRoot, 'skills'))
+  .map((entry) => {
+    const skillId = entry.id
+    const skillPath = join(pkgRoot, entry.path, 'SKILL.md')
     const frontmatter = parseFrontmatter(readText(skillPath))
     return {
       id: skillId,
       name: frontmatter.name || skillId,
       description: frontmatter.description || '',
-      path: `skills/${skillId}`,
+      path: entry.path,
       layer: base.defaultSkills.includes(skillId) ? 'base' : 'bundle',
-      category: base.defaultSkills.includes(skillId) ? 'base' : (bundleSkillMembership.get(skillId)?.[0] || 'unassigned'),
+      category: base.defaultSkills.includes(skillId) ? 'base' : (entry.domain || bundleSkillMembership.get(skillId)?.[0] || 'unassigned'),
       bundleIds: bundleSkillMembership.get(skillId) || [],
       dependencies: hardDependencies[skillId] || [],
       optionalDependencies: optionalDependencies[skillId] || [],
@@ -106,6 +107,43 @@ function readModuleDirectories(rootPath) {
     .filter((entry) => !INTERNAL_SKILL_DIRS.has(entry))
     .filter((entry) => existsSync(join(rootPath, entry, 'SKILL.md')) || existsSync(join(rootPath, entry, 'config.toml')))
     .sort()
+}
+
+function readSkillDirectories(rootPath) {
+  const entries = []
+  walkSkillDirectories(rootPath, [], entries)
+  assertUniqueSkillIds(entries)
+  return entries.sort((left, right) => left.id.localeCompare(right.id))
+}
+
+function walkSkillDirectories(rootPath, segments, entries) {
+  for (const entry of readdirSync(rootPath)) {
+    const entryPath = join(rootPath, entry)
+    if (!statSync(entryPath).isDirectory()) continue
+    if (segments.length === 0 && INTERNAL_SKILL_DIRS.has(entry)) continue
+    if (segments.length === 0 && (entry === 'commands' || entry === 'profiles')) continue
+
+    const nextSegments = [...segments, entry]
+    if (existsSync(join(entryPath, 'SKILL.md'))) {
+      entries.push({
+        id: entry,
+        path: ['skills', ...nextSegments].join('/'),
+        domain: segments.length > 0 ? segments[0] : '',
+      })
+      continue
+    }
+
+    walkSkillDirectories(entryPath, nextSegments, entries)
+  }
+}
+
+function assertUniqueSkillIds(entries) {
+  const seen = new Map()
+  for (const entry of entries) {
+    const previous = seen.get(entry.id)
+    if (previous) throw new Error(`Duplicate skill id ${entry.id}: ${previous.path}, ${entry.path}`)
+    seen.set(entry.id, entry)
+  }
 }
 
 function parseFrontmatter(fileText) {

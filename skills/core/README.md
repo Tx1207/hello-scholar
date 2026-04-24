@@ -1,8 +1,8 @@
 # Core Skills
 
-`skills/core/` describes cross-profile canonical capabilities for hello-scholar.
+`skills/core/` contains cross-profile canonical capabilities for hello-scholar.
 
-Do not duplicate full skill folders here in v1. The install/runtime source of truth remains `catalog/profiles.json` plus the canonical `skills/<skill-id>/` folders. Use this directory to document stable capability boundaries before migrating physical skill paths.
+The install/runtime source of truth is still `catalog/skills.json` and `catalog/profiles.json`. Profile manifests reference skill IDs; they do not duplicate skill folders.
 
 Core capability groups:
 

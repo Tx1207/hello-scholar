@@ -21,7 +21,7 @@ test('review command creates update candidate when change points to an existing 
       slug: 'improve-skill-quality-reviewer-workflow',
       route: '~build',
       tier: 'T2',
-      affectedFiles: ['skills/skill-quality-reviewer/SKILL.md', 'scripts/skill-evolution-review.mjs'],
+      affectedFiles: ['skills/meta/skill-quality-reviewer/SKILL.md', 'scripts/skill-evolution-review.mjs'],
       actualChanges: [
         'Refined the review workflow for reusable skill feedback.',
         'Added candidate-based review artifacts for later apply stages.',

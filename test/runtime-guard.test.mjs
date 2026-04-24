@@ -5,7 +5,7 @@ import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
-const helperPath = join(pkgRoot, 'skills', 'codex-hook-emulation', 'scripts', 'codex_hook_emulation.py')
+const helperPath = join(pkgRoot, 'skills', 'core', 'codex-hook-emulation', 'scripts', 'codex_hook_emulation.py')
 const pythonBin = resolvePython()
 
 test('preflight blocks mutating commands in ~idea route', () => {

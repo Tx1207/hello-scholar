@@ -625,7 +625,19 @@ function normalizePath(filePath) {
 }
 
 function resolveSkillSourcePath(catalog, pkgRoot, skillId) {
-  return catalog?.skillMap.get(skillId)?.sourceRoot || join(pkgRoot, 'skills', skillId)
+  return catalog?.skillMap.get(skillId)?.sourceRoot || findRepoSkillRoot(join(pkgRoot, 'skills'), skillId) || join(pkgRoot, 'skills', skillId)
+}
+
+function findRepoSkillRoot(rootPath, skillId) {
+  if (!pathExists(rootPath)) return ''
+  for (const entry of readdirSync(rootPath)) {
+    const entryPath = join(rootPath, entry)
+    if (!statSync(entryPath).isDirectory()) continue
+    if (entry === skillId && pathExists(join(entryPath, 'SKILL.md'))) return entryPath
+    const nested = findRepoSkillRoot(entryPath, skillId)
+    if (nested) return nested
+  }
+  return ''
 }
 
 function escapeTomlString(value = '') {

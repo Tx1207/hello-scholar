@@ -26,7 +26,7 @@
 | experiment evidence | partial | `scripts/evidence-store.mjs record --experiment-id <id>` 可写入 experiment package；`delivery-gate --experiment-id <id>` 可读取 experiment evidence。 | 非实验 plan evidence 仍保留顶层 `hello-scholar/evidence/<target-id>/` 兼容路径。 |
 | status | partial | `hello-scholar status` 展示安装态、profile、active experiment、experiment count、project/global preferences 路径。 | 尚未展示 active change、overlay resolver 详情、standby/global 双侧冲突矩阵。 |
 | profile-first CLI | partial | help/README 只推荐核心入口：install、cleanup、profile list/use、preferences show、status。 | `list`、`doctor`、`update`、`activate` 仍作为兼容命令存在，未从代码删除。 |
-| skills 按 profile 分类 | partial | 新增 `skills/core/README.md` 与 `skills/profiles/*/PROFILE.md`。 | 物理 skill 文件夹尚未迁移到 `skills/core/` 或 `skills/profiles/`；catalog 仍指向平铺 canonical skills。 |
+| skills 按能力域分类 | pass | 真实 skill 已迁移到 `skills/core/`、`skills/research/`、`skills/development/`、`skills/writing/`、`skills/review/`、`skills/submission/`、`skills/post-acceptance/`、`skills/memory/`、`skills/meta/`；`skills/profiles/*/PROFILE.md` 只保留 profile manifest。 | 后续可继续精简旧 bundle 兼容层。 |
 | 全局 overlay skill | partial | catalog-loader 可读取 `~/plugins/hello-scholar/.hello-scholar/overlays/skills/` 并覆盖同名 skill。 | 尚未实现统一 `scripts/overlay/resolve.mjs`，也未提供 overlay 状态报告。 |
 
 ## 3. 仍缺失，建议后续阶段实现
@@ -45,5 +45,5 @@
 
 - 顶层 `hello-scholar/evidence/<target-id>/` 不再用于实验事实，但保留为非实验 plan/delivery gate 兼容路径。
 - `list`、`doctor`、`update`、`activate` 不再是推荐用户入口，但本轮不删除实现，避免破坏已有测试和用户脚本。
-- `skills/core/` 与 `skills/profiles/` 第一阶段作为 manifest 和能力边界说明；物理迁移 skill 文件夹属于后续重构。
+- 真实 skill 以 canonical 能力域目录为物理所有权边界；profile 只是组合视图，不复制 skill 本体。
 - 全局共享层中的 preferences、overlay skills、evolution candidates 是用户长期资产；global cleanup 不应删除这些资产。

@@ -307,8 +307,11 @@ function analyzeCandidate(input, args) {
 
 function detectExistingSkillTarget(files, activeText, activeSkillIds) {
   for (const file of files) {
+    const parts = String(file).split('/').filter(Boolean)
+    const skillMdIndex = parts.lastIndexOf('SKILL.md')
+    if (parts[0] === 'skills' && skillMdIndex > 1) return parts[skillMdIndex - 1]
     const match = String(file).match(/^skills\/([^/]+)\//)
-    if (match) return match[1]
+    if (match && !['core', 'research', 'development', 'writing', 'review', 'submission', 'post-acceptance', 'memory', 'meta'].includes(match[1])) return match[1]
   }
 
   for (const skillId of activeSkillIds) {
