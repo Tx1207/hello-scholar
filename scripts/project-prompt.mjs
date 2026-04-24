@@ -16,34 +16,29 @@ const LIFECYCLE_STEPS = [
   },
   {
     label: '2. ML 项目开发',
-    bundleIds: ['dev-core'],
-    skillIds: ['architecture-design'],
+    bundleIds: ['dev-core', 'research-core'],
+    skillIds: ['daily-coding', 'verification-loop', 'results-analysis'],
     agentIds: ['code-reviewer'],
   },
   {
-    label: '3. 实验分析',
-    bundleIds: ['research-core'],
-    skillIds: ['results-analysis', 'results-report'],
-  },
-  {
-    label: '4. 论文写作',
+    label: '3. 论文写作',
     bundleIds: ['writing-core'],
     skillIds: ['ml-paper-writing'],
     agentIds: ['paper-miner'],
   },
   {
-    label: '5. 论文自审',
+    label: '4. 论文自审',
     bundleIds: ['writing-core'],
     skillIds: ['paper-self-review'],
   },
   {
-    label: '6. 投稿与 Rebuttal',
+    label: '5. 投稿与 Rebuttal',
     bundleIds: ['writing-core'],
     skillIds: ['review-response'],
     agentIds: ['rebuttal-writer'],
   },
   {
-    label: '7. 录用后处理',
+    label: '6. 录用后处理',
     bundleIds: ['writing-core'],
     skillIds: ['post-acceptance'],
   },
@@ -217,8 +212,8 @@ function annotateSkillCatalog(sectionBody, selection) {
 function buildOverviewPathLines(mode) {
   if (mode === 'global') {
     return [
-      '- 全局状态目录：`~/.codex/.hello-scholar/`',
-      '- 用户 Overlay Skill 目录：`~/.hello-scholar/overlays/skills/`',
+      '- 全局共享状态目录：`~/plugins/hello-scholar/.hello-scholar/`',
+      '- 用户 Overlay Skill 目录：`~/plugins/hello-scholar/.hello-scholar/overlays/skills/`',
       '- 全局提示入口：`~/.codex/AGENTS.md` 中的 hello-scholar 受管块',
       '- 全局插件源：`~/plugins/hello-scholar/`',
       '- 全局插件缓存：`~/.codex/plugins/cache/local-plugins/hello-scholar/local/`',
@@ -230,7 +225,7 @@ function buildOverviewPathLines(mode) {
     '- 项目激活清单：项目根 `.hello-scholar/modules.json`',
     '- 项目 Skill 目录：项目根 `.hello-scholar/skills/`',
     '- 项目 Agent 目录：项目根 `.hello-scholar/agents/`',
-    '- 用户 Overlay Skill 目录：`~/.hello-scholar/overlays/skills/`',
+    '- 用户 Overlay Skill 目录：`~/plugins/hello-scholar/.hello-scholar/overlays/skills/`',
     '- 项目提示入口：项目根 `AGENTS.md` 中的 hello-scholar 受管块',
   ]
 }
@@ -238,7 +233,7 @@ function buildOverviewPathLines(mode) {
 function buildGlobalCliPathLines() {
   return [
     '- 主配置：`~/.codex/config.toml`',
-    '- 全局状态目录：`~/.codex/.hello-scholar/`',
+    '- 全局共享状态目录：`~/plugins/hello-scholar/.hello-scholar/`',
     '- Global 插件源：`~/plugins/hello-scholar/`',
     '- Global 插件缓存：`~/.codex/plugins/cache/local-plugins/hello-scholar/local/`',
     '- Agent 配置由 `~/.codex/config.toml` 中的 `[agents.*]` 指向 `~/plugins/hello-scholar/agents/<name>/config.toml`',

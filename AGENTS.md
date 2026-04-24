@@ -15,7 +15,12 @@
 
 ## 配置与上下文
 
-配置文件：`~/.hello-scholar/hello-scholar.json`
+配置路径：
+- 项目运行态：项目根 `.hello-scholar/`
+- 项目长期资产：项目根 `hello-scholar/`
+- 全局共享层：`~/plugins/hello-scholar/.hello-scholar/`
+- 全局偏好：`~/plugins/hello-scholar/.hello-scholar/preferences/user-preferences.yaml`
+- 全局 overlay skills：`~/plugins/hello-scholar/.hello-scholar/overlays/skills/`
 
 - 如果当前上下文已包含“当前用户设置”或当前 profile 信息，本轮直接复用。
 - 否则，当本轮首次遇到受配置影响的行为时，再读取一次配置文件并复用本轮结果。
@@ -23,6 +28,19 @@
 - 在受限 CLI 中确需读取但失败时，明确说明，并按默认值或当前已知设置执行；禁止静默回退或假装读取成功。
 
 默认 profile：`ml-development`，展示名为“ML 实验开发”。
+
+## 技能分层
+
+hello-scholar 的 skill 选择以 profile catalog 为主入口，不在 prompt 中维护完整静态 skill 目录。
+
+- `skills/commands/`：`~build`、`~verify`、`~analyze`、`~evolve` 等命令壳，只在用户显式输入对应命令时加载。
+- `skills/core/`：跨 profile 复用的能力边界说明，v1 不复制完整 skill 文件夹。
+- `skills/profiles/`：六个科研生命周期 profile 的 manifest，解释每个 profile 的能力范围和典型 skill/agent。
+- `catalog/profiles.json`：profile 选择和安装的机器可读真源。
+- `catalog/skills.json` / `catalog/agents.json`：安装阶段解析具体模块，允许 overlay skill 覆盖同名 repo skill。
+- `~/plugins/hello-scholar/.hello-scholar/overlays/skills/`：用户确认后的全局 overlay skill，后续 standby/global 安装都应纳入解析。
+
+不得把完整 skill 目录复制到 `AGENTS.md`。需要具体流程时，按当前 route/profile 读取相应 `SKILL.md`。
 
 ## 用户偏好
 

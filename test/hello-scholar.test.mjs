@@ -176,6 +176,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     const statusText = runCli(fixture, ['status'])
     assert(statusText.includes('- Installed: yes'))
     assert(statusText.includes('- Mode: standby'))
+    assert(statusText.includes('- Active Experiment: None'))
+    assert(statusText.includes('- Project Preferences:'))
     assert(statusText.includes('- Project Prompt: present'))
     assert(statusText.includes('- Project Bootstrap Block: present'))
     assert(statusText.includes('- Scope: standby'))
@@ -280,7 +282,7 @@ test('global install is blocked until current project standby is manually cleane
 
     const cleanupText = runCli(fixture, ['cleanup', 'codex', '--global'])
     assert(cleanupText.includes('- Scope: global'))
-    assert(cleanupText.includes('- Removed ~/.codex/.hello-scholar: yes'))
+    assert(cleanupText.includes('- Removed global install state: yes'))
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar'))
     assertPathMissing(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills'))
     assertPathMissing(join(fixture.codexHome, 'AGENTS.md'))

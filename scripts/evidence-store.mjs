@@ -2,6 +2,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { ensureDir, parseArgv, pathExists, readJson, readText, writeJson, writeText } from './cli-utils.mjs'
+import { addEvidence } from './experiment-store.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
 import { splitLines } from './change-tracker-utils.mjs'
 
@@ -26,6 +27,26 @@ function main() {
 }
 
 export function recordEvidence(cwd, args) {
+  const experimentId = String(args.getFlag('--experiment-id', '')).trim()
+  if (experimentId) {
+    const result = addEvidence({
+      cwd,
+      experimentId,
+      kind: String(args.getFlag('--kind', 'manual')).trim() || 'manual',
+      status: String(args.getFlag('--status', 'pass')).trim() || 'pass',
+      summary: String(args.getFlag('--summary', '')).trim(),
+      path: String(args.getFlag('--path', '')).trim(),
+      now: new Date(String(args.getFlag('--at', new Date().toISOString())).trim()),
+    })
+    return {
+      ok: true,
+      scope: 'experiment',
+      targetId: experimentId,
+      experimentId: result.experimentId,
+      file: result.file,
+    }
+  }
+
   const targetId = String(args.getFlag('--target-id', '')).trim()
   if (!targetId) throw new Error('--target-id is required')
   const storage = resolveProjectStorage(cwd)
@@ -56,6 +77,11 @@ export function recordEvidence(cwd, args) {
 }
 
 export function readEvidenceBundle(cwd, targetId) {
+  if (targetId?.startsWith('EXP-')) {
+    const experimentBundle = readExperimentEvidenceBundle(cwd, targetId)
+    if (experimentBundle) return experimentBundle
+  }
+
   const storage = resolveProjectStorage(cwd)
   const root = join(storage.rootPath, 'evidence', targetId)
   const stored = pathExists(join(root, 'index.json'))
@@ -65,6 +91,30 @@ export function readEvidenceBundle(cwd, targetId) {
     targetId,
     updatedAt: '',
     entries: [],
+  }
+}
+
+function readExperimentEvidenceBundle(cwd, experimentId) {
+  const storage = resolveProjectStorage(cwd)
+  const root = join(storage.rootPath, 'experiments', experimentId)
+  const artifactsPath = join(root, 'artifacts.json')
+  if (!pathExists(artifactsPath)) return null
+  const artifacts = readJson(artifactsPath, { artifacts: [] })
+  return {
+    targetId: experimentId,
+    updatedAt: '',
+    entries: (artifacts.artifacts || [])
+      .filter((entry) => entry.type || entry.summary || entry.recordedAt)
+      .map((entry, index) => ({
+        id: `${experimentId}-${index + 1}`,
+        timestamp: entry.recordedAt || '',
+        kind: entry.type || 'experiment-evidence',
+        status: entry.status || 'unknown',
+        summary: entry.summary || '',
+        command: entry.command || '',
+        files: entry.path ? [entry.path] : [],
+        notes: [],
+      })),
   }
 }
 

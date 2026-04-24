@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -113,6 +113,73 @@ test('delivery gate fails with stale evidence', () => {
 
     assert.equal(payload.overall, false)
     assert.equal(payload.checks.find((entry) => entry.check === 'evidence_fresh')?.pass, false)
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('delivery gate can consume experiment package evidence', () => {
+  const fixture = createFixture()
+  try {
+    const created = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'experiment-store.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--title',
+      'Experiment evidence gate',
+      '--request',
+      'Validate experiment evidence gate.',
+    ], fixture.projectDir))
+
+    runNode([
+      join(pkgRoot, 'scripts', 'plan-package.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      created.id,
+      '--title',
+      'Experiment evidence gate',
+      '--min-evidence',
+      '1',
+      '--max-evidence-age-hours',
+      '24',
+    ], fixture.projectDir)
+
+    runNode([
+      join(pkgRoot, 'scripts', 'evidence-store.mjs'),
+      'record',
+      '--cwd',
+      fixture.projectDir,
+      '--experiment-id',
+      created.id,
+      '--summary',
+      'Experiment run completed',
+      '--kind',
+      'run-log',
+      '--status',
+      'pass',
+      '--path',
+      'outputs/run.log',
+    ], fixture.projectDir)
+
+    const payload = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'delivery-gate.mjs'),
+      'check',
+      '--cwd',
+      fixture.projectDir,
+      '--experiment-id',
+      created.id,
+      '--plan-id',
+      created.id,
+    ], fixture.projectDir))
+
+    assert.equal(payload.overall, true)
+    assert.equal(payload.experimentId, created.id)
+    const expDir = join(fixture.projectDir, 'hello-scholar', 'experiments', created.id)
+    assert.equal(existsSync(join(expDir, 'delivery-gate.json')), true)
+    assert(readFileSync(join(expDir, 'closeout.md'), 'utf-8').includes('PASS'))
   } finally {
     destroyFixture(fixture)
   }

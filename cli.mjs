@@ -12,6 +12,7 @@ import {
   saveInstallState,
 } from './scripts/cli-config.mjs'
 import { loadCatalog } from './scripts/catalog-loader.mjs'
+import { readExperimentStatus } from './scripts/experiment-store.mjs'
 import { ensureProjectPreferences, formatEffectivePreferences } from './scripts/preferences-store.mjs'
 import {
   installCodex,
@@ -149,7 +150,16 @@ async function main() {
       const parsed = parseArgv(argv.slice(1))
       const scope = resolveScope(parsed, detectInstalledScope(runtime, cwd))
       const installStateResult = loadInstallState(runtime, cwd, scope)
-      console.log(formatStatus(readCodexStatus(runtime, installStateResult, cwd)))
+      const installStatus = readCodexStatus(runtime, installStateResult, cwd)
+      const experimentStatus = readExperimentStatus(cwd)
+      const preferences = ensureProjectPreferences({ cwd, runtime })
+      console.log(formatStatus({
+        ...installStatus,
+        activeExperiment: experimentStatus.activeExperiment,
+        experimentCount: experimentStatus.experiments.length,
+        preferencesProjectFile: preferences.projectFile,
+        preferencesGlobalFile: preferences.globalFile,
+      }))
       process.exit(0)
     }
 
@@ -295,18 +305,16 @@ function printHelp() {
 hello-scholar
 
 Usage:
-  hello-scholar list bundles|skills|agents [--standby|--global]
   hello-scholar install codex [--standby|--global]
   hello-scholar cleanup codex [--standby|--global]
   hello-scholar profile list
   hello-scholar profile use <profile-id>
   hello-scholar preferences show
   hello-scholar status [--standby|--global]
-  hello-scholar doctor [--standby|--global]
 
 Notes:
-  - \`list ...\` 会在交互终端中直接让你选择或取消
-  - \`install codex\` 会使用当前选择并完成安装
+  - 正式入口保持最小化：安装、清理、profile 切换、偏好查看和状态查看
+  - \`install codex\` 会使用当前 profile selection 并完成安装
   - 无 flag 时默认处理当前项目的 \`standby\`
   - 默认 base 会自动安装，无需单独查看
 `)

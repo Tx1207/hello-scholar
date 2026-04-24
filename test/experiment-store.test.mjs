@@ -12,6 +12,8 @@ import {
   createExperiment,
   readExperimentStatus,
 } from '../scripts/experiment-store.mjs'
+import { recordEvidence, readEvidenceBundle } from '../scripts/evidence-store.mjs'
+import { parseArgv } from '../scripts/cli-utils.mjs'
 
 test('experiment store creates centralized experiment package and updates active state', () => {
   const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-exp-'))
@@ -50,6 +52,45 @@ test('experiment store creates centralized experiment package and updates active
     const status = readExperimentStatus(fixture)
     assert.equal(status.activeExperiment, created.id)
     assert.deepEqual(status.experiments, [created.id])
+  } finally {
+    rmSync(fixture, { recursive: true, force: true })
+  }
+})
+
+test('evidence store can record experiment evidence into the experiment package', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-exp-evidence-'))
+  try {
+    const created = createExperiment({
+      cwd: fixture,
+      title: 'Seed sweep',
+      request: 'Check seed stability.',
+      now: new Date('2026-04-24T08:00:00.000Z'),
+    })
+
+    const result = recordEvidence(fixture, parseArgv([
+      '--experiment-id',
+      created.id,
+      '--kind',
+      'metric-log',
+      '--status',
+      'pass',
+      '--summary',
+      'Three seeds completed.',
+      '--path',
+      'outputs/seeds.json',
+      '--at',
+      '2026-04-24T09:00:00.000Z',
+    ]))
+
+    assert.equal(result.scope, 'experiment')
+    const expDir = join(fixture, 'hello-scholar', 'experiments', created.id)
+    assert(readFileSync(join(expDir, 'evidence.md'), 'utf-8').includes('Three seeds completed.'))
+    assert(readFileSync(join(expDir, 'artifacts.json'), 'utf-8').includes('outputs/seeds.json'))
+
+    const bundle = readEvidenceBundle(fixture, created.id)
+    assert.equal(bundle.entries.length, 1)
+    assert.equal(bundle.entries[0].summary, 'Three seeds completed.')
+    assert.equal(bundle.entries[0].files[0], 'outputs/seeds.json')
   } finally {
     rmSync(fixture, { recursive: true, force: true })
   }

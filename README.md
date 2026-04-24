@@ -1,6 +1,6 @@
 # hello-scholar
 
-`hello-scholar` is a Codex-oriented CLI runtime for selectively installing research, writing, development, Obsidian, and meta-builder workflows.
+`hello-scholar` is a Codex-oriented CLI runtime for ML experiment development, research records, profile-based skill activation, and skill/preference evolution.
 
 ## Requirements
 
@@ -37,19 +37,25 @@ Important note:
 
 ## Quick Start
 
-List available workflow bundles:
+List lifecycle profiles:
 
 ```bash
-hello-scholar list bundles
+hello-scholar profile list
 ```
 
-Install the selected modules into the current project in `standby` mode:
+Use the default `ml-development` profile or switch profile:
+
+```bash
+hello-scholar profile use ml-development
+```
+
+Install the current profile selection into the current project in `standby` mode:
 
 ```bash
 hello-scholar install codex --standby
 ```
 
-Install the selected modules into your Codex global environment:
+Install the current profile selection into your Codex global environment:
 
 ```bash
 hello-scholar install codex --global
@@ -59,7 +65,7 @@ Check runtime state:
 
 ```bash
 hello-scholar status
-hello-scholar doctor
+hello-scholar preferences show
 ```
 
 Clean up an installation:
@@ -71,8 +77,9 @@ hello-scholar cleanup codex --global
 
 ## How It Works
 
-- `base` modules are shared foundations installed by default unless `--no-base` is used.
-- `bundles` are opt-in workflow groups such as `research-core`, `writing-core`, `dev-core`, `obsidian-core`, and `meta-builder`.
+- `ml-development` is the default/base profile for research code development and experiment analysis.
+- lifecycle profiles are `research-ideation`, `ml-development`, `paper-writing`, `paper-self-review`, `submission-rebuttal`, and `post-acceptance`.
+- `bundles` remain an internal compatibility layer behind profiles.
 - `standby` mode writes the active runtime into the current project's `.hello-scholar/`.
 - `global` mode installs `hello-scholar` as a local Codex plugin chain under your home directory.
 
@@ -91,14 +98,16 @@ Project mode:
 Project artifacts should default to the visible `hello-scholar/` tree, for example:
 
 - `hello-scholar/changes/`
+- `hello-scholar/experiments/`
 - `hello-scholar/state/`
 - `hello-scholar/plans/`
-- `hello-scholar/evidence/`
-- `hello-scholar/research/`
+- `hello-scholar/preferences/`
+
+Experiment artifacts are centralized under `hello-scholar/experiments/EXP-*/`. Top-level evidence is retained only for non-experiment plan/delivery compatibility.
 
 Global mode:
 
-- `~/.codex/.hello-scholar/`
+- `~/plugins/hello-scholar/.hello-scholar/`
 - `~/plugins/hello-scholar/`
 - `~/.codex/plugins/cache/local-plugins/hello-scholar/local/`
 - `~/.codex/AGENTS.md`
@@ -107,16 +116,14 @@ Global mode:
 ## Common Commands
 
 ```bash
-hello-scholar list bundles
-hello-scholar list skills
-hello-scholar list agents
-
 hello-scholar install codex --standby
 hello-scholar install codex --global
-
+hello-scholar cleanup codex --standby
+hello-scholar cleanup codex --global
+hello-scholar profile list
+hello-scholar profile use ml-development
+hello-scholar preferences show
 hello-scholar status
-hello-scholar doctor
-hello-scholar cleanup codex
 ```
 
 ## Development

@@ -20,7 +20,8 @@ function main() {
 }
 
 export function runDeliveryGate(cwd, args) {
-  const targetId = String(args.getFlag('--target-id', '')).trim()
+  const experimentId = String(args.getFlag('--experiment-id', '')).trim()
+  const targetId = experimentId || String(args.getFlag('--target-id', '')).trim()
   if (!targetId) throw new Error('--target-id is required')
   const storage = resolveProjectStorage(cwd)
   const contractPath = resolveContractPath(storage.rootPath, args, targetId)
@@ -32,12 +33,15 @@ export function runDeliveryGate(cwd, args) {
   const overall = checks.every((check) => check.pass)
   const payload = {
     targetId,
+    experimentId: experimentId || null,
     contractPath,
     checkedAt: new Date().toISOString(),
     checks,
     overall,
   }
-  const gateRoot = join(storage.rootPath, 'evidence', targetId)
+  const gateRoot = experimentId
+    ? join(storage.rootPath, 'experiments', experimentId)
+    : join(storage.rootPath, 'evidence', targetId)
   writeJson(join(gateRoot, 'delivery-gate.json'), payload)
   writeText(join(gateRoot, 'closeout.md'), renderCloseout(payload))
   return payload

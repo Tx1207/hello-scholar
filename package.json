@@ -2,14 +2,13 @@
   "name": "hello-scholar",
   "version": "0.1.0",
   "type": "module",
-  "description": "hello-scholar - selective Codex research and development modules with base and bundle installs.",
+  "description": "hello-scholar - Codex runtime for ML experiment development, records, profiles, and skill evolution.",
   "license": "MIT",
   "bin": {
     "hello-scholar": "cli.mjs"
   },
   "scripts": {
     "build:catalog": "node scripts/build-catalog.mjs",
-    "skill:merge": "node scripts/skill-evolution-merge.mjs merge",
     "test": "node --test",
     "postinstall": "node cli.mjs postinstall"
   },

@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -104,6 +104,7 @@ function readModuleDirectories(rootPath) {
   return readdirSync(rootPath)
     .filter((entry) => statSync(join(rootPath, entry)).isDirectory())
     .filter((entry) => !INTERNAL_SKILL_DIRS.has(entry))
+    .filter((entry) => existsSync(join(rootPath, entry, 'SKILL.md')) || existsSync(join(rootPath, entry, 'config.toml')))
     .sort()
 }
 
