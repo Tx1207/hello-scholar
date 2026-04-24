@@ -12,6 +12,7 @@ import {
   saveInstallState,
 } from './scripts/cli-config.mjs'
 import { loadCatalog } from './scripts/catalog-loader.mjs'
+import { ensureProjectPreferences, formatEffectivePreferences } from './scripts/preferences-store.mjs'
 import {
   installCodex,
   readCodexDoctor,
@@ -98,6 +99,52 @@ async function main() {
       process.exit(0)
     }
 
+    if (command === 'profile') {
+      const parsed = parseArgv(argv.slice(1))
+      const action = parsed.positionals[0] || 'list'
+      const scope = resolveScope(parsed, detectInstalledScope(runtime, cwd))
+      const userConfig = loadUserConfig(runtime, cwd, scope)
+      const installStateResult = loadInstallState(runtime, cwd, scope)
+      const installState = installStateResult.state
+      const state = loadSelectionState(catalog, installState, userConfig, runtime, { cwd, scope })
+
+      if (action === 'list') {
+        console.log(renderList('profiles', catalog, state))
+        process.exit(0)
+      }
+
+      if (action === 'use') {
+        const profileId = parsed.positionals[1]
+        if (!profileId) throw new Error('profile use requires <profile-id>.')
+        if (!catalog.profileMap.has(profileId)) throw new Error(`Unknown profile: ${profileId}`)
+        const savedSelection = saveSelectionState(catalog, {
+          ...state,
+          activeProfile: profileId,
+          storageScope: scope,
+        }, runtime, { cwd, scope })
+        const syncResult = syncInstalledSelection(runtime, installStateResult, savedSelection, cwd, catalog)
+        if (syncResult) {
+          saveInstallState(runtime, syncResult.nextInstallState, syncResult.mode, cwd)
+          writeProjectActivationPrompt({ runtime, catalog, selection: savedSelection, mode: syncResult.mode, cwd })
+          console.log(`Profile updated and synced: ${profileId}`)
+        } else {
+          console.log(`Profile saved: ${profileId}\nRuntime is not installed. Run \`hello-scholar install codex\` to activate it.`)
+        }
+        process.exit(0)
+      }
+
+      throw new Error(`Unsupported profile action: ${action}`)
+    }
+
+    if (command === 'preferences') {
+      const parsed = parseArgv(argv.slice(1))
+      const action = parsed.positionals[0] || 'show'
+      if (action !== 'show') throw new Error(`Unsupported preferences action: ${action}`)
+      const result = ensureProjectPreferences({ cwd, runtime })
+      console.log(formatEffectivePreferences(result))
+      process.exit(0)
+    }
+
     if (command === 'status') {
       const parsed = parseArgv(argv.slice(1))
       const scope = resolveScope(parsed, detectInstalledScope(runtime, cwd))
@@ -180,13 +227,11 @@ async function main() {
         : loadInstallState(runtime, cwd, 'global')
 
       if (mode === 'standby' && globalInstallStateResult.state.hosts?.codex?.mode === 'global') {
-        uninstallCodex(runtime, globalInstallStateResult, cwd)
-        saveInstallState(runtime, removeCodexHost(globalInstallStateResult.state), 'global', cwd)
+        throw new Error('Global install is active. Run `hello-scholar cleanup codex --global` before installing standby.')
       }
 
       if (mode === 'global' && projectInstallStateResult.state.hosts?.codex?.mode === 'standby') {
-        uninstallCodex(runtime, projectInstallStateResult, cwd)
-        saveInstallState(runtime, removeCodexHost(projectInstallStateResult.state), 'standby', cwd)
+        throw new Error('Standby install is active in this project. Run `hello-scholar cleanup codex --standby` before installing global.')
       }
 
       const savedSelection = saveSelectionState(catalog, {
@@ -253,6 +298,9 @@ Usage:
   hello-scholar list bundles|skills|agents [--standby|--global]
   hello-scholar install codex [--standby|--global]
   hello-scholar cleanup codex [--standby|--global]
+  hello-scholar profile list
+  hello-scholar profile use <profile-id>
+  hello-scholar preferences show
   hello-scholar status [--standby|--global]
   hello-scholar doctor [--standby|--global]
 

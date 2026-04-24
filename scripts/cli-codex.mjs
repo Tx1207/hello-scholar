@@ -39,6 +39,25 @@ const GLOBAL_RUNTIME_ENTRIES = [
   'scripts',
   'templates',
 ]
+const INTERNAL_RUNTIME_SKILL_ENTRIES = [
+  '_meta',
+  'commands',
+  'helloagents',
+  'hello-api',
+  'hello-arch',
+  'hello-data',
+  'hello-debug',
+  'hello-errors',
+  'hello-perf',
+  'hello-reflect',
+  'hello-review',
+  'hello-security',
+  'hello-subagent',
+  'hello-test',
+  'hello-ui',
+  'hello-verify',
+  'hello-write',
+]
 
 export function installCodex(runtime, selection, mode, installState, cwd = process.cwd(), catalog = null) {
   const previous = installState.hosts?.codex || null
@@ -80,8 +99,9 @@ export function uninstallCodex(runtime, installState, cwd = process.cwd()) {
     const removedMarketplaceEntry = removeMarketplaceEntry(paths.marketplacePath)
     const removedGlobalPrompt = pathExists(paths.homeActivePromptPath)
     removePath(paths.homeActivePromptPath)
-    const removedGlobalState = pathExists(paths.globalStateRoot)
-    removePath(paths.globalStateRoot)
+    const removedGlobalState = pathExists(paths.globalInstallStatePath) || pathExists(paths.globalModulesPath)
+    removePath(paths.globalInstallStatePath)
+    removePath(paths.globalModulesPath)
     return {
       scope: 'global',
       removedScopedState: removedGlobalState,
@@ -124,6 +144,8 @@ export function readCodexStatus(runtime, installState, cwd = process.cwd()) {
       installed: !!hostState,
       mode: hostState?.mode || '',
       bundles: hostState?.bundles || [],
+      baseProfile: hostState?.baseProfile || globalModules?.baseProfile || 'ml-development',
+      activeProfile: hostState?.activeProfile || globalModules?.activeProfile || 'ml-development',
       selectedSkills: hostState?.selectedSkills || [],
       selectedAgents: hostState?.selectedAgents || [],
       managedSkills: hostState?.managedSkills || [],
@@ -156,8 +178,10 @@ export function readCodexStatus(runtime, installState, cwd = process.cwd()) {
     attachedProjectDir: hostState?.projectDir || '',
     installed: !!hostState,
     mode: hostState?.mode || '',
-    bundles: hostState?.bundles || [],
-    selectedSkills: hostState?.selectedSkills || [],
+      bundles: hostState?.bundles || [],
+      baseProfile: hostState?.baseProfile || projectModules?.baseProfile || 'ml-development',
+      activeProfile: hostState?.activeProfile || projectModules?.activeProfile || 'ml-development',
+      selectedSkills: hostState?.selectedSkills || [],
     selectedAgents: hostState?.selectedAgents || [],
     managedSkills: hostState?.managedSkills || [],
     managedAgents: hostState?.managedAgents || [],
@@ -241,6 +265,7 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd(), 
     previousIds: previous?.managedSkills || [],
     sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
+  syncInternalRuntimeSkills(runtime.pkgRoot, paths.projectSkillsRoot)
 
   const agentSync = syncModules({
     kind: 'agent',
@@ -253,6 +278,8 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd(), 
   const standbyState = {
     mode: 'standby',
     projectDir: normalizePath(paths.projectDir),
+    baseProfile: selection.baseProfile || 'ml-development',
+    activeProfile: selection.activeProfile || 'ml-development',
     bundles: selection.bundles,
     selectedSkills: selection.skills,
     selectedAgents: selection.agents,
@@ -294,6 +321,7 @@ function installCodexGlobal(runtime, selection, catalog = null) {
     previousIds: [],
     sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
+  syncInternalRuntimeSkills(runtime.pkgRoot, join(paths.pluginRoot, 'skills'))
 
   const agentSync = syncModules({
     kind: 'agent',
@@ -310,6 +338,7 @@ function installCodexGlobal(runtime, selection, catalog = null) {
     previousIds: [],
     sourcePathForId: (moduleId) => resolveSkillSourcePath(catalog, runtime.pkgRoot, moduleId),
   })
+  syncInternalRuntimeSkills(runtime.pkgRoot, join(paths.pluginCacheRoot, 'skills'))
 
   syncModules({
     kind: 'agent',
@@ -343,6 +372,8 @@ function installCodexGlobal(runtime, selection, catalog = null) {
 
   return {
     mode: 'global',
+    baseProfile: selection.baseProfile || 'ml-development',
+    activeProfile: selection.activeProfile || 'ml-development',
     bundles: selection.bundles,
     selectedSkills: selection.skills,
     selectedAgents: selection.agents,
@@ -422,6 +453,10 @@ function syncModules({ kind, sourceRoot, targetRoot, selectedIds, previousIds, s
   }
 
   return { installed, skipped }
+}
+
+function syncInternalRuntimeSkills(pkgRoot, targetRoot) {
+  copyEntries(join(pkgRoot, 'skills'), targetRoot, INTERNAL_RUNTIME_SKILL_ENTRIES)
 }
 
 function buildConfigBlock({ includePluginSection, agentIds, agentRoot }) {
@@ -528,14 +563,37 @@ function assertManagedRootAvailable(rootPath) {
   if (!pathExists(rootPath)) return
   if (pathExists(join(rootPath, MANAGED_FILE))) return
   if (isEmptyDirectory(rootPath)) return
+  if (isPluginRootWithOnlySharedState(rootPath)) return
   throw new Error(`Refusing to overwrite unmanaged path: ${rootPath}`)
 }
 
 function removeManagedRoot(rootPath) {
   if (!pathExists(rootPath)) return false
+  if (isPluginRootWithSharedState(rootPath)) {
+    let removed = false
+    for (const entry of readdirSync(rootPath)) {
+      if (entry === '.hello-scholar') continue
+      removePath(join(rootPath, entry))
+      removed = true
+    }
+    return removed
+  }
   if (!pathExists(join(rootPath, MANAGED_FILE)) && !isEmptyDirectory(rootPath)) return false
   removePath(rootPath)
   return true
+}
+
+function isPluginRootWithOnlySharedState(rootPath) {
+  try {
+    const entries = readdirSync(rootPath).filter((entry) => entry !== '.hello-scholar')
+    return pathExists(join(rootPath, '.hello-scholar')) && entries.length === 0
+  } catch {
+    return false
+  }
+}
+
+function isPluginRootWithSharedState(rootPath) {
+  return pathExists(join(rootPath, '.hello-scholar')) && (pathExists(join(rootPath, MANAGED_FILE)) || isPluginRootWithOnlySharedState(rootPath))
 }
 
 function purgeManagedModules(rootPath) {

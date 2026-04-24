@@ -56,6 +56,68 @@ test('capability registry recommends dynamic skills, agents, and tools from cont
   }
 })
 
+test('capability registry recognizes prd and commit routes', () => {
+  const fixture = createFixture()
+  try {
+    runNode([
+      join(pkgRoot, 'scripts', 'plan-package.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      'plan-prd-route',
+      '--title',
+      'Draft scholar PRD',
+      '--route',
+      '~prd',
+      '--file',
+      'docs/spec.md',
+    ])
+
+    const prdPayload = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'capability-registry.mjs'),
+      'recommend',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      'plan-prd-route',
+    ]))
+
+    const prdIds = prdPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
+    assert(prdIds.includes('skill:planning-with-files'))
+    assert(prdIds.includes('skill:doc-coauthoring'))
+
+    runNode([
+      join(pkgRoot, 'scripts', 'plan-package.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      'plan-commit-route',
+      '--title',
+      'Commit scholar changes',
+      '--route',
+      '~commit',
+      '--file',
+      'README.md',
+    ])
+
+    const commitPayload = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'capability-registry.mjs'),
+      'recommend',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      'plan-commit-route',
+    ]))
+
+    const commitIds = commitPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
+    assert(commitIds.includes('skill:git-commit'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
 test('capability registry recommends an evolved overlay skill for a matching route', () => {
   const fixture = createFixture()
   try {
@@ -68,7 +130,7 @@ test('capability registry recommends an evolved overlay skill for a matching rou
       'meta-builder',
     ], fixture.env, fixture.projectDir)
 
-    const overlaySkillRoot = join(fixture.hostHome, '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
+    const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
     mkdirSync(overlaySkillRoot, { recursive: true })
     writeFileSync(join(overlaySkillRoot, 'SKILL.md'), [
       '---',

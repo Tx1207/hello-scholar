@@ -13,6 +13,8 @@ export function loadSelectionState(catalog, installState, userConfig, runtime, o
   if (modules) {
     const mode = modules.mode || previous?.mode || userConfig.install_mode
     const includeBase = modules.includeBase !== false && userConfig.auto_base !== false
+    const baseProfile = modules.baseProfile || 'ml-development'
+    const activeProfile = modules.activeProfile || baseProfile
     const bundles = uniqueList(modules.bundles || [])
     const explicit = inferExplicitSelection(catalog, {
       bundles,
@@ -25,6 +27,8 @@ export function loadSelectionState(catalog, installState, userConfig, runtime, o
     return finalizeSelection(catalog, {
       mode,
       includeBase,
+      baseProfile,
+      activeProfile,
       bundles,
       explicitSkills: explicit.skills,
       explicitAgents: explicit.agents,
@@ -34,6 +38,8 @@ export function loadSelectionState(catalog, installState, userConfig, runtime, o
 
   if (previous) {
     const includeBase = userConfig.auto_base !== false
+    const baseProfile = previous.baseProfile || 'ml-development'
+    const activeProfile = previous.activeProfile || baseProfile
     const bundles = uniqueList(previous.bundles || [])
     const explicit = inferExplicitSelection(catalog, {
       bundles,
@@ -44,6 +50,8 @@ export function loadSelectionState(catalog, installState, userConfig, runtime, o
     return finalizeSelection(catalog, {
       mode: previous.mode || userConfig.install_mode,
       includeBase,
+      baseProfile,
+      activeProfile,
       bundles,
       explicitSkills: explicit.skills,
       explicitAgents: explicit.agents,
@@ -54,6 +62,8 @@ export function loadSelectionState(catalog, installState, userConfig, runtime, o
   return finalizeSelection(catalog, {
     mode: scope === 'project' ? 'standby' : 'global',
     includeBase: userConfig.auto_base !== false,
+    baseProfile: 'ml-development',
+    activeProfile: 'ml-development',
     bundles: [],
     explicitSkills: [],
     explicitAgents: [],
@@ -77,6 +87,9 @@ export function saveSelectionState(catalog, nextState, runtime, options = {}) {
     runtime: 'hello-scholar',
     mode: finalized.mode,
     includeBase: finalized.includeBase,
+    baseProfile: finalized.baseProfile,
+    activeProfile: finalized.activeProfile,
+    profileBundles: finalized.profileBundles,
     bundles: finalized.bundles,
     explicitSkills: finalized.explicitSkills,
     explicitAgents: finalized.explicitAgents,
@@ -90,6 +103,8 @@ export function saveSelectionState(catalog, nextState, runtime, options = {}) {
 function finalizeSelection(catalog, state) {
   const storageScope = state.storageScope || 'project'
   const includeBase = state.includeBase !== false
+  const baseProfile = state.baseProfile || 'ml-development'
+  const activeProfile = state.activeProfile || baseProfile
   const bundles = uniqueList(state.bundles || [])
   const explicitSkills = uniqueList(state.explicitSkills || [])
   const explicitAgents = uniqueList(state.explicitAgents || [])
@@ -98,11 +113,16 @@ function finalizeSelection(catalog, state) {
     skills: explicitSkills,
     agents: explicitAgents,
     includeBase,
+    baseProfile,
+    activeProfile,
   })
   return {
     mode: storageScope === 'global' ? 'global' : 'standby',
     includeBase,
+    baseProfile: resolved.baseProfile,
+    activeProfile: resolved.activeProfile,
     bundles,
+    profileBundles: resolved.bundles.filter((bundleId) => !bundles.includes(bundleId)),
     explicitSkills,
     explicitAgents,
     skills: resolved.skills,

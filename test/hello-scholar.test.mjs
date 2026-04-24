@@ -33,6 +33,9 @@ test('catalog resolution keeps base separate and expands hard dependencies', () 
   assert(metaBuilder)
   assert(metaBuilder.skills.includes('plugin-structure'))
   assert(metaBuilder.skills.includes('skill-quality-reviewer'))
+  assert.equal(catalog.skillMap.has('hello-verify'), false)
+  assert.equal(catalog.skillMap.has('helloagents'), false)
+  assert.equal(catalog.skillMap.has('commands'), false)
   assert.deepEqual(metaBuilder.dependsOnBase.sort(), [
     'codex-hook-emulation',
     'git-workflow',
@@ -129,6 +132,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assert(installText.includes('- Mode: standby'))
     assert(installText.includes('research-core, writing-core'))
     assertPathExists(join(projectScholarRoot, 'skills', 'ml-paper-writing'))
+    assertPathExists(join(projectScholarRoot, 'skills', 'commands', 'plan', 'SKILL.md'))
+    assertPathExists(join(projectScholarRoot, 'skills', 'hello-verify', 'SKILL.md'))
     assertPathExists(join(projectScholarRoot, 'agents', 'paper-miner'))
     assertPathExists(join(projectScholarRoot, 'active-prompt.md'))
     assertPathExists(join(projectScholarRoot, 'install-state.json'))
@@ -160,10 +165,10 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     const projectAgentsText = readFileSync(join(fixture.projectDir, 'AGENTS.md'), 'utf-8')
     assert(projectAgentsText.includes('# Existing Project Rules'))
     assert(projectAgentsText.includes('<!-- HELLO_SCHOLAR START -->'))
-    assert(projectAgentsText.includes('# hello-scholar 配置'))
-    assert(projectAgentsText.includes('## Session Start Protocol'))
-    assert(projectAgentsText.includes('### 当前激活覆盖'))
-    assert(projectAgentsText.includes('**research-ideation**: 研究构思启动 （当前：已激活）'))
+    assert(projectAgentsText.includes('# hello-scholar'))
+    assert(projectAgentsText.includes('## 统一执行流程'))
+    assert(projectAgentsText.includes('## 当前激活 Profile'))
+    assert(projectAgentsText.includes('research-ideation'))
 
     const doctorText = runCli(fixture, ['doctor'])
     assert(!doctorText.includes('[FAIL]'), doctorText)
@@ -192,7 +197,7 @@ test('standby install writes text output, project prompt, and cleanup removes pr
   }
 })
 
-test('global install writes home prompt and keeps project AGENTS clean', () => {
+test('global install is blocked until current project standby is manually cleaned', () => {
   const fixture = createFixture()
   try {
     const projectScholarRoot = join(fixture.projectDir, '.hello-scholar')
@@ -201,7 +206,8 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
     runCli(fixture, ['install', 'codex', '--standby', '--bundle', 'research-core'])
     assertPathExists(join(projectScholarRoot, 'skills', 'research-ideation'))
 
-    const installText = runCli(fixture, [
+    const blocked = spawnSync(process.execPath, [
+      join(pkgRoot, 'cli.mjs'),
       'install',
       'codex',
       '--global',
@@ -209,7 +215,14 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
       'obsidian-core',
       '--bundle',
       'meta-builder',
-    ])
+    ], { cwd: fixture.projectDir, env: fixture.env, encoding: 'utf-8' })
+
+    assert.equal(blocked.status, 1)
+    assert(blocked.stderr.includes('Standby install is active'))
+    assertPathExists(join(projectScholarRoot, 'install-state.json'))
+
+    runCli(fixture, ['cleanup', 'codex', '--standby'])
+    const installText = runCli(fixture, ['install', 'codex', '--global', '--bundle', 'obsidian-core', '--bundle', 'meta-builder'])
 
     assert(installText.includes('hello-scholar Install'))
     assert(installText.includes('- Mode: global'))
@@ -217,6 +230,8 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
     assertPathMissing(join(projectScholarRoot, 'modules.json'))
     assertPathMissing(join(projectScholarRoot, 'skills', 'research-ideation'))
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'obsidian-project-memory'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'commands', 'verify', 'SKILL.md'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'hello-review', 'SKILL.md'))
     assertPathExists(join(
       fixture.codexHome,
       'plugins',
@@ -245,10 +260,9 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
 
     const homeAgentsText = readFileSync(join(fixture.codexHome, 'AGENTS.md'), 'utf-8')
     assert(homeAgentsText.includes('<!-- HELLO_SCHOLAR START -->'))
-    assert(homeAgentsText.includes('# hello-scholar 配置'))
-    assert(homeAgentsText.includes('## Session Start Protocol'))
-    assert(homeAgentsText.includes('**skill-development / skill-improver / skill-quality-reviewer**: Skill 开发三件套 （当前：已激活）'))
-    assert(homeAgentsText.includes('~/.codex/plugins/cache/local-plugins/hello-scholar/local/'))
+    assert(homeAgentsText.includes('# hello-scholar'))
+    assert(homeAgentsText.includes('## 统一执行流程'))
+    assert(homeAgentsText.includes('meta-builder'))
     assert(!homeAgentsText.includes('Skills：项目 `skills/` 目录，在 config.toml 中注册'))
 
     const projectAgentsText = readFileSync(join(fixture.projectDir, 'AGENTS.md'), 'utf-8')
@@ -267,7 +281,8 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
     const cleanupText = runCli(fixture, ['cleanup', 'codex', '--global'])
     assert(cleanupText.includes('- Scope: global'))
     assert(cleanupText.includes('- Removed ~/.codex/.hello-scholar: yes'))
-    assertPathMissing(join(fixture.hostHome, 'plugins', 'hello-scholar'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar'))
+    assertPathMissing(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills'))
     assertPathMissing(join(fixture.codexHome, 'AGENTS.md'))
     assertPathMissing(join(fixture.codexHome, 'config.toml'))
     assertPathMissing(join(fixture.codexHome, 'hello-scholar-active-prompt.md'))
@@ -277,7 +292,7 @@ test('global install writes home prompt and keeps project AGENTS clean', () => {
   }
 })
 
-test('installing standby in a project removes active global state', () => {
+test('installing standby in a project is blocked while global is active', () => {
   const fixture = createFixture()
   try {
     writeProjectAgentsFixture(fixture)
@@ -286,14 +301,17 @@ test('installing standby in a project removes active global state', () => {
     assertPathExists(join(fixture.globalScholarRoot, 'install-state.json'))
     assertPathExists(join(fixture.codexHome, 'AGENTS.md'))
 
-    const installText = runCli(fixture, ['install', 'codex', '--standby', '--bundle', 'writing-core'])
-    assert(installText.includes('- Mode: standby'))
+    const blocked = spawnSync(process.execPath, [join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby', '--bundle', 'writing-core'], {
+      cwd: fixture.projectDir,
+      env: fixture.env,
+      encoding: 'utf-8',
+    })
+    assert.equal(blocked.status, 1)
+    assert(blocked.stderr.includes('Global install is active'))
 
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
-    assertPathMissing(join(fixture.globalScholarRoot, 'install-state.json'))
-    assertPathMissing(join(fixture.codexHome, 'AGENTS.md'))
-    assertPathMissing(join(fixture.codexHome, 'config.toml'))
-    assertPathMissing(join(fixture.codexHome, 'hello-scholar-active-prompt.md'))
+    assertPathMissing(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
+    assertPathExists(join(fixture.globalScholarRoot, 'install-state.json'))
+    assertPathExists(join(fixture.codexHome, 'AGENTS.md'))
   } finally {
     destroyFixture(fixture)
   }
@@ -372,7 +390,7 @@ test('list selection follows global scope when global is the active install', ()
     assert.deepEqual(globalModules.bundles, ['meta-builder'])
     assert.deepEqual(projectModules.bundles, ['writing-core'])
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'plugin-structure'))
-    assertPathMissing(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
   } finally {
     destroyFixture(fixture)
   }
@@ -424,7 +442,7 @@ test('list selection follows standby scope when current project standby is activ
     assert.deepEqual(projectModules.bundles, ['writing-core'])
     assert.deepEqual(globalModules.bundles, ['meta-builder'])
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'ml-paper-writing'))
-    assertPathMissing(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
   } finally {
     destroyFixture(fixture)
   }
@@ -483,7 +501,7 @@ function createFixture() {
   const root = mkdtempSync(join(tmpdir(), 'hello-scholar-'))
   const hostHome = join(root, 'home')
   const codexHome = join(hostHome, '.codex')
-  const globalScholarRoot = join(codexHome, '.hello-scholar')
+  const globalScholarRoot = join(hostHome, 'plugins', 'hello-scholar', '.hello-scholar')
   const projectDir = join(root, 'project')
   mkdirSync(projectDir, { recursive: true })
   return {

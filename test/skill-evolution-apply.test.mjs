@@ -76,7 +76,7 @@ test('apply command updates an existing repo skill into overlay storage', () => 
     assert.equal(output.candidate.status, 'applied')
     assert.equal(output.candidate.targetSkillId, 'bug-detective')
 
-    const overlaySkillRoot = join(fixture.hostHome, '.hello-scholar', 'overlays', 'skills', 'bug-detective')
+    const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'bug-detective')
     const overlaySkillText = readFileSync(join(overlaySkillRoot, 'SKILL.md'), 'utf-8')
     const overlayReferenceText = readFileSync(join(overlaySkillRoot, 'references', 'local-evolution.md'), 'utf-8')
     assert(overlaySkillText.includes('## Local Evolution'))
@@ -125,7 +125,7 @@ test('apply command creates a new overlay skill for create candidates', () => {
     ])
 
     assert.equal(output.ok, true)
-    const overlaySkillRoot = join(fixture.hostHome, '.hello-scholar', 'overlays', 'skills', 'local-overlay-skill')
+    const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'local-overlay-skill')
     const skillText = readFileSync(join(overlaySkillRoot, 'SKILL.md'), 'utf-8')
     assert(skillText.includes('name: local-overlay-skill'))
     assert(skillText.includes('references/local-evolution.md'))

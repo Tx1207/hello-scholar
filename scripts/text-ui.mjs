@@ -67,6 +67,19 @@ export function buildSelectionModel(kind, catalog, state) {
     }
   }
 
+  if (kind === 'profiles') {
+    return {
+      title: 'hello-scholar Profiles',
+      items: catalog.profiles.map((profile) => ({
+        id: profile.id,
+        description: `${profile.displayName} - ${profile.description}`,
+        marker: state.activeProfile === profile.id ? '[x]' : '[ ]',
+        locked: false,
+        note: profile.base ? ' (base)' : '',
+      })),
+    }
+  }
+
   throw new Error(`Unsupported list kind: ${kind}`)
 }
 
@@ -166,6 +179,20 @@ export function applySelectionOperation(kind, catalog, state, focusIndex) {
     }
 
     const currentIds = new Set(getMutableCurrentIds(kind, state))
+    if (kind === 'profiles') {
+      return {
+        changed: state.activeProfile !== entry.id,
+        cancelled: false,
+        confirmed: false,
+        nextState: {
+          ...state,
+          baseProfile: state.baseProfile || 'ml-development',
+          activeProfile: entry.id,
+        },
+        message: `${entry.id} 已设为当前 profile`,
+      }
+    }
+
     if (currentIds.has(entry.id)) currentIds.delete(entry.id)
     else currentIds.add(entry.id)
 
@@ -202,6 +229,7 @@ export function formatInstallSummary(hostState, selection, mode, cwd = process.c
     'hello-scholar Install',
     '',
     `- Mode: ${mode}`,
+    `- Profile: ${selection.activeProfile || 'ml-development'}`,
     `- Bundles: ${formatInlineList(selection.bundles)}`,
     `- Skills: ${selection.skills.length}`,
     `- Agents: ${selection.agents.length}`,
@@ -222,6 +250,7 @@ export function formatStatus(status) {
       '- Scope: global',
       `- Installed: ${status.installed ? 'yes' : 'no'}`,
       `- Mode: ${status.mode || '(none)'}`,
+      `- Profile: ${status.activeProfile || 'ml-development'}`,
       `- Bundles: ${formatInlineList(status.bundles)}`,
       `- Skills: ${status.selectedSkills.length}`,
       `- Agents: ${status.selectedAgents.length}`,
@@ -239,6 +268,7 @@ export function formatStatus(status) {
     '- Scope: standby',
     `- Installed: ${status.installed ? 'yes' : 'no'}`,
     `- Mode: ${status.mode || '(none)'}`,
+    `- Profile: ${status.activeProfile || 'ml-development'}`,
     `- Bundles: ${formatInlineList(status.bundles)}`,
     `- Skills: ${status.selectedSkills.length}`,
     `- Agents: ${status.selectedAgents.length}`,
@@ -420,6 +450,7 @@ function getMutableCurrentIds(kind, state) {
   if (kind === 'bundles') return state.bundles
   if (kind === 'skills') return state.explicitSkills
   if (kind === 'agents') return state.explicitAgents
+  if (kind === 'profiles') return [state.activeProfile || 'ml-development']
   return []
 }
 

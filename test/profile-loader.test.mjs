@@ -1,0 +1,157 @@
+import assert from 'node:assert/strict'
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { afterEach, test } from 'node:test'
+
+import { loadCatalog, resolveProfileSelection, resolveSelection } from '../scripts/catalog-loader.mjs'
+import { loadSelectionState, saveSelectionState } from '../scripts/selection-state.mjs'
+import { applySelectionOperation } from '../scripts/text-ui.mjs'
+
+const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
+const tempRoots = []
+
+afterEach(() => {
+  for (const root of tempRoots.splice(0)) {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test('profile catalog exposes the six lifecycle profiles with ml-development as base', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const expectedProfiles = [
+    'research-ideation',
+    'ml-development',
+    'paper-writing',
+    'paper-self-review',
+    'submission-rebuttal',
+    'post-acceptance',
+  ]
+
+  assert.deepEqual(catalog.profiles.map((profile) => profile.id), expectedProfiles)
+  assert.equal(catalog.profiles.filter((profile) => profile.base === true).length, 1)
+  assert.equal(catalog.profileMap.get('ml-development')?.base, true)
+
+  for (const profile of catalog.profiles) {
+    assert(profile.displayName)
+    assert(profile.stage)
+    assert(profile.description)
+    assert((profile.bundles || []).length > 0)
+    assert((profile.skills || []).length > 0)
+  }
+})
+
+test('ml-development resolves as the default base profile only', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const profileSelection = resolveProfileSelection(catalog, {
+    baseProfile: 'ml-development',
+    activeProfile: 'ml-development',
+  })
+  const selection = resolveSelection(catalog, {
+    baseProfile: 'ml-development',
+    activeProfile: 'ml-development',
+  })
+
+  assert.deepEqual(profileSelection.profiles, ['ml-development'])
+  assert.deepEqual(profileSelection.bundles, ['dev-core', 'research-core'])
+  assert.equal(selection.baseProfile, 'ml-development')
+  assert.equal(selection.activeProfile, 'ml-development')
+  assert(selection.skills.includes('daily-coding'))
+  assert(selection.skills.includes('results-analysis'))
+  assert(selection.agents.includes('code-reviewer'))
+})
+
+test('paper-writing resolves as ml-development base plus paper-writing stage', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const profileSelection = resolveProfileSelection(catalog, {
+    baseProfile: 'ml-development',
+    activeProfile: 'paper-writing',
+  })
+  const selection = resolveSelection(catalog, {
+    baseProfile: 'ml-development',
+    activeProfile: 'paper-writing',
+  })
+
+  assert.deepEqual(profileSelection.profiles, ['ml-development', 'paper-writing'])
+  assert.deepEqual(profileSelection.bundles, ['dev-core', 'research-core', 'writing-core'])
+  assert.equal(selection.baseProfile, 'ml-development')
+  assert.equal(selection.activeProfile, 'paper-writing')
+  assert(selection.skills.includes('daily-coding'))
+  assert(selection.skills.includes('ml-paper-writing'))
+  assert(selection.skills.includes('results-report'))
+  assert(selection.agents.includes('code-reviewer'))
+  assert(selection.agents.includes('paper-miner'))
+})
+
+test('unknown profile fails profile resolution', () => {
+  const catalog = loadCatalog(pkgRoot)
+
+  assert.throws(
+    () => resolveProfileSelection(catalog, { activeProfile: 'not-a-profile' }),
+    /Unknown profile: not-a-profile/,
+  )
+})
+
+test('selection state persists and reloads baseProfile and activeProfile from modules.json', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const root = createTempRoot()
+  const cwd = join(root, 'project')
+  const runtime = createRuntime(root)
+
+  const saved = saveSelectionState(catalog, {
+    includeBase: true,
+    activeProfile: 'paper-writing',
+    bundles: [],
+    explicitSkills: [],
+    explicitAgents: [],
+  }, runtime, { cwd, scope: 'project' })
+  const modules = JSON.parse(readFileSync(join(cwd, '.hello-scholar', 'modules.json'), 'utf-8'))
+  const loaded = loadSelectionState(catalog, { hosts: {} }, { auto_base: true, install_mode: 'standby' }, runtime, {
+    cwd,
+    scope: 'project',
+  })
+
+  assert.equal(saved.baseProfile, 'ml-development')
+  assert.equal(saved.activeProfile, 'paper-writing')
+  assert.equal(modules.baseProfile, 'ml-development')
+  assert.equal(modules.activeProfile, 'paper-writing')
+  assert.deepEqual(modules.profileBundles, ['dev-core', 'research-core', 'writing-core'])
+  assert(loaded.skills.includes('daily-coding'))
+  assert(loaded.skills.includes('ml-paper-writing'))
+  assert(loaded.agents.includes('code-reviewer'))
+  assert(loaded.agents.includes('paper-miner'))
+})
+
+test('profile selection operation updates activeProfile without changing baseProfile', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const currentState = {
+    includeBase: true,
+    baseProfile: 'ml-development',
+    activeProfile: 'ml-development',
+    bundles: [],
+    explicitSkills: [],
+    explicitAgents: [],
+    skills: [],
+    agents: [],
+  }
+  const paperWritingIndex = catalog.profiles.findIndex((profile) => profile.id === 'paper-writing')
+  const result = applySelectionOperation('profiles', catalog, currentState, paperWritingIndex)
+
+  assert.equal(result.changed, true)
+  assert.equal(result.nextState.baseProfile, 'ml-development')
+  assert.equal(result.nextState.activeProfile, 'paper-writing')
+})
+
+function createTempRoot() {
+  const root = mkdtempSync(join(tmpdir(), 'hello-scholar-profile-'))
+  tempRoots.push(root)
+  return root
+}
+
+function createRuntime(root) {
+  return {
+    scholarHome: join(root, 'global', '.hello-scholar'),
+    installStatePath: join(root, 'global', '.hello-scholar', 'install-state.json'),
+  }
+}

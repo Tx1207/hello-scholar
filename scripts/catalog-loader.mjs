@@ -7,9 +7,10 @@ import { readJson, readText } from './cli-utils.mjs'
 export function loadCatalog(pkgRoot, options = {}) {
   const base = readJson(join(pkgRoot, 'catalog', 'base.json'), null)
   const bundles = readJson(join(pkgRoot, 'catalog', 'bundles.json'), null)
+  const profiles = readJson(join(pkgRoot, 'catalog', 'profiles.json'), null)
   const skills = readJson(join(pkgRoot, 'catalog', 'skills.json'), null)
   const agents = readJson(join(pkgRoot, 'catalog', 'agents.json'), null)
-  if (!base || !bundles || !skills || !agents) {
+  if (!base || !bundles || !profiles || !skills || !agents) {
     throw new Error('Catalog files are missing. Run `node scripts/build-catalog.mjs` first.')
   }
   const resolvedSkills = options.dynamic === true
@@ -19,9 +20,11 @@ export function loadCatalog(pkgRoot, options = {}) {
   return {
     base,
     bundles,
+    profiles,
     skills: resolvedSkills,
     agents,
     bundleMap: new Map(bundles.map((entry) => [entry.id, entry])),
+    profileMap: new Map(profiles.map((entry) => [entry.id, entry])),
     skillMap: new Map(resolvedSkills.map((entry) => [entry.id, entry])),
     agentMap: new Map(agents.map((entry) => [entry.id, entry])),
   }
@@ -29,9 +32,10 @@ export function loadCatalog(pkgRoot, options = {}) {
 
 export function resolveSelection(catalog, options = {}) {
   const includeBase = options.includeBase !== false
-  const bundleIds = uniqueList(options.bundles || [])
-  const explicitSkillIds = uniqueList(options.skills || [])
-  const explicitAgentIds = uniqueList(options.agents || [])
+  const profileSelection = resolveProfileSelection(catalog, options)
+  const bundleIds = uniqueList([...(options.bundles || []), ...profileSelection.bundles])
+  const explicitSkillIds = uniqueList([...(options.skills || []), ...profileSelection.skills])
+  const explicitAgentIds = uniqueList([...(options.agents || []), ...profileSelection.agents])
 
   for (const bundleId of bundleIds) {
     if (!catalog.bundleMap.has(bundleId)) {
@@ -75,9 +79,37 @@ export function resolveSelection(catalog, options = {}) {
 
   return {
     includeBase,
+    baseProfile: profileSelection.baseProfile,
+    activeProfile: profileSelection.activeProfile,
     bundles: bundleIds,
     skills: [...selectedSkillIds].sort(),
     agents: [...selectedAgentIds].sort(),
+  }
+}
+
+export function resolveProfileSelection(catalog, options = {}) {
+  const baseProfile = options.baseProfile || 'ml-development'
+  const activeProfile = options.activeProfile || baseProfile
+  const selectedProfileIds = uniqueList([baseProfile, activeProfile])
+  const bundles = []
+  const skills = []
+  const agents = []
+
+  for (const profileId of selectedProfileIds) {
+    const profile = catalog.profileMap?.get(profileId)
+    if (!profile) throw new Error(`Unknown profile: ${profileId}`)
+    bundles.push(...(profile.bundles || []))
+    skills.push(...(profile.skills || []))
+    agents.push(...(profile.agents || []))
+  }
+
+  return {
+    baseProfile,
+    activeProfile,
+    profiles: selectedProfileIds,
+    bundles: uniqueList(bundles),
+    skills: uniqueList(skills),
+    agents: uniqueList(agents),
   }
 }
 
@@ -97,6 +129,19 @@ export function listCatalogItems(catalog, kind, options = {}) {
       skills: bundle.skills.length,
       agents: bundle.agents.length,
       dependsOnBase: bundle.dependsOnBase,
+    }))
+  }
+
+  if (kind === 'profiles') {
+    return catalog.profiles.map((profile) => ({
+      id: profile.id,
+      displayName: profile.displayName,
+      stage: profile.stage,
+      base: profile.base === true,
+      description: profile.description,
+      bundles: profile.bundles?.length || 0,
+      skills: profile.skills?.length || 0,
+      agents: profile.agents?.length || 0,
     }))
   }
 

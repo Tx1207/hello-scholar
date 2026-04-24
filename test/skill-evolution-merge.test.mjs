@@ -19,7 +19,7 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
     process.env.HELLO_SCHOLAR_HOST_HOME = fixture.hostHome
     process.env.CODEX_HOME = fixture.codexHome
     installStandby(fixture, ['meta-builder'])
-    const overlaySkillRoot = join(fixture.hostHome, '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
+    const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
     mkdirSync(join(overlaySkillRoot, 'references'), { recursive: true })
     writeFileSync(join(overlaySkillRoot, 'SKILL.md'), [
       '---',

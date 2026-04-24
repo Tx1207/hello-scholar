@@ -11,8 +11,8 @@ export const DEFAULTS = {
 
 export function getRuntimeContext(pkgRoot) {
   const codexHome = process.env.CODEX_HOME || join(homedir(), '.codex')
-  const scholarHome = process.env.HELLO_SCHOLAR_HOME || join(codexHome, '.hello-scholar')
   const hostHome = process.env.HELLO_SCHOLAR_HOST_HOME || dirname(codexHome)
+  const scholarHome = process.env.HELLO_SCHOLAR_HOME || join(hostHome, 'plugins', 'hello-scholar', '.hello-scholar')
   return {
     pkgRoot: resolve(pkgRoot),
     scholarHome: resolve(scholarHome),
@@ -23,7 +23,7 @@ export function getRuntimeContext(pkgRoot) {
 }
 
 export function getOverlayPaths(runtime) {
-  const overlayHome = process.env.HELLO_SCHOLAR_OVERLAY_HOME || join(runtime.hostHome, '.hello-scholar')
+  const overlayHome = process.env.HELLO_SCHOLAR_OVERLAY_HOME || runtime.scholarHome
   const overlayRoot = resolve(overlayHome)
   return {
     overlayHome: overlayRoot,

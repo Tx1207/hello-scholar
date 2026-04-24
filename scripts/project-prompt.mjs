@@ -83,24 +83,25 @@ export function renderManagedBootstrapPrompt({ runtime, catalog = null, selectio
     throw new Error(`Prompt source is missing: ${join(runtime.pkgRoot, SOURCE_PROMPT_FILE)}`)
   }
 
-  const workflowSection = extractTopLevelSection(template, '## 核心工作流')
-  const skillSection = extractTopLevelSection(template, '## 技能目录（55 skills）')
+  const workflowSection = extractTopLevelSection(template, '## 统一执行流程')
+  const skillSection = extractTopLevelSection(template, '## 技能分层')
 
   let prompt = template
-    .replace(/^# hello-scholar 配置/m, '# hello-scholar 配置')
+    .replace(/^# hello-scholar 配置/m, '# hello-scholar')
     .replace(/\*\*hello-scholar\*\*/g, '**hello-scholar**')
 
   prompt = replaceListBlock(prompt, '**配置路径**:', buildOverviewPathLines(mode))
   prompt = replaceTopLevelSection(
     prompt,
-    '## 核心工作流',
+    '## 统一执行流程',
     renderWorkflowSection(workflowSection, selection, mode),
   )
   prompt = replaceTopLevelSection(
     prompt,
-    '## 技能目录（55 skills）',
+    '## 技能分层',
     renderSkillCatalogSection(skillSection, selection, mode, catalog),
   )
+  prompt = insertCurrentProfileSection(prompt, selection, mode)
   if (mode === 'global') {
     prompt = replaceListBlock(prompt, '### 配置文件路径', buildGlobalCliPathLines())
   }
@@ -127,11 +128,14 @@ export function writeProjectActivationPrompt({ runtime, catalog = null, selectio
 function renderWorkflowSection(sourceSection, selection, mode) {
   const body = stripTopLevelHeading(sourceSection)
   const lines = [
-    '## 核心工作流',
+    '## 统一执行流程',
     '',
-    '### 当前激活覆盖',
+    '### 当前激活 Profile',
     `- 当前模式：\`${mode}\``,
+    `- Base profile：\`${selection.baseProfile || 'ml-development'}\``,
+    `- Active profile：\`${selection.activeProfile || 'ml-development'}\``,
     '- 当前项目激活文件：项目根 `.hello-scholar/modules.json`',
+    `- Profile bundles：${formatCodeList(selection.profileBundles || [])}`,
     `- 当前 bundles：${formatCodeList(selection.bundles)}`,
     `- 当前 skills：${selection.skills.length}`,
     `- 当前 agents：${selection.agents.length}`,
@@ -153,10 +157,12 @@ function renderSkillCatalogSection(sourceSection, selection, mode, catalog) {
   const body = stripTopLevelHeading(sourceSection)
   const dynamicSkillSection = renderDynamicSkillSection(selection, catalog)
   const lines = [
-    '## 技能目录（55 skills）',
+    '## 技能分层',
     '',
-    '### 当前激活覆盖',
+    '### 当前激活 Skills / Agents',
     `- 当前模式：\`${mode}\``,
+    `- Base profile：\`${selection.baseProfile || 'ml-development'}\``,
+    `- Active profile：\`${selection.activeProfile || 'ml-development'}\``,
     `- 当前 bundles：${formatCodeList(selection.bundles)}`,
     `- 当前 skills：${selection.skills.length}`,
     `- 当前 agents：${selection.agents.length}`,
@@ -168,6 +174,24 @@ function renderSkillCatalogSection(sourceSection, selection, mode, catalog) {
   ]
 
   return lines.filter(Boolean).join('\n').trimEnd()
+}
+
+function insertCurrentProfileSection(prompt, selection, mode) {
+  if (prompt.includes('## 当前激活 Profile')) return prompt
+  const section = [
+    '## 当前激活 Profile',
+    '',
+    `- Mode: \`${mode}\``,
+    `- Base profile: \`${selection.baseProfile || 'ml-development'}\``,
+    `- Active profile: \`${selection.activeProfile || 'ml-development'}\``,
+    `- Profile bundles: ${formatCodeList(selection.profileBundles || [])}`,
+    `- Explicit bundles: ${formatCodeList(selection.bundles)}`,
+    `- Skills: ${selection.skills.length}`,
+    `- Agents: ${selection.agents.length}`,
+  ].join('\n')
+  const firstSection = /\n## /m.exec(prompt)
+  if (!firstSection) return `${prompt.trimEnd()}\n\n${section}`
+  return `${prompt.slice(0, firstSection.index).trimEnd()}\n\n${section}\n\n${prompt.slice(firstSection.index + 1).trimStart()}`
 }
 
 function annotateSkillCatalog(sectionBody, selection) {
@@ -284,7 +308,7 @@ function extractTopLevelSection(text, heading) {
 
 function replaceTopLevelSection(text, heading, replacement) {
   const bounds = findTopLevelSectionBounds(text, heading)
-  if (!bounds) return text
+  if (!bounds) return `${text.trimEnd()}\n\n${replacement.trimEnd()}`
 
   const before = text.slice(0, bounds.start).trimEnd()
   const after = text.slice(bounds.end).trimStart()
