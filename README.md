@@ -201,7 +201,7 @@ hello-scholar status [--standby|--global]
 
 ## Agent 内部命令
 
-在 Codex 会话中，`hello-scholar` 只保留六个高频命令 skill：
+在 Codex 会话中，`hello-scholar` 只保留七个高频命令 skill：
 
 ```text
 ~idea     研究构思、比较方案、提出假设
@@ -210,6 +210,7 @@ hello-scholar status [--standby|--global]
 ~verify   跑测试、审查 diff、整理 evidence、检查交付门槛
 ~analyze  分析实验结果、baseline 对比、failure case 和下一轮实验
 ~evolve   生成 skill / preference candidate
+~apply-candidate  审核并同步已有 skill / preference candidate
 ```
 
 这些不是 npm 子命令，而是 agent 在会话中使用的任务路由。
