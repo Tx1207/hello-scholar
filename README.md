@@ -296,6 +296,18 @@ npm run build:catalog
 npm test
 ```
 
+## 参考项目
+
+`hello-scholar` 的设计参考了以下项目，并在其基础上聚焦 Codex runtime 下的科研代码、实验记录和 skill / preference evolution 工作流。
+
+1. [HelloAGENTS](https://github.com/hellowind777/helloagents)
+   - 面向 AI coding CLIs 的 workflow layer，强调 skills、project knowledge、delivery checks、安全配置写入和可恢复执行。
+   - `hello-scholar` 借鉴了其命令路由、最终收尾格式、交付检查和持续执行理念。
+
+2. [Claude Scholar](https://github.com/Galaxy-Dawn/claude-scholar)
+   - 面向学术研究与软件开发的半自动研究助手，覆盖文献、编码、实验、报告、写作和项目知识管理。
+   - `hello-scholar` 借鉴了其科研生命周期划分、以研究者决策为中心的边界，以及实验/写作/发表阶段的 workflow 组织方式。
+
 ## License
 
 MIT
