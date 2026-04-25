@@ -194,6 +194,7 @@ function stripCandidateRuntimeFields(candidate) {
     approval: candidate.approval,
     apply: candidate.apply,
     merge: candidate.merge,
+    reset: candidate.reset,
     state: candidate.state,
     extractedWorkflow: candidate.extractedWorkflow,
     createdAt: candidate.createdAt,

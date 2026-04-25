@@ -242,6 +242,50 @@ test('apply command records transition state trail', () => {
   }
 })
 
+test('reset command returns a candidate to previewable state', () => {
+  const fixture = createFixture()
+  try {
+    writeCandidateFixture(fixture, {
+      id: 'skill-evo-20260416-001',
+      status: 'proposed',
+      decision: {
+        action: 'create',
+        targetSkillId: 'resettable-overlay-skill',
+        confidence: 0.77,
+        reason: ['Reset should clear runtime fields.'],
+      },
+    })
+    previewApproveApply(fixture, 'skill-evo-20260416-001')
+
+    const output = runJson(fixture, [
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+      'reset',
+      '--cwd',
+      fixture.projectDir,
+      '--candidate-id',
+      'skill-evo-20260416-001',
+      '--user-request',
+      'User wants to retry the skill evolution flow.',
+      '--json',
+    ])
+
+    assert.equal(output.ok, true)
+    assert.equal(output.workflow.current, 'candidate')
+
+    const candidatePath = join(fixture.projectDir, 'hello-scholar', 'evolution', 'candidates', 'skill-evo-20260416-001', 'candidate.json')
+    const candidate = JSON.parse(readFileSync(candidatePath, 'utf-8'))
+    assert.equal(candidate.status, 'proposed')
+    assert.equal(candidate.preview, undefined)
+    assert.equal(candidate.approval, undefined)
+    assert.equal(candidate.apply, undefined)
+    assert.equal(candidate.reset.status, 'reset')
+    assert.equal(candidate.state.current, 'candidate')
+    assert.equal(candidate.state.transitions.at(-1).name, 'reset_candidate')
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
 test('apply command activates the evolved overlay skill for the next standby turn', () => {
   const fixture = createFixture()
   try {

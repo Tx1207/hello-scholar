@@ -50,6 +50,11 @@ export const SKILL_EVOLUTION_TRANSITIONS = {
     to: 'rejected',
     actor: 'user',
   },
+  reset_candidate: {
+    from: ['candidate', 'previewed', 'approval_pending', 'approved', 'applied_overlay', 'tested', 'merge_ready', 'needs_repair'],
+    to: 'candidate',
+    actor: 'user',
+  },
 }
 
 export function detectCandidateConsistencyIssues(candidate) {

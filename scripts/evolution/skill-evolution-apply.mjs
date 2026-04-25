@@ -38,6 +38,7 @@ function runCommand(command, cwd, args) {
   if (command === 'preview') return previewSkillEvolution(cwd, args)
   if (command === 'approve') return approveSkillEvolution(cwd, args)
   if (command === 'apply') return applySkillEvolution(cwd, args)
+  if (command === 'reset') return resetSkillEvolutionCandidate(cwd, args)
   if (command === 'status') return readSkillEvolutionApplyStatus(cwd, args)
   throw new Error(`Unknown skill-evolution-apply command: ${command}`)
 }
@@ -209,15 +210,13 @@ export function applySkillEvolution(cwd, args, options = {}) {
 }
 
 export function readSkillEvolutionApplyStatus(cwd, args) {
-  const candidateId = String(args.getFlag('--candidate-id', '')).trim()
-  if (!candidateId) throw new Error('--candidate-id is required')
-  const candidate = readCandidate(getEvolutionPaths(cwd), candidateId)
-  if (!candidate) throw new Error(`Unknown candidate id: ${candidateId}`)
+  const context = loadApplyContext(cwd, args, {})
+  const candidate = context.candidate
 
   return {
     ok: true,
     action: 'status',
-    candidate: summarizeCandidate(candidate, candidate.apply?.overlaySkillRoot || ''),
+    candidate: summarizeCandidate(candidate, candidate.apply?.overlaySkillRoot || context.overlaySkillRoot),
     workflow: buildSkillEvolutionWorkflow(candidate),
     decisionMenu: buildStatusDecisionMenu(candidate),
     notes: [
@@ -226,6 +225,42 @@ export function readSkillEvolutionApplyStatus(cwd, args) {
       `Approval status: ${candidate.approval?.status || (candidate.approval?.approved ? 'approved' : 'missing')}`,
       `Patch plan: ${candidate.patchPlanFile}`,
       `Apply report: ${candidate.applyReportFile}`,
+    ],
+  }
+}
+
+export function resetSkillEvolutionCandidate(cwd, args, options = {}) {
+  const context = loadApplyContext(cwd, args, options)
+  assertTransitionAllowed(context.candidate, 'reset_candidate')
+  const userRequest = String(args.getFlag('--user-request', '')).trim()
+  if (!userRequest) throw new Error('reset requires --user-request')
+  const now = new Date().toISOString()
+  const nextCandidate = {
+    ...context.candidate,
+    status: 'proposed',
+    preview: undefined,
+    approval: undefined,
+    apply: undefined,
+    merge: undefined,
+    reset: {
+      status: 'reset',
+      resetAt: now,
+      userRequest,
+    },
+    state: appendTransition(context.candidate, 'reset_candidate', now),
+    updatedAt: now,
+  }
+  const saved = writeCandidate(context.evolutionPaths, nextCandidate)
+  return {
+    ok: true,
+    action: 'reset',
+    candidate: summarizeCandidate(saved, context.overlaySkillRoot),
+    workflow: buildSkillEvolutionWorkflow(saved),
+    decisionMenu: buildStatusDecisionMenu(saved),
+    notes: [
+      'Candidate reset to proposed state.',
+      'Preview, approval, apply, and merge runtime fields were cleared by script transition.',
+      `User request: ${userRequest}`,
     ],
   }
 }
