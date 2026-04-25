@@ -196,6 +196,8 @@ test('preview records comparison, decisions, and touched files before approval',
 
     assert.equal(output.ok, true)
     assert.equal(output.candidate.status, 'previewed')
+    assert.equal(output.workflow.current, 'approval_pending')
+    assert.equal(output.decisionMenu.recommendedDecision, 'apply-overlay')
     assert.equal(output.preview.recommendedDecision, 'apply-overlay')
     assert.equal(output.preview.existingSkillComparison.targetSkillId, 'local-overlay-skill')
     assert(output.preview.availableDecisions.some((item) => item.decision === 'apply-overlay'))
@@ -206,6 +208,35 @@ test('preview records comparison, decisions, and touched files before approval',
     assert(patchPlan.includes('## Existing Skill Comparison'))
     assert(patchPlan.includes('## Available Decisions'))
     assert(patchPlan.includes('Files touched if selected'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('apply command records transition state trail', () => {
+  const fixture = createFixture()
+  try {
+    writeCandidateFixture(fixture, {
+      id: 'skill-evo-20260416-001',
+      status: 'proposed',
+      decision: {
+        action: 'create',
+        targetSkillId: 'stateful-overlay-skill',
+        confidence: 0.77,
+        reason: ['State trail should be explicit.'],
+      },
+    })
+
+    previewApproveApply(fixture, 'skill-evo-20260416-001')
+
+    const candidatePath = join(fixture.projectDir, 'hello-scholar', 'evolution', 'candidates', 'skill-evo-20260416-001', 'candidate.json')
+    const candidate = JSON.parse(readFileSync(candidatePath, 'utf-8'))
+    assert.equal(candidate.state.current, 'applied_overlay')
+    assert.deepEqual(candidate.state.transitions.map((transition) => transition.name), [
+      'preview',
+      'approve_overlay',
+      'apply_overlay',
+    ])
   } finally {
     destroyFixture(fixture)
   }

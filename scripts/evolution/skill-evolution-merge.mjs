@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { getOverlayPaths, getRuntimeContext } from '../install/cli-config.mjs'
 import { copyTree, ensureDir, parseArgv, pathExists } from '../cli-utils.mjs'
 import { activateEvolvedSkill } from './skill-evolution-runtime.mjs'
+import { appendTransition, assertTransitionAllowed, buildSkillEvolutionWorkflow } from './skill-evolution-state-machine.mjs'
 import { getEvolutionPaths, readCandidate, writeCandidate } from './skill-evolution-store.mjs'
 
 const pkgRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
@@ -27,9 +28,34 @@ function main() {
 }
 
 function runCommand(command, cwd, args) {
+  if (command === 'preview') return previewRepoMerge(cwd, args)
   if (command === 'merge') return mergeOverlaySkill(cwd, args)
   if (command === 'status') return readMergeStatus(cwd, args)
   throw new Error(`Unknown skill-evolution-merge command: ${command}`)
+}
+
+export function previewRepoMerge(cwd, args, options = {}) {
+  const context = loadMergeContext(cwd, args, options)
+  const workflow = context.candidate ? buildSkillEvolutionWorkflow(context.candidate) : null
+  const notes = [
+    `Overlay exists: ${pathExists(context.overlaySkillRoot)}`,
+    `Repo skill exists: ${pathExists(context.repoSkillRoot)}`,
+    'Review overlay content and repo target before running merge.',
+    `Exact next command: node scripts/evolution/skill-evolution-merge.mjs merge --candidate-id ${context.candidate?.id || ''} --approve --user-request "确认合并这个 skill 到 repo" --cwd .`,
+  ]
+  if (context.candidate) {
+    notes.push(`Workflow current: ${workflow.current}`)
+    notes.push(`Allowed transitions: ${workflow.allowedTransitions.join(', ') || 'none'}`)
+  }
+  return {
+    ok: true,
+    action: 'preview',
+    skillId: context.skillId,
+    overlaySkillRoot: context.overlaySkillRoot,
+    repoSkillRoot: context.repoSkillRoot,
+    workflow,
+    notes,
+  }
 }
 
 export function mergeOverlaySkill(cwd, args, options = {}) {
@@ -39,6 +65,7 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
   const userRequest = requireUserInitiatedRequest(args, 'merge')
 
   const context = loadMergeContext(cwd, args, options)
+  if (context.candidate) assertTransitionAllowed(context.candidate, 'merge_repo')
   ensureDir(join(context.pkgRoot, 'skills'))
   copyTree(context.overlaySkillRoot, context.repoSkillRoot)
 
@@ -53,6 +80,7 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
         mergedAt: now,
         userRequest,
       },
+      state: appendTransition(context.candidate, 'merge_repo', now),
       updatedAt: now,
     }
     writeCandidate(context.evolutionPaths, nextCandidate, {
@@ -98,15 +126,19 @@ function requireUserInitiatedRequest(args, action) {
 
 export function readMergeStatus(cwd, args, options = {}) {
   const context = loadMergeContext(cwd, args, options)
+  const workflow = context.candidate ? buildSkillEvolutionWorkflow(context.candidate) : null
   return {
     ok: true,
     action: 'status',
     skillId: context.skillId,
     overlaySkillRoot: context.overlaySkillRoot,
     repoSkillRoot: context.repoSkillRoot,
+    workflow,
     notes: [
       `Overlay exists: ${pathExists(context.overlaySkillRoot)}`,
       `Repo skill exists: ${pathExists(context.repoSkillRoot)}`,
+      workflow ? `Workflow current: ${workflow.current}` : 'No candidate workflow available.',
+      workflow ? `Allowed transitions: ${workflow.allowedTransitions.join(', ') || 'none'}` : 'Use --candidate-id to inspect candidate transitions.',
     ],
   }
 }
@@ -151,6 +183,19 @@ function emit(result, asJson) {
   console.log(`- Skill ID: ${result.skillId}`)
   console.log(`- Overlay Root: ${result.overlaySkillRoot}`)
   console.log(`- Repo Root: ${result.repoSkillRoot}`)
+  if (result.workflow) {
+    console.log('- Workflow:')
+    console.log(`  - Flow: ${result.workflow.flow.join(' -> ')}`)
+    console.log(`  - Current: ${result.workflow.current}`)
+    console.log(`  - Next actor: ${result.workflow.nextRequiredActor}`)
+    if (result.workflow.allowedTransitions.length > 0) {
+      console.log(`  - Allowed transitions: ${result.workflow.allowedTransitions.join(', ')}`)
+    }
+    if (result.workflow.issues.length > 0) {
+      console.log('  - State issues:')
+      for (const issue of result.workflow.issues) console.log(`    - ${issue}`)
+    }
+  }
   if (result.notes.length > 0) {
     console.log('- Notes:')
     for (const note of result.notes) {

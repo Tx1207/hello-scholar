@@ -8,6 +8,7 @@ import { parseArgv, pathExists, readText } from '../cli-utils.mjs'
 import { activateEvolvedSkill } from './skill-evolution-runtime.mjs'
 import { buildPreview, materializeOverlaySkill, runIntegrityChecks, summarizePreview, validateApplyGate, validateApproval } from './skill-evolution-apply-preview.mjs'
 import { renderCreatedSkill, renderPatchPlan, renderUpdatedSkill } from './skill-evolution-apply-render.mjs'
+import { appendTransition, assertTransitionAllowed, buildSkillEvolutionWorkflow } from './skill-evolution-state-machine.mjs'
 import { getEvolutionPaths, readCandidate, writeCandidate } from './skill-evolution-store.mjs'
 
 const pkgRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
@@ -62,6 +63,7 @@ export function planSkillEvolution(cwd, args, options = {}) {
 
 export function previewSkillEvolution(cwd, args, options = {}) {
   const context = loadApplyContext(cwd, args, options)
+  assertTransitionAllowed(context.candidate, 'preview')
   const preview = buildPreview(context)
   const patchPlanText = renderPatchPlan(context, preview)
   const now = new Date().toISOString()
@@ -82,6 +84,7 @@ export function previewSkillEvolution(cwd, args, options = {}) {
       status: 'pending',
       required: true,
     },
+    state: appendTransition(context.candidate, 'preview', now),
     updatedAt: now,
   }
   const saved = writeCandidate(context.evolutionPaths, nextCandidate, {
@@ -93,6 +96,8 @@ export function previewSkillEvolution(cwd, args, options = {}) {
     action: 'preview',
     candidate: summarizeCandidate(saved, context.overlaySkillRoot),
     preview: summarizePreview(preview),
+    workflow: buildSkillEvolutionWorkflow(saved),
+    decisionMenu: buildDecisionMenu(saved, preview),
     notes: [
       `Preview hash: ${preview.hash}`,
       `Recommended decision: ${preview.recommendedDecision}`,
@@ -104,6 +109,7 @@ export function previewSkillEvolution(cwd, args, options = {}) {
 
 export function approveSkillEvolution(cwd, args, options = {}) {
   const context = loadApplyContext(cwd, args, options)
+  assertTransitionAllowed(context.candidate, 'approve_overlay')
   const decision = String(args.getFlag('--decision', '')).trim()
   const userConfirmation = String(args.getFlag('--user-confirmation', args.getFlag('--user-request', ''))).trim()
   const previewHash = String(args.getFlag('--preview-hash', '')).trim()
@@ -121,6 +127,7 @@ export function approveSkillEvolution(cwd, args, options = {}) {
       userConfirmation,
       previewHash: context.candidate.preview.hash,
     },
+    state: appendTransition(context.candidate, 'approve_overlay', now),
     updatedAt: now,
   }
   const saved = writeCandidate(context.evolutionPaths, nextCandidate)
@@ -139,6 +146,7 @@ export function approveSkillEvolution(cwd, args, options = {}) {
 
 export function applySkillEvolution(cwd, args, options = {}) {
   const context = loadApplyContext(cwd, args, options)
+  assertTransitionAllowed(context.candidate, 'apply_overlay')
   validateApplyGate(context.candidate)
 
   const preview = buildPreview(context)
@@ -170,6 +178,7 @@ export function applySkillEvolution(cwd, args, options = {}) {
       appliedAt: now,
       integrityChecks,
     },
+    state: appendTransition(context.candidate, 'apply_overlay', now),
     updatedAt: now,
   }
   const applyReportText = renderApplyReport(context, applyResult, integrityChecks)
@@ -209,6 +218,8 @@ export function readSkillEvolutionApplyStatus(cwd, args) {
     ok: true,
     action: 'status',
     candidate: summarizeCandidate(candidate, candidate.apply?.overlaySkillRoot || ''),
+    workflow: buildSkillEvolutionWorkflow(candidate),
+    decisionMenu: buildStatusDecisionMenu(candidate),
     notes: [
       `Apply status: ${candidate.apply?.status || 'pending'}`,
       `Preview status: ${candidate.preview?.status || 'missing'}`,
@@ -217,6 +228,45 @@ export function readSkillEvolutionApplyStatus(cwd, args) {
       `Apply report: ${candidate.applyReportFile}`,
     ],
   }
+}
+
+function buildDecisionMenu(candidate, preview) {
+  const previewHash = preview.hash
+  return {
+    userQuestion: 'Choose what should happen to this skill candidate after reviewing the preview.',
+    recommendedDecision: preview.recommendedDecision,
+    exactNextCommands: [
+      `node scripts/evolution/skill-evolution-apply.mjs approve --candidate-id ${candidate.id} --decision apply-overlay --preview-hash ${previewHash} --user-confirmation "确认应用这个 skill 到 overlay" --cwd .`,
+      `node scripts/evolution/skill-evolution-apply.mjs apply --candidate-id ${candidate.id} --cwd .`,
+    ],
+    options: preview.availableDecisions,
+  }
+}
+
+function buildStatusDecisionMenu(candidate) {
+  const workflow = buildSkillEvolutionWorkflow(candidate)
+  if (workflow.current === 'approval_pending') {
+    return {
+      userQuestion: 'Preview is ready. Decide whether to apply this candidate to overlay, keep it, reject it, or route it to repo merge.',
+      recommendedDecision: candidate.preview?.recommendedDecision || 'apply-overlay',
+      exactNextCommands: [
+        `node scripts/evolution/skill-evolution-apply.mjs approve --candidate-id ${candidate.id} --decision apply-overlay --preview-hash ${candidate.preview.hash} --user-confirmation "确认应用这个 skill 到 overlay" --cwd .`,
+        `node scripts/evolution/skill-evolution-apply.mjs apply --candidate-id ${candidate.id} --cwd .`,
+      ],
+      options: candidate.preview?.availableDecisions || [],
+    }
+  }
+  if (workflow.current === 'candidate' || workflow.current === 'needs_repair') {
+    return {
+      userQuestion: 'Run preview first so the user can inspect the proposed skill change before approval.',
+      recommendedDecision: 'preview',
+      exactNextCommands: [
+        `node scripts/evolution/skill-evolution-apply.mjs preview --candidate-id ${candidate.id} --cwd .`,
+      ],
+      options: [],
+    }
+  }
+  return null
 }
 
 function loadApplyContext(cwd, args, options) {
@@ -350,6 +400,36 @@ function emit(result, asJson) {
   console.log(`- Decision: ${result.candidate.action}`)
   console.log(`- Target Skill: ${result.candidate.targetSkillId}`)
   console.log(`- Overlay Root: ${result.candidate.overlaySkillRoot}`)
+  if (result.workflow) {
+    console.log('- Workflow:')
+    console.log(`  - Flow: ${result.workflow.flow.join(' -> ')}`)
+    console.log(`  - Current: ${result.workflow.current}`)
+    console.log(`  - Next actor: ${result.workflow.nextRequiredActor}`)
+    if (result.workflow.allowedTransitions.length > 0) {
+      console.log(`  - Allowed transitions: ${result.workflow.allowedTransitions.join(', ')}`)
+    }
+    if (result.workflow.blockedTransitions.length > 0) {
+      console.log(`  - Blocked transitions: ${result.workflow.blockedTransitions.join(', ')}`)
+    }
+    if (result.workflow.issues.length > 0) {
+      console.log('  - State issues:')
+      for (const issue of result.workflow.issues) console.log(`    - ${issue}`)
+    }
+  }
+  if (result.decisionMenu) {
+    console.log('- User Decision Required:')
+    console.log(`  - Question: ${result.decisionMenu.userQuestion}`)
+    console.log(`  - Recommended: ${result.decisionMenu.recommendedDecision}`)
+    if (result.decisionMenu.options.length > 0) {
+      console.log('  - Options:')
+      for (const option of result.decisionMenu.options) {
+        console.log(`    - ${option.decision}: ${option.description}`)
+        console.log(`      Files: ${option.files.join(', ')}`)
+      }
+    }
+    console.log('  - Exact next command(s):')
+    for (const command of result.decisionMenu.exactNextCommands) console.log(`    - ${command}`)
+  }
   if (result.notes.length > 0) {
     console.log('- Notes:')
     for (const note of result.notes) {
