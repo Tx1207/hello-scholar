@@ -159,7 +159,7 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assert(installText.includes('hello-scholar Install'))
     assert(installText.includes('- Mode: standby'))
     assert(installText.includes('- Profile: paper-writing'))
-    assertPathExists(join(projectScholarRoot, 'skills', 'ml-paper-writing'))
+    assertPathExists(join(projectScholarRoot, 'skills', 'writing', 'ml-paper-writing'))
     assertPathExists(join(projectScholarRoot, 'skills', 'commands', 'plan', 'SKILL.md'))
     assertPathExists(join(projectScholarRoot, 'skills', 'commands', 'verify', 'SKILL.md'))
     assertPathExists(join(projectScholarRoot, 'agents', 'paper-miner'))
@@ -239,7 +239,7 @@ test('global install is blocked until current project standby is manually cleane
     writeProjectAgentsFixture(fixture)
 
     runCli(fixture, ['install', 'codex', '--standby'])
-    assertPathExists(join(projectScholarRoot, 'skills', 'research-ideation'))
+    assertPathExists(join(projectScholarRoot, 'skills', 'research', 'research-ideation'))
 
     const blocked = spawnSync(process.execPath, [
       join(pkgRoot, 'cli.mjs'),
@@ -259,10 +259,10 @@ test('global install is blocked until current project standby is manually cleane
     assert(installText.includes('- Mode: global'))
     assertPathMissing(join(projectScholarRoot, 'install-state.json'))
     assertPathMissing(join(projectScholarRoot, 'modules.json'))
-    assertPathMissing(join(projectScholarRoot, 'skills', 'research-ideation'))
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
+    assertPathMissing(join(projectScholarRoot, 'skills', 'research', 'research-ideation'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research', 'research-ideation'))
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'commands', 'verify', 'SKILL.md'))
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'daily-coding', 'SKILL.md'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'core', 'daily-coding', 'SKILL.md'))
     assertPathExists(join(
       fixture.codexHome,
       'plugins',
@@ -271,6 +271,7 @@ test('global install is blocked until current project standby is manually cleane
       'hello-scholar',
       'local',
       'skills',
+      'research',
       'research-ideation',
     ))
     assertPathExists(join(fixture.globalScholarRoot, 'install-state.json'))
@@ -379,7 +380,7 @@ test('selection follows global scope when global is the active install', () => {
   try {
     writeProjectAgentsFixture(fixture)
     runCli(fixture, ['install', 'codex', '--global'])
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research', 'research-ideation'))
 
     mkdirSync(join(fixture.projectDir, '.hello-scholar'), { recursive: true })
     writeFileSync(join(fixture.projectDir, '.hello-scholar', 'modules.json'), JSON.stringify({
@@ -419,8 +420,8 @@ test('selection follows global scope when global is the active install', () => {
     const projectModules = readJson(join(fixture.projectDir, '.hello-scholar', 'modules.json'))
     assert.deepEqual(globalModules.activeProfiles, ['paper-writing'])
     assert.deepEqual(projectModules.activeProfiles, ['paper-writing'])
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'ml-paper-writing'))
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'writing', 'ml-paper-writing'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research', 'research-ideation'))
   } finally {
     destroyFixture(fixture)
   }
@@ -431,7 +432,7 @@ test('selection follows standby scope when current project standby is active', (
   try {
     writeProjectAgentsFixture(fixture)
     runCli(fixture, ['install', 'codex', '--standby'])
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research', 'research-ideation'))
 
     mkdirSync(fixture.globalScholarRoot, { recursive: true })
     writeFileSync(join(fixture.globalScholarRoot, 'modules.json'), JSON.stringify({
@@ -471,8 +472,8 @@ test('selection follows standby scope when current project standby is active', (
     const globalModules = readJson(join(fixture.globalScholarRoot, 'modules.json'))
     assert.deepEqual(projectModules.activeProfiles, ['paper-writing'])
     assert.deepEqual(globalModules.activeProfiles, ['paper-writing'])
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'ml-paper-writing'))
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'writing', 'ml-paper-writing'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research', 'research-ideation'))
   } finally {
     destroyFixture(fixture)
   }
@@ -486,7 +487,7 @@ test('first install without explicit mode defaults to standby', () => {
     const installText = runCli(fixture, ['install', 'codex'])
     assert(installText.includes('- Mode: standby'))
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research', 'research-ideation'))
     assertPathMissing(join(fixture.globalScholarRoot, 'install-state.json'))
     assertPathMissing(join(fixture.codexHome, 'AGENTS.md'))
   } finally {
@@ -520,8 +521,8 @@ test('standby installs in different projects do not delete each other', () => {
 
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
     assertPathExists(join(projectB, '.hello-scholar', 'install-state.json'))
-    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
-    assertPathExists(join(projectB, '.hello-scholar', 'skills', 'daily-coding'))
+    assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research', 'research-ideation'))
+    assertPathExists(join(projectB, '.hello-scholar', 'skills', 'core', 'daily-coding'))
   } finally {
     destroyFixture(fixture)
   }

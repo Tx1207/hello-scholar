@@ -251,6 +251,8 @@ skills/
 
 ## 开发
 
+需求与验收矩阵：[`docs/requirements.md`](docs/requirements.md)。
+
 构建 catalog：
 
 ```bash

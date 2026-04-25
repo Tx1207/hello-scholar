@@ -405,13 +405,14 @@ function syncModules({ kind, sourceRoot, targetRoot, selectedIds, previousIds, s
 
   for (const moduleId of previousIds) {
     if (!selectedIds.includes(moduleId)) {
-      removeManagedModule(join(targetRoot, moduleId))
+      if (sourcePathForId) removeManagedModuleById(targetRoot, moduleId)
+      else removeManagedModule(join(targetRoot, moduleId))
     }
   }
 
   for (const moduleId of selectedIds) {
     const sourcePath = sourcePathForId ? sourcePathForId(moduleId) : join(sourceRoot, moduleId)
-    const targetPath = join(targetRoot, moduleId)
+    const targetPath = sourcePathForId ? resolveSkillTargetPath(targetRoot, sourcePath, moduleId) : join(targetRoot, moduleId)
     const managedPath = join(targetPath, MANAGED_FILE)
     const alreadyManaged = pathExists(managedPath)
     const blockedByForeignInstall = pathExists(targetPath) && !alreadyManaged
@@ -596,8 +597,28 @@ function removeManagedModule(targetPath) {
   return true
 }
 
+function removeManagedModuleById(rootPath, moduleId) {
+  const modulePath = findInstalledModuleRoot(rootPath, moduleId)
+  if (!modulePath) return false
+  return removeManagedModule(modulePath)
+}
+
 function areModulesPresent(rootPath, moduleIds) {
-  return moduleIds.every((moduleId) => pathExists(join(rootPath, moduleId)))
+  return moduleIds.every((moduleId) => Boolean(findInstalledModuleRoot(rootPath, moduleId)))
+}
+
+function findInstalledModuleRoot(rootPath, moduleId) {
+  if (!pathExists(rootPath)) return ''
+  const directPath = join(rootPath, moduleId)
+  if (pathExists(directPath)) return directPath
+  for (const entry of readdirSync(rootPath)) {
+    const entryPath = join(rootPath, entry)
+    if (!statSync(entryPath).isDirectory()) continue
+    if (entry === moduleId && pathExists(join(entryPath, 'SKILL.md'))) return entryPath
+    const nested = findInstalledModuleRoot(entryPath, moduleId)
+    if (nested) return nested
+  }
+  return ''
 }
 
 function isEmptyDirectory(rootPath) {
@@ -611,6 +632,16 @@ function normalizePath(filePath) {
 
 function resolveSkillSourcePath(catalog, pkgRoot, skillId) {
   return catalog?.skillMap.get(skillId)?.sourceRoot || findRepoSkillRoot(join(pkgRoot, 'skills'), skillId) || join(pkgRoot, 'skills', skillId)
+}
+
+function resolveSkillTargetPath(targetRoot, sourcePath, skillId) {
+  const normalizedSource = normalizePath(sourcePath)
+  const marker = '/skills/'
+  const markerIndex = normalizedSource.lastIndexOf(marker)
+  if (markerIndex >= 0) {
+    return join(targetRoot, normalizedSource.slice(markerIndex + marker.length))
+  }
+  return join(targetRoot, skillId)
 }
 
 function findRepoSkillRoot(rootPath, skillId) {
