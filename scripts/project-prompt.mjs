@@ -10,31 +10,27 @@ const SOURCE_PROMPT_FILE = 'AGENTS.md'
 const LIFECYCLE_STEPS = [
   {
     label: '1. 研究构思',
-    skillIds: ['research-ideation'],
-    agentIds: ['literature-reviewer'],
+    profileId: 'research-ideation',
   },
   {
     label: '2. ML 项目开发',
-    skillIds: ['daily-coding', 'verification-loop', 'results-analysis'],
-    agentIds: ['code-reviewer'],
+    profileId: 'ml-development',
   },
   {
     label: '3. 论文写作',
-    skillIds: ['ml-paper-writing'],
-    agentIds: ['paper-miner'],
+    profileId: 'paper-writing',
   },
   {
     label: '4. 论文自审',
-    skillIds: ['paper-self-review'],
+    profileId: 'paper-self-review',
   },
   {
     label: '5. 投稿与 Rebuttal',
-    skillIds: ['review-response'],
-    agentIds: ['rebuttal-writer'],
+    profileId: 'submission-rebuttal',
   },
   {
     label: '6. 录用后处理',
-    skillIds: ['post-acceptance'],
+    profileId: 'post-acceptance',
   },
 ]
 
@@ -121,7 +117,7 @@ function renderWorkflowSection(sourceSection, selection, mode) {
     '- 热加载原则：下方原始工作流定义继续保留，但只有当前已激活的 profile / skill / agent 可以直接假定可用。',
     '',
     '#### 研究生命周期状态',
-    ...LIFECYCLE_STEPS.map((step) => `- ${step.label}：${describeRequirementStatus(step, selection)}`),
+    ...LIFECYCLE_STEPS.map((step) => `- ${step.label}：${describeLifecycleStatus(step, selection)}`),
     '',
     '#### 支撑工作流状态',
     ...SUPPORT_WORKFLOWS.map((workflow) => `- ${workflow.label}：${describeRequirementStatus(workflow, selection)}`),
@@ -237,6 +233,14 @@ function describeRequirementStatus(requirement, selection) {
   }
 
   return '未激活'
+}
+
+function describeLifecycleStatus(step, selection) {
+  const activeProfiles = new Set([
+    selection.baseProfile || 'ml-development',
+    ...(selection.activeProfiles || [selection.activeProfile || 'ml-development']),
+  ])
+  return activeProfiles.has(step.profileId) ? '已激活' : '未激活'
 }
 
 function formatSkillStatus(skillIds, activeSkills) {

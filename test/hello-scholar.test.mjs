@@ -10,6 +10,7 @@ import { detectInstalledScope, loadInstallState, loadUserConfig } from '../scrip
 import { loadCatalog, resolveSelection } from '../scripts/profile/catalog-loader.mjs'
 import { syncInstalledSelection } from '../scripts/install/cli-codex.mjs'
 import { loadSelectionState, saveSelectionState } from '../scripts/profile/selection-state.mjs'
+import { renderManagedBootstrapPrompt } from '../scripts/project-prompt.mjs'
 import { applySelectionOperation, buildInteractiveFrame, buildSelectionModel } from '../scripts/text-ui.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -109,6 +110,43 @@ test('interactive frame windows long skill lists around the focused entry', () =
   assert(frame.lines.some((line) => line.includes('... 上方还有')))
 })
 
+test('help command prints CLI usage', () => {
+  const fixture = createFixture()
+  try {
+    for (const flag of ['help', '-h', '--help']) {
+      const helpText = runCli(fixture, [flag])
+      assert(helpText.includes('Usage:'))
+      assert(helpText.includes('hello-scholar help'))
+      assert(helpText.includes('hello-scholar profile list'))
+    }
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('activation prompt lifecycle status follows active profiles instead of reused skills', () => {
+  const fixture = createFixture()
+  try {
+    const catalog = loadCatalog(pkgRoot)
+    const selection = resolveSelection(catalog, {
+      baseProfile: 'ml-development',
+      activeProfile: 'ml-development',
+    })
+    const prompt = renderManagedBootstrapPrompt({
+      runtime: createRuntime(fixture),
+      catalog,
+      selection,
+      mode: 'standby',
+    })
+
+    assert(prompt.includes('- 1. 研究构思：未激活'))
+    assert(prompt.includes('- 2. ML 项目开发：已激活'))
+    assert(prompt.includes('- 3. 论文写作：未激活'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
 test('standby install writes text output, project prompt, and cleanup removes project state', () => {
   const fixture = createFixture()
   try {
@@ -158,6 +196,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assert(projectAgentsText.includes('# hello-scholar'))
     assert(projectAgentsText.includes('## 统一执行流程'))
     assert(projectAgentsText.includes('## 当前激活 Profile'))
+    assert(projectAgentsText.includes('【hello-scholar】'))
+    assert(projectAgentsText.includes('🔄 下一步'))
     assert(projectAgentsText.includes('paper-writing'))
 
     writeOverlaySkillFixture(fixture, 'status-overlay-skill')

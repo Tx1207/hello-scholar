@@ -153,6 +153,7 @@ hello-scholar cleanup codex --global
 `hello-scholar` 的 CLI 故意保持很小，只保留日常需要记住的入口：
 
 ```bash
+hello-scholar help
 hello-scholar install codex [--standby|--global]
 hello-scholar cleanup codex [--standby|--global]
 hello-scholar profile list

@@ -48,7 +48,7 @@ async function main() {
     const cwd = process.cwd()
     const catalog = loadCatalog(pkgRoot, { dynamic: true, cwd, runtime })
 
-    if (!command) {
+    if (!command || command === 'help' || command === '-h' || command === '--help') {
       printHelp()
       process.exit(0)
     }
@@ -233,6 +233,7 @@ function printHelp() {
 hello-scholar
 
 Usage:
+  hello-scholar help
   hello-scholar install codex [--standby|--global]
   hello-scholar cleanup codex [--standby|--global]
   hello-scholar profile list
