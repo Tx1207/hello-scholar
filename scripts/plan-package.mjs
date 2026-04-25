@@ -2,7 +2,7 @@ import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { ensureDir, parseArgv, readText, writeJson, writeText } from './cli-utils.mjs'
-import { normalizeTitle, slugify, splitLines } from './change-tracker-utils.mjs'
+import { formatCompactDateTime, normalizeTitle, slugify, splitLines } from './change-tracker-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
 
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -26,7 +26,7 @@ export function createPlanPackage(cwd, args) {
   const title = normalizeTitle(args.getFlag('--title', ''), args.getFlag('--goal', ''))
   const goal = String(args.getFlag('--goal', title)).trim() || title
   const now = new Date()
-  const planId = String(args.getFlag('--plan-id', '')).trim() || `${now.toISOString().slice(0, 10)}-${slugify(title) || 'plan'}`
+  const planId = String(args.getFlag('--plan-id', '')).trim() || `PLAN-${formatCompactDateTime(now)}-${slugify(title) || 'plan'}`
   const planRoot = join(storage.rootPath, 'plans', planId)
   const constraints = splitLines(args.getFlag('--constraints', '')).concat(args.getList('--constraint'))
   const nonGoals = splitLines(args.getFlag('--non-goals', '')).concat(args.getList('--non-goal'))

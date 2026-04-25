@@ -128,9 +128,9 @@ export function normalizeTitle(rawTitle, fallbackText) {
 }
 
 export function nextChangeId(records, now) {
-  const stamp = formatDate(now).replaceAll('-', '')
-  const todays = records.filter((record) => record.id.startsWith(`change-${stamp}`)).length + 1
-  return `change-${stamp}-${String(todays).padStart(3, '0')}`
+  const stamp = formatCompactDateTime(now)
+  const sameSecond = records.filter((record) => record.id.startsWith(`CHG-${stamp}`)).length
+  return sameSecond === 0 ? `CHG-${stamp}` : `CHG-${stamp}-${String(sameSecond + 1).padStart(2, '0')}`
 }
 
 export function uniqueFileName(records, proposedName) {
@@ -195,13 +195,24 @@ export function formatDate(value) {
   return value.toISOString().slice(0, 10)
 }
 
+export function formatCompactDateTime(value) {
+  const year = value.getFullYear()
+  const month = String(value.getMonth() + 1).padStart(2, '0')
+  const day = String(value.getDate()).padStart(2, '0')
+  const hour = String(value.getHours()).padStart(2, '0')
+  const minute = String(value.getMinutes()).padStart(2, '0')
+  const second = String(value.getSeconds()).padStart(2, '0')
+  return `${year}${month}${day}-${hour}${minute}${second}`
+}
+
 export function formatLocalTime(value) {
   const year = value.getFullYear()
   const month = String(value.getMonth() + 1).padStart(2, '0')
   const day = String(value.getDate()).padStart(2, '0')
   const hour = String(value.getHours()).padStart(2, '0')
   const minute = String(value.getMinutes()).padStart(2, '0')
-  return `${year}-${month}-${day} ${hour}:${minute}`
+  const second = String(value.getSeconds()).padStart(2, '0')
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
 export function stripBackticks(value) {

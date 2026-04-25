@@ -41,6 +41,8 @@ test('plan-package create writes requirements, tasks, and contract', () => {
     ])
 
     const payload = JSON.parse(output)
+    assert.match(payload.planId, /^PLAN-\d{8}-\d{6}-implement-evidence-loop$/)
+    assert.equal(payload.planRoot, `hello-scholar/plans/${payload.planId}`)
     const planRoot = join(fixture.projectDir, payload.planRoot)
     assert.equal(existsSync(join(planRoot, 'requirements.md')), true)
     assert.equal(existsSync(join(planRoot, 'plan.md')), true)

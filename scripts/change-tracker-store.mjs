@@ -7,7 +7,6 @@ import { resolveProjectStorage } from './project-storage.mjs'
 import { readRuntimeState, updateRuntimeChangeState } from './runtime-state.mjs'
 import {
   extractSections,
-  formatDate,
   mergeUnique,
   nextChangeId,
   parseBulletLines,
@@ -122,7 +121,7 @@ export function parseRecord(text, filePath, cwd) {
 export function createRecord(existingRecords, title, files, now) {
   const id = nextChangeId(existingRecords, now)
   const slug = slugify(title) || id
-  const fileName = uniqueFileName(existingRecords, `${formatDate(now)}-${slug}.md`)
+  const fileName = uniqueFileName(existingRecords, `${id}-${slug}.md`)
   return {
     id,
     title,

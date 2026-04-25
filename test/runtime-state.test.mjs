@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
@@ -21,6 +21,8 @@ test('runtime state is the unified machine-readable state entry', () => {
     updateRuntimeStatusState(fixture, { deliveryGate: { overall: true } }, new Date('2026-04-24T08:03:00.000Z'))
 
     const runtime = readRuntimeState(fixture)
+    assert.equal(existsSync(join(fixture, 'hello-scholar', 'state', 'runtime.json')), true)
+    assert.equal(existsSync(join(fixture, 'state', 'runtime.json')), false)
     assert.equal(runtime.schemaVersion, 1)
     assert.equal(runtime.updatedAt, '2026-04-24T08:03:00.000Z')
     assert.equal(runtime.experiment.activeExperiment, 'EXP-1')
