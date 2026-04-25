@@ -37,17 +37,23 @@ const LIFECYCLE_STEPS = [
 const SUPPORT_WORKFLOWS = [
   {
     label: 'Zotero 集成',
+    profileIds: ['zotero-integration'],
+    skillIds: ['zotero-obsidian-bridge'],
+    agentIds: ['literature-reviewer-obsidian'],
   },
   {
     label: '知识提取',
+    profileIds: ['knowledge-extraction'],
     agentIds: ['paper-miner', 'kaggle-miner'],
   },
   {
     label: 'Obsidian 知识库',
+    profileIds: ['obsidian-memory'],
     skillIds: ['obsidian-project-memory'],
   },
   {
     label: '技能进化',
+    profileIds: ['skill-evolution'],
     skillIds: ['skill-development', 'skill-quality-reviewer', 'skill-improver'],
   },
 ]
@@ -219,6 +225,9 @@ function buildGlobalCliPathLines() {
 }
 
 function describeRequirementStatus(requirement, selection) {
+  const activeProfiles = getActiveProfileSet(selection)
+  const profileIds = requirement.profileIds || []
+  const activeProfileIds = profileIds.filter((id) => activeProfiles.has(id))
   const skillIds = requirement.skillIds || []
   const agentIds = requirement.agentIds || []
   const activeModuleIds = [
@@ -227,20 +236,30 @@ function describeRequirementStatus(requirement, selection) {
   ]
   const totalModuleCount = skillIds.length + agentIds.length
 
+  if (profileIds.length > 0 && activeProfileIds.length === profileIds.length) return '已激活'
+
   if (totalModuleCount > 0) {
     if (activeModuleIds.length === totalModuleCount) return '已激活'
-    if (activeModuleIds.length > 0) return `部分激活：${formatCodeList(activeModuleIds)}`
+    if (activeModuleIds.length > 0 || activeProfileIds.length > 0) {
+      return `部分激活：${formatCodeList([...activeProfileIds, ...activeModuleIds])}`
+    }
   }
+
+  if (activeProfileIds.length > 0) return `部分激活：${formatCodeList(activeProfileIds)}`
 
   return '未激活'
 }
 
 function describeLifecycleStatus(step, selection) {
-  const activeProfiles = new Set([
+  const activeProfiles = getActiveProfileSet(selection)
+  return activeProfiles.has(step.profileId) ? '已激活' : '未激活'
+}
+
+function getActiveProfileSet(selection) {
+  return new Set([
     selection.baseProfile || 'ml-development',
     ...(selection.activeProfiles || [selection.activeProfile || 'ml-development']),
   ])
-  return activeProfiles.has(step.profileId) ? '已激活' : '未激活'
 }
 
 function formatSkillStatus(skillIds, activeSkills) {

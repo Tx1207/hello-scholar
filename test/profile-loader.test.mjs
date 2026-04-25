@@ -18,9 +18,9 @@ afterEach(() => {
   }
 })
 
-test('profile catalog exposes the six lifecycle profiles with ml-development as base', () => {
+test('profile catalog exposes lifecycle and support profiles with ml-development as base', () => {
   const catalog = loadCatalog(pkgRoot)
-  const expectedProfiles = [
+  const expectedLifecycleProfiles = [
     'research-ideation',
     'ml-development',
     'paper-writing',
@@ -28,8 +28,17 @@ test('profile catalog exposes the six lifecycle profiles with ml-development as 
     'submission-rebuttal',
     'post-acceptance',
   ]
+  const expectedSupportProfiles = [
+    'knowledge-extraction',
+    'obsidian-memory',
+    'zotero-integration',
+    'skill-evolution',
+  ]
 
-  assert.deepEqual(catalog.profiles.map((profile) => profile.id), expectedProfiles)
+  assert.deepEqual(catalog.profiles.map((profile) => profile.id), [
+    ...expectedLifecycleProfiles,
+    ...expectedSupportProfiles,
+  ])
   assert.equal(catalog.profiles.filter((profile) => profile.base === true).length, 1)
   assert.equal(catalog.profileMap.get('ml-development')?.base, true)
 
@@ -39,6 +48,27 @@ test('profile catalog exposes the six lifecycle profiles with ml-development as 
     assert(profile.description)
     assert((profile.skills || []).length > 0)
   }
+})
+
+test('all repo skills can be activated through base, profile, or hard dependency selection', () => {
+  const catalog = loadCatalog(pkgRoot)
+  const activatableSkills = new Set()
+
+  for (const skillId of catalog.base.defaultSkills) activatableSkills.add(skillId)
+  for (const profile of catalog.profiles) {
+    const selection = resolveSelection(catalog, {
+      activeProfiles: [profile.id],
+      includeBase: true,
+    })
+    for (const skillId of selection.skills) activatableSkills.add(skillId)
+  }
+
+  const orphanSkills = catalog.skills
+    .filter((entry) => entry.sourceLayer !== 'overlay')
+    .map((entry) => entry.id)
+    .filter((skillId) => !activatableSkills.has(skillId))
+
+  assert.deepEqual(orphanSkills, [])
 })
 
 test('ml-development resolves as the default base profile only', () => {

@@ -146,5 +146,93 @@
       "story-generator",
       "ui-sketcher"
     ]
+  },
+  {
+    "id": "knowledge-extraction",
+    "displayName": "知识提取",
+    "stage": "支撑工作流",
+    "base": false,
+    "support": true,
+    "description": "从论文、Kaggle、代码和实验材料中提取可复用知识、模式和研究线索。",
+    "skills": [
+      "daily-paper-generator",
+      "kaggle-learner",
+      "memory-updater",
+      "results-analysis",
+      "results-report"
+    ],
+    "agents": [
+      "kaggle-miner",
+      "literature-reviewer",
+      "paper-miner"
+    ]
+  },
+  {
+    "id": "obsidian-memory",
+    "displayName": "Obsidian 知识库",
+    "stage": "支撑工作流",
+    "base": false,
+    "support": true,
+    "description": "维护 Obsidian 项目记忆、实验日志、研究日志、知识图谱、Canvas 和 synthesis map。",
+    "skills": [
+      "json-canvas",
+      "memory-updater",
+      "obsidian-bases",
+      "obsidian-cli",
+      "obsidian-experiment-log",
+      "obsidian-link-graph",
+      "obsidian-literature-workflow",
+      "obsidian-markdown",
+      "obsidian-project-bootstrap",
+      "obsidian-project-lifecycle",
+      "obsidian-project-memory",
+      "obsidian-research-log",
+      "obsidian-synthesis-map"
+    ],
+    "agents": [
+      "literature-reviewer-obsidian",
+      "research-knowledge-curator-obsidian"
+    ]
+  },
+  {
+    "id": "zotero-integration",
+    "displayName": "Zotero 集成",
+    "stage": "支撑工作流",
+    "base": false,
+    "support": true,
+    "description": "连接 Zotero 与 Obsidian 文献工作流，支持文献检索、引用整理和研究知识同步。",
+    "skills": [
+      "citation-verification",
+      "obsidian-literature-workflow",
+      "obsidian-markdown",
+      "obsidian-project-memory",
+      "zotero-obsidian-bridge"
+    ],
+    "agents": [
+      "literature-reviewer-obsidian"
+    ]
+  },
+  {
+    "id": "skill-evolution",
+    "displayName": "技能进化",
+    "stage": "支撑工作流",
+    "base": false,
+    "support": true,
+    "description": "总结协作经验，审查、改进和沉淀 hello-scholar skills、agents、commands 与运行时插件结构。",
+    "skills": [
+      "agent-identifier",
+      "checkpoint-manager",
+      "command-development",
+      "hook-development",
+      "mcp-integration",
+      "plugin-structure",
+      "project-creator",
+      "readme-updater",
+      "skill-development",
+      "skill-improver",
+      "skill-quality-reviewer",
+      "uv-package-manager"
+    ],
+    "agents": []
   }
 ]

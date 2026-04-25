@@ -46,7 +46,7 @@ hello-scholar/experiments/EXP-YYYYMMDD-HHMMSS-short-name/
 
 ### Profile 驱动的科研生命周期
 
-`hello-scholar` 用 profile 表达科研阶段。你可以只使用默认 ML 开发 profile，也可以叠加论文写作、自审或 rebuttal profile。
+`hello-scholar` 用 profile 表达科研阶段和支撑工作流。你可以只使用默认 ML 开发 profile，也可以叠加论文写作、自审、rebuttal、Obsidian、Zotero、知识提取或技能进化能力。
 
 | Profile | 阶段 | 适用场景 |
 |---|---|---|
@@ -56,6 +56,15 @@ hello-scholar/experiments/EXP-YYYYMMDD-HHMMSS-short-name/
 | `paper-self-review` | 论文自审 | 从 reviewer 视角检查 novelty、technical correctness 和 empirical evidence。 |
 | `submission-rebuttal` | 投稿与 Rebuttal | 投稿材料、审稿意见拆解、response 策略和 rebuttal 写作。 |
 | `post-acceptance` | 录用后处理 | camera-ready、slides、poster、project page 和传播材料。 |
+
+支撑型 profile 不改变科研生命周期主线，只用于激活可选能力集合：
+
+| Profile | 类型 | 适用场景 |
+|---|---|---|
+| `knowledge-extraction` | 支撑工作流 | 从论文、Kaggle、代码和实验材料中提取可复用知识。 |
+| `obsidian-memory` | 支撑工作流 | 维护 Obsidian 项目记忆、实验日志、研究日志、Canvas 和知识图谱。 |
+| `zotero-integration` | 支撑工作流 | 连接 Zotero 与 Obsidian 文献工作流，支持引用整理和知识同步。 |
+| `skill-evolution` | 支撑工作流 | 总结协作经验，审查、改进和沉淀 skills、agents 与 commands。 |
 
 ### Skill 与 Preference Evolution
 
@@ -120,6 +129,12 @@ hello-scholar profile use ml-development
 
 ```bash
 hello-scholar profile use ml-development paper-writing
+```
+
+叠加支撑工作流，例如 Obsidian 记忆与技能进化：
+
+```bash
+hello-scholar profile use ml-development obsidian-memory skill-evolution
 ```
 
 安装到当前项目：
