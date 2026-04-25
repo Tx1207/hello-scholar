@@ -36,6 +36,7 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
   if (!args.hasFlag('--approve')) {
     throw new Error('merge requires --approve')
   }
+  const userRequest = requireUserInitiatedRequest(args, 'merge')
 
   const context = loadMergeContext(cwd, args, options)
   ensureDir(join(context.pkgRoot, 'skills'))
@@ -50,6 +51,7 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
         status: 'merged',
         repoSkillRoot: context.repoSkillRoot,
         mergedAt: now,
+        userRequest,
       },
       updatedAt: now,
     }
@@ -61,6 +63,7 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
         `- Overlay Root: \`${context.overlaySkillRoot}\``,
         `- Repo Root: \`${context.repoSkillRoot}\``,
         `- Merged At: \`${now}\``,
+        `- User Request: ${userRequest}`,
       ].join('\n'),
     })
   }
@@ -77,11 +80,20 @@ export function mergeOverlaySkill(cwd, args, options = {}) {
     repoSkillRoot: context.repoSkillRoot,
     notes: [
       `Merged overlay skill into repo source: ${context.skillId}`,
+      `User request: ${userRequest}`,
       activation.activated
         ? `Selection refreshed in ${activation.scope} scope (${activation.mode})`
         : `Selection refresh skipped: ${activation.reason}`,
     ],
   }
+}
+
+function requireUserInitiatedRequest(args, action) {
+  const request = String(args.getFlag('--user-request', '')).trim()
+  if (!request) {
+    throw new Error(`${action} requires --user-request to prove the user explicitly asked AI to apply this candidate`)
+  }
+  return request
 }
 
 export function readMergeStatus(cwd, args, options = {}) {

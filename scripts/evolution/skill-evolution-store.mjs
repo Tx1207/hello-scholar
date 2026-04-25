@@ -190,6 +190,7 @@ function stripCandidateRuntimeFields(candidate) {
     inputs: candidate.inputs,
     policy: candidate.policy,
     review: candidate.review,
+    preview: candidate.preview,
     approval: candidate.approval,
     apply: candidate.apply,
     merge: candidate.merge,

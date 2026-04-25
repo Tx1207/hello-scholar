@@ -72,9 +72,31 @@ hello-scholar/experiments/EXP-YYYYMMDD-HHMMSS-short-name/
 
 - 发现可复用 workflow 时，先生成 skill candidate。
 - 发现稳定协作偏好时，先生成 preference candidate。
-- candidate 不会自动应用，需要用户明确确认。
+- candidate 不会自动应用。
 
 这让 agent 可以逐步适应你的科研风格，又不会悄悄改掉全局提示词或 skills。
+
+### 自进化应用规则
+
+`hello-scholar` 可以在任务结束时自动审查并积累 skill / preference candidate。
+
+但 candidate 不会自动应用。
+
+只有用户看过 preview 并明确选择后，AI 才能继续。skill overlay apply 使用脚本强制的三步状态机：
+
+1. `preview`：展示原内容、将要修改或新建的内容、和已有 skill 的区别、可选动作，以及每个动作会处理哪些文件。
+2. `approve`：只记录用户明确选择，例如 `apply-overlay`；“处理这个 skill”“继续”“可以”等模糊表达不会通过。
+3. `apply`：只在 preview hash 未变化且 candidate 已 approved 时写入 overlay skill 并刷新 runtime selection。
+
+示例：
+
+```bash
+node scripts/evolution/skill-evolution-apply.mjs preview --candidate-id skill-evo-...
+node scripts/evolution/skill-evolution-apply.mjs approve --candidate-id skill-evo-... --decision apply-overlay --preview-hash <hash> --user-confirmation "确认应用 skill-evo-... 到 overlay skill"
+node scripts/evolution/skill-evolution-apply.mjs apply --candidate-id skill-evo-...
+```
+
+Preference apply 仍需要展示 before/after、作用域和高影响确认需求后再写入 `user-preferences.yaml`。
 
 ### Standby / Global 两种安装模式
 

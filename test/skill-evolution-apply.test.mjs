@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 
-test('apply command requires explicit approval', () => {
+test('apply command requires preview before apply', () => {
   const fixture = createFixture()
   try {
     writeCandidateFixture(fixture, {
@@ -37,7 +37,58 @@ test('apply command requires explicit approval', () => {
     })
 
     assert.equal(result.status, 1)
-    assert(result.stderr.includes('apply requires --approve'))
+    assert(result.stderr.includes('apply requires preview to run first'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('approve command rejects vague user confirmation after preview', () => {
+  const fixture = createFixture()
+  try {
+    writeCandidateFixture(fixture, {
+      id: 'skill-evo-20260416-001',
+      status: 'proposed',
+      decision: {
+        action: 'create',
+        targetSkillId: 'local-overlay-skill',
+        confidence: 0.8,
+        reason: ['Reusable workflow captured.'],
+      },
+    })
+
+    const preview = runJson(fixture, [
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+      'preview',
+      '--cwd',
+      fixture.projectDir,
+      '--candidate-id',
+      'skill-evo-20260416-001',
+      '--json',
+    ])
+
+    const result = spawnSync(process.execPath, [
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+      'approve',
+      '--cwd',
+      fixture.projectDir,
+      '--candidate-id',
+      'skill-evo-20260416-001',
+      '--decision',
+      'apply-overlay',
+      '--preview-hash',
+      preview.preview.hash,
+      '--user-confirmation',
+      '处理这个skill',
+      '--json',
+    ], {
+      cwd: fixture.projectDir,
+      env: fixture.env,
+      encoding: 'utf-8',
+    })
+
+    assert.equal(result.status, 1)
+    assert(result.stderr.includes('approve requires explicit apply confirmation'))
   } finally {
     destroyFixture(fixture)
   }
@@ -61,16 +112,7 @@ test('apply command updates an existing repo skill into overlay storage', () => 
       ],
     })
 
-    const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
-      'apply',
-      '--cwd',
-      fixture.projectDir,
-      '--candidate-id',
-      'skill-evo-20260416-001',
-      '--approve',
-      '--json',
-    ])
+    const output = previewApproveApply(fixture, 'skill-evo-20260416-001')
 
     assert.equal(output.ok, true)
     assert.equal(output.candidate.status, 'applied')
@@ -113,22 +155,57 @@ test('apply command creates a new overlay skill for create candidates', () => {
       ],
     })
 
-    const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
-      'apply',
-      '--cwd',
-      fixture.projectDir,
-      '--candidate-id',
-      'skill-evo-20260416-001',
-      '--approve',
-      '--json',
-    ])
+    const output = previewApproveApply(fixture, 'skill-evo-20260416-001')
 
     assert.equal(output.ok, true)
     const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'local-overlay-skill')
     const skillText = readFileSync(join(overlaySkillRoot, 'SKILL.md'), 'utf-8')
     assert(skillText.includes('name: local-overlay-skill'))
     assert(skillText.includes('references/local-evolution.md'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('preview records comparison, decisions, and touched files before approval', () => {
+  const fixture = createFixture()
+  try {
+    writeCandidateFixture(fixture, {
+      id: 'skill-evo-20260416-001',
+      status: 'proposed',
+      decision: {
+        action: 'create',
+        targetSkillId: 'local-overlay-skill',
+        confidence: 0.77,
+        reason: ['No existing skill matches this local workflow.'],
+      },
+      extractedWorkflow: [
+        'Create a local overlay skill for project-specific but reusable guidance.',
+      ],
+    })
+
+    const output = runJson(fixture, [
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+      'preview',
+      '--cwd',
+      fixture.projectDir,
+      '--candidate-id',
+      'skill-evo-20260416-001',
+      '--json',
+    ])
+
+    assert.equal(output.ok, true)
+    assert.equal(output.candidate.status, 'previewed')
+    assert.equal(output.preview.recommendedDecision, 'apply-overlay')
+    assert.equal(output.preview.existingSkillComparison.targetSkillId, 'local-overlay-skill')
+    assert(output.preview.availableDecisions.some((item) => item.decision === 'apply-overlay'))
+    assert(output.preview.availableDecisions.find((item) => item.decision === 'apply-overlay').files.some((file) => file.endsWith('SKILL.md')))
+
+    const patchPlanPath = join(fixture.projectDir, 'hello-scholar', 'evolution', 'candidates', 'skill-evo-20260416-001', 'patch-plan.md')
+    const patchPlan = readFileSync(patchPlanPath, 'utf-8')
+    assert(patchPlan.includes('## Existing Skill Comparison'))
+    assert(patchPlan.includes('## Available Decisions'))
+    assert(patchPlan.includes('Files touched if selected'))
   } finally {
     destroyFixture(fixture)
   }
@@ -152,16 +229,7 @@ test('apply command activates the evolved overlay skill for the next standby tur
       ],
     })
 
-    const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
-      'apply',
-      '--cwd',
-      fixture.projectDir,
-      '--candidate-id',
-      'skill-evo-20260416-001',
-      '--approve',
-      '--json',
-    ])
+    const output = previewApproveApply(fixture, 'skill-evo-20260416-001')
 
     assert.equal(output.ok, true)
 
@@ -251,6 +319,42 @@ function runJson(fixture, args) {
     result.stderr,
   ].join('\n'))
   return JSON.parse(result.stdout.trim())
+}
+
+function previewApproveApply(fixture, candidateId) {
+  const preview = runJson(fixture, [
+    join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+    'preview',
+    '--cwd',
+    fixture.projectDir,
+    '--candidate-id',
+    candidateId,
+    '--json',
+  ])
+  runJson(fixture, [
+    join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+    'approve',
+    '--cwd',
+    fixture.projectDir,
+    '--candidate-id',
+    candidateId,
+    '--decision',
+    'apply-overlay',
+    '--preview-hash',
+    preview.preview.hash,
+    '--user-confirmation',
+    `确认应用 ${candidateId} 到 overlay skill`,
+    '--json',
+  ])
+  return runJson(fixture, [
+    join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
+    'apply',
+    '--cwd',
+    fixture.projectDir,
+    '--candidate-id',
+    candidateId,
+    '--json',
+  ])
 }
 
 function assertPathExists(filePath) {

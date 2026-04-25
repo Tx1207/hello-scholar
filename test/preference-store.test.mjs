@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 
 import {
+  applyPreferenceCandidate,
   createPreferencePatch,
   ensureProjectPreferences,
   getPreferencePaths,
@@ -19,6 +20,7 @@ import {
 } from '../scripts/preferences/preferences-store.mjs'
 import { loadCatalog } from '../scripts/profile/catalog-loader.mjs'
 import { resolveStatusOverlay } from '../scripts/overlay/resolve.mjs'
+import { parseArgv } from '../scripts/cli-utils.mjs'
 
 const pkgRoot = new URL('..', import.meta.url).pathname
 
@@ -220,6 +222,119 @@ test('suggestPreferenceCandidate creates a project candidate without applying pr
     const prefs = readProjectPreferences(fixture.projectDir, { initialize: true })
     assert.equal(prefs.interactionPreferences.finalAnswerStyle, undefined)
     assert(readFileSync(join(result.root, 'proposal.md'), 'utf-8').includes('candidate only'))
+  })
+  destroyFixture(fixture)
+})
+
+test('applyPreferenceCandidate requires user initiated request and approval', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    writePreferenceCandidate({
+      cwd: fixture.projectDir,
+      candidateId: 'PREF-20260425-080000-final-answer-style',
+      proposal: 'Prefer concise final answers.',
+      evidence: 'User explicitly asked for concise handoffs.',
+      patch: createPreferencePatch({
+        candidateId: 'PREF-20260425-080000-final-answer-style',
+        targetScope: 'project',
+        targetFile: 'hello-scholar/preferences/user-preferences.yaml',
+        changes: {
+          interactionPreferences: {
+            finalAnswerStyle: 'concise',
+          },
+        },
+      }),
+    })
+
+    assert.throws(
+      () => applyPreferenceCandidate({
+        cwd: fixture.projectDir,
+        args: parseArgv(['--candidate-id', 'PREF-20260425-080000-final-answer-style', '--approve']),
+      }),
+      /requires --user-request/,
+    )
+  })
+  destroyFixture(fixture)
+})
+
+test('applyPreferenceCandidate applies project preference only after explicit user request', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    writePreferenceCandidate({
+      cwd: fixture.projectDir,
+      candidateId: 'PREF-20260425-080000-final-answer-style',
+      proposal: 'Prefer concise final answers.',
+      evidence: 'User explicitly asked for concise handoffs.',
+      patch: createPreferencePatch({
+        candidateId: 'PREF-20260425-080000-final-answer-style',
+        targetScope: 'project',
+        targetFile: 'hello-scholar/preferences/user-preferences.yaml',
+        changes: {
+          interactionPreferences: {
+            finalAnswerStyle: 'concise',
+          },
+        },
+      }),
+    })
+
+    const result = applyPreferenceCandidate({
+      cwd: fixture.projectDir,
+      args: parseArgv([
+        '--candidate-id',
+        'PREF-20260425-080000-final-answer-style',
+        '--approve',
+        '--user-request',
+        'User asked AI to apply this preference candidate.',
+      ]),
+      now: new Date('2026-04-25T08:30:00.000Z'),
+    })
+
+    assert.equal(result.ok, true)
+    assert.equal(result.changedPaths.includes('interactionPreferences.finalAnswerStyle'), true)
+    const prefs = readProjectPreferences(fixture.projectDir)
+    assert.equal(prefs.interactionPreferences.finalAnswerStyle, 'concise')
+    const decision = readFileSync(join(fixture.projectDir, 'hello-scholar', 'preferences', 'candidates', 'PREF-20260425-080000-final-answer-style', 'decision.md'), 'utf-8')
+    assert(decision.includes('Status: `accepted`'))
+    assert(decision.includes('User asked AI to apply this preference candidate.'))
+    assert(decision.includes('Before'))
+    assert(decision.includes('After'))
+  })
+  destroyFixture(fixture)
+})
+
+test('applyPreferenceCandidate blocks high-impact preference without explicit confirmation', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    writePreferenceCandidate({
+      cwd: fixture.projectDir,
+      candidateId: 'PREF-20260425-080000-role',
+      proposal: 'Change academic role.',
+      evidence: 'User said to update role.',
+      patch: createPreferencePatch({
+        candidateId: 'PREF-20260425-080000-role',
+        targetScope: 'project',
+        targetFile: 'hello-scholar/preferences/user-preferences.yaml',
+        changes: {
+          profile: {
+            role: 'principal investigator',
+          },
+        },
+      }),
+    })
+
+    assert.throws(
+      () => applyPreferenceCandidate({
+        cwd: fixture.projectDir,
+        args: parseArgv([
+          '--candidate-id',
+          'PREF-20260425-080000-role',
+          '--approve',
+          '--user-request',
+          'User asked AI to apply this high impact preference.',
+        ]),
+      }),
+      /require --confirm-high-impact/i,
+    )
   })
   destroyFixture(fixture)
 })

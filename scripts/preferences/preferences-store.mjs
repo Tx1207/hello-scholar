@@ -42,6 +42,30 @@ const LIST_MERGE_PATHS = new Set([
   'technicalPreferences.preferredLibraries',
 ])
 
+
+const ALLOWED_PREFERENCE_ROOTS = new Set([
+  'profile',
+  'publicationTargets',
+  'researchFocus',
+  'reviewFocus',
+  'technicalPreferences',
+  'writingStyle',
+  'interactionPreferences',
+  'preferenceEvolution',
+])
+
+const HIGH_IMPACT_PREFERENCE_PATHS = new Set([
+  'profile.education',
+  'profile.role',
+  'publicationTargets.conferences',
+  'publicationTargets.journals',
+  'publicationTargets.defaultStandard',
+  'interactionPreferences.defaultImplementationBoundary',
+  'interactionPreferences.promptModificationBoundary',
+  'preferenceEvolution.enabled',
+  'preferenceEvolution.autoApply',
+])
+
 main()
 
 function main() {
@@ -66,6 +90,10 @@ function main() {
       path: String(args.getFlag('--path', '')).trim(),
       value: String(args.getFlag('--value', '')).trim(),
     }), null, 2))
+    return
+  }
+  if (command === 'apply') {
+    console.log(JSON.stringify(applyPreferenceCandidate({ cwd, args }), null, 2))
     return
   }
   throw new Error(`Unknown preferences-store command: ${command}`)
@@ -264,6 +292,60 @@ export function suggestPreferenceCandidate({
   })
 }
 
+export function applyPreferenceCandidate({ cwd = process.cwd(), args, now = new Date() } = {}) {
+  const candidateId = String(args.getFlag('--candidate-id', '')).trim()
+  if (!candidateId) throw new Error('--candidate-id is required')
+  if (!args.hasFlag('--approve')) throw new Error('preference apply requires --approve')
+  const userRequest = String(args.getFlag('--user-request', '')).trim()
+  if (!userRequest) {
+    throw new Error('preference apply requires --user-request to prove the user explicitly asked AI to apply this candidate')
+  }
+
+  const paths = ensureProjectPreferences(cwd)
+  const candidateRoot = join(paths.projectCandidatesRoot, candidateId)
+  const patchPath = join(candidateRoot, 'patch.yaml')
+  if (!pathExists(patchPath)) throw new Error(`Preference candidate patch is missing: ${patchPath}`)
+
+  const patch = readPreferencePatch(patchPath)
+  validatePreferencePatchForApply(patch, args)
+
+  const targetFile = patch.targetScope === 'global' ? paths.globalFile : paths.projectFile
+  ensureDir(dirname(targetFile))
+  const before = readUserPreferences(targetFile)
+  const merged = mergePreferences(before, patch.changes, {
+    baseSource: patch.targetScope,
+    overlaySource: `candidate:${candidateId}`,
+  }).preferences
+  writeUserPreferences(targetFile, merged)
+
+  const changedPaths = collectPreferenceLeafPaths(patch.changes)
+  const appliedAt = now.toISOString()
+  const decisionText = renderAppliedPreferenceDecision({
+    candidateId,
+    patch,
+    userRequest,
+    targetFile,
+    changedPaths,
+    before,
+    after: merged,
+    appliedAt,
+  })
+  writeText(join(candidateRoot, 'decision.md'), decisionText)
+
+  return {
+    ok: true,
+    action: 'apply',
+    candidateId,
+    targetScope: patch.targetScope,
+    targetFile,
+    userRequest,
+    changedPaths,
+    before: Object.fromEntries(changedPaths.map((pathKey) => [pathKey, readPathValue(before, pathKey)])),
+    after: Object.fromEntries(changedPaths.map((pathKey) => [pathKey, readPathValue(merged, pathKey)])),
+    decisionFile: relative(cwd, join(candidateRoot, 'decision.md')).replace(/\\/g, '/'),
+  }
+}
+
 export function formatEffectivePreferences(result) {
   const prefs = result.preferences || result.effectivePreferences || result
   const sources = result.sources || {}
@@ -278,6 +360,90 @@ export function formatEffectivePreferences(result) {
     `- Preferred Libraries: ${formatList(prefs.technicalPreferences?.preferredLibraries)} (${sources['technicalPreferences.preferredLibraries'] || 'built-in'})`,
     `- Preference Evolution: ${prefs.preferenceEvolution?.enabled === false ? 'disabled' : 'enabled'}`,
   ].join('\n')
+}
+
+function validatePreferencePatchForApply(patch, args) {
+  if (patch.type !== 'preference') throw new Error(`Unsupported preference patch type: ${patch.type}`)
+  const changedPaths = collectPreferenceLeafPaths(patch.changes)
+  if (changedPaths.length === 0) throw new Error('Preference patch has no changes')
+  for (const pathKey of changedPaths) {
+    const root = pathKey.split('.')[0]
+    if (!ALLOWED_PREFERENCE_ROOTS.has(root)) {
+      throw new Error(`Preference patch path is not allowed: ${pathKey}`)
+    }
+  }
+  if (readPathValue(patch.changes, 'preferenceEvolution.autoApply') === true) {
+    throw new Error('Preference evolution cannot enable autoApply through a candidate')
+  }
+  const highImpactPaths = changedPaths.filter((pathKey) => isHighImpactPreferencePath(pathKey))
+  if (highImpactPaths.length > 0 && !args.hasFlag('--confirm-high-impact')) {
+    throw new Error(`High-impact preference paths require --confirm-high-impact: ${highImpactPaths.join(', ')}`)
+  }
+  if (patch.targetScope === 'global' && !args.hasFlag('--confirm-global')) {
+    throw new Error('Global preference apply requires --confirm-global')
+  }
+}
+
+function isHighImpactPreferencePath(pathKey) {
+  if (HIGH_IMPACT_PREFERENCE_PATHS.has(pathKey)) return true
+  if (pathKey.startsWith('writingStyle.strong')) return true
+  if (pathKey.startsWith('writingStyle.constraints')) return true
+  return false
+}
+
+function collectPreferenceLeafPaths(value, prefix = '') {
+  if (!isPlainObject(value)) return prefix ? [prefix] : []
+  const entries = Object.entries(value)
+  if (entries.length === 0) return prefix ? [prefix] : []
+  return entries.flatMap(([key, entry]) => collectPreferenceLeafPaths(entry, prefix ? `${prefix}.${key}` : key))
+}
+
+function readPathValue(value, pathKey) {
+  const parts = String(pathKey || '').split('.').filter(Boolean)
+  let cursor = value
+  for (const part of parts) {
+    if (!isPlainObject(cursor) && !Array.isArray(cursor)) return undefined
+    cursor = cursor?.[part]
+    if (cursor === undefined) return undefined
+  }
+  return cursor
+}
+
+function renderAppliedPreferenceDecision({ candidateId, patch, userRequest, targetFile, changedPaths, before, after, appliedAt }) {
+  const rows = changedPaths.map((pathKey) => [
+    `### ${pathKey}`,
+    '',
+    '- Before:',
+    '',
+    fencedYaml(readPathValue(before, pathKey)),
+    '',
+    '- After:',
+    '',
+    fencedYaml(readPathValue(after, pathKey)),
+  ].join('\n'))
+  return [
+    '# Preference Candidate Decision',
+    '',
+    `- Candidate: \`${candidateId}\``,
+    '- Status: `accepted`',
+    `- Scope: \`${patch.targetScope}\``,
+    `- Target File: \`${targetFile}\``,
+    `- Applied At: \`${appliedAt}\``,
+    '',
+    '## User-Initiated Request',
+    '',
+    userRequest,
+    '',
+    '## Applied Changes',
+    '',
+    rows.join('\n\n'),
+    '',
+  ].join('\n')
+}
+
+function fencedYaml(value) {
+  const text = value === undefined ? '(unset)' : serializeYaml(value).trimEnd()
+  return ['```yaml', text, '```'].join('\n')
 }
 
 function mergeNode(baseValue, overlayValue, sources, pathKey, overlaySource) {

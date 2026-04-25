@@ -82,7 +82,7 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
       updatedAt: '2026-04-16T10:00:00.000Z',
     }, null, 2), 'utf-8')
 
-    const args = parseArgv(['--candidate-id', 'skill-evo-20260416-001', '--approve'])
+    const args = parseArgv(['--candidate-id', 'skill-evo-20260416-001', '--approve', '--user-request', 'User asked AI to merge this overlay skill.'])
     const result = mergeOverlaySkill(fixture.projectDir, args, {
       pkgRoot,
       repoRoot: fixture.repoRoot,

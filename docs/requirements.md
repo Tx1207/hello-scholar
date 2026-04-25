@@ -32,8 +32,10 @@
 | REQ-009 | `~plan` 生成结构化方案包。 | Codex 会话输入 `~plan <description>`；脚本层 `scripts/plan-package.mjs create`。 | `hello-scholar/plans/<plan-id>/requirements.md`、`plan.md`、`tasks.md`、`contract.json`。 | 方案包包含需求、计划、任务、contract；contract 可被后续 verify 消费。 | Done | `skills/commands/plan/SKILL.md`；`scripts/plan-package.mjs`；`test/plan-package.test.mjs` | README 只说明命令含义，未说明落盘结构；本文档补齐。 |
 | REQ-010 | `~verify` 不只看退出码，要对照 contract、diff、change、experiment 和 evidence。 | Codex 会话输入 `~verify [scope]`。 | change record；experiment `runs.md/evidence.md/artifacts.json`；state。 | 输出验证项，记录命令、配置、seed、环境摘要、metrics、artifact 路径或失败原因。 | Partial | `skills/commands/verify/SKILL.md`；`scripts/delivery-gate.mjs`；相关测试 | 自动化主要覆盖 gate/store；人工执行规范依赖 agent 遵守。 |
 | REQ-011 | `~analyze` 对实验结果做 hypothesis、baseline、failure case 和 next experiment 分析。 | Codex 会话输入 `~analyze`，通常在有实验 runs/evidence 后。 | experiment `analysis.md`；必要时更新 `experiment.yaml` 状态。 | 结论不夸大；说明支持/部分支持/否定；列出下一轮实验。 | Partial | `skills/commands/analyze/SKILL.md`；`skills/research/results-analysis/SKILL.md` | 缺少端到端样例实验包作为回归夹具。 |
-| REQ-012 | Skill evolution 使用 candidate-first，不自动修改真实 skills。 | Codex 会话输入 `~evolve`；或运行 evolution scripts。 | `hello-scholar/evolution/candidates/**` 或全局 overlay candidates；用户批准后才 apply/merge。 | candidate 引用 evidence/change；apply 需要明确 approval；可应用到 overlay。 | Done | `scripts/evolution/*.mjs`；`test/skill-evolution-*.test.mjs` | README 可增加 apply/merge 安全边界说明。 |
-| REQ-013 | Preference evolution 使用 candidate-first，不自动写入真实偏好。 | 用户说“记住这个偏好”或 `~evolve` 识别稳定偏好。 | `hello-scholar/preferences/candidates/**`；确认后才更新 `user-preferences.yaml`。 | candidate 包含 proposal/evidence/patch/decision；project/global 作用域清楚。 | Done | `scripts/preferences/preferences-store.mjs`；`test/preference-store.test.mjs` | 缺少用户级说明：哪些偏好必须单独确认。 |
+| REQ-012 | Skill evolution 使用 candidate-first，不自动修改真实 skills。 | Codex 会话输入 `~evolve`；closeout automation；或运行 `scripts/evolution/skill-evolution-review.mjs`。 | `hello-scholar/evolution/candidates/<candidate-id>/candidate.json`、`review.md`、`evidence-links.json`、`patch-plan.md`、`apply-report.md`、`merge-report.md`；确认后写全局 overlay skill。 | candidate 必须包含 source、decision、policy、review、extractedWorkflow；closeout 可自动 review 但不能 apply；overlay apply 必须经过脚本强制的 `preview -> approve -> apply`，preview 展示差异、可选动作和文件影响，approve 拒绝模糊确认，apply 校验 preview hash；默认只写 overlay，merge 才回写 repo source。 | Done | `scripts/evolution/*.mjs`；`templates/skill-evolution-*.md`；`test/skill-evolution-*.test.mjs` | Repo merge 仍应同步采用同等级状态机，避免同类风险。 |
+| REQ-013 | Preference evolution 使用 candidate-first，不自动写入真实偏好。 | 用户说“记住这个偏好”；`~evolve` 识别稳定偏好；closeout/wrap-up 总结偏好。 | `hello-scholar/preferences/candidates/<candidate-id>/proposal.md`、`evidence.md`、`patch.yaml`、`decision.md`；确认后才更新 project/global `user-preferences.yaml`。 | candidate 必须包含 proposal、evidence、patch、decision；closeout 可自动 suggest 但不能 apply；应用必须同时有 `--approve` 与 `--user-request`；默认 project scope；global scope 和高影响偏好必须单独确认。 | Done | `scripts/preferences/preferences-store.mjs`；`templates/preference-*.md`；`test/preference-store.test.mjs` | 已提供受控 apply 入口；仍不提供自动 apply/reject，必须由用户向 AI 主动提起。 |
+| REQ-021 | Preference patch 只能修改允许的偏好域，并区分普通字段与高影响字段。 | 生成 preference candidate 或用户要求应用偏好时。 | `patch.yaml` 的 `changes`；目标 `user-preferences.yaml`。 | allowlist 包含 `profile`、`publicationTargets`、`researchFocus`、`reviewFocus`、`technicalPreferences`、`writingStyle`、`interactionPreferences`、`preferenceEvolution`；其中 `profile.*`、`publicationTargets.*`、默认实施边界、prompt 修改边界和写作风格强约束需要单独确认。 | Partial | `scripts/preferences/preferences-store.mjs` 的 schema 和 merge 规则；`AGENTS.md` 高影响确认规则 | 当前实现可生成任意 path 的 patch，缺少脚本级 allowlist 校验。 |
+| REQ-022 | Skill evolution candidate 格式必须稳定且可审查。 | `skill-evolution-review.mjs review/status`；`skill-evolution-apply.mjs preview/approve/apply`；`skill-evolution-merge.mjs plan/merge`。 | `candidate.json` 和同目录审查/计划/报告文件。 | status 使用 `proposed/previewed/approved/rejected/applied/merged` 等可追踪状态；action 仅允许 `create/update/reject`；所有候选必须引用 change/plan/evidence 中至少一种来源；preview/approval/apply 字段可审计用户看过什么、选了什么、应用了什么。 | Partial | `scripts/evolution/skill-evolution-store.mjs`；`test/skill-evolution-review.test.mjs` | 状态枚举尚未集中成 schema 文档或脚本级校验。 |
 | REQ-014 | 状态文件表达当前任务状态，不替代 change/experiment 明细。 | `~plan`、`~build`、连续实验开发、`~verify`、`~analyze`、`~evolve`。 | `hello-scholar/state/STATE.md`、`active.json`、`recent.json`、`state/runtime.json`。 | state 包含当前目标、route/tier、active change/experiment、上下文、下一步、阻塞项。 | Done | `scripts/workflow-state-store.mjs`；`scripts/runtime-state.mjs`；`test/workflow-state.test.mjs`；`test/runtime-state.test.mjs` | README 未展开 state 字段，后续可补。 |
 | REQ-015 | `~idea` 是零副作用探索命令。 | Codex 会话输入 `~idea <description>`。 | 不创建 plan package，不改代码，不创建 project asset。 | mutating command 在 `~idea` route 下被 preflight 阻止。 | Done | `skills/commands/idea/SKILL.md`；`test/runtime-guard.test.mjs` | 无。 |
 | REQ-016 | 受保护/敏感文件写入前需要确认。 | 涉及 prompt、workflow、AGENTS、SKILL 等高影响变更。 | 目标敏感文件；change record。 | preflight 对敏感文件写入要求确认；默认先方案后修改。 | Done | `test/runtime-guard.test.mjs`；`AGENTS.md` | 当前用户明确要求写入本文档，允许实施。 |
@@ -60,6 +62,43 @@
 | 验证交付 | `~verify` | 可能 | change verification；experiment runs/evidence/artifacts；state | 需要记录命令、结果和证据路径。 |
 | 实验分析 | `~analyze` | 是 | experiment `analysis.md`；可能更新 status | 只在有实验结果/指标/日志时触发。 |
 | 经验沉淀 | `~evolve` | 是 | `hello-scholar/evolution/candidates/**` 或 `preferences/candidates/**` | candidate-first，不自动应用。 |
+
+## Evolution 数据格式与确认边界
+
+### Skill Evolution Candidate
+
+`hello-scholar/evolution/candidates/<candidate-id>/candidate.json` 是 skill 自进化的机器可读主文件。最低要求：
+
+- `source` 记录 `changeId`、`planId`、`route`、`tier`，至少能追溯到一个 change、plan 或 evidence 来源。
+- `decision.action` 只表达 `create`、`update`、`reject`；`create/update` 必须有 `targetSkillId`。
+- `policy` 明确 `requiresApproval`、`requiresEvidence`、`minEvidenceCount`，默认需要 approval 和 evidence。
+- `review` 记录 policy 是否启用、route 是否合格、变更是否足够 substantial、证据是否满足、当前 active skills/bundles。
+- `extractedWorkflow` 只记录可复用 workflow，不记录一次性任务细节或未经验证的经验。
+
+状态流转：`rejected` 终止；`proposed -> planned -> applied -> merged` 逐步推进。`applied` 只允许写全局 overlay skill；`merged` 才表示回写仓库 `skills/**`。
+
+### Preference Evolution Candidate
+
+`hello-scholar/preferences/candidates/<candidate-id>/patch.yaml` 是用户偏好候选的机器可读 patch。最低要求：
+
+- `targetScope` 只能是 `project` 或 `global`；未明确跨项目时默认 `project`。
+- `changes` 只能修改 `profile`、`publicationTargets`、`researchFocus`、`reviewFocus`、`technicalPreferences`、`writingStyle`、`interactionPreferences`、`preferenceEvolution`。
+- `proposal.md` 必须说明偏好摘要、拟改字段、作用域和风险。
+- `evidence.md` 必须说明证据来自用户明确反馈、重复纠正、closeout/wrap-up、change 或 experiment。
+- `decision.md` 初始为 `pending`，接受、拒绝或修订必须在用户确认后记录。
+
+必须单独确认的高影响偏好包括：学术身份、投稿目标、默认实施边界、prompt/workflow 修改边界、写作风格强约束、`preferenceEvolution.autoApply`、以及任何 `global` scope patch。
+
+### 用户主动应用门
+
+closeout automation 可以主动审查并积累 skill/preference candidates，但候选应用必须由用户向 AI 主动提起。脚本层要求：
+
+- Skill overlay apply：先运行 `scripts/evolution/skill-evolution-apply.mjs preview --candidate-id <id>`，向用户展示差异、选择和每个选择会改哪些文件；用户明确选择后运行 `approve --decision apply-overlay --preview-hash <hash> --user-confirmation "确认应用 ..."`；最后运行 `apply --candidate-id <id>`。
+- Skill repo merge：`scripts/evolution/skill-evolution-merge.mjs merge --candidate-id <id> --approve --user-request "<用户原话或明确授权>"`。
+- Preference apply：`scripts/preferences/preferences-store.mjs apply --candidate-id <id> --approve --user-request "<用户原话或明确授权>"`。
+- Global preference 额外要求 `--confirm-global`；高影响字段额外要求 `--confirm-high-impact`。
+
+AI 执行 skill overlay apply 前必须向用户说明：新增或修改哪个 skill、和已有 skill 有什么区别、可选处理动作、每个动作会处理的文件、作用域和风险。“处理这个 skill”“继续”“可以”等模糊表达只能进入 preview，不能 approve 或 apply。
 
 ## 当前已知差距清单
 
