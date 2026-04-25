@@ -1,5 +1,19 @@
 [
   {
+    "id": "academic-polishing",
+    "name": "academic-polishing",
+    "description": "当用户要求英文论文润色、中文论文润色、降低 AI 腔、改写得更自然、更像顶会论文、保持 LaTeX 和技术含义不变，或需要 publication-ready 学术表达时使用。",
+    "path": "skills/writing/academic-polishing",
+    "layer": "profile",
+    "category": "writing",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "writing-anti-ai",
+      "ml-paper-writing"
+    ]
+  },
+  {
     "id": "agent-identifier",
     "name": "agent-identifier",
     "description": "在创建或配置 Claude Code agent 及其 frontmatter 时使用。",
@@ -20,6 +34,19 @@
     "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
+  },
+  {
+    "id": "bilingual-academic-translation",
+    "name": "bilingual-academic-translation",
+    "description": "当用户要求中英互译、英文学术翻译、中文转 LaTeX 英文、英文论文段落译回中文核对，或需要保持术语、公式、citation 和 LaTeX 结构不变的双语学术翻译时使用。",
+    "path": "skills/writing/bilingual-academic-translation",
+    "layer": "profile",
+    "category": "writing",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "ml-paper-writing"
+    ]
   },
   {
     "id": "bug-detective",
@@ -143,6 +170,33 @@
     "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
+  },
+  {
+    "id": "experiment-narrative-analysis",
+    "name": "experiment-narrative-analysis",
+    "description": "当用户要求把实验结果写成论文叙述、解释图表发现、组织 ablation / failure case 文字、推荐实验图表表达，或将 metrics 转成谨慎的 result narrative 时使用。",
+    "path": "skills/research/experiment-narrative-analysis",
+    "layer": "profile",
+    "category": "research",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "results-analysis"
+    ]
+  },
+  {
+    "id": "figure-table-captioning",
+    "name": "figure-table-captioning",
+    "description": "当用户要求生成或润色 figure caption、table caption、图标题、表标题、visual abstract、论文架构图说明，或需要把实验图表叙述成 publication-ready caption 时使用。",
+    "path": "skills/writing/figure-table-captioning",
+    "layer": "profile",
+    "category": "writing",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "ml-paper-writing",
+      "results-analysis"
+    ]
   },
   {
     "id": "frontend-design",
@@ -398,6 +452,32 @@
     "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
+  },
+  {
+    "id": "paper-compression-expansion",
+    "name": "paper-compression-expansion",
+    "description": "当用户要求缩写、扩写、控制字数、压缩摘要、扩展论文段落、适配 page budget，或在不改变 LaTeX、事实和 claim 的情况下微调论文长度时使用。",
+    "path": "skills/writing/paper-compression-expansion",
+    "layer": "profile",
+    "category": "writing",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "ml-paper-writing"
+    ]
+  },
+  {
+    "id": "paper-logic-diagnosis",
+    "name": "paper-logic-diagnosis",
+    "description": "当用户要求检查论文逻辑、段落连贯性、claim-evidence 对齐、Reviewer 视角快速审视、找论证漏洞，或判断 novelty / evidence / limitation 是否支撑结论时使用。",
+    "path": "skills/review/paper-logic-diagnosis",
+    "layer": "profile",
+    "category": "review",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": [
+      "paper-self-review"
+    ]
   },
   {
     "id": "paper-self-review",

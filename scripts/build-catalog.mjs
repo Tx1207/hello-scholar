@@ -23,8 +23,14 @@ const hardDependencies = {
 }
 
 const optionalDependencies = {
+  'academic-polishing': ['writing-anti-ai', 'ml-paper-writing'],
+  'bilingual-academic-translation': ['ml-paper-writing'],
   'citation-verification': ['ml-paper-writing'],
+  'experiment-narrative-analysis': ['results-analysis'],
+  'figure-table-captioning': ['ml-paper-writing', 'results-analysis'],
   'ml-paper-writing': ['paper-miner'],
+  'paper-compression-expansion': ['ml-paper-writing'],
+  'paper-logic-diagnosis': ['paper-self-review'],
   'paper-self-review': ['ml-paper-writing'],
   'review-response': ['paper-self-review'],
   'readme-updater': ['git-push'],

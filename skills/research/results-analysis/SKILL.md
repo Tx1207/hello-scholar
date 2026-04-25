@@ -195,6 +195,12 @@ analysis-output/
 
 绝不能用自信 prose 去填补缺失证据。
 
+## Narrative handoff
+
+本 skill 负责严格统计分析、figure 生成、evidence 解释和 blocker 判断。若用户要把已经确认的 metrics、ablation、failure case 或 figure observation 写成论文 `Results` 段落，调用 `experiment-narrative-analysis`。
+
+handoff 前必须明确：run 类型、seed / sample 信息、baseline、primary metric、effect size 或 descriptive difference、known caveat。没有这些事实时，只能输出受限叙述，不能写成强结论。
+
 ## Reference files
 
 只按需加载：

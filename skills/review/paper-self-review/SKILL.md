@@ -95,6 +95,10 @@ Paper Quality Checklist:
 ### Step 5: 写作质量
 审查语言表达和写作清晰度。
 
+如需做局部、快速的 reviewer 视角逻辑诊断，调用 `paper-logic-diagnosis`：检查段落连贯性、claim-evidence 对齐、novelty framing、unsupported jump 和 reviewer likely concern。
+
+如需把诊断后的具体段落改成 publication-ready 表达，调用 `academic-polishing`；不要在 self-review 中直接承担长篇润色。
+
 ### Step 6: 最终清单
 使用质量清单完成最终核验。
 

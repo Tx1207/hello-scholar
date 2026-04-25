@@ -440,6 +440,23 @@ NeurIPS 6 分制：
 - 不要在图内放 title
 - caption 必须自洽
 
+需要生成、润色或诊断图表标题、table caption、architecture diagram 文案或 visual abstract 时，优先调用 `figure-table-captioning`，不要在本 skill 中临时发明 caption workflow。
+
+## Prompt Micro-Skills
+
+当用户的写作请求是局部、可复用的 prompt 动作时，优先路由到专门 micro-skill：
+
+| Task | Skill |
+|------|-------|
+| 中英互译、译回中文核对、术语一致性 | `bilingual-academic-translation` |
+| 英文/中文润色、降低 AI 腔、publication-ready 表达 | `academic-polishing` |
+| 缩写、扩写、page budget 或摘要字数控制 | `paper-compression-expansion` |
+| figure/table caption、架构图说明、实验图表表达 | `figure-table-captioning` |
+| 段落逻辑、claim-evidence 对齐、reviewer quick scan | `paper-logic-diagnosis` |
+| 实验结果叙述、ablation/failure-case narrative | `experiment-narrative-analysis` |
+
+本 skill 保留论文整体 narrative、section drafting、venue adaptation 和 citation-aware writing 的总入口职责。
+
 ## References & Resources
 
 ### Reference Documents
