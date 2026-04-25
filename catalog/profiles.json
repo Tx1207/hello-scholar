@@ -5,9 +5,18 @@
     "stage": "构思",
     "base": false,
     "description": "生成研究问题、假设、方法方向、文献切入点和初步实验设想。",
-    "bundles": ["research-core"],
-    "skills": ["research-ideation", "planning-with-files"],
-    "agents": ["literature-reviewer"]
+    "skills": [
+      "daily-paper-generator",
+      "kaggle-learner",
+      "planning-with-files",
+      "research-ideation",
+      "results-analysis",
+      "results-report"
+    ],
+    "agents": [
+      "kaggle-miner",
+      "literature-reviewer"
+    ]
   },
   {
     "id": "ml-development",
@@ -15,9 +24,32 @@
     "stage": "ML 实验开发",
     "base": true,
     "description": "科研代码开发、实验实现、验证、实验分析、baseline 对比、failure case 解释、下一轮实验规划、记录和 git 工作流。",
-    "bundles": ["dev-core", "research-core"],
-    "skills": ["daily-coding", "verification-loop", "git-workflow", "results-analysis"],
-    "agents": ["code-reviewer", "dev-planner", "tdd-guide"]
+    "skills": [
+      "architecture-design",
+      "build-fixer",
+      "code-review-excellence",
+      "daily-coding",
+      "daily-paper-generator",
+      "git-commit",
+      "git-push",
+      "git-workflow",
+      "kaggle-learner",
+      "research-ideation",
+      "results-analysis",
+      "results-report",
+      "verification-loop"
+    ],
+    "agents": [
+      "architect",
+      "bug-analyzer",
+      "build-error-resolver",
+      "code-reviewer",
+      "dev-planner",
+      "kaggle-miner",
+      "literature-reviewer",
+      "refactor-cleaner",
+      "tdd-guide"
+    ]
   },
   {
     "id": "paper-writing",
@@ -25,9 +57,22 @@
     "stage": "论文写作",
     "base": false,
     "description": "组织论文结构，撰写方法、实验、结果章节，优化学术表达和引用衔接。",
-    "bundles": ["writing-core"],
-    "skills": ["ml-paper-writing", "results-report", "citation-verification", "writing-anti-ai"],
-    "agents": ["paper-miner"]
+    "skills": [
+      "citation-verification",
+      "doc-coauthoring",
+      "latex-conference-template-organizer",
+      "ml-paper-writing",
+      "paper-self-review",
+      "post-acceptance",
+      "results-report",
+      "review-response",
+      "writing-anti-ai"
+    ],
+    "agents": [
+      "paper-miner",
+      "rebuttal-writer",
+      "ui-sketcher"
+    ]
   },
   {
     "id": "paper-self-review",
@@ -35,9 +80,22 @@
     "stage": "自审",
     "base": false,
     "description": "从 reviewer 视角检查 novelty、technical correctness、empirical evidence 和 writing clarity。",
-    "bundles": ["writing-core"],
-    "skills": ["paper-self-review", "citation-verification", "results-analysis"],
-    "agents": ["paper-miner"]
+    "skills": [
+      "citation-verification",
+      "doc-coauthoring",
+      "latex-conference-template-organizer",
+      "ml-paper-writing",
+      "paper-self-review",
+      "post-acceptance",
+      "results-analysis",
+      "review-response",
+      "writing-anti-ai"
+    ],
+    "agents": [
+      "paper-miner",
+      "rebuttal-writer",
+      "ui-sketcher"
+    ]
   },
   {
     "id": "submission-rebuttal",
@@ -45,9 +103,21 @@
     "stage": "投稿/Rebuttal",
     "base": false,
     "description": "准备投稿材料，拆解审稿意见，规划 response 策略并撰写 rebuttal。",
-    "bundles": ["writing-core"],
-    "skills": ["review-response", "paper-self-review", "ml-paper-writing"],
-    "agents": ["rebuttal-writer"]
+    "skills": [
+      "citation-verification",
+      "doc-coauthoring",
+      "latex-conference-template-organizer",
+      "ml-paper-writing",
+      "paper-self-review",
+      "post-acceptance",
+      "review-response",
+      "writing-anti-ai"
+    ],
+    "agents": [
+      "paper-miner",
+      "rebuttal-writer",
+      "ui-sketcher"
+    ]
   },
   {
     "id": "post-acceptance",
@@ -55,8 +125,26 @@
     "stage": "录用后处理",
     "base": false,
     "description": "处理 camera-ready、slides、poster、project page 和论文传播材料。",
-    "bundles": ["writing-core", "ui-content"],
-    "skills": ["post-acceptance", "doc-coauthoring", "frontend-design"],
-    "agents": ["ui-sketcher"]
+    "skills": [
+      "citation-verification",
+      "defuddle",
+      "doc-coauthoring",
+      "frontend-design",
+      "latex-conference-template-organizer",
+      "ml-paper-writing",
+      "paper-self-review",
+      "post-acceptance",
+      "review-response",
+      "ui-ux-pro-max",
+      "web-design-reviewer",
+      "webapp-testing",
+      "writing-anti-ai"
+    ],
+    "agents": [
+      "paper-miner",
+      "rebuttal-writer",
+      "story-generator",
+      "ui-sketcher"
+    ]
   }
 ]

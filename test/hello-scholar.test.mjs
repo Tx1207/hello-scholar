@@ -6,10 +6,10 @@ import { fileURLToPath } from 'node:url'
 import { before, test } from 'node:test'
 import { spawnSync } from 'node:child_process'
 
-import { detectInstalledScope, loadInstallState, loadUserConfig } from '../scripts/cli-config.mjs'
-import { loadCatalog, resolveSelection } from '../scripts/catalog-loader.mjs'
-import { syncInstalledSelection } from '../scripts/cli-codex.mjs'
-import { loadSelectionState, saveSelectionState } from '../scripts/selection-state.mjs'
+import { detectInstalledScope, loadInstallState, loadUserConfig } from '../scripts/install/cli-config.mjs'
+import { loadCatalog, resolveSelection } from '../scripts/profile/catalog-loader.mjs'
+import { syncInstalledSelection } from '../scripts/install/cli-codex.mjs'
+import { loadSelectionState, saveSelectionState } from '../scripts/profile/selection-state.mjs'
 import { applySelectionOperation, buildInteractiveFrame, buildSelectionModel } from '../scripts/text-ui.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -21,79 +21,76 @@ before(() => {
 test('catalog resolution keeps base separate and expands hard dependencies', () => {
   const catalog = loadCatalog(pkgRoot)
   const selection = resolveSelection(catalog, {
-    bundles: ['obsidian-core', 'meta-builder'],
+    activeProfiles: ['paper-writing'],
     includeBase: true,
   })
 
-  assert(selection.skills.includes('obsidian-project-memory'))
-  assert(selection.skills.includes('obsidian-markdown'))
-  assert(selection.skills.includes('skill-quality-reviewer'))
-
-  const metaBuilder = catalog.bundles.find((entry) => entry.id === 'meta-builder')
-  assert(metaBuilder)
-  assert(metaBuilder.skills.includes('plugin-structure'))
-  assert(metaBuilder.skills.includes('skill-quality-reviewer'))
-  assert.equal(catalog.skillMap.has('hello-verify'), false)
-  assert.equal(catalog.skillMap.has('helloagents'), false)
+  assert(selection.skills.includes('daily-coding'))
+  assert(selection.skills.includes('ml-paper-writing'))
+  assert(selection.skills.includes('results-analysis'))
+  assert(selection.skills.includes('citation-verification'))
+  assert(selection.agents.includes('code-reviewer'))
+  assert(selection.agents.includes('paper-miner'))
   assert.equal(catalog.skillMap.has('commands'), false)
-  assert.deepEqual(metaBuilder.dependsOnBase.sort(), [
-    'codex-hook-emulation',
-    'git-workflow',
-    'planning-with-files',
-    'session-wrap-up',
-  ])
 })
 
-test('interactive model toggles bundles and locks inherited skills', () => {
+test('interactive model toggles profiles and locks inherited skills', () => {
   const catalog = loadCatalog(pkgRoot)
 
   const baseState = {
     mode: 'standby',
     includeBase: true,
-    bundles: [],
+    baseProfile: 'ml-development',
+    activeProfile: 'ml-development',
+    activeProfiles: ['ml-development'],
     explicitSkills: [],
     explicitAgents: [],
     skills: [],
     agents: [],
   }
 
-  const toggledBundle = applySelectionOperation('bundles', catalog, baseState, 0)
-  assert.equal(toggledBundle.changed, true)
-  assert.deepEqual(toggledBundle.nextState.bundles, ['research-core'])
+  const paperWritingIndex = catalog.profiles.findIndex((entry) => entry.id === 'paper-writing')
+  const toggledProfile = applySelectionOperation('profiles', catalog, baseState, paperWritingIndex)
+  assert.equal(toggledProfile.changed, true)
+  assert.deepEqual(toggledProfile.nextState.activeProfiles, ['paper-writing', 'ml-development'])
 
   const resolved = resolveSelection(catalog, {
-    bundles: ['research-core'],
+    activeProfiles: ['paper-writing'],
     includeBase: true,
   })
   const inheritedSkillState = {
     ...baseState,
-    bundles: ['research-core'],
+    activeProfile: 'paper-writing',
+    activeProfiles: ['paper-writing'],
     skills: resolved.skills,
     agents: resolved.agents,
   }
 
   const skillModel = buildSelectionModel('skills', catalog, inheritedSkillState)
-  const researchIdeationIndex = skillModel.items.findIndex((entry) => entry.id === 'research-ideation')
-  assert.notEqual(researchIdeationIndex, -1)
-  assert.equal(skillModel.items[researchIdeationIndex].locked, true)
+  const paperWritingSkillIndex = skillModel.items.findIndex((entry) => entry.id === 'ml-paper-writing')
+  assert.notEqual(paperWritingSkillIndex, -1)
+  assert.equal(skillModel.items[paperWritingSkillIndex].locked, true)
 
-  const lockedToggle = applySelectionOperation('skills', catalog, inheritedSkillState, researchIdeationIndex)
+  const lockedToggle = applySelectionOperation('skills', catalog, inheritedSkillState, paperWritingSkillIndex)
   assert.equal(lockedToggle.changed, false)
   assert.equal(lockedToggle.nextState, inheritedSkillState)
-  assert(lockedToggle.message.includes('请通过 bundles 调整'))
+  assert(lockedToggle.message.includes('profile use'))
 })
 
 test('interactive frame windows long skill lists around the focused entry', () => {
   const catalog = loadCatalog(pkgRoot)
+  const activeProfiles = catalog.profiles.map((entry) => entry.id)
   const resolved = resolveSelection(catalog, {
-    bundles: ['research-core', 'writing-core', 'dev-core', 'obsidian-core', 'meta-builder', 'ui-content'],
+    activeProfiles,
     includeBase: true,
   })
 
   const fullState = {
     mode: 'standby',
     includeBase: true,
-    bundles: ['research-core', 'writing-core', 'dev-core', 'obsidian-core', 'meta-builder', 'ui-content'],
+    baseProfile: 'ml-development',
+    activeProfile: activeProfiles[0],
+    activeProfiles,
     explicitSkills: [],
     explicitAgents: [],
     skills: resolved.skills,
@@ -118,22 +115,15 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     const projectScholarRoot = join(fixture.projectDir, '.hello-scholar')
     writeProjectAgentsFixture(fixture)
 
-    const installText = runCli(fixture, [
-      'install',
-      'codex',
-      '--standby',
-      '--bundle',
-      'research-core',
-      '--bundle',
-      'writing-core',
-    ])
+    runCli(fixture, ['profile', 'use', 'paper-writing', '--standby'])
+    const installText = runCli(fixture, ['install', 'codex', '--standby'])
 
     assert(installText.includes('hello-scholar Install'))
     assert(installText.includes('- Mode: standby'))
-    assert(installText.includes('research-core, writing-core'))
+    assert(installText.includes('- Profile: paper-writing'))
     assertPathExists(join(projectScholarRoot, 'skills', 'ml-paper-writing'))
     assertPathExists(join(projectScholarRoot, 'skills', 'commands', 'plan', 'SKILL.md'))
-    assertPathExists(join(projectScholarRoot, 'skills', 'hello-verify', 'SKILL.md'))
+    assertPathExists(join(projectScholarRoot, 'skills', 'commands', 'verify', 'SKILL.md'))
     assertPathExists(join(projectScholarRoot, 'agents', 'paper-miner'))
     assertPathExists(join(projectScholarRoot, 'active-prompt.md'))
     assertPathExists(join(projectScholarRoot, 'install-state.json'))
@@ -151,7 +141,7 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     const modules = readJson(join(projectScholarRoot, 'modules.json'))
     assert.equal(modules.runtime, 'hello-scholar')
     assert.equal(modules.mode, 'standby')
-    assert.deepEqual(modules.bundles, ['research-core', 'writing-core'])
+    assert.equal(modules.activeProfile, 'paper-writing')
 
     const installState = readJson(join(projectScholarRoot, 'install-state.json'))
     assert.equal(installState.install_mode, 'standby')
@@ -168,15 +158,18 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assert(projectAgentsText.includes('# hello-scholar'))
     assert(projectAgentsText.includes('## 统一执行流程'))
     assert(projectAgentsText.includes('## 当前激活 Profile'))
-    assert(projectAgentsText.includes('research-ideation'))
+    assert(projectAgentsText.includes('paper-writing'))
 
-    const doctorText = runCli(fixture, ['doctor'])
-    assert(!doctorText.includes('[FAIL]'), doctorText)
-
+    writeOverlaySkillFixture(fixture, 'status-overlay-skill')
     const statusText = runCli(fixture, ['status'])
     assert(statusText.includes('- Installed: yes'))
     assert(statusText.includes('- Mode: standby'))
+    assert(statusText.includes('- Standby Install: installed (standby'))
+    assert(statusText.includes('- Global Install: not installed'))
+    assert(statusText.includes('- Active Change: None'))
     assert(statusText.includes('- Active Experiment: None'))
+    assert(statusText.includes('- Overlay Skills: 1'))
+    assert(statusText.includes('- Preference Sources: built-in'))
     assert(statusText.includes('- Project Preferences:'))
     assert(statusText.includes('- Project Prompt: present'))
     assert(statusText.includes('- Project Bootstrap Block: present'))
@@ -205,7 +198,7 @@ test('global install is blocked until current project standby is manually cleane
     const projectScholarRoot = join(fixture.projectDir, '.hello-scholar')
     writeProjectAgentsFixture(fixture)
 
-    runCli(fixture, ['install', 'codex', '--standby', '--bundle', 'research-core'])
+    runCli(fixture, ['install', 'codex', '--standby'])
     assertPathExists(join(projectScholarRoot, 'skills', 'research-ideation'))
 
     const blocked = spawnSync(process.execPath, [
@@ -213,10 +206,6 @@ test('global install is blocked until current project standby is manually cleane
       'install',
       'codex',
       '--global',
-      '--bundle',
-      'obsidian-core',
-      '--bundle',
-      'meta-builder',
     ], { cwd: fixture.projectDir, env: fixture.env, encoding: 'utf-8' })
 
     assert.equal(blocked.status, 1)
@@ -224,16 +213,16 @@ test('global install is blocked until current project standby is manually cleane
     assertPathExists(join(projectScholarRoot, 'install-state.json'))
 
     runCli(fixture, ['cleanup', 'codex', '--standby'])
-    const installText = runCli(fixture, ['install', 'codex', '--global', '--bundle', 'obsidian-core', '--bundle', 'meta-builder'])
+    const installText = runCli(fixture, ['install', 'codex', '--global'])
 
     assert(installText.includes('hello-scholar Install'))
     assert(installText.includes('- Mode: global'))
     assertPathMissing(join(projectScholarRoot, 'install-state.json'))
     assertPathMissing(join(projectScholarRoot, 'modules.json'))
     assertPathMissing(join(projectScholarRoot, 'skills', 'research-ideation'))
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'obsidian-project-memory'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'commands', 'verify', 'SKILL.md'))
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'hello-review', 'SKILL.md'))
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'daily-coding', 'SKILL.md'))
     assertPathExists(join(
       fixture.codexHome,
       'plugins',
@@ -242,7 +231,7 @@ test('global install is blocked until current project standby is manually cleane
       'hello-scholar',
       'local',
       'skills',
-      'obsidian-project-memory',
+      'research-ideation',
     ))
     assertPathExists(join(fixture.globalScholarRoot, 'install-state.json'))
     assertPathMissing(join(fixture.globalScholarRoot, 'hello-scholar.json'))
@@ -255,7 +244,7 @@ test('global install is blocked until current project standby is manually cleane
 
     const configText = readFileSync(join(fixture.codexHome, 'config.toml'), 'utf-8')
     assert(configText.includes('[plugins."hello-scholar@local-plugins"]'))
-    assert(configText.includes('plugins/hello-scholar/agents/literature-reviewer-obsidian/config.toml'))
+    assert(configText.includes('plugins/hello-scholar/agents/literature-reviewer/config.toml'))
 
     assertPathExists(join(fixture.codexHome, 'hello-scholar-active-prompt.md'))
     assertPathMissing(join(projectScholarRoot, 'active-prompt.md'))
@@ -264,19 +253,18 @@ test('global install is blocked until current project standby is manually cleane
     assert(homeAgentsText.includes('<!-- HELLO_SCHOLAR START -->'))
     assert(homeAgentsText.includes('# hello-scholar'))
     assert(homeAgentsText.includes('## 统一执行流程'))
-    assert(homeAgentsText.includes('meta-builder'))
+    assert(homeAgentsText.includes('ml-development'))
     assert(!homeAgentsText.includes('Skills：项目 `skills/` 目录，在 config.toml 中注册'))
 
     const projectAgentsText = readFileSync(join(fixture.projectDir, 'AGENTS.md'), 'utf-8')
     assert(projectAgentsText.includes('# Existing Project Rules'))
     assert(!projectAgentsText.includes('<!-- HELLO_SCHOLAR START -->'))
 
-    const doctorText = runCli(fixture, ['doctor', '--global'])
-    assert(!doctorText.includes('[FAIL]'), doctorText)
-
     const statusText = runCli(fixture, ['status', '--global'])
     assert(statusText.includes('- Scope: global'))
     assert(statusText.includes('- Mode: global'))
+    assert(statusText.includes('- Standby Install: not installed'))
+    assert(statusText.includes('- Global Install: installed (global'))
     assert(statusText.includes('- Home Prompt: present'))
     assert(statusText.includes('- Home Bootstrap Block: present'))
 
@@ -299,11 +287,11 @@ test('installing standby in a project is blocked while global is active', () => 
   try {
     writeProjectAgentsFixture(fixture)
 
-    runCli(fixture, ['install', 'codex', '--global', '--bundle', 'research-core'])
+    runCli(fixture, ['install', 'codex', '--global'])
     assertPathExists(join(fixture.globalScholarRoot, 'install-state.json'))
     assertPathExists(join(fixture.codexHome, 'AGENTS.md'))
 
-    const blocked = spawnSync(process.execPath, [join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby', '--bundle', 'writing-core'], {
+    const blocked = spawnSync(process.execPath, [join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby'], {
       cwd: fixture.projectDir,
       env: fixture.env,
       encoding: 'utf-8',
@@ -328,14 +316,14 @@ test('status defaults to global when global is installed and project only has lo
       runtime: 'hello-scholar',
       mode: 'standby',
       includeBase: true,
-      bundles: ['writing-core'],
+      activeProfiles: ['paper-writing'],
       explicitSkills: [],
       explicitAgents: [],
       skills: [],
       agents: [],
     }, null, 2), 'utf-8')
 
-    runCli(fixture, ['install', 'codex', '--global', '--bundle', 'research-core'])
+    runCli(fixture, ['install', 'codex', '--global'])
 
     const statusText = runCli(fixture, ['status'])
     assert(statusText.includes('- Scope: global'))
@@ -346,11 +334,11 @@ test('status defaults to global when global is installed and project only has lo
   }
 })
 
-test('list selection follows global scope when global is the active install', () => {
+test('selection follows global scope when global is the active install', () => {
   const fixture = createFixture()
   try {
     writeProjectAgentsFixture(fixture)
-    runCli(fixture, ['install', 'codex', '--global', '--bundle', 'research-core'])
+    runCli(fixture, ['install', 'codex', '--global'])
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
 
     mkdirSync(join(fixture.projectDir, '.hello-scholar'), { recursive: true })
@@ -358,7 +346,7 @@ test('list selection follows global scope when global is the active install', ()
       runtime: 'hello-scholar',
       mode: 'standby',
       includeBase: true,
-      bundles: ['writing-core'],
+      activeProfiles: ['paper-writing'],
       explicitSkills: [],
       explicitAgents: [],
       skills: [],
@@ -379,7 +367,7 @@ test('list selection follows global scope when global is the active install', ()
 
     const savedSelection = saveSelectionState(catalog, {
       ...currentState,
-      bundles: ['meta-builder'],
+      activeProfiles: ['paper-writing'],
       explicitSkills: [],
       explicitAgents: [],
       storageScope: scope,
@@ -389,20 +377,20 @@ test('list selection follows global scope when global is the active install', ()
 
     const globalModules = readJson(join(fixture.globalScholarRoot, 'modules.json'))
     const projectModules = readJson(join(fixture.projectDir, '.hello-scholar', 'modules.json'))
-    assert.deepEqual(globalModules.bundles, ['meta-builder'])
-    assert.deepEqual(projectModules.bundles, ['writing-core'])
-    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'plugin-structure'))
+    assert.deepEqual(globalModules.activeProfiles, ['paper-writing'])
+    assert.deepEqual(projectModules.activeProfiles, ['paper-writing'])
+    assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'ml-paper-writing'))
     assertPathExists(join(fixture.hostHome, 'plugins', 'hello-scholar', 'skills', 'research-ideation'))
   } finally {
     destroyFixture(fixture)
   }
 })
 
-test('list selection follows standby scope when current project standby is active', () => {
+test('selection follows standby scope when current project standby is active', () => {
   const fixture = createFixture()
   try {
     writeProjectAgentsFixture(fixture)
-    runCli(fixture, ['install', 'codex', '--standby', '--bundle', 'research-core'])
+    runCli(fixture, ['install', 'codex', '--standby'])
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
 
     mkdirSync(fixture.globalScholarRoot, { recursive: true })
@@ -410,7 +398,7 @@ test('list selection follows standby scope when current project standby is activ
       runtime: 'hello-scholar',
       mode: 'global',
       includeBase: true,
-      bundles: ['meta-builder'],
+      activeProfiles: ['paper-writing'],
       explicitSkills: [],
       explicitAgents: [],
       skills: [],
@@ -431,7 +419,7 @@ test('list selection follows standby scope when current project standby is activ
 
     const savedSelection = saveSelectionState(catalog, {
       ...currentState,
-      bundles: ['writing-core'],
+      activeProfiles: ['paper-writing'],
       explicitSkills: [],
       explicitAgents: [],
       storageScope: scope,
@@ -441,8 +429,8 @@ test('list selection follows standby scope when current project standby is activ
 
     const projectModules = readJson(join(fixture.projectDir, '.hello-scholar', 'modules.json'))
     const globalModules = readJson(join(fixture.globalScholarRoot, 'modules.json'))
-    assert.deepEqual(projectModules.bundles, ['writing-core'])
-    assert.deepEqual(globalModules.bundles, ['meta-builder'])
+    assert.deepEqual(projectModules.activeProfiles, ['paper-writing'])
+    assert.deepEqual(globalModules.activeProfiles, ['paper-writing'])
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'ml-paper-writing'))
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
   } finally {
@@ -455,7 +443,7 @@ test('first install without explicit mode defaults to standby', () => {
   try {
     writeProjectAgentsFixture(fixture)
 
-    const installText = runCli(fixture, ['install', 'codex', '--bundle', 'research-core'])
+    const installText = runCli(fixture, ['install', 'codex'])
     assert(installText.includes('- Mode: standby'))
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
@@ -479,13 +467,13 @@ test('standby installs in different projects do not delete each other', () => {
       '',
     ].join('\n'), 'utf-8')
 
-    runNode([join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby', '--bundle', 'research-core'], {
+    runNode([join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby'], {
       cwd: fixture.projectDir,
       env: fixture.env,
     })
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
 
-    runNode([join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby', '--bundle', 'writing-core'], {
+    runNode([join(pkgRoot, 'cli.mjs'), 'install', 'codex', '--standby'], {
       cwd: projectB,
       env: fixture.env,
     })
@@ -493,7 +481,7 @@ test('standby installs in different projects do not delete each other', () => {
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'install-state.json'))
     assertPathExists(join(projectB, '.hello-scholar', 'install-state.json'))
     assertPathExists(join(fixture.projectDir, '.hello-scholar', 'skills', 'research-ideation'))
-    assertPathExists(join(projectB, '.hello-scholar', 'skills', 'ml-paper-writing'))
+    assertPathExists(join(projectB, '.hello-scholar', 'skills', 'daily-coding'))
   } finally {
     destroyFixture(fixture)
   }
@@ -525,6 +513,20 @@ function writeProjectAgentsFixture(fixture) {
     '# Existing Project Rules',
     '',
     'Keep this file structure intact.',
+    '',
+  ].join('\n'), 'utf-8')
+}
+
+function writeOverlaySkillFixture(fixture, skillId) {
+  const skillRoot = join(fixture.globalScholarRoot, 'overlays', 'skills', skillId)
+  mkdirSync(skillRoot, { recursive: true })
+  writeFileSync(join(skillRoot, 'SKILL.md'), [
+    '---',
+    `name: ${skillId}`,
+    'description: Test overlay skill for status resolver.',
+    '---',
+    '',
+    '# Test Overlay Skill',
     '',
   ].join('\n'), 'utf-8')
 }

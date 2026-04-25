@@ -17,6 +17,8 @@ import {
   requireText,
   splitLines,
 } from './change-tracker-utils.mjs'
+import { appendChange } from './experiment-store.mjs'
+import { readRuntimeState } from './runtime-state.mjs'
 import {
   createRecord,
   ensureTrackingRoots,
@@ -35,7 +37,7 @@ export function trackIntent(cwd, args) {
   ensureTrackingRoots(paths)
   const workspace = loadWorkspace(paths)
   const files = normalizeFiles(cwd, [...args.getList('--file'), ...args.getList('--files')])
-  const route = String(args.getFlag('--route', workspace.state.route || '~auto')).trim() || '~auto'
+  const route = String(args.getFlag('--route', workspace.state.route || '~build')).trim() || '~build'
   const tier = String(args.getFlag('--tier', workspace.state.tier || 'T1')).trim() || 'T1'
   const title = normalizeTitle(args.getFlag('--title', ''), request)
   const selection = selectIntentTarget(workspace, { request, title, files, now, args })
@@ -86,12 +88,15 @@ export function trackChange(cwd, args) {
   record.nextStep = mergeUnique(record.nextStep, nextStepItems)
 
   writeRecord(paths, record)
+  const experimentChange = appendExperimentChangeIfAvailable(cwd, paths, args, summary, files, now)
   const nextWorkspace = loadWorkspace(paths)
   writeIndexAndState(paths, nextWorkspace, isActiveStatus(record.meta.status) ? record.id : '', isActiveStatus)
-  return buildResult('track-change', 'update-current', record, [
+  const notes = [
     `Recorded ${splitLines(summary).length} actual change line(s).`,
     verification.length > 0 ? `Added ${verification.length} verification item(s).` : 'No verification items were added.',
-  ])
+  ]
+  if (experimentChange) notes.push(`Mirrored change to experiment ${experimentChange.experimentId}.`)
+  return buildResult('track-change', 'update-current', record, notes)
 }
 
 export function trackCloseout(cwd, args) {
@@ -188,4 +193,12 @@ function selectRecordForCloseout(workspace, explicitId) {
   const active = getActiveRecord(workspace, isActiveStatus)
   if (!active) throw new Error('No active change record found to close.')
   return active
+}
+
+function appendExperimentChangeIfAvailable(cwd, paths, args, summary, files, now) {
+  const explicitExperimentId = String(args.getFlag('--experiment-id', '')).trim()
+  const activeExperimentId = readRuntimeState(cwd).experiment.activeExperiment || ''
+  const experimentId = explicitExperimentId || String(activeExperimentId).trim()
+  if (!experimentId) return null
+  return appendChange({ cwd, experimentId, summary, files, now })
 }

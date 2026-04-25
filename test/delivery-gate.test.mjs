@@ -8,7 +8,7 @@ import { test } from 'node:test'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 
-test('delivery gate passes with fresh evidence that satisfies contract', () => {
+test('delivery gate rejects non-experiment top-level evidence targets', () => {
   const fixture = createFixture()
   try {
     runNode([
@@ -28,26 +28,7 @@ test('delivery gate passes with fresh evidence that satisfies contract', () => {
       '24',
     ], fixture.projectDir)
 
-    runNode([
-      join(pkgRoot, 'scripts', 'evidence-store.mjs'),
-      'record',
-      '--cwd',
-      fixture.projectDir,
-      '--target-id',
-      'plan-evidence',
-      '--summary',
-      'Ran targeted tests',
-      '--kind',
-      'test',
-      '--status',
-      'pass',
-      '--command',
-      'node --test',
-      '--file',
-      'scripts/evidence-store.mjs',
-    ], fixture.projectDir)
-
-    const payload = JSON.parse(runNode([
+    const result = spawnSync(process.execPath, [
       join(pkgRoot, 'scripts', 'delivery-gate.mjs'),
       'check',
       '--cwd',
@@ -56,27 +37,40 @@ test('delivery gate passes with fresh evidence that satisfies contract', () => {
       'plan-evidence',
       '--plan-id',
       'plan-evidence',
-    ], fixture.projectDir))
+    ], {
+      cwd: fixture.projectDir,
+      encoding: 'utf-8',
+    })
 
-    assert.equal(payload.overall, true)
-    assert(payload.checks.every((entry) => entry.pass))
-    const closeout = readFileSync(join(fixture.projectDir, 'hello-scholar', 'evidence', 'plan-evidence', 'closeout.md'), 'utf-8')
-    assert(closeout.includes('PASS'))
+    assert.notEqual(result.status, 0)
+    assert.match(result.stderr, /Delivery gate requires experiment evidence|Legacy top-level evidence targets are no longer delivery gate targets/)
+    assert.equal(existsSync(join(fixture.projectDir, 'hello-scholar', 'evidence', 'plan-evidence', 'closeout.md')), false)
   } finally {
     destroyFixture(fixture)
   }
 })
 
-test('delivery gate fails with stale evidence', () => {
+test('delivery gate fails with stale experiment evidence', () => {
   const fixture = createFixture()
   try {
+    const created = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'experiment-store.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--title',
+      'Stale experiment evidence',
+      '--request',
+      'Validate stale experiment evidence gate.',
+    ], fixture.projectDir))
+
     runNode([
       join(pkgRoot, 'scripts', 'plan-package.mjs'),
       'create',
       '--cwd',
       fixture.projectDir,
       '--plan-id',
-      'plan-stale',
+      created.id,
       '--title',
       'Stale evidence',
       '--min-evidence',
@@ -90,8 +84,8 @@ test('delivery gate fails with stale evidence', () => {
       'record',
       '--cwd',
       fixture.projectDir,
-      '--target-id',
-      'plan-stale',
+      '--experiment-id',
+      created.id,
       '--summary',
       'Old verification',
       '--status',
@@ -105,10 +99,10 @@ test('delivery gate fails with stale evidence', () => {
       'check',
       '--cwd',
       fixture.projectDir,
-      '--target-id',
-      'plan-stale',
+      '--experiment-id',
+      created.id,
       '--plan-id',
-      'plan-stale',
+      created.id,
     ], fixture.projectDir))
 
     assert.equal(payload.overall, false)
@@ -177,6 +171,9 @@ test('delivery gate can consume experiment package evidence', () => {
 
     assert.equal(payload.overall, true)
     assert.equal(payload.experimentId, created.id)
+    assert.equal(payload.checks.find((entry) => entry.check === 'target_consistency')?.pass, true)
+    assert.equal(payload.checks.find((entry) => entry.check === 'experiment_package_exists')?.pass, true)
+    assert.equal(payload.checks.find((entry) => entry.check === 'artifact_index_consistency')?.pass, true)
     const expDir = join(fixture.projectDir, 'hello-scholar', 'experiments', created.id)
     assert.equal(existsSync(join(expDir, 'delivery-gate.json')), true)
     assert(readFileSync(join(expDir, 'closeout.md'), 'utf-8').includes('PASS'))

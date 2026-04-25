@@ -1,12 +1,10 @@
-import { dirname, join, resolve } from 'node:path'
+import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { ensureDir, parseArgv, pathExists, readJson, readText, writeJson, writeText } from './cli-utils.mjs'
+import { parseArgv, pathExists, readJson } from './cli-utils.mjs'
 import { addEvidence } from './experiment-store.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
-import { splitLines } from './change-tracker-utils.mjs'
-
-const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
+import { readRuntimeState } from './runtime-state.mjs'
 
 main()
 
@@ -20,14 +18,17 @@ function main() {
     return
   }
   if (command === 'status') {
-    console.log(JSON.stringify(readEvidenceBundle(cwd, String(args.getFlag('--target-id', '')).trim()), null, 2))
+    console.log(JSON.stringify(readEvidenceBundle(cwd, readEvidenceTarget(cwd, args)), null, 2))
     return
   }
   throw new Error(`Unknown evidence-store command: ${command}`)
 }
 
 export function recordEvidence(cwd, args) {
-  const experimentId = String(args.getFlag('--experiment-id', '')).trim()
+  const explicitExperimentId = String(args.getFlag('--experiment-id', '')).trim()
+  const explicitTargetId = String(args.getFlag('--target-id', '')).trim()
+  const activeExperimentId = readRuntimeState(cwd).experiment.activeExperiment || ''
+  const experimentId = explicitExperimentId || (!explicitTargetId ? String(activeExperimentId).trim() : '')
   if (experimentId) {
     const result = addEvidence({
       cwd,
@@ -47,33 +48,10 @@ export function recordEvidence(cwd, args) {
     }
   }
 
-  const targetId = String(args.getFlag('--target-id', '')).trim()
-  if (!targetId) throw new Error('--target-id is required')
-  const storage = resolveProjectStorage(cwd)
-  const root = join(storage.rootPath, 'evidence', targetId)
-  ensureDir(root)
-  const bundle = readEvidenceBundle(cwd, targetId)
-  const timestamp = String(args.getFlag('--at', new Date().toISOString())).trim()
-  const entry = {
-    id: `${Date.now()}-${bundle.entries.length + 1}`,
-    timestamp,
-    kind: String(args.getFlag('--kind', 'manual')).trim() || 'manual',
-    status: String(args.getFlag('--status', 'pass')).trim() || 'pass',
-    summary: String(args.getFlag('--summary', '')).trim(),
-    command: String(args.getFlag('--command', '')).trim(),
-    files: args.getList('--file'),
-    notes: splitLines(args.getFlag('--notes', '')).concat(args.getList('--note')),
+  if (explicitTargetId) {
+    throw new Error('Legacy top-level evidence targets are no longer write targets. Use --experiment-id or record against the active experiment.')
   }
-  bundle.entries.push(entry)
-  bundle.updatedAt = timestamp
-  writeJson(join(root, 'index.json'), bundle)
-  writeSummary(root, bundle)
-  return {
-    ok: true,
-    targetId,
-    entryId: entry.id,
-    count: bundle.entries.length,
-  }
+  throw new Error('No active experiment found. Use --experiment-id to record experiment evidence.')
 }
 
 export function readEvidenceBundle(cwd, targetId) {
@@ -82,16 +60,22 @@ export function readEvidenceBundle(cwd, targetId) {
     if (experimentBundle) return experimentBundle
   }
 
-  const storage = resolveProjectStorage(cwd)
-  const root = join(storage.rootPath, 'evidence', targetId)
-  const stored = pathExists(join(root, 'index.json'))
-    ? readJson(join(root, 'index.json'), null)
-    : null
-  return stored || {
+  return {
     targetId,
     updatedAt: '',
     entries: [],
   }
+}
+
+export function readEvidenceTarget(cwd, args) {
+  const experimentId = String(args.getFlag('--experiment-id', '')).trim()
+  if (experimentId) return experimentId
+  const targetId = String(args.getFlag('--target-id', '')).trim()
+  if (targetId?.startsWith('EXP-')) return targetId
+  if (targetId) throw new Error('Legacy top-level evidence targets are no longer readable delivery targets. Use --experiment-id.')
+  const activeExperimentId = readRuntimeState(cwd).experiment.activeExperiment || ''
+  if (activeExperimentId) return activeExperimentId
+  throw new Error('--experiment-id is required when no active experiment exists')
 }
 
 function readExperimentEvidenceBundle(cwd, experimentId) {
@@ -100,50 +84,21 @@ function readExperimentEvidenceBundle(cwd, experimentId) {
   const artifactsPath = join(root, 'artifacts.json')
   if (!pathExists(artifactsPath)) return null
   const artifacts = readJson(artifactsPath, { artifacts: [] })
+  const entries = (artifacts.artifacts || [])
+    .filter((entry) => entry.type || entry.summary || entry.recordedAt)
+    .map((entry, index) => ({
+      id: `${experimentId}-${index + 1}`,
+      timestamp: entry.recordedAt || '',
+      kind: entry.type || 'experiment-evidence',
+      status: entry.status || 'unknown',
+      summary: entry.summary || '',
+      command: entry.command || '',
+      files: entry.path ? [entry.path] : [],
+      notes: [],
+    }))
   return {
     targetId: experimentId,
-    updatedAt: '',
-    entries: (artifacts.artifacts || [])
-      .filter((entry) => entry.type || entry.summary || entry.recordedAt)
-      .map((entry, index) => ({
-        id: `${experimentId}-${index + 1}`,
-        timestamp: entry.recordedAt || '',
-        kind: entry.type || 'experiment-evidence',
-        status: entry.status || 'unknown',
-        summary: entry.summary || '',
-        command: entry.command || '',
-        files: entry.path ? [entry.path] : [],
-        notes: [],
-      })),
+    updatedAt: entries.at(-1)?.timestamp || '',
+    entries,
   }
-}
-
-function writeSummary(root, bundle) {
-  const templatePath = join(pkgRoot, 'templates', 'evidence-summary.md')
-  const fallback = [
-    '# Evidence Summary: {{target_id}}',
-    '',
-    '- Updated: `{{updated_at}}`',
-    '- Entries: `{{entry_count}}`',
-    '',
-    '## Evidence',
-    '',
-    '{{entries}}',
-  ].join('\n')
-  const template = readText(templatePath, fallback)
-  const entries = bundle.entries.length > 0
-    ? bundle.entries.map((entry) => [
-      `### ${entry.timestamp} | ${entry.kind} | ${entry.status}`,
-      `- Summary: ${entry.summary || 'N/A'}`,
-      `- Command: ${entry.command || 'N/A'}`,
-      `- Files: ${entry.files.length > 0 ? entry.files.join(', ') : 'N/A'}`,
-      ...(entry.notes.length > 0 ? entry.notes.map((note) => `- Note: ${note}`) : []),
-    ].join('\n')).join('\n\n')
-    : '- 暂无证据'
-  const rendered = template
-    .replaceAll('{{target_id}}', bundle.targetId)
-    .replaceAll('{{updated_at}}', bundle.updatedAt || 'N/A')
-    .replaceAll('{{entry_count}}', String(bundle.entries.length))
-    .replaceAll('{{entries}}', entries)
-  writeText(join(root, 'README.md'), `${rendered.trimEnd()}\n`)
 }

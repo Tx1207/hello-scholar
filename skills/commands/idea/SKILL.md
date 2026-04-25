@@ -21,5 +21,5 @@ Trigger: ~idea [description]
 - 若用户要继续推进：
   - 结构化方案 → `~plan`
   - 直接落地实现 → `~build`
-  - 文档/规格收束 → `~prd`
-  - 端到端自动推进 → `~auto`
+  - 交付前检查 → `~verify`
+  - 复盘沉淀 → `~evolve`

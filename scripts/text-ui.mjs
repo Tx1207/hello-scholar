@@ -20,19 +20,6 @@ export async function promptSelection(kind, catalog, state) {
 }
 
 export function buildSelectionModel(kind, catalog, state) {
-  if (kind === 'bundles') {
-    return {
-      title: 'hello-scholar Bundles',
-      items: catalog.bundles.map((bundle) => ({
-        id: bundle.id,
-        description: bundle.description,
-        marker: state.bundles.includes(bundle.id) ? '[x]' : '[ ]',
-        locked: false,
-        note: '',
-      })),
-    }
-  }
-
   if (kind === 'skills') {
     return {
       title: 'hello-scholar Skills',
@@ -44,7 +31,7 @@ export function buildSelectionModel(kind, catalog, state) {
           description: entry.description,
           marker: isExplicit ? '[x]' : (isInherited ? '[+]' : '[ ]'),
           locked: isInherited,
-          note: isInherited ? ' (来自 bundle/base)' : '',
+          note: isInherited ? ' (来自 profile/base)' : '',
         }
       }),
     }
@@ -61,7 +48,7 @@ export function buildSelectionModel(kind, catalog, state) {
           description: entry.description,
           marker: isExplicit ? '[x]' : (isInherited ? '[+]' : '[ ]'),
           locked: isInherited,
-          note: isInherited ? ' (来自 bundle)' : '',
+          note: isInherited ? ' (来自 profile)' : '',
         }
       }),
     }
@@ -73,7 +60,7 @@ export function buildSelectionModel(kind, catalog, state) {
       items: catalog.profiles.map((profile) => ({
         id: profile.id,
         description: `${profile.displayName} - ${profile.description}`,
-        marker: state.activeProfile === profile.id ? '[x]' : '[ ]',
+        marker: (state.activeProfiles || [state.activeProfile || 'ml-development']).includes(profile.id) ? '[x]' : '[ ]',
         locked: false,
         note: profile.base ? ' (base)' : '',
       })),
@@ -174,22 +161,33 @@ export function applySelectionOperation(kind, catalog, state, focusIndex) {
         cancelled: false,
         confirmed: false,
         nextState: state,
-        message: `${entry.id} 来自 bundle/base，请通过 bundles 调整。`,
+        message: `${entry.id} 来自 profile/base，请通过 profile use 调整。`,
       }
     }
 
     const currentIds = new Set(getMutableCurrentIds(kind, state))
     if (kind === 'profiles') {
+      const activeProfiles = new Set(state.activeProfiles || [state.activeProfile || 'ml-development'])
+      const wasActive = activeProfiles.has(entry.id)
+      if (wasActive) activeProfiles.delete(entry.id)
+      else activeProfiles.add(entry.id)
+      if (activeProfiles.size === 0) activeProfiles.add(state.baseProfile || 'ml-development')
+      const previousProfiles = state.activeProfiles || [state.activeProfile || 'ml-development']
+      const nextProfiles = wasActive
+        ? previousProfiles.filter((id) => activeProfiles.has(id))
+        : [entry.id, ...previousProfiles.filter((id) => id !== entry.id)]
+      const normalizedProfiles = nextProfiles.length > 0 ? nextProfiles : [state.baseProfile || 'ml-development']
       return {
-        changed: state.activeProfile !== entry.id,
+        changed: JSON.stringify(normalizedProfiles) !== JSON.stringify(previousProfiles),
         cancelled: false,
         confirmed: false,
         nextState: {
           ...state,
           baseProfile: state.baseProfile || 'ml-development',
-          activeProfile: entry.id,
+          activeProfile: normalizedProfiles[0],
+          activeProfiles: normalizedProfiles,
         },
-        message: `${entry.id} 已设为当前 profile`,
+        message: `${entry.id} 已${wasActive ? '取消' : '选中'} profile`,
       }
     }
 
@@ -230,7 +228,7 @@ export function formatInstallSummary(hostState, selection, mode, cwd = process.c
     '',
     `- Mode: ${mode}`,
     `- Profile: ${selection.activeProfile || 'ml-development'}`,
-    `- Bundles: ${formatInlineList(selection.bundles)}`,
+    `- Active Profiles: ${formatInlineList(selection.activeProfiles || [selection.activeProfile || 'ml-development'])}`,
     `- Skills: ${selection.skills.length}`,
     `- Agents: ${selection.agents.length}`,
     `- Managed Skills: ${hostState.managedSkills.length}`,
@@ -243,15 +241,25 @@ export function formatInstallSummary(hostState, selection, mode, cwd = process.c
 }
 
 export function formatStatus(status) {
+  const header = [
+    'hello-scholar Status',
+    '',
+    `- Scope: ${status.displayScope || (status.scope === 'global' ? 'global' : 'standby')}`,
+    `- Standby Install: ${formatInstallSide(status.standbyInstall)}`,
+    `- Global Install: ${formatInstallSide(status.globalInstall)}`,
+    `- Active Change: ${formatActiveChange(status.activeChange)}`,
+    `- Active Experiment: ${status.activeExperiment || 'None'}`,
+    `- Overlay Skills: ${status.overlaySkillCount || 0}`,
+    `- Preference Sources: ${formatInlineList(status.preferenceSources)}`,
+  ]
+
   if (status.scope === 'global') {
     return [
-      'hello-scholar Status',
-      '',
-      '- Scope: global',
+      ...header,
       `- Installed: ${status.installed ? 'yes' : 'no'}`,
       `- Mode: ${status.mode || '(none)'}`,
       `- Profile: ${status.activeProfile || 'ml-development'}`,
-      `- Bundles: ${formatInlineList(status.bundles)}`,
+      `- Active Profiles: ${formatInlineList(status.activeProfiles || [status.activeProfile || 'ml-development'])}`,
       `- Skills: ${status.selectedSkills.length}`,
       `- Agents: ${status.selectedAgents.length}`,
       `- Active Experiment: ${status.activeExperiment || 'None'}`,
@@ -267,13 +275,11 @@ export function formatStatus(status) {
   }
 
   return [
-    'hello-scholar Status',
-    '',
-    '- Scope: standby',
+    ...header,
     `- Installed: ${status.installed ? 'yes' : 'no'}`,
     `- Mode: ${status.mode || '(none)'}`,
     `- Profile: ${status.activeProfile || 'ml-development'}`,
-    `- Bundles: ${formatInlineList(status.bundles)}`,
+    `- Active Profiles: ${formatInlineList(status.activeProfiles || [status.activeProfile || 'ml-development'])}`,
     `- Skills: ${status.selectedSkills.length}`,
     `- Agents: ${status.selectedAgents.length}`,
     `- Active Experiment: ${status.activeExperiment || 'None'}`,
@@ -284,6 +290,19 @@ export function formatStatus(status) {
     `- Project Prompt: ${status.promptExists ? 'present' : 'absent'}`,
     `- Project Bootstrap Block: ${status.bootstrapMarker ? 'present' : 'absent'}`,
   ].join('\n')
+}
+
+function formatInstallSide(side) {
+  if (!side) return 'not installed'
+  const installed = side.installed ? 'installed' : 'not installed'
+  const profile = side.activeProfile || 'ml-development'
+  return `${installed} (${side.mode || side.scope || 'unknown'}, profile ${profile}, ${side.selectedSkills?.length || 0} skills)`
+}
+
+function formatActiveChange(change) {
+  if (!change) return 'None'
+  const suffix = change.status ? ` (${change.status})` : ''
+  return `${change.title || change.id || 'Untitled'}${suffix}`
 }
 
 export function formatDoctor(checks) {
@@ -455,20 +474,13 @@ function truncate(text, width) {
 }
 
 function getMutableCurrentIds(kind, state) {
-  if (kind === 'bundles') return state.bundles
   if (kind === 'skills') return state.explicitSkills
   if (kind === 'agents') return state.explicitAgents
-  if (kind === 'profiles') return [state.activeProfile || 'ml-development']
+  if (kind === 'profiles') return state.activeProfiles || [state.activeProfile || 'ml-development']
   return []
 }
 
 function applyIds(kind, state, ids) {
-  if (kind === 'bundles') {
-    return {
-      ...state,
-      bundles: ids,
-    }
-  }
   if (kind === 'skills') {
     return {
       ...state,
@@ -479,6 +491,14 @@ function applyIds(kind, state, ids) {
     return {
       ...state,
       explicitAgents: ids,
+    }
+  }
+  if (kind === 'profiles') {
+    const activeProfiles = ids.length > 0 ? ids : [state.baseProfile || 'ml-development']
+    return {
+      ...state,
+      activeProfile: activeProfiles[0],
+      activeProfiles,
     }
   }
   return state

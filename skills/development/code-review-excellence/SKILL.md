@@ -88,6 +88,8 @@ version: 0.1.0
 4. 理解业务需求
 5. 了解相关架构背景
 
+如果存在 plan package 或 `contract.json`，先读取其中的目标、非目标、reviewer 关注边界和验收标准。Review 结论必须覆盖这些边界，不要只从 diff 风格或测试状态推断完成度。
+
 ### Phase 2: High-Level Review（5-10 分钟）
 
 1. **Architecture & Design**
@@ -123,6 +125,8 @@ version: 0.1.0
    - 💬 Comment
    - 🔄 Request Changes
 4. 问题复杂时提出 pairing
+
+Findings must come first and be ordered by severity. Each blocking finding should include a concrete file/line reference, the behavioral risk, and the smallest acceptable fix. Avoid presenting style-only comments as blockers unless they create maintainability or correctness risk.
 
 ## Review Techniques
 

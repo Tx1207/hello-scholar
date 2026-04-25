@@ -12,6 +12,8 @@ version: 1.2.0
 
 该项目采用模块化、可扩展的架构，并明确分离关注点。每个模块（data、model、trainer、analysis）都通过 factory 和 registry patterns 独立组织，以获得最大的灵活性。
 
+For non-ML architecture work, use these general constraints when this skill is already active: keep boundaries explicit, dependencies flowing in one direction, modules cohesive, public interfaces stable, and migration paths reversible. Prefer the smallest architecture change that solves the stated problem.
+
 ## 何时使用
 
 在以下场景使用该 skill：
@@ -33,6 +35,8 @@ version: 1.2.0
 - 阅读或理解现有代码
 
 关键判断标准：如果任务不需要 `@register_*` decorator 或 Factory pattern，就跳过这个 skill。
+
+For general refactors, architecture review can still use the checklist below without importing the ML-specific factory requirements.
 
 ## 核心设计模式
 
@@ -252,6 +256,10 @@ class MyModel(nn.Module):
 - [ ] imports 顺序正确
 - [ ] 使用了 registration decorator
 - [ ] 在需要时补充了配置文件
+- [ ] 模块职责单一，边界清晰，没有把业务逻辑、I/O、配置和展示层混在一起
+- [ ] 依赖方向清晰，没有引入循环依赖或跨层访问
+- [ ] 公共接口保持兼容，破坏性变更有迁移策略和回滚方案
+- [ ] 新抽象有多个真实调用点或明确扩展需求，不为单一场景过度抽象
 
 ## 额外资源
 

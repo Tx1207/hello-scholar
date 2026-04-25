@@ -2,13 +2,13 @@ import { readdirSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { detectInstalledScope, getRuntimeContext, loadInstallState, loadUserConfig } from './cli-config.mjs'
+import { detectInstalledScope, getRuntimeContext, loadInstallState, loadUserConfig } from './install/cli-config.mjs'
 import { parseArgv, pathExists, readJson, readText } from './cli-utils.mjs'
-import { loadCatalog } from './catalog-loader.mjs'
+import { loadCatalog } from './profile/catalog-loader.mjs'
 import { parseFrontmatter } from './change-tracker-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
-import { loadSelectionState } from './selection-state.mjs'
-import { getEvolutionPaths, readCandidates } from './skill-evolution-store.mjs'
+import { loadSelectionState } from './profile/selection-state.mjs'
+import { getEvolutionPaths, readCandidates } from './evolution/skill-evolution-store.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 
@@ -37,18 +37,11 @@ export function recommendCapabilities(cwd, args) {
   const contract = readActiveContract(storage.rootPath, args)
   const recommendations = []
 
-  const route = contract?.route || stateMeta.route || '~auto'
+  const route = contract?.route || stateMeta.route || '~build'
   if (route === '~plan') addSkill(recommendations, catalog, 'planning-with-files', 'route requires persistent planning')
   if (route === '~build') addSkill(recommendations, catalog, 'daily-coding', 'route focuses on implementation work')
   if (route === '~verify') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on verification')
-  if (route === '~test') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on targeted testing')
   if (route === '~idea') addSkill(recommendations, catalog, 'research-ideation', 'route focuses on exploration')
-  if (route === '~prd') {
-    addSkill(recommendations, catalog, 'planning-with-files', 'route requires persistent document planning')
-    addSkill(recommendations, catalog, 'doc-coauthoring', 'route focuses on delivery documents')
-  }
-  if (route === '~loop') addSkill(recommendations, catalog, 'verification-loop', 'route focuses on iterative verification loops')
-  if (route === '~commit') addSkill(recommendations, catalog, 'git-commit', 'route focuses on structured git commits')
 
   if (contract?.verifyMode === 'evidence-driven') {
     addSkill(recommendations, catalog, 'verification-loop', 'contract requires evidence-driven verification')
@@ -156,7 +149,7 @@ function addEvolutionSkillRecommendations(recommendations, catalog, selection, c
     const reasons = []
     let score = 0
 
-    if (candidate?.source?.route && candidate.source.route === route && route !== '~auto') {
+    if (candidate?.source?.route && candidate.source.route === route && route !== '~build') {
       score += 2
       reasons.push(`recent evolved skill was captured for route ${route}`)
     }

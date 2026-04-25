@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
@@ -12,10 +12,15 @@ import {
   readPreferencePatch,
   readProjectPreferences,
   readUserPreferences,
+  suggestPreferenceCandidate,
   writePreferenceCandidate,
   writePreferencePatch,
   writeUserPreferences,
-} from '../scripts/preferences-store.mjs'
+} from '../scripts/preferences/preferences-store.mjs'
+import { loadCatalog } from '../scripts/profile/catalog-loader.mjs'
+import { resolveStatusOverlay } from '../scripts/overlay/resolve.mjs'
+
+const pkgRoot = new URL('..', import.meta.url).pathname
 
 test('ensureProjectPreferences initializes default user-preferences.yaml', () => {
   const fixture = createFixture()
@@ -85,6 +90,34 @@ test('readEffectivePreferences merges built-in defaults, global preferences, and
     assert.equal(effective.sources['reviewFocus'], 'project')
     assert.equal(effective.sources['technicalPreferences.preferredLibraries'], 'built-in+global+project')
     assert.equal(effective.sources['writingStyle.tone'], 'project')
+  })
+  destroyFixture(fixture)
+})
+
+test('status overlay resolver reports overlay skills and effective preference sources', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    const paths = getPreferencePaths(fixture.projectDir)
+    mkdirSync(paths.globalRoot, { recursive: true })
+    writeUserPreferences(paths.globalFile, {
+      researchFocus: ['global-focus'],
+    })
+    mkdirSync(paths.projectRoot, { recursive: true })
+    writeUserPreferences(paths.projectFile, {
+      reviewFocus: ['project-review'],
+    })
+
+    const runtime = createRuntime(fixture)
+    writeOverlaySkillFixture(runtime, 'preference-overlay-skill')
+    const catalog = loadCatalog(pkgRoot, { dynamic: true, cwd: fixture.projectDir, runtime })
+    const status = resolveStatusOverlay({ runtime, cwd: fixture.projectDir, catalog, scope: 'project' })
+
+    assert.equal(status.overlaySkillCount, 1)
+    assert(status.preferenceSources.includes('built-in'))
+    assert(status.preferenceSources.includes('built-in+global'))
+    assert(status.preferenceSources.includes('built-in+project'))
+    assert.equal(status.standbyInstall.installed, false)
+    assert.equal(status.globalInstall.installed, false)
   })
   destroyFixture(fixture)
 })
@@ -167,6 +200,30 @@ test('writePreferenceCandidate creates proposal, evidence, patch, and decision f
   destroyFixture(fixture)
 })
 
+test('suggestPreferenceCandidate creates a project candidate without applying preferences', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    const result = suggestPreferenceCandidate({
+      cwd: fixture.projectDir,
+      summary: 'Prefer terse implementation summaries.',
+      evidence: 'User repeatedly asked to reduce final-answer verbosity.',
+      path: 'interactionPreferences.finalAnswerStyle',
+      value: 'terse',
+      now: new Date('2026-04-25T08:00:00.000Z'),
+    })
+
+    assert.equal(result.id, 'PREF-20260425-080000-interactionpreferences-finalanswerstyle')
+    const patch = readPreferencePatch(join(result.root, 'patch.yaml'))
+    assert.equal(patch.targetScope, 'project')
+    assert.equal(patch.changes.interactionPreferences.finalAnswerStyle, 'terse')
+
+    const prefs = readProjectPreferences(fixture.projectDir, { initialize: true })
+    assert.equal(prefs.interactionPreferences.finalAnswerStyle, undefined)
+    assert(readFileSync(join(result.root, 'proposal.md'), 'utf-8').includes('candidate only'))
+  })
+  destroyFixture(fixture)
+})
+
 test('readUserPreferences parses nested empty objects and lists', () => {
   const fixture = createFixture()
   const filePath = join(fixture.projectDir, 'prefs.yaml')
@@ -211,6 +268,29 @@ function withEnv(fixture, callback) {
   }
 }
 
+function createRuntime(fixture) {
+  return {
+    pkgRoot,
+    scholarHome: join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar'),
+    installStatePath: join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'install-state.json'),
+    hostHome: fixture.hostHome,
+    codexHome: fixture.codexHome,
+  }
+}
+
+function writeOverlaySkillFixture(runtime, skillId) {
+  const skillRoot = join(runtime.scholarHome, 'overlays', 'skills', skillId)
+  mkdirSync(skillRoot, { recursive: true })
+  writeFileSync(join(skillRoot, 'SKILL.md'), [
+    '---',
+    `name: ${skillId}`,
+    'description: Test overlay skill for resolver.',
+    '---',
+    '',
+    '# Test Overlay Skill',
+  ].join('\n'), 'utf-8')
+}
+
 function restoreEnv(name, value) {
   if (value === undefined) {
     delete process.env[name]
@@ -218,4 +298,3 @@ function restoreEnv(name, value) {
   }
   process.env[name] = value
 }
-

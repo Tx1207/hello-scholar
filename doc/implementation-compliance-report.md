@@ -1,49 +1,81 @@
 # hello-scholar 实施符合性报告
 
-生成日期：2026-04-24
+生成日期：2026-04-25
 
-本报告对照 `doc/experiment-development-runtime-prd.md` 与 `doc/experiment-development-runtime-implementation-design.md`，记录当前实现状态和后续缺口。
+本报告对照 `doc/experiment-development-runtime-prd.md` 与 `doc/experiment-development-runtime-implementation-design.md`，审计当前 `hello-scholar` 的实现状态。当前版本是全新版本，不兼容旧项目；旧功能已按确认结果删除、迁移或收敛。
 
-## 1. 已符合或基本符合
+## 1. 当前实现摘要
+
+当前仓库已经完成 hello-scholar 科研 runtime 的核心架构收口：默认 base profile 是 `ml-development`，六个科研生命周期 profile 已定义，profile 直接声明 skills/agents，支持多个 active profiles 叠加；standby/global 安装互斥已实现；正式 CLI 保持最小入口；experiment package 是实验事实唯一来源；顶层 legacy evidence 写入已删除；统一机器可读状态入口 `hello-scholar/state/runtime.json` 已接入；legacy `helloagents` / `hello-*` skills 的有价值内容已迁入 canonical skills 后删除；scripts 已迁入目标分层目录。
+
+当前 catalog 状态：
+
+- `catalog/profiles.json`：6 个 lifecycle profiles，直接声明 `skills` / `agents`。
+- `catalog/skills.json`：56 个真实 skills。
+- `catalog/agents.json`：15 个 agents。
+- `catalog/bundles.json`：已删除。
+- 真实 skill 物理目录：`skills/core/`、`skills/research/`、`skills/development/`、`skills/writing/`、`skills/review/`、`skills/submission/`、`skills/post-acceptance/`、`skills/memory/`、`skills/meta/`。
+- `skills/profiles/` 只保留 profile manifest，不复制 skill 本体。
+- `skills/commands/` 只保留 `idea`、`plan`、`build`、`verify`、`analyze`、`evolve` 六个核心命令壳。
+- `skills/helloagents/` 与 `skills/hello-*`：已删除。
+
+最近验证：
+
+- `npm run build:catalog` 通过。
+- `npm test` 通过，55/55 passing。
+
+## 2. 已符合
 
 | 需求 | 状态 | 证据 |
 |---|---|---|
-| 默认主线为科研代码项目开发 | pass | `AGENTS.md` 将默认主线定义为 `ml-development`；`catalog/profiles.json` 将 `ml-development` 标为 base。 |
-| 六个生命周期 profile | pass | `catalog/profiles.json` 包含 `research-ideation`、`ml-development`、`paper-writing`、`paper-self-review`、`submission-rebuttal`、`post-acceptance`。 |
-| 实验分析合并入 ML 实验开发 | pass | `ml-development` 描述包含实验分析；`scripts/project-prompt.mjs` 的生命周期状态已合并为六阶段。 |
-| standby/global 安装互斥 | pass | `cli.mjs` 阻止同一项目 global 与 standby 共存；不同项目 standby 可共存。 |
-| 全局共享层路径 | pass | `scripts/cli-config.mjs` 默认 `~/plugins/hello-scholar/.hello-scholar/`；README、AGENTS、prompt 文案已同步。 |
-| global cleanup 不删除共享层目录 | pass | `scripts/cli-codex.mjs` 只清理安装态和受管插件根，保留 `~/plugins/hello-scholar/.hello-scholar/`。 |
-| Preference candidate-first | pass | `scripts/preferences-store.mjs` 支持 candidate 写入；`AGENTS.md` 明确不得自动 apply。 |
-| Skill evolution candidate-first | pass | `skills/commands/evolve/SKILL.md` 和 evolution scripts 保持 candidate/review/apply 分离。 |
-| AGENTS 不维护完整静态 skill 目录 | pass | `AGENTS.md` 只保留技能分层说明，具体选择由 catalog/profile 解析。 |
+| 科研代码项目开发优先 | pass | `AGENTS.md` 默认主线为 `ml-development`，围绕 change、experiment、run、evidence、analysis。 |
+| 六个 lifecycle profiles | pass | `catalog/profiles.json` 包含构思、ML 实验开发、论文写作、自审、投稿/Rebuttal、录用后处理。 |
+| `ml-development` 是 base/default profile | pass | profile 解析采用 `baseProfile=ml-development`，默认 `activeProfiles=['ml-development']`。 |
+| 多 active profiles 叠加 | pass | `profile use <profile-id> [...profile-id]`、`modules.json.activeProfiles`、selection 解析与测试已覆盖。 |
+| 彻底移除 bundle schema | pass | `catalog/bundles.json` 删除；catalog loader、selection state、prompt、tests 不再使用 bundle 作为概念。 |
+| profile-first CLI | pass | CLI 只暴露 `install`、`cleanup`、`profile list/use`、`preferences show`、`status`。 |
+| standby/global 安装互斥 | pass | 同一项目不能同时安装 standby/global；不同项目 standby 可共存；global cleanup 保留共享层。 |
+| canonical skill 目录 | pass | 真实 skills 按能力域组织；profile manifest 不复制 skill。 |
+| legacy hello-agents skill 删除 | pass | `helloagents` 与 `hello-*` 内容迁入 canonical skills 后删除。 |
+| command skills 最小化 | pass | 删除旧 `auto/clean/commit/help/init/loop/prd/test/wiki` 命令壳。 |
+| experiment package 唯一实验事实源 | pass | evidence、delivery gate、research-store 默认围绕 `hello-scholar/experiments/EXP-*`。 |
+| 删除顶层 evidence 写入 | pass | `evidence-store` 拒绝 legacy top-level target；delivery gate 只接受 experiment evidence。 |
+| 统一 runtime state | pass | 新增 `hello-scholar/state/runtime.json`，experiment/change/profile/status 路径已接入。 |
+| Preference Evolution candidate-first | pass | preference candidate 生成不自动 apply。 |
+| Skill Evolution candidate-first | pass | review/apply/merge 分离，apply 需要显式 approval，默认写 overlay。 |
+| scripts 目标分层 | pass | install/profile/preferences/evolution/overlay 等已迁入分层目录。 |
+| npm scripts 最小化 | pass | `package.json` 保留 `build:catalog`、`test`、`postinstall`。 |
 
-## 2. 已部分实现
+## 3. 当前边界
 
-| 需求 | 状态 | 当前实现 | 缺口 |
-|---|---|---|---|
-| 集中式 experiment package | partial | `scripts/experiment-store.mjs` 创建 `experiment.yaml`、`README.md`、`changes.md`、`runs.md`、`evidence.md`、`analysis.md`、`artifacts.json`。 | `change-tracker` 尚未自动把实验 change 主体写入 experiment package。 |
-| experiment evidence | partial | `scripts/evidence-store.mjs record --experiment-id <id>` 可写入 experiment package；`delivery-gate --experiment-id <id>` 可读取 experiment evidence。 | 非实验 plan evidence 仍保留顶层 `hello-scholar/evidence/<target-id>/` 兼容路径。 |
-| status | partial | `hello-scholar status` 展示安装态、profile、active experiment、experiment count、project/global preferences 路径。 | 尚未展示 active change、overlay resolver 详情、standby/global 双侧冲突矩阵。 |
-| profile-first CLI | partial | help/README 只推荐核心入口：install、cleanup、profile list/use、preferences show、status。 | `list`、`doctor`、`update`、`activate` 仍作为兼容命令存在，未从代码删除。 |
-| skills 按能力域分类 | pass | 真实 skill 已迁移到 `skills/core/`、`skills/research/`、`skills/development/`、`skills/writing/`、`skills/review/`、`skills/submission/`、`skills/post-acceptance/`、`skills/memory/`、`skills/meta/`；`skills/profiles/*/PROFILE.md` 只保留 profile manifest。 | 后续可继续精简旧 bundle 兼容层。 |
-| 全局 overlay skill | partial | catalog-loader 可读取 `~/plugins/hello-scholar/.hello-scholar/overlays/skills/` 并覆盖同名 skill。 | 尚未实现统一 `scripts/overlay/resolve.mjs`，也未提供 overlay 状态报告。 |
-
-## 3. 仍缺失，建议后续阶段实现
-
-| 需求 | 状态 | 建议 |
+| 主题 | 当前处理 | 后续可深化 |
 |---|---|---|
-| 所有实质修改强制创建 change | missing | 增加 delivery gate 检查 diff 是否有 active change；必要时接入 hook 或 route command 自动调用 `change-tracker`。 |
-| 实验相关修改自动创建/关联 experiment | missing | 在 `~build` 或 `track-intent` 层根据请求、route、文件类型、active/recent state 判断是否创建或复用 experiment。 |
-| experiment-aware change tracker | missing | 给 `change-tracker` 增加 `--experiment-id`，实验 change 主体写 `experiments/<id>/changes.md`，顶层 `changes/INDEX.md` 只保留索引引用。 |
-| 完整 state 统一 | partial | 合并 `STATE.md`、`active.json`、`recent.json` 的职责，写入 active change、active experiment、profile、route/tier、下一步和阻塞项。 |
-| Preference evolution 触发链路 | partial | `writePreferenceCandidate` 已存在，但还需要由 closeout、`~evolve` 或用户“记住这个偏好”触发 candidate 生成。 |
-| Overlay resolver | missing | 实现 built-in/profile/global overlay/project override/global preferences/project preferences 的统一解析器，并让 status 展示解析结果。 |
-| 严格 schema validator | missing | 为 `experiment.yaml` 增加 validator，避免后续更新依赖字符串替换。 |
+| experiment schema | 已有 centralized package 与 MLflow/W&B/Hydra 风格核心字段。 | 增强 schema validation、run/env/seed/dataset/metric history 的结构化索引。 |
+| experiment-aware change | 实验 change 可镜像到 experiment package；顶层 change/index 仍保留。 | 可进一步让实验 change 主体只写 experiment package，顶层只做索引。 |
+| runtime state | `runtime.json` 是统一机器入口；旧 `STATE.md`、`active.json`、`recent.json` 保留派生/兼容输出。 | 后续可完全删除旧状态文件或改为纯人类摘要。 |
+| scripts 分层 | 高影响 install/profile/preferences/evolution/overlay 已迁移；部分状态和实验脚本仍在 `scripts/*.mjs`。 | 可继续细分 `scripts/experiment/`、`scripts/change/`、`scripts/state/`。 |
+| global shared evolution CLI | 暂不考虑。 | 后续如需要再设计显式同步/提升命令。 |
 
-## 4. 当前边界决定
+## 4. 已删除的旧功能
 
-- 顶层 `hello-scholar/evidence/<target-id>/` 不再用于实验事实，但保留为非实验 plan/delivery gate 兼容路径。
-- `list`、`doctor`、`update`、`activate` 不再是推荐用户入口，但本轮不删除实现，避免破坏已有测试和用户脚本。
-- 真实 skill 以 canonical 能力域目录为物理所有权边界；profile 只是组合视图，不复制 skill 本体。
-- 全局共享层中的 preferences、overlay skills、evolution candidates 是用户长期资产；global cleanup 不应删除这些资产。
+| 旧功能 | 当前处理 |
+|---|---|
+| `catalog/bundles.json` | 已删除。 |
+| bundle-based selection state | 已删除，改为 `activeProfiles`。 |
+| `hello-scholar list bundles|skills|agents` | 已删除；profile list 是唯一列表入口。 |
+| `hello-scholar doctor` | 已删除；状态检查并入 `hello-scholar status`。 |
+| `hello-scholar update` / `activate` / `uninstall` | 已删除兼容别名。 |
+| install selection flags | 已删除正式选择路径；安装只使用当前 profile selection。 |
+| 旧 command skills | 已删除 `auto/clean/commit/help/init/loop/prd/test/wiki`。 |
+| `skills/helloagents/` 与 `skills/hello-*` | 已迁移有价值内容并删除。 |
+| 顶层 evidence 写入目标 | 已删除；legacy target 会拒绝。 |
+| `research-store` 第二套实验事实 | 已拒绝旧写入命令，改为 experiment package 派生视图。 |
+
+## 5. 验证结果
+
+```bash
+npm run build:catalog
+npm test
+```
+
+结果：55/55 tests passing。

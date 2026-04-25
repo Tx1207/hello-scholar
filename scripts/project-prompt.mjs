@@ -10,36 +10,30 @@ const SOURCE_PROMPT_FILE = 'AGENTS.md'
 const LIFECYCLE_STEPS = [
   {
     label: '1. 研究构思',
-    bundleIds: ['research-core'],
     skillIds: ['research-ideation'],
     agentIds: ['literature-reviewer'],
   },
   {
     label: '2. ML 项目开发',
-    bundleIds: ['dev-core', 'research-core'],
     skillIds: ['daily-coding', 'verification-loop', 'results-analysis'],
     agentIds: ['code-reviewer'],
   },
   {
     label: '3. 论文写作',
-    bundleIds: ['writing-core'],
     skillIds: ['ml-paper-writing'],
     agentIds: ['paper-miner'],
   },
   {
     label: '4. 论文自审',
-    bundleIds: ['writing-core'],
     skillIds: ['paper-self-review'],
   },
   {
     label: '5. 投稿与 Rebuttal',
-    bundleIds: ['writing-core'],
     skillIds: ['review-response'],
     agentIds: ['rebuttal-writer'],
   },
   {
     label: '6. 录用后处理',
-    bundleIds: ['writing-core'],
     skillIds: ['post-acceptance'],
   },
 ]
@@ -47,25 +41,17 @@ const LIFECYCLE_STEPS = [
 const SUPPORT_WORKFLOWS = [
   {
     label: 'Zotero 集成',
-    bundleIds: ['research-core', 'obsidian-core'],
-    bundleMode: 'any',
   },
   {
     label: '知识提取',
-    bundleIds: ['research-core', 'writing-core'],
-    bundleMode: 'any',
     agentIds: ['paper-miner', 'kaggle-miner'],
   },
   {
     label: 'Obsidian 知识库',
-    bundleIds: ['obsidian-core'],
-    bundleMode: 'any',
     skillIds: ['obsidian-project-memory'],
   },
   {
     label: '技能进化',
-    bundleIds: ['meta-builder'],
-    bundleMode: 'any',
     skillIds: ['skill-development', 'skill-quality-reviewer', 'skill-improver'],
   },
 ]
@@ -128,13 +114,11 @@ function renderWorkflowSection(sourceSection, selection, mode) {
     '### 当前激活 Profile',
     `- 当前模式：\`${mode}\``,
     `- Base profile：\`${selection.baseProfile || 'ml-development'}\``,
-    `- Active profile：\`${selection.activeProfile || 'ml-development'}\``,
+    `- Active profiles：${formatCodeList(selection.activeProfiles || [selection.activeProfile || 'ml-development'])}`,
     '- 当前项目激活文件：项目根 `.hello-scholar/modules.json`',
-    `- Profile bundles：${formatCodeList(selection.profileBundles || [])}`,
-    `- 当前 bundles：${formatCodeList(selection.bundles)}`,
     `- 当前 skills：${selection.skills.length}`,
     `- 当前 agents：${selection.agents.length}`,
-    '- 热加载原则：下方原始工作流定义继续保留，但只有当前已激活的 bundle / skill / agent 可以直接假定可用。',
+    '- 热加载原则：下方原始工作流定义继续保留，但只有当前已激活的 profile / skill / agent 可以直接假定可用。',
     '',
     '#### 研究生命周期状态',
     ...LIFECYCLE_STEPS.map((step) => `- ${step.label}：${describeRequirementStatus(step, selection)}`),
@@ -157,8 +141,7 @@ function renderSkillCatalogSection(sourceSection, selection, mode, catalog) {
     '### 当前激活 Skills / Agents',
     `- 当前模式：\`${mode}\``,
     `- Base profile：\`${selection.baseProfile || 'ml-development'}\``,
-    `- Active profile：\`${selection.activeProfile || 'ml-development'}\``,
-    `- 当前 bundles：${formatCodeList(selection.bundles)}`,
+    `- Active profiles：${formatCodeList(selection.activeProfiles || [selection.activeProfile || 'ml-development'])}`,
     `- 当前 skills：${selection.skills.length}`,
     `- 当前 agents：${selection.agents.length}`,
     '- 说明：目录结构保持原样；每个 skill 条目后的“当前”状态对应本项目当前激活集；遵循热加载原则。',
@@ -178,9 +161,7 @@ function insertCurrentProfileSection(prompt, selection, mode) {
     '',
     `- Mode: \`${mode}\``,
     `- Base profile: \`${selection.baseProfile || 'ml-development'}\``,
-    `- Active profile: \`${selection.activeProfile || 'ml-development'}\``,
-    `- Profile bundles: ${formatCodeList(selection.profileBundles || [])}`,
-    `- Explicit bundles: ${formatCodeList(selection.bundles)}`,
+    `- Active profiles: ${formatCodeList(selection.activeProfiles || [selection.activeProfile || 'ml-development'])}`,
     `- Skills: ${selection.skills.length}`,
     `- Agents: ${selection.agents.length}`,
   ].join('\n')
@@ -244,7 +225,6 @@ function buildGlobalCliPathLines() {
 function describeRequirementStatus(requirement, selection) {
   const skillIds = requirement.skillIds || []
   const agentIds = requirement.agentIds || []
-  const bundleIds = requirement.bundleIds || []
   const activeModuleIds = [
     ...skillIds.filter((id) => selection.skills.includes(id)),
     ...agentIds.filter((id) => selection.agents.includes(id)),
@@ -256,15 +236,7 @@ function describeRequirementStatus(requirement, selection) {
     if (activeModuleIds.length > 0) return `部分激活：${formatCodeList(activeModuleIds)}`
   }
 
-  if (bundleIds.length === 0) return '未激活'
-
-  const bundleMode = requirement.bundleMode || 'all'
-  const bundleActive = bundleMode === 'any'
-    ? bundleIds.some((id) => selection.bundles.includes(id))
-    : bundleIds.every((id) => selection.bundles.includes(id))
-
-  if (bundleActive) return '已激活'
-  return `未激活，需要 ${formatCodeList(bundleIds)}`
+  return '未激活'
 }
 
 function formatSkillStatus(skillIds, activeSkills) {

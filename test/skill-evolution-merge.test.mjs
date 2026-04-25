@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { test } from 'node:test'
 
 import { parseArgv } from '../scripts/cli-utils.mjs'
-import { mergeOverlaySkill } from '../scripts/skill-evolution-merge.mjs'
+import { mergeOverlaySkill } from '../scripts/evolution/skill-evolution-merge.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 
@@ -18,7 +18,7 @@ test('mergeOverlaySkill copies overlay skill into repo source and updates candid
   try {
     process.env.HELLO_SCHOLAR_HOST_HOME = fixture.hostHome
     process.env.CODEX_HOME = fixture.codexHome
-    installStandby(fixture, ['meta-builder'])
+    installStandby(fixture)
     const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'overlay-skill')
     mkdirSync(join(overlaySkillRoot, 'references'), { recursive: true })
     writeFileSync(join(overlaySkillRoot, 'SKILL.md'), [
@@ -145,13 +145,12 @@ function destroyFixture(fixture) {
   rmSync(fixture.root, { recursive: true, force: true })
 }
 
-function installStandby(fixture, bundles) {
+function installStandby(fixture) {
   const result = spawnSync(process.execPath, [
     join(pkgRoot, 'cli.mjs'),
     'install',
     'codex',
     '--standby',
-    ...bundles.flatMap((bundle) => ['--bundle', bundle]),
   ], {
     cwd: fixture.projectDir,
     env: fixture.env,

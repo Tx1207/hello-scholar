@@ -32,6 +32,18 @@ version: 0.1.0
 
 如果用户拒绝，就用 freeform 方式工作；如果接受，就进入 Stage 1。
 
+## Baseline Writing Standards
+
+Before drafting, identify the audience, purpose, and what the reader should be able to do after reading. Prefer conclusion-first structure, one core idea per paragraph, clear heading hierarchy, and concrete claims over vague phrasing.
+
+Use active voice where possible. Keep sentences short enough to parse, explain technical terms on first use, label code fences with languages, and preserve necessary caveats, constraints, and risks instead of over-compressing them away.
+
+Delivery checklist:
+- Structure is easy to navigate for the intended reader
+- Key claims use concrete evidence, examples, numbers, or named constraints
+- Formatting is consistent, including headings, tables, lists, and code blocks
+- Technical depth matches the target audience
+
 ## Stage 1: Context Gathering
 
 **目标：** 缩小“用户知道什么”和“Claude 知道什么”之间的差距，为后续高质量引导建立上下文。

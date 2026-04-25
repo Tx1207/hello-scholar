@@ -4,11 +4,9 @@
     "name": "agent-identifier",
     "description": "在创建或配置 Claude Code agent 及其 frontmatter 时使用。",
     "path": "skills/meta/agent-identifier",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -17,11 +15,9 @@
     "name": "architecture-design",
     "description": "仅在创建需要 Factory 或 Registry 模式的新 registrable ML 组件时使用。",
     "path": "skills/development/architecture-design",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "development",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -32,7 +28,7 @@
     "path": "skills/core/bug-detective",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -41,11 +37,9 @@
     "name": "build-fixer",
     "description": "使用 mypy、ruff 和 pytest 以安全的一次一个错误方式，增量修复 Python 类型与 lint 错误。",
     "path": "skills/development/build-fixer",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "development",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -54,11 +48,9 @@
     "name": "checkpoint-manager",
     "description": "通过 git snapshots 创建、验证并列出 workflow checkpoints，用于跟踪开发进度。",
     "path": "skills/meta/checkpoint-manager",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -67,11 +59,9 @@
     "name": "citation-verification",
     "description": "为学术写作中的 citation verification 提供参考指引。用户询问“citation verification best practices”、“how to verify references”、“preventing fake citations”，或需要确保引用准确性时使用。该 skill 为 `ml-paper-writing` 提供更细的验证原则和常见错误模式。",
     "path": "skills/writing/citation-verification",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "writing",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "ml-paper-writing"
@@ -82,11 +72,9 @@
     "name": "code-review-excellence",
     "description": "当用户要求 review diff 或 pull request、撰写 review comment、审计代码质量、建立 review 标准，或改进团队 code review 方式时使用。",
     "path": "skills/development/code-review-excellence",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "development",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -97,7 +85,7 @@
     "path": "skills/core/codex-hook-emulation",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -106,11 +94,9 @@
     "name": "command-development",
     "description": "当用户要求“create a slash command”、“add a command”、“write a custom command”、“define command arguments”、“use command frontmatter”、“organize commands”、“create command with file references”、“interactive command”、“use AskUserQuestion in command”，或需要了解 slash command 结构、YAML frontmatter、动态参数、bash 执行、用户交互模式以及 Claude Code command 开发最佳实践时使用。",
     "path": "skills/meta/command-development",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -121,7 +107,7 @@
     "path": "skills/core/daily-coding",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -130,11 +116,9 @@
     "name": "daily-paper-generator",
     "description": "当用户要求“generate daily paper”、“search arXiv for EEG papers”、“find EEG decoding papers”、“review brain-computer interface papers”，或希望为 EEG / brain decoding / speech decoding 研究生成论文摘要时使用。该 skill 会自动在 arXiv 中搜索近期论文、评估质量，并生成结构化中英文总结。",
     "path": "skills/research/daily-paper-generator",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "research",
-    "bundleIds": [
-      "research-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -143,11 +127,9 @@
     "name": "defuddle",
     "description": "使用 Defuddle CLI 从网页中提取干净 Markdown 内容，移除导航和杂乱内容以节省 tokens。当用户提供 URL 需要阅读或分析在线文档、文章、博客或标准网页时，优先用它替代 WebFetch。",
     "path": "skills/post-acceptance/defuddle",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -156,11 +138,9 @@
     "name": "doc-coauthoring",
     "description": "当用户要求协作文档、起草 proposal、编写 technical spec、创建 decision doc 或 RFC，或希望通过迭代合作来组织一份较大文档时使用。",
     "path": "skills/writing/doc-coauthoring",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "writing",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -169,11 +149,9 @@
     "name": "frontend-design",
     "description": "创建具有辨识度、production-grade 且高设计质量的前端界面。当用户要求构建 web components、pages、artifacts、posters 或 applications 时使用该 skill，例如 websites、landing pages、dashboards、React components、HTML/CSS layouts，或需要 styling / beautifying 任意 web UI 时。生成有创意、精致且避免通用 AI 审美的代码和 UI 设计。",
     "path": "skills/post-acceptance/frontend-design",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -182,11 +160,9 @@
     "name": "git-commit",
     "description": "使用 Conventional Commits 格式暂存并提交变更（仅本地，不 push）。",
     "path": "skills/development/git-commit",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "development",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -195,11 +171,9 @@
     "name": "git-push",
     "description": "使用 Conventional Commits 格式将变更提交并 push 到 GitHub 远程仓库。",
     "path": "skills/development/git-push",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "development",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -210,7 +184,7 @@
     "path": "skills/core/git-workflow",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -219,11 +193,9 @@
     "name": "hook-development",
     "description": "当用户要求“create a hook”、“add a PreToolUse/PostToolUse/Stop hook”、“validate tool use”、“implement prompt-based hooks”、“use ${CLAUDE_PLUGIN_ROOT}”、“set up event-driven automation”、“block dangerous commands”，或提到 PreToolUse、PostToolUse、Stop、SubagentStop、SessionStart、SessionEnd、UserPromptSubmit、PreCompact、Notification 等 hook event 时使用。该 skill 提供 Claude Code plugin hook 的完整开发指南，重点覆盖 prompt-based hooks API。",
     "path": "skills/meta/hook-development",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -232,11 +204,9 @@
     "name": "json-canvas",
     "description": "创建和编辑 JSON Canvas 文件（`.canvas`），包含 node、edge、group 和 connection。处理 `.canvas` 文件、创建可视化 canvas、mind map、flowchart，或用户提到 Obsidian 中的 Canvas 文件时使用。",
     "path": "skills/memory/json-canvas",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -245,11 +215,9 @@
     "name": "kaggle-learner",
     "description": "当用户要求 “learn from Kaggle”、“study Kaggle solutions”、“analyze Kaggle competitions”、“learn from code”、“extract patterns”，或提到 Kaggle competition URLs 时使用该 skill。同时也覆盖从编码 session 中提取可复用模式。",
     "path": "skills/research/kaggle-learner",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "research",
-    "bundleIds": [
-      "research-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -258,11 +226,9 @@
     "name": "latex-conference-template-organizer",
     "description": "把杂乱的 conference LaTeX template `.zip` 整理成干净、可直接上传 Overleaf 的结构。用户要求“organize LaTeX template”、“clean up .zip template”或“prepare Overleaf submission template”时使用。",
     "path": "skills/writing/latex-conference-template-organizer",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "writing",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -271,11 +237,9 @@
     "name": "mcp-integration",
     "description": "当用户要求“add MCP server”、“integrate MCP”、“configure MCP in plugin”、“use .mcp.json”、“set up Model Context Protocol”、“connect external service”，提到 “${CLAUDE_PLUGIN_ROOT} with MCP”，或讨论 SSE、stdio、HTTP、WebSocket 等 MCP server 类型时使用。该 skill 提供把 Model Context Protocol server 集成到 Claude Code plugin 中的完整指导。",
     "path": "skills/meta/mcp-integration",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -284,11 +248,9 @@
     "name": "memory-updater",
     "description": "检查并更新 hello-scholar 全局 memory 文件，使其与 skills、commands、agents 和 hooks 的变化保持同步。",
     "path": "skills/meta/memory-updater",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -297,11 +259,9 @@
     "name": "ml-paper-writing",
     "description": "为 NeurIPS、ICML、ICLR、ACL、AAAI、COLM 撰写 publication-ready 的 ML/AI 论文。用于从 research repo 起草论文、做 literature review、寻找 related work、验证 citation，或准备 camera-ready submission。包含 LaTeX template、citation verification workflow 和论文发现 / 评估标准。",
     "path": "skills/writing/ml-paper-writing",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "writing",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "paper-miner"
@@ -312,11 +272,9 @@
     "name": "obsidian-bases",
     "description": "创建和编辑 Obsidian Bases（`.base` 文件），包括 view、filter、formula 和 summary。处理 `.base` 文件、创建类似数据库的笔记视图，或用户提到 Obsidian 中的 Bases、table view、card view、filter、formula 时使用。",
     "path": "skills/memory/obsidian-bases",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -325,11 +283,9 @@
     "name": "obsidian-cli",
     "description": "使用 Obsidian CLI 与 Obsidian vault 交互，以读取、创建、搜索和管理 notes、tasks、properties 等。也支持 plugin 和 theme 开发，可重新加载 plugins、执行 JavaScript、抓取 errors、截图以及检查 DOM。当用户希望操作 Obsidian vault、管理 notes、搜索 vault 内容、从命令行执行 vault 操作，或开发调试 Obsidian plugins 和 themes 时使用。",
     "path": "skills/memory/obsidian-cli",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -338,11 +294,9 @@
     "name": "obsidian-experiment-log",
     "description": "当用户讨论实验设计、ablation、training runs、evaluation、baselines、metrics、失败原因或结果解释，并且这些内容应被写入 Obsidian 的 experiment / result notes 时使用该 skill。",
     "path": "skills/memory/obsidian-experiment-log",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory"
     ],
@@ -353,11 +307,9 @@
     "name": "obsidian-link-graph",
     "description": "当用户希望修复或增强现有 canonical 项目笔记之间的 Obsidian wikilinks 时使用该 skill，特别适用于 papers、knowledge notes、experiments、results 和 writing 之间的链接关系。",
     "path": "skills/memory/obsidian-link-graph",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -366,11 +318,9 @@
     "name": "obsidian-literature-workflow",
     "description": "当用户把论文笔记保存在 Obsidian 项目知识库中，并希望进行 filesystem-first 的文献综述、显式 agent-first Zotero 导入、`Papers/` + `Knowledge/` 综合、collection 级规范化，以及在不依赖 Obsidian MCP 的前提下维护默认 literature canvas 时使用该 skill。",
     "path": "skills/memory/obsidian-literature-workflow",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory",
       "obsidian-markdown"
@@ -382,11 +332,9 @@
     "name": "obsidian-markdown",
     "description": "在 Obsidian 中创建和编辑带有 wikilink、embed、callout、properties 以及其他 Obsidian 专属语法的 Markdown。处理 Obsidian 的 `.md` 文件，或用户提到 wikilink、callout、frontmatter、tag、embed、Obsidian 笔记时使用。",
     "path": "skills/memory/obsidian-markdown",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -395,11 +343,9 @@
     "name": "obsidian-project-bootstrap",
     "description": "当用户要求启动一个新的 research project、把现有代码加 Markdown 仓库导入 Obsidian，或将当前仓库绑定到一个紧凑型 research knowledge base 以便未来同步时使用该 skill。",
     "path": "skills/memory/obsidian-project-bootstrap",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory"
     ],
@@ -410,11 +356,9 @@
     "name": "obsidian-project-lifecycle",
     "description": "当用户希望 detach、archive、purge，或以其他方式改变一个 Obsidian 项目知识库的生命周期状态时使用该 skill。",
     "path": "skills/memory/obsidian-project-lifecycle",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory"
     ],
@@ -425,11 +369,9 @@
     "name": "obsidian-project-memory",
     "description": "当用户希望为科研项目维护 Obsidian knowledge base、把现有研究仓库导入 Obsidian、同步 project memory 或 daily notes、把项目上下文沉淀为 durable notes，或在无需 MCP 的情况下把实验、结果、论文、写作和计划写回 Obsidian vault 时使用。",
     "path": "skills/memory/obsidian-project-memory",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -438,11 +380,9 @@
     "name": "obsidian-research-log",
     "description": "当用户讨论 daily research work、TODOs、plans、standups、meetings、milestones 或一般项目进展，并且这些内容应反映到 Obsidian 的 daily notes、plan notes 和 hub updates 中时使用该 skill。",
     "path": "skills/memory/obsidian-research-log",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory"
     ],
@@ -453,11 +393,9 @@
     "name": "obsidian-synthesis-map",
     "description": "当需要在项目知识库内部生成更高层次的综合型笔记时使用该 skill，例如 literature reviews、comparison matrices、project summaries 或其他跨笔记总结。",
     "path": "skills/memory/obsidian-synthesis-map",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -466,11 +404,9 @@
     "name": "paper-self-review",
     "description": "当用户要求 “review paper quality”、“check paper completeness”、“validate paper structure”、“self-review before submission”，或提到系统化论文质量检查时使用该 skill。它提供面向学术论文的完整质量保障清单。",
     "path": "skills/review/paper-self-review",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "review",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "ml-paper-writing"
@@ -483,7 +419,7 @@
     "path": "skills/core/planning-with-files",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -492,11 +428,9 @@
     "name": "plugin-structure",
     "description": "当用户要求“create a plugin”、“scaffold a plugin”、“understand plugin structure”、“organize plugin components”、“set up plugin.json”、“use ${CLAUDE_PLUGIN_ROOT}”、“add commands/agents/skills/hooks”、“configure auto-discovery”，或需要了解 plugin 目录布局、manifest 配置、组件组织、文件命名规范以及 Claude Code plugin architecture 最佳实践时使用。",
     "path": "skills/meta/plugin-structure",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -505,11 +439,9 @@
     "name": "post-acceptance",
     "description": "当用户要求 “prepare conference presentation”、“create presentation slides”、“design poster”、“make academic poster”、“write promotion content”、“create Twitter thread”，或提到论文接收后的 conference 准备工作时使用该 skill。它提供 presentation、poster 和 promotion content 的完整工作流。",
     "path": "skills/post-acceptance/post-acceptance",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -518,11 +450,9 @@
     "name": "project-creator",
     "description": "使用模板、uv 包管理和 Git 初始化创建一个新项目，并可选配置 GitHub 远程仓库。",
     "path": "skills/meta/project-creator",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "uv-package-manager",
@@ -534,11 +464,9 @@
     "name": "readme-updater",
     "description": "通过分析最近代码变更和文档缺口，更新 README.md 以反映最新项目信息。",
     "path": "skills/meta/readme-updater",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "git-push"
@@ -549,11 +477,9 @@
     "name": "research-ideation",
     "description": "当用户要求“brainstorm research ideas”、“use 5W1H framework”、“identify research gaps”、“conduct gap analysis”、“start research project”、“conduct literature review”、“define research question”、“select research method”、“plan research”，或提到研究项目启动阶段时使用。提供从想法生成到规划落地的完整研究启动工作流指导。",
     "path": "skills/research/research-ideation",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "research",
-    "bundleIds": [
-      "research-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -562,11 +488,9 @@
     "name": "results-analysis",
     "description": "当用户要求“analyze experimental results”、“run strict statistical analysis”、“compare model performance”、“generate scientific figures”、“check significance”、“do ablation analysis”，或提到要用严格统计与可视化解释实验数据时使用。该 skill 聚焦严格分析产物，不负责 Results 部分正文写作。",
     "path": "skills/research/results-analysis",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "research",
-    "bundleIds": [
-      "research-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -575,11 +499,9 @@
     "name": "results-report",
     "description": "当用户要求 “write an experiment report”、“summarize experimental results”、“do experiment retrospection”、“write a results report”、“写实验总结报告” 或 “写实验复盘”，或提到希望把已完成实验产物整理成结构化、面向决策的研究报告时使用该 skill。它假设严格分析应首先由 `results-analysis` 完成。",
     "path": "skills/research/results-report",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "research",
-    "bundleIds": [
-      "research-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "results-analysis"
     ],
@@ -590,11 +512,9 @@
     "name": "review-response",
     "description": "从评论分析到专业 rebuttal 写作的系统化 review response workflow。当用户要求 “write rebuttal”、“respond to reviewers”、“draft review response” 或 “analyze review comments” 时使用。目标是提升论文接收概率。",
     "path": "skills/submission/review-response",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "submission",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": [
       "paper-self-review"
@@ -607,7 +527,7 @@
     "path": "skills/core/session-wrap-up",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -616,11 +536,9 @@
     "name": "skill-development",
     "description": "当用户要求创建新 skill、修复现有 skill、改进 trigger descriptions、重组 skill 结构，或让一个 Claude skill 变得更可复用、更内部一致时使用该 skill。",
     "path": "skills/meta/skill-development",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -629,11 +547,9 @@
     "name": "skill-improver",
     "description": "当用户要求“apply skill improvements”、“update skill from plan”、“execute improvement plan”、“fix skill issues”、“implement skill recommendations”，或提到要根据 quality review report 落地改进时使用。它会读取 `skill-quality-reviewer` 生成的 `improvement-plan-{name}.md`，并把建议变更智能合并后执行，用于提升 Claude Skills 质量。",
     "path": "skills/meta/skill-improver",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [
       "skill-quality-reviewer"
     ],
@@ -644,11 +560,9 @@
     "name": "skill-quality-reviewer",
     "description": "当用户要求“analyze skill quality”、“evaluate this skill”、“review skill quality”、“check my skill” 或 “generate quality report” 时使用。它会从 description quality、内容组织、写作风格和结构完整性四个维度评估本地 skill。",
     "path": "skills/meta/skill-quality-reviewer",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -657,11 +571,9 @@
     "name": "ui-ux-pro-max",
     "description": "当用户要求设计或评审 UI、创建 landing page 或 dashboard、选择颜色或 typography、改善 accessibility，或实现带清晰设计系统的精致前端界面时使用该 skill。",
     "path": "skills/post-acceptance/ui-ux-pro-max",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -670,11 +582,9 @@
     "name": "uv-package-manager",
     "description": "掌握 uv package manager，用于快速 Python 依赖管理、virtual environment 和现代 Python 项目工作流。设置 Python 项目、管理依赖、配置 package manager，或用 uv 优化 Python 开发流程时使用。也响应 “setup package manager” 或 “configure pm”。",
     "path": "skills/meta/uv-package-manager",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "meta",
-    "bundleIds": [
-      "meta-builder"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -685,7 +595,7 @@
     "path": "skills/core/verification-loop",
     "layer": "base",
     "category": "base",
-    "bundleIds": [],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -694,11 +604,9 @@
     "name": "web-design-reviewer",
     "description": "当用户提出 “review website design”、“check the UI”、“fix the layout”、“find design problems” 等请求时使用。该 skill 通过本地或远程页面的可视化检查识别并修复设计问题，覆盖 responsive design、accessibility、视觉一致性和布局破坏，并在源码层完成修复。",
     "path": "skills/post-acceptance/web-design-reviewer",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -707,11 +615,9 @@
     "name": "webapp-testing",
     "description": "使用 Playwright 与本地 Web 应用交互并进行测试的工具包。支持验证前端功能、调试 UI 行为、抓取浏览器截图以及查看浏览器日志。",
     "path": "skills/post-acceptance/webapp-testing",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "post-acceptance",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -720,11 +626,9 @@
     "name": "writing-anti-ai",
     "description": "当用户要求“remove AI writing patterns”、“humanize this text”、“make this sound more natural”、“remove AI-generated traces”、“fix robotic writing”，或希望去掉 prose 中的 AI 写作痕迹时使用。支持英文与中文，基于 Wikipedia 的 “Signs of AI writing” 指南，识别并修复夸张象征、宣传腔、表层 -ing 分析、模糊归因、AI 词汇、否定并列句和过度连接词等模式。",
     "path": "skills/writing/writing-anti-ai",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "writing",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -733,11 +637,9 @@
     "name": "zotero-obsidian-bridge",
     "description": "当论文保存在 Zotero 中，但用户希望在已绑定的 Obsidian 项目知识库中维护详细阅读笔记、项目相关文献综合、collection 级 paper-note 覆盖检查，以及连接化知识图谱时使用该 skill。",
     "path": "skills/memory/zotero-obsidian-bridge",
-    "layer": "bundle",
+    "layer": "profile",
     "category": "memory",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "profileIds": [],
     "dependencies": [
       "obsidian-project-memory"
     ],

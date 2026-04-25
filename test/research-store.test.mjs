@@ -1,123 +1,92 @@
 import assert from 'node:assert/strict'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 
-const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
+import { addEvidence, addRun, analyzeExperiment, createExperiment } from '../scripts/experiment-store.mjs'
+import { refreshResearchView } from '../scripts/research-store.mjs'
 
-test('research-store initializes project, records reference run, and adds hypothesis', () => {
-  const fixture = createFixture()
+test('research-store derives summary and status from experiment packages', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-research-view-'))
   try {
-    runNode([
-      join(pkgRoot, 'scripts', 'research-store.mjs'),
-      'init-project',
-      '--cwd',
-      fixture.projectDir,
-      '--title',
-      'Scholar runtime experiments',
-      '--question',
-      'How should hello-scholar store research truth?',
-      '--dataset',
-      'internal-benchmark-v1',
-      '--evaluation',
-      'accuracy',
-    ])
+    const first = createExperiment({
+      cwd: fixture,
+      title: 'Focal loss',
+      request: 'Try focal loss for minority-class recall.',
+      now: new Date('2026-04-24T08:00:00.000Z'),
+    })
+    addRun({
+      cwd: fixture,
+      experimentId: first.id,
+      kind: 'small-run',
+      command: 'python train.py loss=focal',
+      metrics: ['macro_f1=0.728'],
+      now: new Date('2026-04-24T08:30:00.000Z'),
+    })
+    addEvidence({
+      cwd: fixture,
+      experimentId: first.id,
+      kind: 'metric-log',
+      status: 'pass',
+      summary: 'Small run completed.',
+      path: 'outputs/train.log',
+      now: new Date('2026-04-24T08:40:00.000Z'),
+    })
+    analyzeExperiment({
+      cwd: fixture,
+      experimentId: first.id,
+      summary: 'Recall improved.',
+      decision: 'follow-up',
+      now: new Date('2026-04-24T09:00:00.000Z'),
+    })
 
-    runNode([
-      join(pkgRoot, 'scripts', 'research-store.mjs'),
-      'add-run',
-      '--cwd',
-      fixture.projectDir,
-      '--run-id',
-      'run-001',
-      '--reference',
-      '--summary',
-      'Baseline run',
-      '--main-variable',
-      'none',
-      '--metric',
-      'accuracy=0.81',
-    ])
+    const second = createExperiment({
+      cwd: fixture,
+      title: 'Seed sweep',
+      request: 'Check seed stability.',
+      now: new Date('2026-04-24T10:00:00.000Z'),
+    })
 
-    runNode([
-      join(pkgRoot, 'scripts', 'research-store.mjs'),
-      'add-hypothesis',
-      '--cwd',
-      fixture.projectDir,
-      '--hypothesis-id',
-      'hyp-001',
-      '--claim',
-      'Smaller contract should reduce workflow drift',
-      '--main-variable',
-      'contract-size',
-      '--allowed-file',
-      'scripts/research-store.mjs',
-    ])
+    const status = refreshResearchView(fixture)
+    const summaryPath = join(fixture, 'hello-scholar', 'research', 'summary.md')
+    const statusPath = join(fixture, 'hello-scholar', 'research', 'status.json')
+    const summary = readFileSync(summaryPath, 'utf-8')
+    const statusJson = JSON.parse(readFileSync(statusPath, 'utf-8'))
 
-    const summary = readFileSync(join(fixture.projectDir, 'hello-scholar', 'research', 'summary.md'), 'utf-8')
-    const journal = readFileSync(join(fixture.projectDir, 'hello-scholar', 'research', 'journal.md'), 'utf-8')
-
-    assert(summary.includes('Reference run: run-001'))
-    assert(summary.includes('hyp-001'))
-    assert(journal.includes('Run run-001'))
-    assert(journal.includes('Hypothesis hyp-001'))
+    assert.equal(status.source, 'experiment-packages')
+    assert.equal(status.totalExperiments, 2)
+    assert.equal(status.activeExperiment, second.id)
+    assert.equal(status.countsByStatus.analyzed, 1)
+    assert.equal(status.countsByStatus.in_progress, 1)
+    assert.equal(status.experiments.find((entry) => entry.id === first.id).runCount, 1)
+    assert.equal(status.experiments.find((entry) => entry.id === first.id).evidenceCount, 1)
+    assert.equal(statusJson.source, 'experiment-packages')
+    assert(summary.includes('Generated from experiment packages'))
+    assert(summary.includes(first.id))
+    assert(summary.includes(second.id))
   } finally {
-    destroyFixture(fixture)
+    rmSync(fixture, { recursive: true, force: true })
   }
 })
 
-test('research-store blocks hypotheses without a reference run', () => {
-  const fixture = createFixture()
+test('research-store rejects old second-source write commands', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-research-legacy-'))
   try {
-    runNode([
-      join(pkgRoot, 'scripts', 'research-store.mjs'),
-      'init-project',
-      '--cwd',
-      fixture.projectDir,
-      '--title',
-      'No reference run',
-      '--dataset',
-      'benchmark',
-      '--evaluation',
-      'f1',
-    ])
-
     const result = spawnSync(process.execPath, [
-      join(pkgRoot, 'scripts', 'research-store.mjs'),
-      'add-hypothesis',
+      new URL('../scripts/research-store.mjs', import.meta.url).pathname,
+      'add-run',
       '--cwd',
-      fixture.projectDir,
-      '--hypothesis-id',
-      'hyp-002',
-      '--claim',
-      'This should fail',
-      '--main-variable',
-      'batch-size',
+      fixture,
+      '--run-id',
+      'run-001',
     ], { encoding: 'utf-8' })
 
     assert.notEqual(result.status, 0)
-    assert((result.stderr || result.stdout).includes('reference run'))
+    assert((result.stderr || result.stdout).includes('Use scripts/experiment-store.mjs'))
+    assert.equal(existsSync(join(fixture, 'hello-scholar', 'research', 'runs', 'run-001.json')), false)
   } finally {
-    destroyFixture(fixture)
+    rmSync(fixture, { recursive: true, force: true })
   }
 })
-
-function createFixture() {
-  const root = mkdtempSync(join(tmpdir(), 'hello-scholar-research-store-'))
-  const projectDir = join(root, 'project')
-  mkdirSync(projectDir, { recursive: true })
-  return { root, projectDir }
-}
-
-function destroyFixture(fixture) {
-  rmSync(fixture.root, { recursive: true, force: true })
-}
-
-function runNode(args) {
-  const result = spawnSync(process.execPath, args, { encoding: 'utf-8' })
-  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
-  return result.stdout.trim()
-}

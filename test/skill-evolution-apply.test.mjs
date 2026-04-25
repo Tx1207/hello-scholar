@@ -23,7 +23,7 @@ test('apply command requires explicit approval', () => {
     })
 
     const result = spawnSync(process.execPath, [
-      join(pkgRoot, 'scripts', 'skill-evolution-apply.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
       'apply',
       '--cwd',
       fixture.projectDir,
@@ -62,7 +62,7 @@ test('apply command updates an existing repo skill into overlay storage', () => 
     })
 
     const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-apply.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
       'apply',
       '--cwd',
       fixture.projectDir,
@@ -114,7 +114,7 @@ test('apply command creates a new overlay skill for create candidates', () => {
     })
 
     const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-apply.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
       'apply',
       '--cwd',
       fixture.projectDir,
@@ -137,7 +137,7 @@ test('apply command creates a new overlay skill for create candidates', () => {
 test('apply command activates the evolved overlay skill for the next standby turn', () => {
   const fixture = createFixture()
   try {
-    installStandby(fixture, ['meta-builder'])
+    installStandby(fixture)
     writeCandidateFixture(fixture, {
       id: 'skill-evo-20260416-001',
       status: 'proposed',
@@ -153,7 +153,7 @@ test('apply command activates the evolved overlay skill for the next standby tur
     })
 
     const output = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-apply.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-apply.mjs'),
       'apply',
       '--cwd',
       fixture.projectDir,
@@ -257,13 +257,12 @@ function assertPathExists(filePath) {
   assert.equal(existsSync(filePath), true, filePath)
 }
 
-function installStandby(fixture, bundles) {
+function installStandby(fixture) {
   const result = spawnSync(process.execPath, [
     join(pkgRoot, 'cli.mjs'),
     'install',
     'codex',
     '--standby',
-    ...bundles.flatMap((bundle) => ['--bundle', bundle]),
   ], {
     cwd: fixture.projectDir,
     env: fixture.env,

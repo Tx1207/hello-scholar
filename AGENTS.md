@@ -175,7 +175,7 @@ hello-scholar/
 
 ## Profile
 
-profile 是用户选择入口，bundle 只是内部实现细节。默认 base profile 是 `ml-development`。
+profile 是用户选择入口。默认 base profile 是 `ml-development`。
 
 - `research-ideation`：研究构思，生成研究问题、假设、方法方向和文献切入点。
 - `ml-development`：ML 实验开发，默认/base profile，面向科研代码开发、实验实现、验证、实验分析、baseline 对比、failure case 解释、下一轮实验规划和记录。
@@ -184,7 +184,7 @@ profile 是用户选择入口，bundle 只是内部实现细节。默认 base pr
 - `submission-rebuttal`：投稿与 Rebuttal，准备投稿材料、拆解审稿意见并撰写 response/rebuttal。
 - `post-acceptance`：录用后处理，处理 camera-ready、slides、poster、project page 和传播材料。
 
-若 profile 与当前任务冲突，按用户最新明确指令优先；不要要求用户理解或直接选择 bundle。
+若 profile 与当前任务冲突，按用户最新明确指令优先；不要要求用户理解底层 skill/agent 组合。
 
 ## Skill 与 Preference Evolution
 
@@ -228,10 +228,8 @@ Delivery Tier：
 - `~verify`：跑测试、审查 diff、整理 evidence、检查交付门槛。
 - `~analyze`：分析实验结果、baseline 对比、failure case 和下一轮实验。
 - `~evolve`：生成 skill / preference candidate，不自动应用。
-- `~prd`：规格、提案、论文或长文档收束。
-- `~auto`：不确定时自动分流，但不改变授权边界。
 
-兼容别名：`~do` = `~build`，`~design` = `~plan`，`~review` = `~verify`。
+兼容别名不作为正式命令记录；若用户使用不存在的命令，应解释并映射到最接近的正式命令。
 
 ### 2. SPEC
 
@@ -329,11 +327,11 @@ Delivery Tier：
 
 `hello-scholar/state/STATE.md` 记录当前任务状态，只记录当前进度，不替代 change / experiment 明细。
 
-需要创建或持续更新状态的场景：`~plan`、`~build`、`~auto`、`~prd`、明确进入连续实验开发流程。
+需要创建或持续更新状态的场景：`~plan`、`~build`、明确进入连续实验开发流程。
 
-已有则更新的场景：`~verify`、`~analyze`、`~evolve`、`~commit`、`~clean`。
+已有则更新的场景：`~verify`、`~analyze`、`~evolve`。
 
-不创建状态的场景：`~help`、`~idea`、普通问答、一次性只读任务、子代理自身执行过程。
+不创建状态的场景：`~idea`、普通问答、一次性只读任务、子代理自身执行过程。
 
 状态文件内容应包含：当前目标、route/tier、active profile、active change、active experiment、关键上下文、下一步、阻塞项。长流程中状态过时就立即重写，不等任务结束。
 

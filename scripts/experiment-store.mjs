@@ -5,6 +5,7 @@ import { join, relative } from 'node:path'
 
 import { ensureDir, parseArgv, pathExists, readJson, readText, writeJson, writeText } from './cli-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
+import { readRuntimeState, updateRuntimeExperimentState } from './runtime-state.mjs'
 
 const STATUS_VALUES = new Set(['planned', 'in_progress', 'validated', 'failed', 'analyzed', 'accepted', 'abandoned'])
 main()
@@ -141,7 +142,7 @@ export function createExperiment({ cwd = process.cwd(), title, request = '', now
   writeText(join(experimentDir, 'analysis.md'), renderAnalysisTemplate())
   writeJson(join(experimentDir, 'artifacts.json'), { experimentId: id, artifacts: [] })
 
-  writeActiveState(paths, { activeExperiment: id, activeProfile: profile, updatedAt: now.toISOString() })
+  writeActiveState(paths, { activeExperiment: id, activeProfile: profile, updatedAt: now.toISOString() }, now)
   refreshIndex(paths)
   refreshRecent(paths, id, now)
   return { id, path: relative(cwd, experimentDir).replace(/\\/g, '/') }
@@ -171,12 +172,12 @@ export function addEvidence({ cwd = process.cwd(), experimentId = '', kind = 'ma
   const resolved = resolveExperiment(cwd, experimentId)
   const pathText = path ? ` Path: \`${path}\`.` : ''
   appendLine(join(resolved.dir, 'evidence.md'), `- ${formatTimestamp(now)} ${kind} ${status}: ${summary}${pathText}`)
-  if (path) {
-    const artifactsPath = join(resolved.dir, 'artifacts.json')
-    const current = readJson(artifactsPath, { experimentId: resolved.id, artifacts: [] })
-    current.artifacts.push({ type: kind, path, summary, status, recordedAt: now.toISOString() })
-    writeJson(artifactsPath, current)
-  }
+  const artifactsPath = join(resolved.dir, 'artifacts.json')
+  const current = readJson(artifactsPath, { experimentId: resolved.id, artifacts: [] })
+  current.experimentId = current.experimentId || resolved.id
+  current.artifacts = Array.isArray(current.artifacts) ? current.artifacts : []
+  current.artifacts.push({ type: kind, path, summary, status, recordedAt: now.toISOString() })
+  writeJson(artifactsPath, current)
   touchExperiment(resolved.dir, now)
   refreshIndex(resolved.paths)
   return { experimentId: resolved.id, file: relative(cwd, join(resolved.dir, 'evidence.md')).replace(/\\/g, '/') }
@@ -192,11 +193,12 @@ export function analyzeExperiment({ cwd = process.cwd(), experimentId = '', summ
 
 export function readExperimentStatus(cwd = process.cwd()) {
   const paths = getExperimentPaths(cwd)
+  const runtime = readRuntimeState(cwd)
   const active = readJson(paths.activePath, {})
   const experiments = listExperimentIds(paths)
   return {
     root: paths.recordRoot,
-    activeExperiment: active.activeExperiment || null,
+    activeExperiment: runtime.experiment.activeExperiment || active.activeExperiment || null,
     experiments,
   }
 }
@@ -253,11 +255,13 @@ function refreshRecent(paths, id, now) {
   const current = readJson(paths.recentPath, { experiments: [] })
   const experiments = [{ id, updatedAt: now.toISOString() }, ...(current.experiments || []).filter((entry) => entry.id !== id)].slice(0, 10)
   writeJson(paths.recentPath, { experiments })
+  updateRuntimeExperimentState(paths.cwd, { recentExperiments: experiments }, now)
 }
 
-function writeActiveState(paths, next) {
+function writeActiveState(paths, next, now = new Date()) {
   const current = readJson(paths.activePath, {})
   writeJson(paths.activePath, { ...current, ...next })
+  updateRuntimeExperimentState(paths.cwd, next, now)
 }
 
 function listExperimentIds(paths) {

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import { ensureDir, pathExists, readText, writeText } from './cli-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
+import { readRuntimeState, updateRuntimeChangeState } from './runtime-state.mjs'
 import {
   extractSections,
   formatDate,
@@ -56,7 +57,7 @@ export function ensureTrackingRoots(paths) {
 export function loadWorkspace(paths) {
   return {
     records: readRecords(paths),
-    state: readState(paths.statePath),
+    state: readChangeState(paths),
   }
 }
 
@@ -75,6 +76,12 @@ export function readRecords(paths) {
 export function readState(statePath) {
   if (!pathExists(statePath)) return {}
   return parseFrontmatter(readText(statePath)).meta
+}
+
+export function readChangeState(paths) {
+  const runtimeChange = readRuntimeState(paths.cwd).change
+  if (runtimeChange.active_change_id || runtimeChange.active_change_file) return runtimeChange
+  return readState(paths.statePath)
 }
 
 export function parseRecord(text, filePath, cwd) {
@@ -98,7 +105,7 @@ export function parseRecord(text, filePath, cwd) {
       status: String(meta.status || 'active'),
       created: String(meta.created || new Date().toISOString()),
       updated: String(meta.updated || new Date().toISOString()),
-      route: String(meta.route || '~auto'),
+      route: String(meta.route || '~build'),
       tier: String(meta.tier || 'T1'),
       decision: String(meta.decision || 'new-topic'),
       affected_files: affectedFiles,
@@ -129,7 +136,7 @@ export function createRecord(existingRecords, title, files, now) {
       status: 'active',
       created: now.toISOString(),
       updated: now.toISOString(),
-      route: '~auto',
+      route: '~build',
       tier: 'T1',
       decision: 'new-topic',
       affected_files: files,
@@ -240,13 +247,13 @@ export function writeIndexAndState(paths, workspace, activeId, isActiveStatus) {
     frontmatter: serializeFrontmatter({
       active_change_id: activeRecord?.id || '',
       active_change_file: activeRecord ? relative(paths.cwd, activeRecord.filePath).replace(/\\/g, '/') : '',
-      route: activeRecord?.meta.route || '~auto',
+      route: activeRecord?.meta.route || '~build',
       tier: activeRecord?.meta.tier || 'T1',
       updated: refreshedAt,
     }),
     active_title: activeRecord?.title || 'None',
     active_file: activeRecord?.file || 'None',
-    route: activeRecord?.meta.route || '~auto',
+    route: activeRecord?.meta.route || '~build',
     tier: activeRecord?.meta.tier || 'T1',
     updated: refreshedAt,
     recent_changes: renderIndexEntries(records.slice(0, 5), paths.statePath),
@@ -265,6 +272,23 @@ export function writeIndexAndState(paths, workspace, activeId, isActiveStatus) {
     '{{recent_changes}}',
   ].join('\n'))
   writeText(paths.statePath, `${stateText.trimEnd()}\n`)
+  updateRuntimeChangeState(paths.cwd, {
+    active_change_id: activeRecord?.id || '',
+    active_change_file: activeRecord ? relative(paths.cwd, activeRecord.filePath).replace(/\\/g, '/') : '',
+    activeTitle: activeRecord?.title || '',
+    activeStatus: activeRecord?.meta.status || 'none',
+    route: activeRecord?.meta.route || '~build',
+    tier: activeRecord?.meta.tier || 'T1',
+    recentChanges: records.slice(0, 5).map((record) => ({
+      id: record.id,
+      title: record.title,
+      file: record.file,
+      status: record.meta.status,
+      route: record.meta.route,
+      tier: record.meta.tier,
+      updated: record.meta.updated,
+    })),
+  }, new Date(refreshedAt))
 }
 
 function renderIndexEntries(records, originPath) {

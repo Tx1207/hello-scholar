@@ -20,6 +20,35 @@ version: 1.0.0
 
 根据当前项目自适应选择命令，而不是盲目运行所有示例。若仓库与默认示例不匹配，使用 `references/STACK-DETECTION.md` 中与当前 stack 对应的命令集合。
 
+## Core Rules
+
+No verification command means no claim of "done", "fixed", "passing", or "ready". Read the complete output and exit code before reporting a result.
+
+Verification is a loop, not a one-shot gate:
+
+1. Identify the commands that prove the current claim.
+2. Run build, typecheck, lint, test, security, or targeted checks appropriate to the change.
+3. Inspect the output and exit codes.
+4. If anything fails, reason about the failure, fix it, and rerun the relevant checks.
+5. Only report completion with concrete evidence.
+
+Do not ask the user to skip required verification. If a command cannot run because of missing dependencies, environment limits, or an external service, report that as blocked or unverified with the exact reason.
+
+## Scope And Goal Validation
+
+Passing tests are proxy evidence, not the goal itself. Before closeout, verify the user-facing objective directly:
+
+- State the real outcome the user asked for.
+- Check that the implementation actually produces that outcome, not just that tests pass.
+- Look for happy-path-only tests, over-mocked dependencies, dead code, or unconnected implementations.
+- For each critical deliverable, confirm existence, real implementation, integration, and data flow.
+
+If a plan package exists, cross-check `requirements.md`, `tasks.md`, and any `contract.json` before reporting completion. Confirm every requirement and task completion criterion is covered, non-goals were not implemented, and any required review, advisor, visual validation, or evidence gates have structured evidence.
+
+## Checklist Gate
+
+After verification commands pass, collect the delivery checklist from every active skill used for the task. Mark checklist items only in verification or acceptance records, attach evidence for passed items, explain not-applicable items, and fix any failed items before rerunning verification.
+
 对于 hello-scholar 项目资产，优先采用 **evidence-driven loop**：
 
 1. 创建带 `contract.json` 的 plan package

@@ -21,7 +21,7 @@ test('review command creates update candidate when change points to an existing 
       slug: 'improve-skill-quality-reviewer-workflow',
       route: '~build',
       tier: 'T2',
-      affectedFiles: ['skills/meta/skill-quality-reviewer/SKILL.md', 'scripts/skill-evolution-review.mjs'],
+      affectedFiles: ['skills/meta/skill-quality-reviewer/SKILL.md', 'scripts/evolution/skill-evolution-review.mjs'],
       actualChanges: [
         'Refined the review workflow for reusable skill feedback.',
         'Added candidate-based review artifacts for later apply stages.',
@@ -54,7 +54,7 @@ test('review command creates update candidate when change points to an existing 
     ])
 
     const reviewResult = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-review.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-review.mjs'),
       'review',
       '--cwd',
       fixture.projectDir,
@@ -80,7 +80,7 @@ test('review command creates update candidate when change points to an existing 
     assert.equal(storedCandidate.policy.requiresEvidence, true)
 
     const statusResult = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-review.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-review.mjs'),
       'status',
       '--cwd',
       fixture.projectDir,
@@ -112,7 +112,7 @@ test('review command records rejected candidate when policy and evidence require
     })
 
     const reviewResult = runJson(fixture, [
-      join(pkgRoot, 'scripts', 'skill-evolution-review.mjs'),
+      join(pkgRoot, 'scripts', 'evolution', 'skill-evolution-review.mjs'),
       'review',
       '--cwd',
       fixture.projectDir,

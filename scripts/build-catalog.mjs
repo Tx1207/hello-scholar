@@ -7,10 +7,8 @@ import { readJson, readText, writeJson } from './cli-utils.mjs'
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 
 const base = readJson(join(pkgRoot, 'catalog', 'base.json'), null)
-const bundles = readJson(join(pkgRoot, 'catalog', 'bundles.json'), null)
-
-if (!base || !bundles) {
-  throw new Error('Missing base.json or bundles.json')
+if (!base) {
+  throw new Error('Missing base.json')
 }
 
 const hardDependencies = {
@@ -36,29 +34,7 @@ const optionalDependencies = {
 const INTERNAL_SKILL_DIRS = new Set([
   '_meta',
   'commands',
-  'helloagents',
-  'hello-api',
-  'hello-arch',
-  'hello-data',
-  'hello-debug',
-  'hello-errors',
-  'hello-perf',
-  'hello-reflect',
-  'hello-review',
-  'hello-security',
-  'hello-subagent',
-  'hello-test',
-  'hello-ui',
-  'hello-verify',
-  'hello-write',
 ])
-
-const bundleSkillMembership = new Map()
-const bundleAgentMembership = new Map()
-for (const bundle of bundles) {
-  for (const skillId of bundle.skills) pushMembership(bundleSkillMembership, skillId, bundle.id)
-  for (const agentId of bundle.agents) pushMembership(bundleAgentMembership, agentId, bundle.id)
-}
 
 const skills = readSkillDirectories(join(pkgRoot, 'skills'))
   .map((entry) => {
@@ -70,9 +46,9 @@ const skills = readSkillDirectories(join(pkgRoot, 'skills'))
       name: frontmatter.name || skillId,
       description: frontmatter.description || '',
       path: entry.path,
-      layer: base.defaultSkills.includes(skillId) ? 'base' : 'bundle',
-      category: base.defaultSkills.includes(skillId) ? 'base' : (entry.domain || bundleSkillMembership.get(skillId)?.[0] || 'unassigned'),
-      bundleIds: bundleSkillMembership.get(skillId) || [],
+      layer: base.defaultSkills.includes(skillId) ? 'base' : 'profile',
+      category: base.defaultSkills.includes(skillId) ? 'base' : (entry.domain || 'unassigned'),
+      profileIds: [],
       dependencies: hardDependencies[skillId] || [],
       optionalDependencies: optionalDependencies[skillId] || [],
     }
@@ -87,15 +63,13 @@ const agents = readModuleDirectories(join(pkgRoot, 'agents'))
       name: agentId,
       description,
       path: `agents/${agentId}`,
-      category: bundleAgentMembership.get(agentId)?.[0] || 'unassigned',
-      bundleIds: bundleAgentMembership.get(agentId) || [],
+      category: 'unassigned',
+      profileIds: [],
       dependencies: [],
       optionalDependencies: [],
     }
   })
 
-assertCoverage(skills.filter((entry) => entry.layer !== 'base' && entry.bundleIds.length === 0).map((entry) => entry.id), 'skill bundle')
-assertCoverage(agents.filter((entry) => entry.bundleIds.length === 0).map((entry) => entry.id), 'agent bundle')
 
 writeJson(join(pkgRoot, 'catalog', 'skills.json'), skills)
 writeJson(join(pkgRoot, 'catalog', 'agents.json'), agents)
@@ -165,15 +139,4 @@ function extractTomlDescription(fileText) {
 
 function trimQuotes(value = '') {
   return value.replace(/^['"]|['"]$/g, '')
-}
-
-function pushMembership(map, key, bundleId) {
-  const current = map.get(key) || []
-  current.push(bundleId)
-  map.set(key, current)
-}
-
-function assertCoverage(missingIds, label) {
-  if (missingIds.length === 0) return
-  throw new Error(`Missing ${label} coverage for: ${missingIds.join(', ')}`)
 }

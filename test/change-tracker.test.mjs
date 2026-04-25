@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 
+import { readRuntimeState } from '../scripts/runtime-state.mjs'
+
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const trackerScript = join(pkgRoot, 'scripts', 'change-tracker.mjs')
 
@@ -33,6 +35,7 @@ test('track-intent creates a human-readable change record and state summary', ()
     const changeFile = readSingleChangeFile(fixture.projectDir)
     const changeText = readFileSync(changeFile, 'utf-8')
     const stateText = readFileSync(join(fixture.projectDir, 'hello-scholar', 'state', 'STATE.md'), 'utf-8')
+    const runtime = readRuntimeState(fixture.projectDir)
 
     assert(changeText.includes('# Change: Fix training config'))
     assert(changeText.includes('修复训练配置加载问题'))
@@ -40,6 +43,9 @@ test('track-intent creates a human-readable change record and state summary', ()
     assert(changeText.includes('Tier: T2'))
     assert(changeText.includes('`src/train.py`'))
     assert(stateText.includes('Fix training config'))
+    assert.equal(runtime.change.activeTitle, 'Fix training config')
+    assert.equal(runtime.change.route, '~build')
+    assert.equal(runtime.change.tier, 'T2')
   } finally {
     destroyFixture(fixture)
   }
@@ -179,12 +185,86 @@ test('track-change and track-closeout update sections and status', () => {
     const changeFile = readSingleChangeFile(fixture.projectDir)
     const changeText = readFileSync(changeFile, 'utf-8')
     const stateText = readFileSync(join(fixture.projectDir, 'hello-scholar', 'state', 'STATE.md'), 'utf-8')
+    const runtime = readRuntimeState(fixture.projectDir)
 
     assert(changeText.includes('Adjusted config load order'))
     assert(changeText.includes('pytest tests/test_config_loader.py'))
     assert(changeText.includes('Validated the fix manually'))
     assert(changeText.includes('status: done'))
     assert(stateText.includes('Active change: None'))
+    assert.equal(runtime.change.active_change_id, '')
+    assert.equal(runtime.change.activeStatus, 'none')
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('track-change mirrors active experiment changes while retaining top-level index', () => {
+  const fixture = createFixture()
+  try {
+    const created = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'experiment-store.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--title',
+      'Experiment change tracking',
+      '--request',
+      'Track code changes inside experiment package.',
+    ]))
+
+    runNode([
+      trackerScript,
+      'track-change',
+      '--cwd',
+      fixture.projectDir,
+      '--summary',
+      'Adjusted experiment config defaults',
+      '--file',
+      'src/config.py',
+    ])
+
+    const experimentChanges = readFileSync(join(fixture.projectDir, 'hello-scholar', 'experiments', created.id, 'changes.md'), 'utf-8')
+    const indexText = readFileSync(join(fixture.projectDir, 'hello-scholar', 'changes', 'INDEX.md'), 'utf-8')
+    const changeFile = readSingleChangeFile(fixture.projectDir)
+
+    assert(experimentChanges.includes('Adjusted experiment config defaults'))
+    assert(experimentChanges.includes('`src/config.py`'))
+    assert(indexText.includes('Adjusted experiment config defaults'))
+    assert(readFileSync(changeFile, 'utf-8').includes('Adjusted experiment config defaults'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('track-change supports explicit experiment-id when no experiment is active', () => {
+  const fixture = createFixture()
+  try {
+    const created = JSON.parse(runNode([
+      join(pkgRoot, 'scripts', 'experiment-store.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--title',
+      'Explicit experiment change tracking',
+      '--request',
+      'Track explicit experiment change.',
+    ]))
+    rmSync(join(fixture.projectDir, 'hello-scholar', 'state', 'active.json'), { force: true })
+
+    runNode([
+      trackerScript,
+      'track-change',
+      '--cwd',
+      fixture.projectDir,
+      '--experiment-id',
+      created.id,
+      '--summary',
+      'Recorded explicit experiment change',
+    ])
+
+    const experimentChanges = readFileSync(join(fixture.projectDir, 'hello-scholar', 'experiments', created.id, 'changes.md'), 'utf-8')
+    assert(experimentChanges.includes('Recorded explicit experiment change'))
   } finally {
     destroyFixture(fixture)
   }

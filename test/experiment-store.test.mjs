@@ -12,8 +12,9 @@ import {
   createExperiment,
   readExperimentStatus,
 } from '../scripts/experiment-store.mjs'
-import { recordEvidence, readEvidenceBundle } from '../scripts/evidence-store.mjs'
+import { readEvidenceTarget, recordEvidence, readEvidenceBundle } from '../scripts/evidence-store.mjs'
 import { parseArgv } from '../scripts/cli-utils.mjs'
+import { readRuntimeState } from '../scripts/runtime-state.mjs'
 
 test('experiment store creates centralized experiment package and updates active state', () => {
   const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-exp-'))
@@ -37,6 +38,9 @@ test('experiment store creates centralized experiment package and updates active
 
     const active = readFileSync(join(fixture, 'hello-scholar', 'state', 'active.json'), 'utf-8')
     assert(active.includes(created.id))
+    const runtime = readRuntimeState(fixture)
+    assert.equal(runtime.experiment.activeExperiment, created.id)
+    assert.equal(runtime.experiment.activeProfile, 'ml-development')
 
     appendChange({ cwd: fixture, experimentId: created.id, summary: 'Added focal loss.', files: ['src/losses.py'] })
     addRun({ cwd: fixture, experimentId: created.id, kind: 'small-run', command: 'python train.py loss=focal', metrics: ['macro_f1=0.728'] })
@@ -57,7 +61,7 @@ test('experiment store creates centralized experiment package and updates active
   }
 })
 
-test('evidence store can record experiment evidence into the experiment package', () => {
+test('evidence store records active experiment evidence into the experiment package by default', () => {
   const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-exp-evidence-'))
   try {
     const created = createExperiment({
@@ -68,8 +72,6 @@ test('evidence store can record experiment evidence into the experiment package'
     })
 
     const result = recordEvidence(fixture, parseArgv([
-      '--experiment-id',
-      created.id,
       '--kind',
       'metric-log',
       '--status',
@@ -83,6 +85,7 @@ test('evidence store can record experiment evidence into the experiment package'
     ]))
 
     assert.equal(result.scope, 'experiment')
+    assert.equal(result.experimentId, created.id)
     const expDir = join(fixture, 'hello-scholar', 'experiments', created.id)
     assert(readFileSync(join(expDir, 'evidence.md'), 'utf-8').includes('Three seeds completed.'))
     assert(readFileSync(join(expDir, 'artifacts.json'), 'utf-8').includes('outputs/seeds.json'))
@@ -91,6 +94,40 @@ test('evidence store can record experiment evidence into the experiment package'
     assert.equal(bundle.entries.length, 1)
     assert.equal(bundle.entries[0].summary, 'Three seeds completed.')
     assert.equal(bundle.entries[0].files[0], 'outputs/seeds.json')
+    assert.equal(existsSync(join(fixture, 'hello-scholar', 'evidence', created.id)), false)
+  } finally {
+    rmSync(fixture, { recursive: true, force: true })
+  }
+})
+
+test('evidence store rejects explicit top-level target-id evidence writes', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'hello-scholar-target-evidence-'))
+  try {
+    createExperiment({
+      cwd: fixture,
+      title: 'Active experiment',
+      request: 'Keep active experiment available.',
+      now: new Date('2026-04-24T08:00:00.000Z'),
+    })
+
+    assert.throws(
+      () => recordEvidence(fixture, parseArgv([
+        '--target-id',
+        'plan-evidence',
+        '--summary',
+        'Plan-level check completed.',
+        '--status',
+        'pass',
+        '--at',
+        '2026-04-24T09:00:00.000Z',
+      ])),
+      /Legacy top-level evidence targets are no longer write targets/,
+    )
+    assert.equal(existsSync(join(fixture, 'hello-scholar', 'evidence', 'plan-evidence', 'index.json')), false)
+    assert.throws(
+      () => readEvidenceTarget(fixture, parseArgv(['--target-id', 'plan-evidence'])),
+      /Legacy top-level evidence targets are no longer readable/,
+    )
   } finally {
     rmSync(fixture, { recursive: true, force: true })
   }

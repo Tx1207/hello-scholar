@@ -17,6 +17,8 @@ version: 0.1.0
 - **Constraints**：技术要求（framework、performance、accessibility）。
 - **Differentiation**：是什么让它令人难忘？用户会记住哪一个点？
 
+如果项目已有设计约束，优先级为当前 plan / PRD 的 UI 决策，其次是项目级 `hello-scholar/DESIGN.md` 或等价设计文档，最后才是本 skill 的通用美学建议。不要为了展示技巧覆盖已有产品语言。
+
 **CRITICAL**：选择清晰的概念方向并精确执行。大胆的 maximalism 和克制的 refined minimalism 都可以成立，关键是 intentionality，而不是 intensity。
 
 然后实现工作代码（HTML/CSS/JS、React、Vue 等），要求：
@@ -41,3 +43,11 @@ version: 0.1.0
 **IMPORTANT**：让实现复杂度匹配审美愿景。Maximalist designs 需要更丰富的动画和效果代码。Minimalist 或 refined designs 则需要克制、精确，以及对 spacing、typography 和微妙细节的细致把控。优雅来自把愿景执行到位。
 
 记住：Claude 能做出非常有创造力的作品。不要保守，展示当你跳出框架并完全投入一个独特愿景时真正能创造出的东西。
+
+## 交付检查
+
+- 界面在 desktop 和 mobile 的关键断点都可用，没有遮挡、溢出或不可触达控件
+- 交互状态完整，包括 loading、empty、error、success、disabled 和 hover/focus states
+- 可访问性不被视觉效果牺牲：语义结构、键盘导航、焦点态、对比度和 alt text 必须成立
+- 视觉方向清晰一致，typography、spacing、motion、background 和组件细节服务同一概念
+- 动画和装饰不阻塞核心任务，也不造成明显性能退化

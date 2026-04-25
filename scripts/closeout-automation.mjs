@@ -2,14 +2,14 @@ import { readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { detectInstalledScope, getRuntimeContext, loadInstallState, loadUserConfig } from './cli-config.mjs'
-import { loadCatalog } from './catalog-loader.mjs'
+import { detectInstalledScope, getRuntimeContext, loadInstallState, loadUserConfig } from './install/cli-config.mjs'
+import { loadCatalog } from './profile/catalog-loader.mjs'
 import { pathExists, readJson } from './cli-utils.mjs'
 import { runDeliveryGate } from './delivery-gate.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
-import { loadSelectionState } from './selection-state.mjs'
-import { reviewSkillEvolution } from './skill-evolution-review.mjs'
-import { getEvolutionPaths, readCandidates } from './skill-evolution-store.mjs'
+import { loadSelectionState } from './profile/selection-state.mjs'
+import { reviewSkillEvolution } from './evolution/skill-evolution-review.mjs'
+import { getEvolutionPaths, readCandidates } from './evolution/skill-evolution-store.mjs'
 
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 const CLOSEABLE_STATUSES = new Set(['done', 'closed'])
@@ -42,7 +42,7 @@ function loadAutomationContext(cwd, args, record) {
   const contract = contractMatch?.contract || null
   const planId = explicitPlanId || contract?.planId || ''
   const targetId = explicitTargetId || planId
-  const route = String(contract?.route || record.meta?.route || '~auto').trim() || '~auto'
+  const route = String(contract?.route || record.meta?.route || '~build').trim() || '~build'
   const actualChangeCount = (record.actualChanges || []).reduce((count, entry) => count + entry.items.length, 0)
   const substantial =
     (record.meta?.affected_files || []).length >= 2 ||
@@ -121,7 +121,7 @@ function runReviewIfNeeded(cwd, context, deliveryGate, notes) {
     notes.push('Skipped skill evolution review: delivery gate did not pass.')
     return { ran: false, skipped: 'delivery-gate-failed', candidateId: '' }
   }
-  if (!(context.contract.skillEvolution?.enabled === true || context.selection.bundles.includes('meta-builder'))) {
+  if (!(context.contract.skillEvolution?.enabled === true || hasSkillEvolutionCapability(context.selection))) {
     notes.push('Skipped skill evolution review: meta-builder is inactive and contract did not opt in.')
     return { ran: false, skipped: 'policy-disabled', candidateId: '' }
   }
@@ -177,6 +177,11 @@ function resolveContract(storageRoot, explicitPlanId) {
 
 function hasExistingCandidateForChange(cwd, changeId) {
   return readCandidates(getEvolutionPaths(cwd)).some((candidate) => candidate.source?.changeId === changeId)
+}
+
+function hasSkillEvolutionCapability(selection = {}) {
+  const skills = selection.skills || []
+  return skills.includes('skill-development') || skills.includes('skill-improver') || skills.includes('skill-quality-reviewer')
 }
 
 function buildArgs(flags) {

@@ -5,8 +5,8 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, test } from 'node:test'
 
-import { loadCatalog, resolveProfileSelection, resolveSelection } from '../scripts/catalog-loader.mjs'
-import { loadSelectionState, saveSelectionState } from '../scripts/selection-state.mjs'
+import { loadCatalog, resolveProfileSelection, resolveSelection } from '../scripts/profile/catalog-loader.mjs'
+import { loadSelectionState, saveSelectionState } from '../scripts/profile/selection-state.mjs'
 import { applySelectionOperation } from '../scripts/text-ui.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -37,7 +37,6 @@ test('profile catalog exposes the six lifecycle profiles with ml-development as 
     assert(profile.displayName)
     assert(profile.stage)
     assert(profile.description)
-    assert((profile.bundles || []).length > 0)
     assert((profile.skills || []).length > 0)
   }
 })
@@ -54,7 +53,7 @@ test('ml-development resolves as the default base profile only', () => {
   })
 
   assert.deepEqual(profileSelection.profiles, ['ml-development'])
-  assert.deepEqual(profileSelection.bundles, ['dev-core', 'research-core'])
+  assert.deepEqual(profileSelection.activeProfiles, ['ml-development'])
   assert.equal(selection.baseProfile, 'ml-development')
   assert.equal(selection.activeProfile, 'ml-development')
   assert(selection.skills.includes('daily-coding'))
@@ -74,7 +73,7 @@ test('paper-writing resolves as ml-development base plus paper-writing stage', (
   })
 
   assert.deepEqual(profileSelection.profiles, ['ml-development', 'paper-writing'])
-  assert.deepEqual(profileSelection.bundles, ['dev-core', 'research-core', 'writing-core'])
+  assert.deepEqual(profileSelection.activeProfiles, ['paper-writing'])
   assert.equal(selection.baseProfile, 'ml-development')
   assert.equal(selection.activeProfile, 'paper-writing')
   assert(selection.skills.includes('daily-coding'))
@@ -102,7 +101,7 @@ test('selection state persists and reloads baseProfile and activeProfile from mo
   const saved = saveSelectionState(catalog, {
     includeBase: true,
     activeProfile: 'paper-writing',
-    bundles: [],
+    activeProfiles: ['paper-writing'],
     explicitSkills: [],
     explicitAgents: [],
   }, runtime, { cwd, scope: 'project' })
@@ -116,7 +115,7 @@ test('selection state persists and reloads baseProfile and activeProfile from mo
   assert.equal(saved.activeProfile, 'paper-writing')
   assert.equal(modules.baseProfile, 'ml-development')
   assert.equal(modules.activeProfile, 'paper-writing')
-  assert.deepEqual(modules.profileBundles, ['dev-core', 'research-core', 'writing-core'])
+  assert.deepEqual(modules.activeProfiles, ['paper-writing'])
   assert(loaded.skills.includes('daily-coding'))
   assert(loaded.skills.includes('ml-paper-writing'))
   assert(loaded.agents.includes('code-reviewer'))
@@ -129,7 +128,7 @@ test('profile selection operation updates activeProfile without changing basePro
     includeBase: true,
     baseProfile: 'ml-development',
     activeProfile: 'ml-development',
-    bundles: [],
+    activeProfiles: ['ml-development'],
     explicitSkills: [],
     explicitAgents: [],
     skills: [],
@@ -141,6 +140,7 @@ test('profile selection operation updates activeProfile without changing basePro
   assert.equal(result.changed, true)
   assert.equal(result.nextState.baseProfile, 'ml-development')
   assert.equal(result.nextState.activeProfile, 'paper-writing')
+  assert.deepEqual(result.nextState.activeProfiles, ['paper-writing', 'ml-development'])
 })
 
 function createTempRoot() {

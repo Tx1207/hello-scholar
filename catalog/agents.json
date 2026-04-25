@@ -4,10 +4,8 @@
     "name": "architect",
     "description": "面向代码结构与设计模式的 ML 项目架构专家",
     "path": "agents/architect",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -16,10 +14,8 @@
     "name": "bug-analyzer",
     "description": "深度分析代码执行流并定位根因",
     "path": "agents/bug-analyzer",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -28,10 +24,8 @@
     "name": "build-error-resolver",
     "description": "以最小改动修复构建与类型错误",
     "path": "agents/build-error-resolver",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -40,10 +34,8 @@
     "name": "code-reviewer",
     "description": "面向质量、安全性与可维护性的专业代码审查",
     "path": "agents/code-reviewer",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -52,10 +44,8 @@
     "name": "dev-planner",
     "description": "实施规划与任务拆解",
     "path": "agents/dev-planner",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -64,10 +54,8 @@
     "name": "kaggle-miner",
     "description": "从 Kaggle 解决方案中提取工程实践",
     "path": "agents/kaggle-miner",
-    "category": "research-core",
-    "bundleIds": [
-      "research-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -76,10 +64,8 @@
     "name": "literature-reviewer",
     "description": "结合 Zotero MCP 的文献检索、分类与趋势分析",
     "path": "agents/literature-reviewer",
-    "category": "research-core",
-    "bundleIds": [
-      "research-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -88,10 +74,8 @@
     "name": "literature-reviewer-obsidian",
     "description": "面向项目联动论文笔记与综合分析的 Obsidian 文献综述专家",
     "path": "agents/literature-reviewer-obsidian",
-    "category": "obsidian-core",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -100,10 +84,8 @@
     "name": "paper-miner",
     "description": "从成功论文中提取写作知识",
     "path": "agents/paper-miner",
-    "category": "writing-core",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -112,10 +94,8 @@
     "name": "rebuttal-writer",
     "description": "带语气优化的系统化 rebuttal 写作",
     "path": "agents/rebuttal-writer",
-    "category": "writing-core",
-    "bundleIds": [
-      "writing-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -124,10 +104,8 @@
     "name": "refactor-cleaner",
     "description": "死代码清理与收敛整理专家",
     "path": "agents/refactor-cleaner",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -136,10 +114,8 @@
     "name": "research-knowledge-curator-obsidian",
     "description": "面向已绑定科研仓库的默认 Obsidian 知识整理专家",
     "path": "agents/research-knowledge-curator-obsidian",
-    "category": "obsidian-core",
-    "bundleIds": [
-      "obsidian-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -148,10 +124,8 @@
     "name": "story-generator",
     "description": "用户故事与叙事生成",
     "path": "agents/story-generator",
-    "category": "ui-content",
-    "bundleIds": [
-      "ui-content"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -160,10 +134,8 @@
     "name": "tdd-guide",
     "description": "测试驱动开发工作流指导",
     "path": "agents/tdd-guide",
-    "category": "dev-core",
-    "bundleIds": [
-      "dev-core"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   },
@@ -172,11 +144,8 @@
     "name": "ui-sketcher",
     "description": "UI 蓝图设计与交互规格定义",
     "path": "agents/ui-sketcher",
-    "category": "writing-core",
-    "bundleIds": [
-      "writing-core",
-      "ui-content"
-    ],
+    "category": "unassigned",
+    "profileIds": [],
     "dependencies": [],
     "optionalDependencies": []
   }

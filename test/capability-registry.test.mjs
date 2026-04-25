@@ -56,7 +56,7 @@ test('capability registry recommends dynamic skills, agents, and tools from cont
   }
 })
 
-test('capability registry recognizes prd and commit routes', () => {
+test('capability registry recognizes plan and build routes', () => {
   const fixture = createFixture()
   try {
     runNode([
@@ -65,27 +65,26 @@ test('capability registry recognizes prd and commit routes', () => {
       '--cwd',
       fixture.projectDir,
       '--plan-id',
-      'plan-prd-route',
+      'plan-plan-route',
       '--title',
-      'Draft scholar PRD',
+      'Plan scholar changes',
       '--route',
-      '~prd',
+      '~plan',
       '--file',
       'docs/spec.md',
     ])
 
-    const prdPayload = JSON.parse(runNode([
+    const planPayload = JSON.parse(runNode([
       join(pkgRoot, 'scripts', 'capability-registry.mjs'),
       'recommend',
       '--cwd',
       fixture.projectDir,
       '--plan-id',
-      'plan-prd-route',
+      'plan-plan-route',
     ]))
 
-    const prdIds = prdPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
-    assert(prdIds.includes('skill:planning-with-files'))
-    assert(prdIds.includes('skill:doc-coauthoring'))
+    const planIds = planPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
+    assert(planIds.includes('skill:planning-with-files'))
 
     runNode([
       join(pkgRoot, 'scripts', 'plan-package.mjs'),
@@ -93,26 +92,26 @@ test('capability registry recognizes prd and commit routes', () => {
       '--cwd',
       fixture.projectDir,
       '--plan-id',
-      'plan-commit-route',
+      'plan-build-route',
       '--title',
-      'Commit scholar changes',
+      'Build scholar changes',
       '--route',
-      '~commit',
+      '~build',
       '--file',
       'README.md',
     ])
 
-    const commitPayload = JSON.parse(runNode([
+    const buildPayload = JSON.parse(runNode([
       join(pkgRoot, 'scripts', 'capability-registry.mjs'),
       'recommend',
       '--cwd',
       fixture.projectDir,
       '--plan-id',
-      'plan-commit-route',
+      'plan-build-route',
     ]))
 
-    const commitIds = commitPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
-    assert(commitIds.includes('skill:git-commit'))
+    const buildIds = buildPayload.recommendations.map((entry) => `${entry.kind}:${entry.id}`)
+    assert(buildIds.includes('skill:daily-coding'))
   } finally {
     destroyFixture(fixture)
   }
@@ -126,8 +125,7 @@ test('capability registry recommends an evolved overlay skill for a matching rou
       'install',
       'codex',
       '--standby',
-      '--bundle',
-      'meta-builder',
+      '--standby',
     ], fixture.env, fixture.projectDir)
 
     const overlaySkillRoot = join(fixture.hostHome, 'plugins', 'hello-scholar', '.hello-scholar', 'overlays', 'skills', 'overlay-skill')

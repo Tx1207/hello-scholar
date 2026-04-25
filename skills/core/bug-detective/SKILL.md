@@ -89,6 +89,8 @@ Verification steps:
 1. [验证方法 1]
 2. [验证方法 2]
 
+If the same verification path fails three or more times, stop and escalate the debugging strategy instead of making another local tweak. Re-check the original symptom, reduce to the smallest reproduction, inspect recent diffs, and consider whether the assumed root cause is wrong.
+
 Expected results:
 - If hypothesis is correct: [预期现象]
 - If hypothesis is wrong: [预期现象]
@@ -290,6 +292,8 @@ set -o pipefail  # pipe 中任一命令失败则整体失败
 ### After Resolution
 
 - [ ] 确认原始错误已修复
+- [ ] 确认修复没有只改变错误表现而掩盖根因
+- [ ] 添加或更新回归测试，或记录为什么无法自动化覆盖
 - [ ] 测试相关功能
 - [ ] 添加防回归测试
 - [ ] 记录问题和解决方案

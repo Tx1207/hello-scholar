@@ -31,6 +31,8 @@ python3 "$HOME/.codex/plugins/cache/local-plugins/hello-scholar/local/skills/cod
 
 把该输出当作 Codex 对 `SessionEnd` / `Stop` hook 的确定性替代，再撰写最终的人类可读总结。
 
+Only present a final complete, waiting, or blocked status at the actual end of the turn. Progress updates and intermediate summaries must not be phrased as final completion. When the project provides structured turn-state helpers, write machine-readable status before the final closeout and include reason category plus reason for waiting or blocked states.
+
 ### 1. 生成 Work Log
 
 总结本次 session：

@@ -140,6 +140,14 @@ Detection targets:
 | Color Inconsistency | 品牌色不统一 | Medium |
 | Spacing Inconsistency | 相似元素间距不统一 | Low |
 
+#### Product Fit
+
+| Issue | Description | Severity |
+|-------|-------------|----------|
+| Design Contract Drift | 当前 plan / PRD UI 决策或项目设计文档未被实现 | High |
+| Generic Aesthetic | 页面缺少明确视觉方向，呈现模板化或通用 AI 审美 | Medium |
+| State Mismatch | loading、empty、error、success 等状态与主界面语言不一致 | Medium |
+
 ### 2.3 Viewport Testing (Responsive)
 
 按以下 viewport 测试：

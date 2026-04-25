@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process'
 import { parseArgv, pathExists, readJson, writeJson, writeText } from './cli-utils.mjs'
 import { resolveProjectStorage } from './project-storage.mjs'
 import { readEvidenceBundle } from './evidence-store.mjs'
+import { readRuntimeState } from './runtime-state.mjs'
 
 main()
 
@@ -20,28 +21,33 @@ function main() {
 }
 
 export function runDeliveryGate(cwd, args) {
-  const experimentId = String(args.getFlag('--experiment-id', '')).trim()
-  const targetId = experimentId || String(args.getFlag('--target-id', '')).trim()
-  if (!targetId) throw new Error('--target-id is required')
+  const requestedExperimentId = String(args.getFlag('--experiment-id', '')).trim()
+  const requestedTargetId = String(args.getFlag('--target-id', '')).trim()
+  const activeExperimentId = readRuntimeState(cwd).experiment.activeExperiment || ''
+  const experimentId = requestedExperimentId || (requestedTargetId.startsWith('EXP-') ? requestedTargetId : String(activeExperimentId).trim())
+  if (!experimentId) throw new Error('Delivery gate requires experiment evidence. Use --experiment-id or make an experiment active.')
+  if (requestedTargetId && requestedTargetId !== experimentId) {
+    throw new Error('Legacy top-level evidence targets are no longer delivery gate targets. Use --experiment-id for experiment delivery gates.')
+  }
+  const targetId = experimentId
   const storage = resolveProjectStorage(cwd)
   const contractPath = resolveContractPath(storage.rootPath, args, targetId)
   const contract = readJson(contractPath, null)
   if (!contract) throw new Error(`Missing contract: ${contractPath}`)
   const evidence = readEvidenceBundle(cwd, targetId)
   const diffFiles = currentDiffFiles(cwd)
-  const checks = evaluateChecks(contract, evidence, diffFiles, new Date())
+  const consistency = readConsistencyContext(storage.rootPath, targetId, experimentId)
+  const checks = evaluateChecks(contract, evidence, diffFiles, new Date(), consistency)
   const overall = checks.every((check) => check.pass)
   const payload = {
     targetId,
-    experimentId: experimentId || null,
+    experimentId,
     contractPath,
     checkedAt: new Date().toISOString(),
     checks,
     overall,
   }
-  const gateRoot = experimentId
-    ? join(storage.rootPath, 'experiments', experimentId)
-    : join(storage.rootPath, 'evidence', targetId)
+  const gateRoot = join(storage.rootPath, 'experiments', experimentId)
   writeJson(join(gateRoot, 'delivery-gate.json'), payload)
   writeText(join(gateRoot, 'closeout.md'), renderCloseout(payload))
   return payload
@@ -54,7 +60,19 @@ function resolveContractPath(storageRoot, args, targetId) {
   return join(storageRoot, 'plans', planId, 'contract.json')
 }
 
-function evaluateChecks(contract, evidence, diffFiles, now) {
+function readConsistencyContext(storageRoot, targetId, experimentId) {
+  if (!experimentId) return { experimentId: null, experimentExists: true, artifactExperimentId: null }
+  const experimentRoot = join(storageRoot, 'experiments', experimentId)
+  const artifacts = readJson(join(experimentRoot, 'artifacts.json'), null)
+  return {
+    experimentId,
+    experimentExists: pathExists(experimentRoot),
+    artifactExperimentId: artifacts?.experimentId || null,
+    targetMatchesExperiment: targetId === experimentId,
+  }
+}
+
+function evaluateChecks(contract, evidence, diffFiles, now, consistency = {}) {
   const minEvidenceCount = Number(contract.deliveryGate?.minEvidenceCount || 1)
   const maxAgeHours = Number(contract.deliveryGate?.maxEvidenceAgeHours || 168)
   const requiresEvidence = contract.deliveryGate?.requiresEvidence !== false
@@ -66,7 +84,22 @@ function evaluateChecks(contract, evidence, diffFiles, now) {
     ? []
     : diffFiles.filter((file) => !allowedFiles.includes(file))
 
-  return [
+  const checks = [
+    {
+      check: 'target_consistency',
+      pass: !consistency.experimentId || (consistency.targetMatchesExperiment && evidence.targetId === consistency.experimentId),
+      detail: consistency.experimentId ? `target=${evidence.targetId}, experiment=${consistency.experimentId}` : 'not an experiment delivery gate',
+    },
+    {
+      check: 'experiment_package_exists',
+      pass: !consistency.experimentId || consistency.experimentExists,
+      detail: consistency.experimentId ? `experiment=${consistency.experimentId}` : 'not an experiment delivery gate',
+    },
+    {
+      check: 'artifact_index_consistency',
+      pass: !consistency.experimentId || !consistency.artifactExperimentId || consistency.artifactExperimentId === consistency.experimentId,
+      detail: consistency.experimentId ? `artifacts_experiment=${consistency.artifactExperimentId || 'missing'}` : 'not an experiment delivery gate',
+    },
     {
       check: 'evidence_required',
       pass: !requiresEvidence || evidence.entries.length >= minEvidenceCount,
@@ -88,6 +121,7 @@ function evaluateChecks(contract, evidence, diffFiles, now) {
       detail: diffOutsideAllowed.length === 0 ? 'all diff files allowed' : `unexpected=${diffOutsideAllowed.join(', ')}`,
     },
   ]
+  return checks
 }
 
 function currentDiffFiles(cwd) {
