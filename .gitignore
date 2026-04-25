@@ -37,8 +37,7 @@ stats-cache.json
 statsig/
 
 # Other temporary files
-docs/*
-!docs/requirements.md
+docs/
 projects/
 temp/
 tasks/
@@ -46,5 +45,4 @@ teams/
 
 .codex/
 .idea/
-doc/
 hello-scholar/
