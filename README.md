@@ -98,6 +98,14 @@ node scripts/evolution/skill-evolution-apply.mjs apply --candidate-id skill-evo-
 
 Preference apply 仍需要展示 before/after、作用域和高影响确认需求后再写入 `user-preferences.yaml`。
 
+### 交互与收尾规则
+
+主代理在每轮进入 ROUTE / TIER 前，会对用户请求做 0-5 的清晰度评分。评分不会只看最后一句话，而会结合对话上下文、项目文件、当前状态、已有计划、active change / experiment、可采用的低风险默认值，以及是否可以先做只读探索来降低不确定性。
+
+当评分低于阈值，或歧义会影响不可逆修改、实验设计、prompt / workflow 修改、外部副作用或高成本执行时，主代理会先提出聚焦的澄清问题，并用 `❓等待输入` 作为最终收尾状态。若缺口不影响主路径，agent 会继续执行并说明采用的合理假设。
+
+`hello-scholar` 的包装输出只用于本轮最终收尾消息。工具调用前说明、执行中的进度更新、流式可见文本，以及任何发出后仍会继续执行的回复，都保持自然输出，避免把中间状态误判为完成态。最终收尾格式会标注本轮实际使用的主要 skill / agent；未使用时填写 `none`。
+
 ### Standby / Global 两种安装模式
 
 - `standby`：项目内模式，只影响当前项目。
