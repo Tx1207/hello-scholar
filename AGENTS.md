@@ -2,7 +2,7 @@
 
 `hello-scholar` 是面向科研代码项目开发的 Codex CLI runtime。默认主线是 `ml-development` profile：围绕 ML 实验开发记录 change、experiment、run、evidence、analysis，并从长期协作中沉淀 skill / preference candidates。
 
-子代理执行子任务时，仅跳过本文件的输出格式、交互规则、统一执行流程、交付分层、完成约束、路由和状态维护，直接执行并返回结果。不使用 `~command`，不包装 hello-scholar 外层格式；其余质量、边界和安全规则持续生效。主代理负责识别可并行子任务、保持关键路径推进、整合结果并最终验证。
+子代理执行子任务时不使用 `~command`，不包装 hello-scholar 外层格式；主代理负责委派、推进关键路径、整合结果并最终验证。
 
 ## 角色
 
@@ -264,6 +264,15 @@ Delivery Tier：
 
 兼容别名不作为正式命令记录；若用户使用不存在的命令，应解释并映射到最接近的正式命令。
 
+#### Subagent Fit Check
+
+所有 T0-T3 任务在进入对应阶段前，主代理先判断是否存在可并行子任务。
+
+- 必须考虑：只读探索、代码库定位、方案比较、文档/证据草稿、测试/验证定位、diff review、日志/metrics 分析、互不重叠模块实现。
+- 使用条件：目标清楚、边界独立、写入范围不冲突、不阻塞主线、能 materially advance 当前目标。
+- 跳过条件：任务很小、下一步立即依赖结果、强耦合同文件修改、prompt/workflow 关键决策、不可逆或高风险操作。
+- 执行要求：使用时说明委派目标和边界；跳过时用一句话说明原因。主代理保留 critical path、集成、最终验证和用户可见交付责任。
+
 ### 2. SPEC
 
 按需读取项目上下文和当前 profile，明确：
@@ -280,18 +289,8 @@ Delivery Tier：
 
 - `~plan` 生成 `hello-scholar/plans/<plan-id>/requirements.md`、`plan.md`、`tasks.md`、`contract.json`。
 - 多文件功能、高风险变更、新实验设计优先进入 `~plan`。
-- 对复杂编码、代码库探索、验证审查、实验分析、文档同步等任务，优先识别 1-3 个可并行子任务；只有当子任务边界清楚、不会阻塞主线且能 materially advance 当前目标时才使用 subagent。
-- 主代理保留 critical path、最终决策和集成责任；不得把下一步立即依赖的阻塞性工作、强耦合设计判断或模糊需求直接委派给 subagent。
 - 实验任务的 `contract.json` 应明确 `verifyMode`、primary metric、baseline、run plan、evidence path、analysis focus。
 - 没有方案包但需求已明确且范围低风险时，可以直接进入 `~build`。
-
-#### Subagent 并行策略
-
-- 适合委派：独立代码库探索、互不重叠模块修改、测试/验证定位、diff review、日志/metrics 分析、change/evidence/README 草稿。
-- 不适合委派：很小的单步任务、需要即时反馈的根因定位、高耦合同文件修改、prompt/workflow 关键决策、不可逆或高风险操作。
-- 委派前必须定义清楚任务目标、只读/写入范围、期望输出和禁止事项；编码型 subagent 必须声明其负责文件或模块，并提醒不要覆盖他人改动。
-- 主代理启动 subagent 后应继续处理不重叠的本地工作；只有下一步确实依赖子结果时才等待。
-- 收尾时必须审查并整合 subagent 结果；subagent 输出不能替代主代理的最终验证、change / experiment 记录和用户可见交付。
 
 ### 4. BUILD
 
