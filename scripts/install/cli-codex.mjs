@@ -47,7 +47,7 @@ const INTERNAL_RUNTIME_SKILL_ENTRIES = [
 export function installCodex(runtime, selection, mode, installState, cwd = process.cwd(), catalog = null) {
   const previous = installState.hosts?.codex || null
   return mode === 'global'
-    ? installCodexGlobal(runtime, selection, catalog)
+    ? installCodexGlobal(runtime, selection, catalog, cwd)
     : installCodexStandby(runtime, selection, previous, cwd, catalog)
 }
 
@@ -238,7 +238,7 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd(), 
   ensureDir(paths.projectAgentsRoot)
   copyEntries(runtime.pkgRoot, paths.projectStateRoot, ['scripts', 'templates'])
 
-  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'standby' })
+  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'standby', cwd })
 
   upsertMarkedBlock(paths.projectAgentsPath, AGENTS_START, AGENTS_END, bootstrap)
   removeMarkedBlock(paths.projectAgentsPath, PROJECT_ACTIVE_START, PROJECT_ACTIVE_END)
@@ -278,8 +278,8 @@ function installCodexStandby(runtime, selection, previous, cwd = process.cwd(), 
   return standbyState
 }
 
-function installCodexGlobal(runtime, selection, catalog = null) {
-  const paths = getCodexPaths(runtime)
+function installCodexGlobal(runtime, selection, catalog = null, cwd = process.cwd()) {
+  const paths = getCodexPaths(runtime, cwd)
   ensureDir(runtime.codexHome)
   ensureDir(join(runtime.hostHome, 'plugins'))
   ensureDir(join(runtime.hostHome, '.agents', 'plugins'))
@@ -336,7 +336,7 @@ function installCodexGlobal(runtime, selection, catalog = null) {
   writeManagedRootMarker(paths.pluginRoot, 'global-runtime', selection)
   writeManagedRootMarker(paths.pluginCachePackageRoot, 'global-cache', selection)
 
-  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'global' })
+  const bootstrap = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode: 'global', cwd })
   writeText(join(paths.pluginRoot, 'AGENTS.md'), bootstrap ? `${bootstrap}\n` : '')
   writeText(join(paths.pluginCacheRoot, 'AGENTS.md'), bootstrap ? `${bootstrap}\n` : '')
   upsertMarkedBlock(paths.agentsFile, AGENTS_START, AGENTS_END, bootstrap)

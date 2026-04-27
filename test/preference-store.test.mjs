@@ -8,6 +8,7 @@ import {
   applyPreferenceCandidate,
   createPreferencePatch,
   ensureProjectPreferences,
+  formatPreferencesPromptSection,
   getPreferencePaths,
   readEffectivePreferences,
   readPreferencePatch,
@@ -34,8 +35,42 @@ test('ensureProjectPreferences initializes default user-preferences.yaml', () =>
     assert.equal(preferences.schemaVersion, 1)
     assert.equal(preferences.profile.education, 'Computer Science PhD')
     assert.equal(preferences.publicationTargets.defaultStandard, 'top-tier ML/NLP conference')
-    assert.deepEqual(preferences.researchFocus, [])
+    assert(preferences.publicationTargets.conferences.includes('NeurIPS'))
+    assert(preferences.publicationTargets.journals.includes('Nature'))
+    assert(preferences.researchFocus.includes('whether experimental design supports the claim'))
+    assert(preferences.reviewFocus.includes('technical correctness'))
+    assert(preferences.technicalPreferences.preferredLibraries.includes('uv'))
+    assert.equal(preferences.writingStyle.defaultLanguage, 'Chinese for user-facing replies; preserve English technical terms')
+    assert.equal(preferences.interactionPreferences.discussionBeforePromptChanges, true)
     assert.equal(preferences.preferenceEvolution.autoApply, false)
+  })
+  destroyFixture(fixture)
+})
+
+test('formatPreferencesPromptSection summarizes behavior-relevant effective preferences', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    const paths = getPreferencePaths(fixture.projectDir)
+    mkdirSync(paths.globalRoot, { recursive: true })
+    writeUserPreferences(paths.globalFile, {
+      technicalPreferences: {
+        preferredLibraries: ['JAX'],
+      },
+    })
+    mkdirSync(paths.projectRoot, { recursive: true })
+    writeUserPreferences(paths.projectFile, {
+      interactionPreferences: {
+        finalAnswerStyle: 'terse',
+      },
+    })
+
+    const section = formatPreferencesPromptSection(readEffectivePreferences({ cwd: fixture.projectDir }))
+    assert(section.includes('## 当前有效用户偏好'))
+    assert(section.includes('Source Layers: built-in, global, project'))
+    assert(section.includes('Technical Preferences: uv'))
+    assert(section.includes('JAX'))
+    assert(!section.includes('finalAnswerStyle'))
+    assert(!section.includes('autoApply'))
   })
   destroyFixture(fixture)
 })
@@ -81,11 +116,12 @@ test('readEffectivePreferences merges built-in defaults, global preferences, and
     })
 
     const effective = readEffectivePreferences({ cwd: fixture.projectDir })
-    assert.deepEqual(effective.preferences.publicationTargets.conferences, ['ACL', 'EMNLP'])
+    assert.deepEqual(effective.preferences.publicationTargets.conferences, ['NeurIPS', 'ICML', 'ICLR', 'KDD', 'ACL', 'AAAI', 'EMNLP'])
     assert.equal(effective.preferences.publicationTargets.defaultStandard, 'project-specific reviewer standard')
-    assert.deepEqual(effective.preferences.researchFocus, ['faithfulness', 'robustness'])
+    assert(effective.preferences.researchFocus.includes('faithfulness'))
+    assert(effective.preferences.researchFocus.includes('robustness'))
     assert.deepEqual(effective.preferences.reviewFocus, ['ablation', 'threats-to-validity'])
-    assert.deepEqual(effective.preferences.technicalPreferences.preferredLibraries, ['PyTorch', 'Hydra'])
+    assert.deepEqual(effective.preferences.technicalPreferences.preferredLibraries, ['uv', 'Hydra', 'OmegaConf', 'PyTorch', 'Transformers Trainer'])
     assert.equal(effective.preferences.writingStyle.tone, 'concise')
 
     assert.equal(effective.sources['publicationTargets.defaultStandard'], 'project')
@@ -137,7 +173,9 @@ test('readEffectivePreferences uses global and defaults when project file is abs
     })
 
     const effective = readEffectivePreferences({ cwd: fixture.projectDir })
-    assert.deepEqual(effective.preferences.researchFocus, ['generalization'])
+    assert(effective.preferences.researchFocus.includes('whether experimental design supports the claim'))
+    assert(effective.preferences.researchFocus.includes('generalization'))
+    assert.equal(effective.sources.researchFocus, 'built-in+global')
     assert.equal(effective.preferences.writingStyle.tone, 'reviewer-aware')
     assert.equal(effective.preferences.preferenceEvolution.evidenceRequired, true)
     assert.equal(existsSync(paths.projectFile), false)

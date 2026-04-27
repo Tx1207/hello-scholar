@@ -11,6 +11,7 @@ import { loadCatalog, resolveSelection } from '../scripts/profile/catalog-loader
 import { syncInstalledSelection } from '../scripts/install/cli-codex.mjs'
 import { loadSelectionState, saveSelectionState } from '../scripts/profile/selection-state.mjs'
 import { renderManagedBootstrapPrompt } from '../scripts/project-prompt.mjs'
+import { getPreferencePaths, suggestPreferenceCandidate, writeUserPreferences } from '../scripts/preferences/preferences-store.mjs'
 import { applySelectionOperation, buildInteractiveFrame, buildSelectionModel } from '../scripts/text-ui.mjs'
 
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -137,11 +138,62 @@ test('activation prompt lifecycle status follows active profiles instead of reus
       catalog,
       selection,
       mode: 'standby',
+      cwd: fixture.projectDir,
     })
 
     assert(prompt.includes('- 1. 研究构思：未激活'))
     assert(prompt.includes('- 2. ML 项目开发：已激活'))
     assert(prompt.includes('- 3. 论文写作：未激活'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('activation prompt injects applied effective preferences but ignores pending candidates', () => {
+  const fixture = createFixture()
+  try {
+    const runtime = createRuntime(fixture)
+    const paths = getPreferencePaths(fixture.projectDir, runtime)
+    mkdirSync(paths.globalRoot, { recursive: true })
+    writeUserPreferences(paths.globalFile, {
+      technicalPreferences: {
+        preferredLibraries: ['JAX'],
+      },
+    })
+    mkdirSync(paths.projectRoot, { recursive: true })
+    writeUserPreferences(paths.projectFile, {
+      publicationTargets: {
+        defaultStandard: 'project-specific reviewer standard',
+      },
+    })
+    suggestPreferenceCandidate({
+      cwd: fixture.projectDir,
+      summary: 'Prefer final answers to be terse.',
+      evidence: 'Pending candidate should not affect managed prompt.',
+      path: 'interactionPreferences.finalAnswerStyle',
+      value: 'terse',
+    })
+
+    const catalog = loadCatalog(pkgRoot)
+    const selection = resolveSelection(catalog, {
+      baseProfile: 'ml-development',
+      activeProfile: 'ml-development',
+    })
+    const prompt = renderManagedBootstrapPrompt({
+      runtime,
+      catalog,
+      selection,
+      mode: 'standby',
+      cwd: fixture.projectDir,
+    })
+
+    assert(prompt.includes('## 当前有效用户偏好'))
+    assert(prompt.includes('- Source Layers: built-in, global, project'))
+    assert(prompt.includes('- Default Standard: project-specific reviewer standard'))
+    assert(prompt.includes('- Technical Preferences: uv'))
+    assert(prompt.includes('JAX'))
+    assert(!prompt.includes('finalAnswerStyle'))
+    assert(!prompt.includes('terse'))
   } finally {
     destroyFixture(fixture)
   }
@@ -196,6 +248,8 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     assert(projectAgentsText.includes('# hello-scholar'))
     assert(projectAgentsText.includes('## 统一执行流程'))
     assert(projectAgentsText.includes('## 当前激活 Profile'))
+    assert(projectAgentsText.includes('## 当前有效用户偏好'))
+    assert(projectAgentsText.includes('- Target Conferences: NeurIPS'))
     assert(projectAgentsText.includes('【hello-scholar】'))
     assert(projectAgentsText.includes('🔄 下一步'))
     assert(projectAgentsText.includes('paper-writing'))
@@ -227,6 +281,28 @@ test('standby install writes text output, project prompt, and cleanup removes pr
     const cleanedStatusText = runCli(fixture, ['status'])
     assert(cleanedStatusText.includes('- Installed: no'))
     assert(cleanedStatusText.includes('- Project Prompt: absent'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('prompt refresh updates managed block after project preference changes', () => {
+  const fixture = createFixture()
+  try {
+    writeProjectAgentsFixture(fixture)
+    runCli(fixture, ['install', 'codex', '--standby'])
+
+    const paths = getPreferencePaths(fixture.projectDir, createRuntime(fixture))
+    writeUserPreferences(paths.projectFile, {
+      publicationTargets: {
+        defaultStandard: 'refreshed reviewer standard',
+      },
+    })
+
+    const refreshText = runCli(fixture, ['prompt', 'refresh', '--standby'])
+    const projectAgentsText = readFileSync(join(fixture.projectDir, 'AGENTS.md'), 'utf-8')
+    assert(refreshText.includes('Prompt refreshed for standby runtime.'))
+    assert(projectAgentsText.includes('- Default Standard: refreshed reviewer standard'))
   } finally {
     destroyFixture(fixture)
   }

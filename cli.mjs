@@ -131,6 +131,23 @@ async function main() {
       process.exit(0)
     }
 
+    if (command === 'prompt') {
+      const parsed = parseArgv(argv.slice(1))
+      const action = parsed.positionals[0] || 'refresh'
+      if (action !== 'refresh') throw new Error(`Unsupported prompt action: ${action}`)
+      const scope = resolveScope(parsed, detectInstalledScope(runtime, cwd))
+      const installStateResult = loadInstallState(runtime, cwd, scope)
+      const hostState = installStateResult.state.hosts?.codex || null
+      if (!hostState?.mode) throw new Error('Codex runtime is not installed. Run `hello-scholar install codex` first.')
+      const userConfig = loadUserConfig(runtime, cwd, scope)
+      const selection = loadSelectionState(catalog, installStateResult.state, userConfig, runtime, { cwd, scope })
+      const syncResult = syncInstalledSelection(runtime, installStateResult, selection, cwd, catalog)
+      if (syncResult) saveInstallState(runtime, syncResult.nextInstallState, syncResult.mode, cwd)
+      writeProjectActivationPrompt({ runtime, catalog, selection, mode: hostState.mode, cwd })
+      console.log(`Prompt refreshed for ${hostState.mode} runtime.`)
+      process.exit(0)
+    }
+
     if (command === 'install') {
       const parsed = parseArgv(argv.slice(1))
       const host = parsed.positionals[0] || 'codex'
@@ -239,6 +256,7 @@ Usage:
   hello-scholar profile list
   hello-scholar profile use <profile-id> [...profile-id]
   hello-scholar preferences show
+  hello-scholar prompt refresh [--standby|--global]
   hello-scholar status [--standby|--global]
 
 Notes:

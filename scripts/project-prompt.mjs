@@ -1,6 +1,7 @@
 import { join } from 'node:path'
 
 import { readText, removePath, writeText } from './cli-utils.mjs'
+import { formatPreferencesPromptSection, readEffectivePreferences } from './preferences/preferences-store.mjs'
 
 export const PROJECT_ACTIVE_START = '<!-- HELLO_SCHOLAR ACTIVE START -->'
 export const PROJECT_ACTIVE_END = '<!-- HELLO_SCHOLAR ACTIVE END -->'
@@ -58,7 +59,7 @@ const SUPPORT_WORKFLOWS = [
   },
 ]
 
-export function renderManagedBootstrapPrompt({ runtime, catalog = null, selection, mode }) {
+export function renderManagedBootstrapPrompt({ runtime, catalog = null, selection, mode, cwd = process.cwd() }) {
   const template = readText(join(runtime.pkgRoot, SOURCE_PROMPT_FILE))
     .replace(/\r\n/g, '\n')
     .trimEnd()
@@ -85,6 +86,7 @@ export function renderManagedBootstrapPrompt({ runtime, catalog = null, selectio
     renderSkillCatalogSection(skillSection, selection, mode, catalog),
   )
   prompt = insertCurrentProfileSection(prompt, selection, mode)
+  prompt = insertEffectivePreferencesSection(prompt, { cwd, runtime })
   if (mode === 'global') {
     prompt = replaceListBlock(prompt, '### 配置文件路径', buildGlobalCliPathLines())
   }
@@ -98,7 +100,7 @@ export function writeProjectActivationPrompt({ runtime, catalog = null, selectio
   const projectActivePromptPath = join(projectStateRoot, 'active-prompt.md')
   const activePromptPath = mode === 'global' ? hostActivePromptPath : projectActivePromptPath
   const otherActivePromptPath = mode === 'global' ? projectActivePromptPath : hostActivePromptPath
-  const prompt = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode })
+  const prompt = renderManagedBootstrapPrompt({ runtime, catalog, selection, mode, cwd })
 
   writeText(activePromptPath, `${prompt}\n`)
   removePath(otherActivePromptPath)
@@ -106,6 +108,11 @@ export function writeProjectActivationPrompt({ runtime, catalog = null, selectio
   return {
     activePromptPath,
   }
+}
+
+function insertEffectivePreferencesSection(prompt, { cwd, runtime }) {
+  const section = formatPreferencesPromptSection(readEffectivePreferences({ cwd, runtime, initializeProject: true }))
+  return replaceTopLevelSectionAfter(prompt, '## 当前有效用户偏好', section, '## 用户偏好')
 }
 
 function renderWorkflowSection(sourceSection, selection, mode) {
@@ -302,6 +309,18 @@ function replaceTopLevelSection(text, heading, replacement) {
 
   const before = text.slice(0, bounds.start).trimEnd()
   const after = text.slice(bounds.end).trimStart()
+  return [before, replacement.trimEnd(), after].filter(Boolean).join('\n\n')
+}
+
+function replaceTopLevelSectionAfter(text, heading, replacement, anchorHeading) {
+  const bounds = findTopLevelSectionBounds(text, heading)
+  if (bounds) return replaceTopLevelSection(text, heading, replacement)
+
+  const anchorBounds = findTopLevelSectionBounds(text, anchorHeading)
+  if (!anchorBounds) return `${text.trimEnd()}\n\n${replacement.trimEnd()}`
+
+  const before = text.slice(0, anchorBounds.end).trimEnd()
+  const after = text.slice(anchorBounds.end).trimStart()
   return [before, replacement.trimEnd(), after].filter(Boolean).join('\n\n')
 }
 

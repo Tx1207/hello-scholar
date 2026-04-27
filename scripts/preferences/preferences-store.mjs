@@ -15,22 +15,81 @@ export const DEFAULT_PREFERENCES = {
     researchAreas: [],
   },
   publicationTargets: {
-    conferences: [],
-    journals: [],
+    conferences: ['NeurIPS', 'ICML', 'ICLR', 'KDD', 'ACL', 'AAAI'],
+    journals: ['Nature', 'Science', 'Cell', 'PNAS'],
     defaultStandard: 'top-tier ML/NLP conference',
   },
-  researchFocus: [],
-  reviewFocus: [],
+  researchFocus: [
+    'academic writing quality and logical coherence',
+    'whether experimental design supports the claim',
+    'baseline, ablation, failure case, and statistical significance coverage',
+    'code simplicity, model efficiency, training stability, and reproducibility',
+    'clear separation of conceptual novelty, technical novelty, and empirical insight',
+  ],
+  reviewFocus: [
+    'novelty',
+    'technical correctness',
+    'empirical evidence',
+    'writing clarity',
+    'honest limitations',
+  ],
   technicalPreferences: {
-    preferredLibraries: [],
+    preferredLibraries: ['uv', 'Hydra', 'OmegaConf', 'PyTorch', 'Transformers Trainer'],
   },
-  writingStyle: {},
-  interactionPreferences: {},
+  writingStyle: {
+    defaultLanguage: 'Chinese for user-facing replies; preserve English technical terms',
+    academicEnglish: 'natural, precise, restrained; avoid AI-like, marketing, or exaggerated tone',
+    chineseStyle: 'concise, direct, structured; avoid vague encouragement and redundant synonyms',
+    technicalDocs: 'state goals, constraints, behavior, verification, and boundaries clearly',
+  },
+  interactionPreferences: {
+    discussionBeforePromptChanges: true,
+    defaultImplementationBoundary: 'analyze and clarify by default; implement when the user explicitly asks to implement, directly change, continue landing, or write files',
+    promptModificationBoundary: 'treat AGENTS.md, SKILL.md, agent prompts, and workflow rules as high-impact prompt changes; propose a plan before editing unless the user explicitly asked to write',
+  },
   preferenceEvolution: {
     enabled: true,
     autoApply: false,
     evidenceRequired: true,
   },
+}
+
+const PROMPT_PREFERENCE_PATHS = [
+  'profile.role',
+  'profile.education',
+  'profile.researchAreas',
+  'publicationTargets.defaultStandard',
+  'publicationTargets.conferences',
+  'publicationTargets.journals',
+  'researchFocus',
+  'reviewFocus',
+  'technicalPreferences.preferredLibraries',
+  'writingStyle.defaultLanguage',
+  'writingStyle.academicEnglish',
+  'writingStyle.chineseStyle',
+  'writingStyle.technicalDocs',
+  'interactionPreferences.discussionBeforePromptChanges',
+  'interactionPreferences.defaultImplementationBoundary',
+  'interactionPreferences.promptModificationBoundary',
+]
+
+const PROMPT_PREFERENCE_LABELS = {
+  'profile.role': 'Role',
+  'profile.education': 'Education',
+  'profile.researchAreas': 'Research Areas',
+  'publicationTargets.defaultStandard': 'Default Standard',
+  'publicationTargets.conferences': 'Target Conferences',
+  'publicationTargets.journals': 'Target Journals',
+  researchFocus: 'Research Focus',
+  reviewFocus: 'Review Focus',
+  'technicalPreferences.preferredLibraries': 'Technical Preferences',
+  'writingStyle.defaultLanguage': 'Default Language',
+  'writingStyle.academicEnglish': 'Academic English Style',
+  'writingStyle.chineseStyle': 'Chinese Style',
+  'writingStyle.technicalDocs': 'Technical Docs Style',
+  'interactionPreferences.discussionBeforePromptChanges': 'Discuss Before Prompt Changes',
+  'interactionPreferences.defaultImplementationBoundary': 'Implementation Boundary',
+  'interactionPreferences.promptModificationBoundary': 'Prompt Modification Boundary',
 }
 
 const LIST_MERGE_PATHS = new Set([
@@ -166,8 +225,8 @@ export function writeUserPreferences(filePath, preferences) {
   writeText(filePath, serializeYaml(normalizeObject(preferences)))
 }
 
-export function readEffectivePreferences({ cwd = process.cwd(), initializeProject = false, sessionPreferences = {} } = {}) {
-  const paths = initializeProject ? ensureProjectPreferences(cwd) : getPreferencePaths(cwd)
+export function readEffectivePreferences({ cwd = process.cwd(), runtime = null, initializeProject = false, sessionPreferences = {} } = {}) {
+  const paths = initializeProject ? ensureProjectPreferences({ cwd, runtime }) : getPreferencePaths(cwd, runtime)
   const globalPreferences = readUserPreferences(paths.globalFile)
   const projectPreferences = readUserPreferences(paths.projectFile)
   const globalMerge = mergePreferences(DEFAULT_PREFERENCES, globalPreferences, {
@@ -360,6 +419,72 @@ export function formatEffectivePreferences(result) {
     `- Preferred Libraries: ${formatList(prefs.technicalPreferences?.preferredLibraries)} (${sources['technicalPreferences.preferredLibraries'] || 'built-in'})`,
     `- Preference Evolution: ${prefs.preferenceEvolution?.enabled === false ? 'disabled' : 'enabled'}`,
   ].join('\n')
+}
+
+export function formatPreferencesPromptSection(result, options = {}) {
+  const prefs = result.preferences || result.effectivePreferences || result
+  const sources = result.sources || {}
+  const maxItems = Number.isInteger(options.maxItems) ? options.maxItems : 8
+  const includeSources = options.includeSources !== false
+  const sourceLayers = summarizeSourceLayers(sources)
+  const rows = PROMPT_PREFERENCE_PATHS
+    .map((pathKey) => formatPromptPreferenceRow({ prefs, sources, pathKey, maxItems, includeSources }))
+    .filter(Boolean)
+
+  return [
+    '## 当前有效用户偏好',
+    '',
+    '> 本节由 hello-scholar 根据 preference YAML 渲染；事实源为 project/global `user-preferences.yaml`。',
+    '',
+    `- Source Layers: ${sourceLayers.length > 0 ? sourceLayers.join(', ') : 'built-in'}`,
+    ...rows,
+  ].join('\n')
+}
+
+function formatPromptPreferenceRow({ prefs, sources, pathKey, maxItems, includeSources }) {
+  const value = readPathValue(prefs, pathKey)
+  if (value === undefined || value === null) return ''
+  const formatted = formatPromptPreferenceValue(value, maxItems)
+  if (!formatted) return ''
+  const label = PROMPT_PREFERENCE_LABELS[pathKey] || pathKey
+  const source = includeSources ? ` (${sources[pathKey] || sources[pathKey.split('.')[0]] || 'built-in'})` : ''
+  return `- ${label}: ${formatted}${source}`
+}
+
+function formatPromptPreferenceValue(value, maxItems) {
+  if (Array.isArray(value)) return formatPromptList(value, maxItems)
+  if (typeof value === 'boolean') return value ? 'yes' : 'no'
+  if (isPlainObject(value)) {
+    const entries = Object.entries(value)
+      .filter(([, entry]) => entry !== undefined && entry !== null && entry !== '')
+      .slice(0, maxItems)
+      .map(([key, entry]) => `${key}=${formatPromptPreferenceValue(entry, maxItems)}`)
+    if (entries.length === 0) return ''
+    const suffix = Object.keys(value).length > maxItems ? `, ...(+${Object.keys(value).length - maxItems} more)` : ''
+    return `${entries.join('; ')}${suffix}`
+  }
+  return String(value).trim()
+}
+
+function formatPromptList(values, maxItems) {
+  const normalized = values.map((value) => String(value).trim()).filter(Boolean)
+  if (normalized.length === 0) return ''
+  const visible = normalized.slice(0, maxItems)
+  const suffix = normalized.length > maxItems ? `, ...(+${normalized.length - maxItems} more)` : ''
+  return `${visible.join(', ')}${suffix}`
+}
+
+function summarizeSourceLayers(sources = {}) {
+  const values = [...new Set(Object.values(sources)
+    .flatMap((source) => String(source || '').split('+'))
+    .filter(Boolean))]
+  const order = ['built-in', 'global', 'project', 'current-session']
+  return values.sort((left, right) => {
+    const leftIndex = order.includes(left) ? order.indexOf(left) : order.length
+    const rightIndex = order.includes(right) ? order.indexOf(right) : order.length
+    if (leftIndex !== rightIndex) return leftIndex - rightIndex
+    return left.localeCompare(right)
+  })
 }
 
 function validatePreferencePatchForApply(patch, args) {
