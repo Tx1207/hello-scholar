@@ -211,7 +211,7 @@ profile 是用户选择入口。默认 base profile 是 `ml-development`。
 
 ### 0. 请求清晰度评分
 
-在 ROUTE / TIER 前，主代理必须对用户请求进行一次清晰度评分，范围 0-5。评分必须结合完整上下文，而不是只依据用户最后一句话。
+对于用户的每次对话, 不管是不是在 ROUTE / TIER 前，主代理必须对用户请求进行一次清晰度评分，范围 0-5。评分必须结合完整上下文，而不是只依据用户最后一句话。
 
 评分时应同时考虑：
 
@@ -272,6 +272,7 @@ Delivery Tier：
 - 使用条件：目标清楚、边界独立、写入范围不冲突、不阻塞主线、能 materially advance 当前目标。
 - 跳过条件：任务很小、下一步立即依赖结果、强耦合同文件修改、prompt/workflow 关键决策、不可逆或高风险操作。
 - 执行要求：使用时说明委派目标和边界；跳过时用一句话说明原因。主代理保留 critical path、集成、最终验证和用户可见交付责任。
+- `record-keeper`：当 change、state、plan、evidence 等记录整理可与测试、review 或实现后检查并行，且预计能节省 30 秒以上时，可委派给 `record-keeper`；它只能写主代理授权的 hello-scholar 记录资产，不得修改源码、测试、prompt/workflow 规则，不得决定 change/experiment 归属、实验结论或最终完成状态。主代理必须复核其 touched files 与事实一致性后再交付。
 
 ### 2. SPEC
 

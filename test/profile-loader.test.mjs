@@ -89,6 +89,7 @@ test('ml-development resolves as the default base profile only', () => {
   assert(selection.skills.includes('daily-coding'))
   assert(selection.skills.includes('results-analysis'))
   assert(selection.agents.includes('code-reviewer'))
+  assert(selection.agents.includes('record-keeper'))
 })
 
 test('paper-writing resolves as ml-development base plus paper-writing stage', () => {

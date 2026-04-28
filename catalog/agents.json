@@ -100,6 +100,16 @@
     "optionalDependencies": []
   },
   {
+    "id": "record-keeper",
+    "name": "record-keeper",
+    "description": "整理 hello-scholar change、state、plan 和 evidence 记录资产",
+    "path": "agents/record-keeper",
+    "category": "unassigned",
+    "profileIds": [],
+    "dependencies": [],
+    "optionalDependencies": []
+  },
+  {
     "id": "refactor-cleaner",
     "name": "refactor-cleaner",
     "description": "死代码清理与收敛整理专家",
