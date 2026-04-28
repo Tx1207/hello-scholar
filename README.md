@@ -1,5 +1,7 @@
 # hello-scholar
 
+![hello-scholar banner](images/hello-scholar-banner.png)
+
 `hello-scholar` 是一个面向科研代码项目的 Codex runtime。它把日常科研开发中容易散落在聊天记录、终端输出、实验日志和论文草稿里的信息，整理成一套可追踪的工作流：从研究构思、ML 实验开发、结果分析，到论文写作、自审、投稿 Rebuttal 和录用后处理。
 
 它的核心目标不是“多装一些 skills”，而是让 agent 在科研项目里持续回答三个问题：
