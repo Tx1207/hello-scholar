@@ -145,6 +145,8 @@ test('activation prompt lifecycle status follows active profiles instead of reus
     assert(prompt.includes('- 1. 研究构思：未激活'))
     assert(prompt.includes('- 2. ML 项目开发：已激活'))
     assert(prompt.includes('- 3. 论文写作：未激活'))
+    assert(prompt.includes('清晰度评分是内部路由判断'))
+    assert(prompt.includes('默认不在用户可见回复中展示'))
   } finally {
     destroyFixture(fixture)
   }
