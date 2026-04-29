@@ -10,42 +10,46 @@ import { resolveProjectStorage } from '../project-storage.mjs'
 export const DEFAULT_PREFERENCES = {
   schemaVersion: 1,
   profile: {
-    education: 'Computer Science PhD',
-    role: 'researcher',
+    education: '默认用户具备计算机科学 PhD 或同等科研训练。',
+    role: '研究者',
     researchAreas: [],
   },
   publicationTargets: {
     conferences: ['NeurIPS', 'ICML', 'ICLR', 'KDD', 'ACL', 'AAAI'],
     journals: ['Nature', 'Science', 'Cell', 'PNAS'],
-    defaultStandard: 'top-tier ML/NLP conference',
+    defaultStandard: '默认关注 claim 是否被实验支撑、baseline / ablation 是否充分、limitation 是否诚实。',
   },
   researchFocus: [
-    'academic writing quality and logical coherence',
-    'whether experimental design supports the claim',
-    'baseline, ablation, failure case, and statistical significance coverage',
-    'code simplicity, model efficiency, training stability, and reproducibility',
-    'clear separation of conceptual novelty, technical novelty, and empirical insight',
+    '学术写作质量、逻辑连贯性、自然表达。',
+    '实验设计能否支撑 claim。',
+    'baseline、ablation、failure case、statistical significance 是否充分。',
+    '代码简洁性、模型效率、训练稳定性和可复现性。',
+    '方法贡献应清楚区分 conceptual novelty、technical novelty 或 empirical insight。',
   ],
   reviewFocus: [
-    'novelty',
-    'technical correctness',
-    'empirical evidence',
-    'writing clarity',
-    'honest limitations',
+    '写作、自审和实验分析默认以顶会 reviewer 视角审视 novelty、technical correctness、empirical evidence 和 writing clarity。',
   ],
   technicalPreferences: {
     preferredLibraries: ['uv', 'Hydra', 'OmegaConf', 'PyTorch', 'Transformers Trainer'],
+    rules: [
+      'Python 包管理优先 `uv`；已有项目使用 `conda` 时遵循项目现状。',
+      '配置管理优先 Hydra + OmegaConf。',
+      '模型训练优先兼容 PyTorch、Transformers Trainer 或项目已有训练框架。',
+      'Git 提交信息优先 Conventional Commits。',
+      '实验记录优先保存 config、seed、环境、数据版本、metrics 和 artifact 路径。',
+    ],
   },
   writingStyle: {
-    defaultLanguage: 'Chinese for user-facing replies; preserve English technical terms',
-    academicEnglish: 'natural, precise, restrained; avoid AI-like, marketing, or exaggerated tone',
-    chineseStyle: 'concise, direct, structured; avoid vague encouragement and redundant synonyms',
-    technicalDocs: 'state goals, constraints, behavior, verification, and boundaries clearly',
+    defaultLanguage: '用户可见回复默认中文，专业名词、会议名、方法名、代码符号保留英文。',
+    academicEnglish: '论文相关英文写作追求自然、准确、克制，不写明显 AI 腔、营销腔或夸张表达。',
+    chineseStyle: '中文说明简洁、直接、结构清楚；不堆砌同义词，不写空泛鼓励。',
+    technicalDocs: '技术文档优先写清目标、约束、行为、验证和边界。',
   },
   interactionPreferences: {
     discussionBeforePromptChanges: true,
-    defaultImplementationBoundary: 'analyze and clarify by default; implement when the user explicitly asks to implement, directly change, continue landing, or write files',
-    promptModificationBoundary: 'treat AGENTS.md, SKILL.md, agent prompts, and workflow rules as high-impact prompt changes; propose a plan before editing unless the user explicitly asked to write',
+    discussionBeforePromptChangesRule: '用户提问、质疑、讨论方案、评估 prompt 或规则时，默认先澄清和分析，不直接改文件。',
+    defaultImplementationBoundary: '用户明确说“实现”“直接改”“继续落地”“写入”时，进入实施。',
+    promptModificationBoundary: '对 `AGENTS.md`、`SKILL.md`、agent prompt、workflow 规则的修改视为高影响 prompt 变更；除非用户已明确要求写入，否则先给方案再改。',
   },
   preferenceEvolution: {
     enabled: true,
@@ -54,42 +58,21 @@ export const DEFAULT_PREFERENCES = {
   },
 }
 
-const PROMPT_PREFERENCE_PATHS = [
-  'profile.role',
-  'profile.education',
-  'profile.researchAreas',
-  'publicationTargets.defaultStandard',
-  'publicationTargets.conferences',
-  'publicationTargets.journals',
-  'researchFocus',
-  'reviewFocus',
-  'technicalPreferences.preferredLibraries',
-  'writingStyle.defaultLanguage',
-  'writingStyle.academicEnglish',
-  'writingStyle.chineseStyle',
-  'writingStyle.technicalDocs',
-  'interactionPreferences.discussionBeforePromptChanges',
-  'interactionPreferences.defaultImplementationBoundary',
-  'interactionPreferences.promptModificationBoundary',
-]
-
-const PROMPT_PREFERENCE_LABELS = {
-  'profile.role': 'Role',
-  'profile.education': 'Education',
-  'profile.researchAreas': 'Research Areas',
-  'publicationTargets.defaultStandard': 'Default Standard',
-  'publicationTargets.conferences': 'Target Conferences',
-  'publicationTargets.journals': 'Target Journals',
-  researchFocus: 'Research Focus',
-  reviewFocus: 'Review Focus',
-  'technicalPreferences.preferredLibraries': 'Technical Preferences',
-  'writingStyle.defaultLanguage': 'Default Language',
-  'writingStyle.academicEnglish': 'Academic English Style',
-  'writingStyle.chineseStyle': 'Chinese Style',
-  'writingStyle.technicalDocs': 'Technical Docs Style',
-  'interactionPreferences.discussionBeforePromptChanges': 'Discuss Before Prompt Changes',
-  'interactionPreferences.defaultImplementationBoundary': 'Implementation Boundary',
-  'interactionPreferences.promptModificationBoundary': 'Prompt Modification Boundary',
+const LEGACY_DEFAULT_VALUE_REPLACEMENTS = {
+  'Computer Science PhD': DEFAULT_PREFERENCES.profile.education,
+  researcher: DEFAULT_PREFERENCES.profile.role,
+  'top-tier ML/NLP conference': DEFAULT_PREFERENCES.publicationTargets.defaultStandard,
+  'academic writing quality and logical coherence': DEFAULT_PREFERENCES.researchFocus[0],
+  'whether experimental design supports the claim': DEFAULT_PREFERENCES.researchFocus[1],
+  'baseline, ablation, failure case, and statistical significance coverage': DEFAULT_PREFERENCES.researchFocus[2],
+  'code simplicity, model efficiency, training stability, and reproducibility': DEFAULT_PREFERENCES.researchFocus[3],
+  'clear separation of conceptual novelty, technical novelty, and empirical insight': DEFAULT_PREFERENCES.researchFocus[4],
+  'Chinese for user-facing replies; preserve English technical terms': DEFAULT_PREFERENCES.writingStyle.defaultLanguage,
+  'natural, precise, restrained; avoid AI-like, marketing, or exaggerated tone': DEFAULT_PREFERENCES.writingStyle.academicEnglish,
+  'concise, direct, structured; avoid vague encouragement and redundant synonyms': DEFAULT_PREFERENCES.writingStyle.chineseStyle,
+  'state goals, constraints, behavior, verification, and boundaries clearly': DEFAULT_PREFERENCES.writingStyle.technicalDocs,
+  'analyze and clarify by default; implement when the user explicitly asks to implement, directly change, continue landing, or write files': DEFAULT_PREFERENCES.interactionPreferences.defaultImplementationBoundary,
+  'treat AGENTS.md, SKILL.md, agent prompts, and workflow rules as high-impact prompt changes; propose a plan before editing unless the user explicitly asked to write': DEFAULT_PREFERENCES.interactionPreferences.promptModificationBoundary,
 }
 
 const LIST_MERGE_PATHS = new Set([
@@ -99,6 +82,7 @@ const LIST_MERGE_PATHS = new Set([
   'researchFocus',
   'reviewFocus',
   'technicalPreferences.preferredLibraries',
+  'technicalPreferences.rules',
 ])
 
 
@@ -184,8 +168,8 @@ export function ensureProjectPreferences(cwdOrOptions = process.cwd()) {
   ensureDir(paths.projectRoot)
   ensureDir(paths.projectCandidatesRoot)
   if (!pathExists(paths.projectFile)) writeUserPreferences(paths.projectFile, DEFAULT_PREFERENCES)
-  const globalPreferences = readUserPreferences(paths.globalFile)
-  const projectPreferences = readUserPreferences(paths.projectFile)
+  const globalPreferences = readMigratedUserPreferences(paths.globalFile)
+  const projectPreferences = readMigratedUserPreferences(paths.projectFile, { persist: true })
   const globalMerge = mergePreferences(DEFAULT_PREFERENCES, globalPreferences, {
     baseSource: 'built-in',
     overlaySource: 'global',
@@ -221,14 +205,21 @@ export function readUserPreferences(filePath) {
   return parseYaml(text)
 }
 
+function readMigratedUserPreferences(filePath, { persist = false } = {}) {
+  const preferences = readUserPreferences(filePath)
+  const migrated = migrateLegacyPreferenceDefaults(preferences)
+  if (persist && migrated.changed) writeUserPreferences(filePath, migrated.preferences)
+  return migrated.preferences
+}
+
 export function writeUserPreferences(filePath, preferences) {
   writeText(filePath, serializeYaml(normalizeObject(preferences)))
 }
 
 export function readEffectivePreferences({ cwd = process.cwd(), runtime = null, initializeProject = false, sessionPreferences = {} } = {}) {
   const paths = initializeProject ? ensureProjectPreferences({ cwd, runtime }) : getPreferencePaths(cwd, runtime)
-  const globalPreferences = readUserPreferences(paths.globalFile)
-  const projectPreferences = readUserPreferences(paths.projectFile)
+  const globalPreferences = readMigratedUserPreferences(paths.globalFile)
+  const projectPreferences = readMigratedUserPreferences(paths.projectFile)
   const globalMerge = mergePreferences(DEFAULT_PREFERENCES, globalPreferences, {
     baseSource: 'built-in',
     overlaySource: 'global',
@@ -424,54 +415,217 @@ export function formatEffectivePreferences(result) {
 export function formatPreferencesPromptSection(result, options = {}) {
   const prefs = result.preferences || result.effectivePreferences || result
   const sources = result.sources || {}
-  const maxItems = Number.isInteger(options.maxItems) ? options.maxItems : 8
-  const includeSources = options.includeSources !== false
   const sourceLayers = summarizeSourceLayers(sources)
-  const rows = PROMPT_PREFERENCE_PATHS
-    .map((pathKey) => formatPromptPreferenceRow({ prefs, sources, pathKey, maxItems, includeSources }))
-    .filter(Boolean)
 
   return [
-    '## 当前有效用户偏好',
+    '## 用户偏好',
     '',
     '> 本节由 hello-scholar 根据 preference YAML 渲染；事实源为 project/global `user-preferences.yaml`。',
+    `> 当前来源层：${formatSourceLayersForPrompt(sourceLayers)}。`,
     '',
-    `- Source Layers: ${sourceLayers.length > 0 ? sourceLayers.join(', ') : 'built-in'}`,
-    ...rows,
+    ...renderAcademicBackgroundPreferences(prefs),
+    '',
+    ...renderPublicationTargetPreferences(prefs),
+    '',
+    ...renderResearchFocusPreferences(prefs),
+    '',
+    ...renderTechnicalPreferencePrompt(prefs),
+    '',
+    ...renderWritingStylePreferences(prefs),
+    '',
+    ...renderInteractionPreferences(prefs),
   ].join('\n')
 }
 
-function formatPromptPreferenceRow({ prefs, sources, pathKey, maxItems, includeSources }) {
-  const value = readPathValue(prefs, pathKey)
-  if (value === undefined || value === null) return ''
-  const formatted = formatPromptPreferenceValue(value, maxItems)
-  if (!formatted) return ''
-  const label = PROMPT_PREFERENCE_LABELS[pathKey] || pathKey
-  const source = includeSources ? ` (${sources[pathKey] || sources[pathKey.split('.')[0]] || 'built-in'})` : ''
-  return `- ${label}: ${formatted}${source}`
-}
+function renderAcademicBackgroundPreferences(prefs) {
+  const education = cleanPreferenceText(prefs.profile?.education)
+  const role = cleanPreferenceText(prefs.profile?.role)
+  const researchAreas = normalizeList(prefs.profile?.researchAreas)
+  const conferences = normalizeList(prefs.publicationTargets?.conferences)
+  const reviewerFocus = normalizeList(prefs.reviewFocus)
 
-function formatPromptPreferenceValue(value, maxItems) {
-  if (Array.isArray(value)) return formatPromptList(value, maxItems)
-  if (typeof value === 'boolean') return value ? 'yes' : 'no'
-  if (isPlainObject(value)) {
-    const entries = Object.entries(value)
-      .filter(([, entry]) => entry !== undefined && entry !== null && entry !== '')
-      .slice(0, maxItems)
-      .map(([key, entry]) => `${key}=${formatPromptPreferenceValue(entry, maxItems)}`)
-    if (entries.length === 0) return ''
-    const suffix = Object.keys(value).length > maxItems ? `, ...(+${Object.keys(value).length - maxItems} more)` : ''
-    return `${entries.join('; ')}${suffix}`
+  const lines = ['### 学术背景', '']
+  if (education) lines.push(`- ${formatPreferenceSentence(education)}`)
+  if (role && !['研究者', 'researcher'].includes(role)) lines.push(`- ${formatPreferenceSentence(role)}`)
+  if (conferences.length > 0) {
+    lines.push(`- 可以使用 ${formatChineseList(conferences)} 风格的技术表达，不需要解释基础 ML 概念。`)
   }
-  return String(value).trim()
+  lines.push(...reviewerFocus.map((item) => `- ${formatPreferenceSentence(item)}`))
+  if (researchAreas.length > 0) lines.push(`- 研究方向默认关注：${formatChineseList(researchAreas)}。`)
+  return lines
 }
 
-function formatPromptList(values, maxItems) {
-  const normalized = values.map((value) => String(value).trim()).filter(Boolean)
-  if (normalized.length === 0) return ''
-  const visible = normalized.slice(0, maxItems)
-  const suffix = normalized.length > maxItems ? `, ...(+${normalized.length - maxItems} more)` : ''
-  return `${visible.join(', ')}${suffix}`
+function renderPublicationTargetPreferences(prefs) {
+  const conferences = normalizeList(prefs.publicationTargets?.conferences)
+  const journals = normalizeList(prefs.publicationTargets?.journals)
+  const defaultStandard = cleanPreferenceText(prefs.publicationTargets?.defaultStandard)
+
+  const lines = ['### 投稿目标', '']
+  if (conferences.length > 0) lines.push(`- 顶会：${formatChineseList(conferences)}。`)
+  if (journals.length > 0) lines.push(`- 高影响期刊：${formatChineseList(journals)}。`)
+  if (defaultStandard) lines.push(`- ${formatPreferenceSentence(defaultStandard)}`)
+  return lines
+}
+
+function renderResearchFocusPreferences(prefs) {
+  const focus = normalizeList(prefs.researchFocus)
+  return [
+    '### 研究关注点',
+    '',
+    ...focus.map((item) => `- ${formatPreferenceSentence(item)}`),
+  ]
+}
+
+function renderTechnicalPreferencePrompt(prefs) {
+  const libraries = normalizeList(prefs.technicalPreferences?.preferredLibraries)
+  const rules = normalizeList(prefs.technicalPreferences?.rules)
+  const knownLibraries = new Set(DEFAULT_PREFERENCES.technicalPreferences.preferredLibraries)
+  const lines = ['### 技术栈偏好', '']
+
+  if (rules.length > 0) {
+    lines.push(...rules.map((item) => `- ${formatPreferenceSentence(item)}`))
+  } else {
+    lines.push(...renderLegacyTechnicalPreferenceRules(libraries))
+  }
+
+  const extraLibraries = libraries.filter((item) => !knownLibraries.has(item))
+  if (extraLibraries.length > 0) lines.push(`- 其他技术偏好：${formatChineseList(extraLibraries)}。`)
+  return lines
+}
+
+function renderWritingStylePreferences(prefs) {
+  const entries = [
+    [prefs.writingStyle?.defaultLanguage, '用户可见回复语言偏好'],
+    [prefs.writingStyle?.academicEnglish, '论文相关英文写作风格'],
+    [prefs.writingStyle?.chineseStyle, '中文说明风格'],
+    [prefs.writingStyle?.technicalDocs, '技术文档风格'],
+  ]
+
+  return [
+    '### 文字风格',
+    '',
+    ...entries
+      .map(([value, label]) => cleanPreferenceText(value)
+        ? `- ${formatPreferenceSentence(value, label)}`
+        : '')
+      .filter(Boolean),
+  ]
+}
+
+function renderInteractionPreferences(prefs) {
+  const lines = ['### 交互偏好', '']
+  if (prefs.interactionPreferences?.discussionBeforePromptChanges === true) {
+    const discussionRule = prefs.interactionPreferences?.discussionBeforePromptChangesRule
+      || DEFAULT_PREFERENCES.interactionPreferences.discussionBeforePromptChangesRule
+    lines.push(`- ${formatPreferenceSentence(discussionRule)}`)
+  } else if (prefs.interactionPreferences?.discussionBeforePromptChanges === false) {
+    lines.push('- 用户提问、质疑、讨论方案、评估 prompt 或规则时，不强制先输出方案。')
+  }
+
+  const implementationBoundary = cleanPreferenceText(prefs.interactionPreferences?.defaultImplementationBoundary)
+  if (implementationBoundary) {
+    lines.push(`- ${formatPreferenceSentence(implementationBoundary)}`)
+  }
+
+  const promptBoundary = cleanPreferenceText(prefs.interactionPreferences?.promptModificationBoundary)
+  if (promptBoundary) {
+    lines.push(`- ${formatPreferenceSentence(promptBoundary)}`)
+  }
+
+  return lines
+}
+
+function formatSourceLayersForPrompt(sourceLayers) {
+  return (sourceLayers.length > 0 ? sourceLayers : ['built-in']).join('、')
+}
+
+function renderLegacyTechnicalPreferenceRules(libraries) {
+  const rules = []
+  if (libraries.includes('uv')) {
+    rules.push('Python 包管理优先 `uv`；已有项目使用 `conda` 时遵循项目现状。')
+  }
+  const configLibraries = libraries.filter((item) => ['Hydra', 'OmegaConf'].includes(item))
+  if (configLibraries.length > 0) rules.push(`配置管理优先 ${formatPreferencePair(configLibraries)}。`)
+  const trainingLibraries = libraries.filter((item) => ['PyTorch', 'Transformers Trainer'].includes(item))
+  if (trainingLibraries.length > 0) {
+    rules.push(`模型训练优先兼容 ${formatChineseList(trainingLibraries)} 或项目已有训练框架。`)
+  }
+  rules.push('Git 提交信息优先 Conventional Commits。')
+  rules.push('实验记录优先保存 config、seed、环境、数据版本、metrics 和 artifact 路径。')
+  return rules.map((item) => `- ${formatPreferenceSentence(item)}`)
+}
+
+function formatPreferencePair(values) {
+  if (values.length === 2 && values.includes('Hydra') && values.includes('OmegaConf')) return 'Hydra + OmegaConf'
+  return formatChineseList(values)
+}
+
+function formatChineseList(values) {
+  return normalizeList(values).map((value) => String(value).trim()).filter(Boolean).join('、')
+}
+
+function formatPreferenceSentence(value, label = '') {
+  const text = cleanPreferenceText(value)
+  if (!text) return ''
+  if (/[。！？.!?]$/.test(text)) return text
+  if (label && !containsCjk(text)) return `${label}：${text}。`
+  return /[。！？.!?]$/.test(text) ? text : `${text}。`
+}
+
+function cleanPreferenceText(value) {
+  return String(value ?? '').trim()
+}
+
+function containsCjk(value) {
+  return /[\u3400-\u9fff]/.test(String(value || ''))
+}
+
+function migrateLegacyPreferenceDefaults(preferences) {
+  const source = normalizeObject(preferences)
+  const migrated = migrateLegacyNode(source, '')
+  return {
+    preferences: migrated.value,
+    changed: migrated.changed,
+  }
+}
+
+function migrateLegacyNode(value, pathKey) {
+  if (Array.isArray(value)) {
+    if (pathKey === 'reviewFocus' && isLegacyDefaultReviewFocus(value)) {
+      return { value: [...DEFAULT_PREFERENCES.reviewFocus], changed: true }
+    }
+
+    let changed = false
+    const items = value.map((entry) => {
+      const migrated = migrateLegacyNode(entry, pathKey)
+      changed = changed || migrated.changed
+      return migrated.value
+    })
+    return { value: items, changed }
+  }
+
+  if (isPlainObject(value)) {
+    let changed = false
+    const entries = Object.entries(value).map(([key, entry]) => {
+      const childPath = pathKey ? `${pathKey}.${key}` : key
+      const migrated = migrateLegacyNode(entry, childPath)
+      changed = changed || migrated.changed
+      return [key, migrated.value]
+    })
+    return { value: Object.fromEntries(entries), changed }
+  }
+
+  if (typeof value === 'string' && Object.hasOwn(LEGACY_DEFAULT_VALUE_REPLACEMENTS, value)) {
+    return { value: LEGACY_DEFAULT_VALUE_REPLACEMENTS[value], changed: true }
+  }
+
+  return { value, changed: false }
+}
+
+function isLegacyDefaultReviewFocus(values) {
+  const legacy = ['novelty', 'technical correctness', 'empirical evidence', 'writing clarity', 'honest limitations']
+  const normalized = values.map((value) => String(value).trim())
+  return legacy.length === normalized.length && legacy.every((value, index) => normalized[index] === value)
 }
 
 function summarizeSourceLayers(sources = {}) {

@@ -33,16 +33,59 @@ test('ensureProjectPreferences initializes default user-preferences.yaml', () =>
 
     const preferences = readProjectPreferences(fixture.projectDir)
     assert.equal(preferences.schemaVersion, 1)
-    assert.equal(preferences.profile.education, 'Computer Science PhD')
-    assert.equal(preferences.publicationTargets.defaultStandard, 'top-tier ML/NLP conference')
+    assert.equal(preferences.profile.education, '默认用户具备计算机科学 PhD 或同等科研训练。')
+    assert.equal(preferences.publicationTargets.defaultStandard, '默认关注 claim 是否被实验支撑、baseline / ablation 是否充分、limitation 是否诚实。')
     assert(preferences.publicationTargets.conferences.includes('NeurIPS'))
     assert(preferences.publicationTargets.journals.includes('Nature'))
-    assert(preferences.researchFocus.includes('whether experimental design supports the claim'))
-    assert(preferences.reviewFocus.includes('technical correctness'))
+    assert(preferences.researchFocus.includes('实验设计能否支撑 claim。'))
+    assert(preferences.reviewFocus.includes('写作、自审和实验分析默认以顶会 reviewer 视角审视 novelty、technical correctness、empirical evidence 和 writing clarity。'))
     assert(preferences.technicalPreferences.preferredLibraries.includes('uv'))
-    assert.equal(preferences.writingStyle.defaultLanguage, 'Chinese for user-facing replies; preserve English technical terms')
+    assert(preferences.technicalPreferences.rules.includes('Python 包管理优先 `uv`；已有项目使用 `conda` 时遵循项目现状。'))
+    assert.equal(preferences.writingStyle.defaultLanguage, '用户可见回复默认中文，专业名词、会议名、方法名、代码符号保留英文。')
     assert.equal(preferences.interactionPreferences.discussionBeforePromptChanges, true)
+    assert.equal(preferences.interactionPreferences.defaultImplementationBoundary, '用户明确说“实现”“直接改”“继续落地”“写入”时，进入实施。')
     assert.equal(preferences.preferenceEvolution.autoApply, false)
+  })
+  destroyFixture(fixture)
+})
+
+test('ensureProjectPreferences migrates legacy English default preference text', () => {
+  const fixture = createFixture()
+  withEnv(fixture, () => {
+    const paths = getPreferencePaths(fixture.projectDir)
+    mkdirSync(paths.projectRoot, { recursive: true })
+    writeUserPreferences(paths.projectFile, {
+      schemaVersion: 1,
+      profile: {
+        education: 'Computer Science PhD',
+        role: 'researcher',
+      },
+      publicationTargets: {
+        defaultStandard: 'top-tier ML/NLP conference',
+      },
+      researchFocus: [
+        'academic writing quality and logical coherence',
+        'whether experimental design supports the claim',
+      ],
+      reviewFocus: ['novelty', 'technical correctness', 'empirical evidence', 'writing clarity', 'honest limitations'],
+      writingStyle: {
+        defaultLanguage: 'Chinese for user-facing replies; preserve English technical terms',
+      },
+      interactionPreferences: {
+        defaultImplementationBoundary: 'analyze and clarify by default; implement when the user explicitly asks to implement, directly change, continue landing, or write files',
+      },
+    })
+
+    ensureProjectPreferences(fixture.projectDir)
+    const preferences = readProjectPreferences(fixture.projectDir)
+    assert.equal(preferences.profile.education, '默认用户具备计算机科学 PhD 或同等科研训练。')
+    assert.equal(preferences.profile.role, '研究者')
+    assert.equal(preferences.publicationTargets.defaultStandard, '默认关注 claim 是否被实验支撑、baseline / ablation 是否充分、limitation 是否诚实。')
+    assert(preferences.researchFocus.includes('学术写作质量、逻辑连贯性、自然表达。'))
+    assert(preferences.researchFocus.includes('实验设计能否支撑 claim。'))
+    assert.deepEqual(preferences.reviewFocus, ['写作、自审和实验分析默认以顶会 reviewer 视角审视 novelty、technical correctness、empirical evidence 和 writing clarity。'])
+    assert.equal(preferences.writingStyle.defaultLanguage, '用户可见回复默认中文，专业名词、会议名、方法名、代码符号保留英文。')
+    assert.equal(preferences.interactionPreferences.defaultImplementationBoundary, '用户明确说“实现”“直接改”“继续落地”“写入”时，进入实施。')
   })
   destroyFixture(fixture)
 })
@@ -65,9 +108,11 @@ test('formatPreferencesPromptSection summarizes behavior-relevant effective pref
     })
 
     const section = formatPreferencesPromptSection(readEffectivePreferences({ cwd: fixture.projectDir }))
-    assert(section.includes('## 当前有效用户偏好'))
-    assert(section.includes('Source Layers: built-in, global, project'))
-    assert(section.includes('Technical Preferences: uv'))
+    assert(section.includes('## 用户偏好'))
+    assert(!section.includes('## 当前有效用户偏好'))
+    assert(section.includes('当前来源层：built-in、global、project'))
+    assert(section.includes('### 技术栈偏好'))
+    assert(section.includes('Python 包管理优先 `uv`'))
     assert(section.includes('JAX'))
     assert(!section.includes('finalAnswerStyle'))
     assert(!section.includes('autoApply'))
@@ -173,7 +218,7 @@ test('readEffectivePreferences uses global and defaults when project file is abs
     })
 
     const effective = readEffectivePreferences({ cwd: fixture.projectDir })
-    assert(effective.preferences.researchFocus.includes('whether experimental design supports the claim'))
+    assert(effective.preferences.researchFocus.includes('实验设计能否支撑 claim。'))
     assert(effective.preferences.researchFocus.includes('generalization'))
     assert.equal(effective.sources.researchFocus, 'built-in+global')
     assert.equal(effective.preferences.writingStyle.tone, 'reviewer-aware')

@@ -112,7 +112,7 @@ export function writeProjectActivationPrompt({ runtime, catalog = null, selectio
 
 function insertEffectivePreferencesSection(prompt, { cwd, runtime }) {
   const section = formatPreferencesPromptSection(readEffectivePreferences({ cwd, runtime, initializeProject: true }))
-  return replaceTopLevelSectionAfter(prompt, '## 当前有效用户偏好', section, '## 用户偏好')
+  return replaceTopLevelSection(prompt, '## 用户偏好', section)
 }
 
 function renderWorkflowSection(sourceSection, selection, mode) {
@@ -309,18 +309,6 @@ function replaceTopLevelSection(text, heading, replacement) {
 
   const before = text.slice(0, bounds.start).trimEnd()
   const after = text.slice(bounds.end).trimStart()
-  return [before, replacement.trimEnd(), after].filter(Boolean).join('\n\n')
-}
-
-function replaceTopLevelSectionAfter(text, heading, replacement, anchorHeading) {
-  const bounds = findTopLevelSectionBounds(text, heading)
-  if (bounds) return replaceTopLevelSection(text, heading, replacement)
-
-  const anchorBounds = findTopLevelSectionBounds(text, anchorHeading)
-  if (!anchorBounds) return `${text.trimEnd()}\n\n${replacement.trimEnd()}`
-
-  const before = text.slice(0, anchorBounds.end).trimEnd()
-  const after = text.slice(anchorBounds.end).trimStart()
   return [before, replacement.trimEnd(), after].filter(Boolean).join('\n\n')
 }
 
