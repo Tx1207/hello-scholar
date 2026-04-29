@@ -115,6 +115,9 @@ export function parseArgv(argv) {
     getFlag(name, fallback = '') {
       return flags.has(name) ? flags.get(name).at(-1) : fallback
     },
+    getAll(name) {
+      return flags.has(name) ? [...flags.get(name)] : []
+    },
     getList(name) {
       if (!flags.has(name)) return []
       return flags.get(name)

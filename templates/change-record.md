@@ -1,30 +1,54 @@
 {{frontmatter}}
 # Change: {{title}}
 
-## User Requests
+## 用户请求
 
 {{user_requests}}
 
-## Intent Summary
+## 意图摘要
 
 {{intent_summary}}
 
-## Affected Files
+## 背景
+
+{{background}}
+
+## 受影响文件
 
 {{affected_files}}
 
-## Actual Changes
+## 实际修改
 
 {{actual_changes}}
 
-## Verification
+## 文件级变更
+
+{{file_level_changes}}
+
+## 行为变化
+
+{{behavior_changes}}
+
+## 决策记录
+
+{{decisions}}
+
+## 验证结果
 
 {{verification}}
 
-## Result
+## 结果
 
 {{result}}
 
-## Next Step
+## 未解决问题
+
+{{unresolved_issues}}
+
+## Traceability
+
+{{traceability}}
+
+## 下一步
 
 {{next_step}}

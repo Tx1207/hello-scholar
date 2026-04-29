@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -39,6 +39,13 @@ test('track-intent creates a human-readable change record and state summary', ()
     const runtime = readRuntimeState(fixture.projectDir)
 
     assert(changeText.includes('# Change: Fix training config'))
+    assert(changeText.includes('## 用户请求'))
+    assert(changeText.includes('## 背景'))
+    assert(changeText.includes('## 文件级变更'))
+    assert(changeText.includes('## 行为变化'))
+    assert(changeText.includes('## 决策记录'))
+    assert(changeText.includes('## 未解决问题'))
+    assert(changeText.includes('## Traceability'))
     assert(changeText.includes('修复训练配置加载问题'))
     assert(changeText.includes('Route: ~build'))
     assert(changeText.includes('Tier: T2'))
@@ -165,10 +172,22 @@ test('track-change and track-closeout update sections and status', () => {
       'Adjusted config load order\nAdded explicit missing-config error',
       '--file',
       'src/config/loaders.py',
+      '--file-change',
+      'src/config/loaders.py: changed loader order and missing-config handling',
+      '--file-change',
+      'src/config/schema.py: preserved legacy keys, defaults, and validation order',
+      '--behavior-change',
+      'Config loading now resolves CLI overrides before defaults',
+      '--decision',
+      'Kept legacy config file names unchanged',
       '--verification',
       'pytest tests/test_config_loader.py',
       '--result',
       'Config loading now respects CLI overrides',
+      '--unresolved',
+      'Legacy script coverage still needs broader integration tests',
+      '--trace',
+      '| 用户需求 | Plan Item | Task | Changed File | Verification | Status |\n|---|---|---|---|---|---|\n| Fix config loading | PLAN-001 | Adjust loader | `src/config/loaders.py` | pytest tests/test_config_loader.py | done |',
       '--next-step',
       'Observe impact on legacy scripts',
     ])
@@ -190,12 +209,159 @@ test('track-change and track-closeout update sections and status', () => {
     const runtime = readRuntimeState(fixture.projectDir)
 
     assert(changeText.includes('Adjusted config load order'))
+    assert(changeText.includes('src/config/loaders.py: changed loader order and missing-config handling'))
+    assert(changeText.includes('src/config/schema.py: preserved legacy keys, defaults, and validation order'))
+    assert(changeText.includes('Config loading now resolves CLI overrides before defaults'))
+    assert(changeText.includes('Kept legacy config file names unchanged'))
+    assert(changeText.includes('Legacy script coverage still needs broader integration tests'))
+    assert(changeText.includes('| Fix config loading | PLAN-001 | Adjust loader | `src/config/loaders.py` | pytest tests/test_config_loader.py | done |'))
     assert(changeText.includes('pytest tests/test_config_loader.py'))
     assert(changeText.includes('Validated the fix manually'))
     assert(changeText.includes('status: done'))
     assert(stateText.includes('Active change: None'))
     assert.equal(runtime.change.active_change_id, '')
     assert.equal(runtime.change.activeStatus, 'none')
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('track-change can update legacy English-section change records', () => {
+  const fixture = createFixture()
+  try {
+    const changesRoot = join(fixture.projectDir, 'hello-scholar', 'changes')
+    mkdirSync(changesRoot, { recursive: true })
+    const legacyPath = join(changesRoot, 'CHG-20200101-000000-legacy.md')
+    writeFileSync(legacyPath, [
+      '---',
+      'id: CHG-20200101-000000',
+      'title: Legacy record',
+      'slug: legacy-record',
+      'status: active',
+      'created: 2020-01-01T00:00:00.000Z',
+      'updated: 2020-01-01T00:00:00.000Z',
+      'route: ~build',
+      'tier: T1',
+      'decision: new-topic',
+      'affected_files:',
+      '  - src/legacy.py',
+      '---',
+      '# Change: Legacy record',
+      '',
+      '## User Requests',
+      '',
+      '### 2020-01-01 00:00:00',
+      '',
+      '- Keep this legacy request',
+      '',
+      '## Intent Summary',
+      '',
+      '- Route: ~build',
+      '',
+      '## Affected Files',
+      '',
+      '- `src/legacy.py`',
+      '',
+      '## Actual Changes',
+      '',
+      '- 暂无记录',
+      '',
+      '## Verification',
+      '',
+      '- 暂无记录',
+      '',
+      '## Result',
+      '',
+      '- 暂无记录',
+      '',
+      '## Next Step',
+      '',
+      '- 暂无记录',
+      '',
+    ].join('\n'))
+
+    runNode([
+      trackerScript,
+      'track-change',
+      '--cwd',
+      fixture.projectDir,
+      '--change-id',
+      'CHG-20200101-000000',
+      '--summary',
+      'Updated a legacy record',
+      '--file-change',
+      'src/legacy.py: documented legacy compatibility',
+    ])
+
+    const changeText = readFileSync(legacyPath, 'utf-8')
+    assert(changeText.includes('Keep this legacy request'))
+    assert(changeText.includes('## 用户请求'))
+    assert(changeText.includes('## 文件级变更'))
+    assert(changeText.includes('Updated a legacy record'))
+    assert(changeText.includes('src/legacy.py: documented legacy compatibility'))
+  } finally {
+    destroyFixture(fixture)
+  }
+})
+
+test('track-closeout skips delivery gate for non-experiment plan packages', () => {
+  const fixture = createFixture()
+  try {
+    runNode([
+      join(pkgRoot, 'scripts', 'plan-package.mjs'),
+      'create',
+      '--cwd',
+      fixture.projectDir,
+      '--plan-id',
+      'PLAN-non-experiment',
+      '--title',
+      'Non experiment closeout',
+      '--task',
+      'Update workflow docs',
+    ])
+
+    runNode([
+      trackerScript,
+      'track-intent',
+      '--cwd',
+      fixture.projectDir,
+      '--title',
+      'Non experiment closeout',
+      '--request',
+      'Update workflow docs.',
+      '--route',
+      '~build',
+      '--tier',
+      'T2',
+      '--file',
+      'AGENTS.md',
+    ])
+
+    runNode([
+      trackerScript,
+      'track-change',
+      '--cwd',
+      fixture.projectDir,
+      '--summary',
+      'Updated workflow docs',
+      '--verification',
+      'manual review',
+    ])
+
+    const output = runNode([
+      trackerScript,
+      'track-closeout',
+      '--cwd',
+      fixture.projectDir,
+      '--status',
+      'done',
+      '--plan-id',
+      'PLAN-non-experiment',
+    ])
+
+    assert(output.includes('Skipped delivery gate: PLAN-non-experiment is not an experiment target.'))
+    const changeText = readFileSync(readSingleChangeFile(fixture.projectDir), 'utf-8')
+    assert(changeText.includes('status: done'))
   } finally {
     destroyFixture(fixture)
   }

@@ -22,15 +22,22 @@ import {
 } from './change-tracker-utils.mjs'
 
 const pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)))
-export const SECTION_NAMES = [
-  'User Requests',
-  'Intent Summary',
-  'Affected Files',
-  'Actual Changes',
-  'Verification',
-  'Result',
-  'Next Step',
-]
+export const SECTION_ALIASES = {
+  userRequests: ['用户请求', 'User Requests'],
+  intentSummary: ['意图摘要', 'Intent Summary'],
+  background: ['背景', 'Background'],
+  affectedFiles: ['受影响文件', 'Affected Files'],
+  actualChanges: ['实际修改', 'Actual Changes'],
+  fileLevelChanges: ['文件级变更', 'File-level Changes', 'File Level Changes'],
+  behaviorChanges: ['行为变化', 'Behavior Changes'],
+  decisions: ['决策记录', 'Decision Record', 'Decisions'],
+  verification: ['验证结果', 'Verification'],
+  result: ['结果', 'Result'],
+  unresolvedIssues: ['未解决问题', 'Unresolved Issues'],
+  traceability: ['Traceability'],
+  nextStep: ['下一步', 'Next Step'],
+}
+export const SECTION_NAMES = [...new Set(Object.values(SECTION_ALIASES).flat())]
 
 export function getPaths(cwd) {
   const storage = resolveProjectStorage(cwd)
@@ -90,7 +97,7 @@ export function parseRecord(text, filePath, cwd) {
   const title = String(meta.title || titleMatch?.[1] || 'Untitled change').trim()
   const affectedFiles = meta.affected_files?.length > 0
     ? meta.affected_files
-    : parseBulletLines(sections.get('Affected Files') || '').map(stripBackticks)
+    : parseBulletLines(sectionContent(sections, 'affectedFiles')).map(stripBackticks)
   return {
     id: String(meta.id || ''),
     title,
@@ -109,12 +116,18 @@ export function parseRecord(text, filePath, cwd) {
       decision: String(meta.decision || 'new-topic'),
       affected_files: affectedFiles,
     },
-    userRequests: parseTimestampedEntries(sections.get('User Requests') || ''),
-    intentSummary: parseBulletLines(sections.get('Intent Summary') || ''),
-    actualChanges: parseTimestampedEntries(sections.get('Actual Changes') || ''),
-    verification: parseBulletLines(sections.get('Verification') || ''),
-    result: parseBulletLines(sections.get('Result') || ''),
-    nextStep: parseBulletLines(sections.get('Next Step') || ''),
+    userRequests: parseTimestampedEntries(sectionContent(sections, 'userRequests')),
+    intentSummary: parseBulletLines(sectionContent(sections, 'intentSummary')),
+    background: parseBulletLines(sectionContent(sections, 'background')),
+    actualChanges: parseTimestampedEntries(sectionContent(sections, 'actualChanges')),
+    fileLevelChanges: parseBulletLines(sectionContent(sections, 'fileLevelChanges')),
+    behaviorChanges: parseBulletLines(sectionContent(sections, 'behaviorChanges')),
+    decisions: parseBulletLines(sectionContent(sections, 'decisions')),
+    verification: parseBulletLines(sectionContent(sections, 'verification')),
+    result: parseBulletLines(sectionContent(sections, 'result')),
+    unresolvedIssues: parseBulletLines(sectionContent(sections, 'unresolvedIssues')),
+    traceability: parseTraceabilityLines(sectionContent(sections, 'traceability')),
+    nextStep: parseBulletLines(sectionContent(sections, 'nextStep')),
   }
 }
 
@@ -142,9 +155,15 @@ export function createRecord(existingRecords, title, files, now) {
     },
     userRequests: [],
     intentSummary: [],
+    background: [],
     actualChanges: [],
+    fileLevelChanges: [],
+    behaviorChanges: [],
+    decisions: [],
     verification: [],
     result: [],
+    unresolvedIssues: [],
+    traceability: [],
     nextStep: [],
     pendingFileName: fileName,
   }
@@ -172,40 +191,70 @@ export function writeRecord(paths, record) {
     title: record.title,
     user_requests: renderTimestampedEntries(record.userRequests),
     intent_summary: renderBullets(record.intentSummary),
+    background: renderBullets(record.background || []),
     affected_files: renderFileBullets(record.meta.affected_files),
     actual_changes: renderTimestampedEntries(record.actualChanges),
+    file_level_changes: renderBullets(record.fileLevelChanges || []),
+    behavior_changes: renderBullets(record.behaviorChanges || []),
+    decisions: renderBullets(record.decisions || []),
     verification: renderBullets(record.verification),
     result: renderBullets(record.result),
+    unresolved_issues: renderBullets(record.unresolvedIssues || []),
+    traceability: renderTraceability(record.traceability || []),
     next_step: renderBullets(record.nextStep),
   }, [
     '{{frontmatter}}',
     '# Change: {{title}}',
     '',
-    '## User Requests',
+    '## 用户请求',
     '',
     '{{user_requests}}',
     '',
-    '## Intent Summary',
+    '## 意图摘要',
     '',
     '{{intent_summary}}',
     '',
-    '## Affected Files',
+    '## 背景',
+    '',
+    '{{background}}',
+    '',
+    '## 受影响文件',
     '',
     '{{affected_files}}',
     '',
-    '## Actual Changes',
+    '## 实际修改',
     '',
     '{{actual_changes}}',
     '',
-    '## Verification',
+    '## 文件级变更',
+    '',
+    '{{file_level_changes}}',
+    '',
+    '## 行为变化',
+    '',
+    '{{behavior_changes}}',
+    '',
+    '## 决策记录',
+    '',
+    '{{decisions}}',
+    '',
+    '## 验证结果',
     '',
     '{{verification}}',
     '',
-    '## Result',
+    '## 结果',
     '',
     '{{result}}',
     '',
-    '## Next Step',
+    '## 未解决问题',
+    '',
+    '{{unresolved_issues}}',
+    '',
+    '## Traceability',
+    '',
+    '{{traceability}}',
+    '',
+    '## 下一步',
     '',
     '{{next_step}}',
   ].join('\n'))
@@ -305,4 +354,27 @@ function renderTemplate(templateName, values, fallback) {
     (current, [key, value]) => current.replaceAll(`{{${key}}}`, value),
     source,
   )
+}
+
+function sectionContent(sections, key) {
+  const aliases = SECTION_ALIASES[key] || [key]
+  for (const name of aliases) {
+    const content = sections.get(name)
+    if (content) return content
+  }
+  return ''
+}
+
+function parseTraceabilityLines(content) {
+  return String(content || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => line !== '- 暂无记录' && line !== '暂无记录')
+}
+
+function renderTraceability(lines) {
+  if (lines.length === 0) return '- 暂无记录'
+  if (lines.some((line) => line.startsWith('|'))) return lines.join('\n')
+  return lines.map((line) => (line.startsWith('- ') ? line : `- ${line}`)).join('\n')
 }

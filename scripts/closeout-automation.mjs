@@ -80,6 +80,10 @@ function runGateIfNeeded(cwd, context, notes) {
     notes.push('Skipped delivery gate: missing contract or target id.')
     return { ran: false, skipped: 'missing-contract', overall: null, targetId: context.targetId }
   }
+  if (!String(context.targetId).startsWith('EXP-')) {
+    notes.push(`Skipped delivery gate: ${context.targetId} is not an experiment target.`)
+    return { ran: false, skipped: 'non-experiment-target', overall: null, targetId: context.targetId }
+  }
 
   const payload = runDeliveryGate(cwd, buildArgs({
     '--target-id': context.targetId,

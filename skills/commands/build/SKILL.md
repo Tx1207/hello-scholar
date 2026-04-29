@@ -32,6 +32,8 @@ Trigger: ~build [description]
 - 真实编辑前确认是否属于实验相关修改；实验相关修改必须写入 experiment package。
 - 每次实质编辑后运行最小确定性检查；不能运行时记录原因。
 - 不在 `~build` 内把任务整体报告为完成；完成前进入 `~verify`，实验结果需要解释时进入 `~analyze`。
+- 对 prompt / workflow / skill 修改，真实编辑前必须能从 plan 找到逐项修改说明；若没有 plan，则先写清修改范围、具体修改点、行为变化和验证方式。
+- 更新 change record 时只写实际完成的修改，不把未执行计划写成结果。
 
 ## Steps
 
@@ -40,9 +42,18 @@ Trigger: ~build [description]
 3. 明确实施目标、验收标准、受影响文件和验证命令。
 4. 修改代码、配置、文档或实验脚本；保持改动最小且可解释。
 5. 对实验任务记录 hypothesis、baseline、config、run type、expected metrics 和 evidence path。
-6. 更新 change record；若属于实验，更新 experiment `changes.md`、`experiment.yaml` 或状态索引。
+6. 更新 change record；必须区分背景、实际修改、文件级变更、行为变化、决策记录、验证结果、未解决问题和 Traceability。
 7. 运行局部验证；失败则修复并重跑，无法继续时停止并报告阻塞。
 8. 交给 `~verify`；若已有运行结果需要解释，再交给 `~analyze`。
+
+## Change Record 要求
+
+- `实际修改` 只记录已经完成的内容。
+- `文件级变更` 写清文件、section / 模块、实际变更和影响。
+- `行为变化` 写清用户可见输出、plan / tasks / change 文件或执行流程的可观察变化。
+- `决策记录` 区分用户明确要求、模型推断和放弃的替代方案。
+- `未解决问题` 写本轮没有覆盖或仍需人工判断的内容。
+- `Traceability` 连接用户需求、plan item、task、changed file、verification 和 status。
 
 ## Output
 

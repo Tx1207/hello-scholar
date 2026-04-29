@@ -29,17 +29,22 @@ Trigger: ~verify [scope]
 - 验证失败时先修复或交回 `~build`；不能修复时报告可复现阻塞。
 - 审查优先或显式 `~review` 时，先做代码/实验设计审查，再跑命令。
 - 不把未经分析的实验指标包装成结论；需要解释时转入 `~analyze`。
+- 若存在 plan package，必须检查 requirements、plan、tasks、change record 和 diff 之间的 traceability。
 
 ## Steps
 
 1. 明确验证对象：普通 change、experiment、plan package 或指定 scope。
 2. 对照 `contract.json` / 用户目标列出必须验证的行为。
-3. 检查 diff 是否只包含预期范围，是否存在明显回归风险。
-4. 运行适配项目的 lint、typecheck、unit test、integration test、dry run、small run 或评估命令。
-5. 记录命令、配置、seed、环境摘要、输出路径、metrics 和失败原因。
-6. 更新 change record；实验任务更新 `runs.md`、`evidence.md`、`artifacts.json` 和必要的 `experiment.yaml` 状态。
-7. 若需要结果解释、baseline 对比或 failure analysis，转入 `~analyze`。
-8. 满足交付门槛后写 closeout 所需摘要。
+3. 检查 `requirements.md` 是否覆盖用户问题、成功标准、约束、非目标和确认问题。
+4. 检查 `plan.md` 是否包含逐项修改说明、行为变化、风险与缓解、验证计划和 Traceability。
+5. 检查 `tasks.md` 的每个完成任务是否有涉及文件、具体改动、完成标准、验证方式和对应 change 记录。
+6. 检查 change record 是否只记录实际完成内容，并包含文件级变更、行为变化、决策记录、验证结果和未解决问题。
+7. 检查 diff 是否只包含预期范围，是否存在明显回归风险。
+8. 运行适配项目的 lint、typecheck、unit test、integration test、dry run、small run 或评估命令。
+9. 记录命令、配置、seed、环境摘要、输出路径、metrics 和失败原因。
+10. 更新 change record；实验任务更新 `runs.md`、`evidence.md`、`artifacts.json` 和必要的 `experiment.yaml` 状态。
+11. 若需要结果解释、baseline 对比或 failure analysis，转入 `~analyze`。
+12. 满足交付门槛后写 closeout 所需摘要。
 
 ## Output
 

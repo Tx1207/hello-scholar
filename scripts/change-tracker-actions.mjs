@@ -50,6 +50,10 @@ export function trackIntent(cwd, args) {
   record.meta.decision = selection.decision
   record.meta.affected_files = mergeUnique(record.meta.affected_files || [], files)
   record.userRequests = appendTimestampedItems(record.userRequests, formatLocalTime(now), splitLines(request))
+  record.background = mergeUnique(record.background || [], [
+    `触发问题：${title}`,
+    `用户原始请求已记录于“用户请求”；本 change 用于追踪实际完成的项目修改。`,
+  ])
   record.intentSummary = compactList([
     `主目标：${title}`,
     `Route: ${route}`,
@@ -73,9 +77,15 @@ export function trackChange(cwd, args) {
   ensureTrackingRoots(paths)
   const workspace = loadWorkspace(paths)
   const files = normalizeFiles(cwd, [...args.getList('--file'), ...args.getList('--files')])
-  const verification = splitLines(args.getFlag('--verification', '')).concat(args.getList('--verify'))
-  const resultItems = splitLines(args.getFlag('--result', ''))
-  const nextStepItems = splitLines(args.getFlag('--next-step', ''))
+  const verification = collectFlagLines(args, '--verification', '--verify')
+  const resultItems = collectFlagLines(args, '--result')
+  const nextStepItems = collectFlagLines(args, '--next-step')
+  const backgroundItems = collectFlagLines(args, '--background', '--background-item')
+  const fileLevelChanges = collectFlagLines(args, '--file-change', '--file-change-item')
+  const behaviorChanges = collectFlagLines(args, '--behavior-change', '--behavior-change-item')
+  const decisions = collectFlagLines(args, '--decision', '--decision-item')
+  const unresolvedIssues = collectFlagLines(args, '--unresolved', '--unresolved-item')
+  const traceability = collectFlagLines(args, '--trace', '--trace-item')
   const requestedStatus = String(args.getFlag('--status', 'active')).trim() || 'active'
   const record = selectRecordForUpdate(workspace, args.getFlag('--change-id', ''), summary, files, now)
 
@@ -83,8 +93,14 @@ export function trackChange(cwd, args) {
   record.meta.status = requestedStatus
   record.meta.affected_files = mergeUnique(record.meta.affected_files || [], files)
   record.actualChanges = appendTimestampedItems(record.actualChanges, formatLocalTime(now), splitLines(summary))
+  record.background = mergeUnique(record.background || [], backgroundItems)
+  record.fileLevelChanges = mergeUnique(record.fileLevelChanges || [], fileLevelChanges)
+  record.behaviorChanges = mergeUnique(record.behaviorChanges || [], behaviorChanges)
+  record.decisions = mergeUnique(record.decisions || [], decisions)
   record.verification = mergeUnique(record.verification, verification)
   record.result = mergeUnique(record.result, resultItems)
+  record.unresolvedIssues = mergeUnique(record.unresolvedIssues || [], unresolvedIssues)
+  record.traceability = mergeUnique(record.traceability || [], traceability)
   record.nextStep = mergeUnique(record.nextStep, nextStepItems)
 
   writeRecord(paths, record)
@@ -93,6 +109,8 @@ export function trackChange(cwd, args) {
   writeIndexAndState(paths, nextWorkspace, isActiveStatus(record.meta.status) ? record.id : '', isActiveStatus)
   const notes = [
     `Recorded ${splitLines(summary).length} actual change line(s).`,
+    fileLevelChanges.length > 0 ? `Added ${fileLevelChanges.length} file-level change item(s).` : 'No file-level change items were added.',
+    behaviorChanges.length > 0 ? `Added ${behaviorChanges.length} behavior-change item(s).` : 'No behavior-change items were added.',
     verification.length > 0 ? `Added ${verification.length} verification item(s).` : 'No verification items were added.',
   ]
   if (experimentChange) notes.push(`Mirrored change to experiment ${experimentChange.experimentId}.`)
@@ -201,4 +219,11 @@ function appendExperimentChangeIfAvailable(cwd, paths, args, summary, files, now
   const experimentId = explicitExperimentId || String(activeExperimentId).trim()
   if (!experimentId) return null
   return appendChange({ cwd, experimentId, summary, files, now })
+}
+
+function collectFlagLines(args, ...names) {
+  return names.flatMap((name) => {
+    const values = typeof args.getAll === 'function' ? args.getAll(name) : args.getList(name)
+    return values.flatMap((value) => splitLines(value))
+  })
 }
