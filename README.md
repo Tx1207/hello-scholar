@@ -20,7 +20,6 @@
 - [CLI 与 Agent 命令](#cli-与-agent-命令)
 - [目录约定](#目录约定)
 - [Skill 组织](#skill-组织)
-- [开发](#开发)
 - [参考项目](#参考项目)
 - [License](#license)
 
@@ -56,16 +55,20 @@ npm run build:catalog
 npm install -g .
 ```
 
-选择默认 ML 实验开发 profile：
+选择安装 profile：
 
 ```bash
-hello-scholar profile use ml-development
+hello-scholar profile list
 ```
 
-安装到当前项目：
+安装到当前项目or安装到全局：
 
 ```bash
 hello-scholar install codex --standby
+```
+
+```bash
+hello-scholar install codex --global
 ```
 
 查看当前状态：
@@ -356,18 +359,6 @@ skills/
   memory/
   meta/
   profiles/
-```
-
-## 开发
-
-需求与验收矩阵：[`docs/requirements.md`](docs/requirements.md)。
-
-常用检查：
-
-```bash
-npm run build:catalog
-npm test
-npm pack --dry-run
 ```
 
 ## 参考项目
