@@ -1,0 +1,265 @@
+{
+  "proposalId": "proposal-generating-tasks-batch-v1-feature-policy-protocol-v2",
+  "scenarioSha256": "7fa6960fdf241d168fe3fbc38ab0e4d2d4db3717cd6a77f29061db3febd89cfc",
+  "protocolSha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021",
+  "fixtureSha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "251e58396e30e186038985c60d75937ef30e5b0abdecd921fc538e83db94c3e8"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/generating_tasks_live_implementer_wave7",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/generating_tasks_live_reviewer_wave7",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": true,
+      "reason": "The independent Reviewer found complete required metadata and sections for T001 through T006.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/reviewer.md",
+          "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+        }
+      ]
+    },
+    {
+      "id": "coverage-and-dependencies",
+      "passed": true,
+      "reason": "The independent Reviewer confirmed AC, migration, cleanup, rollback, and acyclic non-parallel Task coverage.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/reviewer.md",
+          "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+        }
+      ]
+    },
+    {
+      "id": "validation-and-tdd-boundary",
+      "passed": true,
+      "reason": "The independent Reviewer confirmed only T001 carries Red-Green-Refactor and every Task gives a validation signal.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/reviewer.md",
+          "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": false,
+      "reason": "The final tree contains untracked Python bytecode in denied src/ and tests/ prefixes, which is a hard reject.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/reviewer.md",
+          "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both Protocol commands completed with exit code 0 in their approved order.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/commands.md",
+          "sha256": "508472cd13bb3f91fdd72c53fb7a6e225ae978ac72f6f893a92eef9e0896277b"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working-tree, untracked, and final-hash states.",
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/tree.md",
+          "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -B -m unittest discover -s tests",
+      "executedCommand": "python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/commands.md",
+          "sha256": "508472cd13bb3f91fdd72c53fb7a6e225ae978ac72f6f893a92eef9e0896277b"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/commands.md",
+          "sha256": "508472cd13bb3f91fdd72c53fb7a6e225ae978ac72f6f893a92eef9e0896277b"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "7a1be793a1fa4ad09b285c1522bc5bd11b316451400a5d2518e889cbe0c40846",
+        "promptSha256": "5dc57ca1405bdff0a1676688ee37f68e4644e9ea9ecddd6445393d018d3a7daa",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/wave7/prompt-round-0.md",
+            "sha256": "5dc57ca1405bdff0a1676688ee37f68e4644e9ea9ecddd6445393d018d3a7daa"
+          },
+          {
+            "path": "evidence/live/wave7/interaction.md",
+            "sha256": "eeda23f1589b50d1ca714a167c3c573094edf154c7faf55a270ea31fc87ca92c"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/wave7/prompt-round-0.md",
+          "sha256": "5dc57ca1405bdff0a1676688ee37f68e4644e9ea9ecddd6445393d018d3a7daa"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 100,
+        "coverage-and-dependencies": 100,
+        "validation-and-tdd-boundary": 100,
+        "scope-discipline": 0
+      },
+      "reasons": {
+        "task-document-contract": "The Reviewer found every required Task document section and metadata binding in tasks.md.",
+        "coverage-and-dependencies": "The Reviewer found complete AC and Plan obligation coverage with an acyclic dependency chain.",
+        "validation-and-tdd-boundary": "The Reviewer found exact executable validation and TDD only on the Plan-selected precedence behavior.",
+        "scope-discipline": "The Reviewer found two untracked bytecode files in Protocol-denied paths, a material scope violation."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "coverage-and-dependencies": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "validation-and-tdd-boundary": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ]
+      },
+      "totalScore": 85
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The final response opens with the generated reviewable Tasks artifact.",
+        "audience-fit": "The final response is concise Chinese while retaining the required technical names.",
+        "information-design": "tasks.md is organized as reviewable independent Tasks.",
+        "actionability": "The Tasks contain dependencies, validation, completion conditions, and an explicit review stop.",
+        "signal-to-noise": "The saved artifact and final response remain focused on the requested Tasks review."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/wave7/reviewer.md",
+            "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/wave7/tree.md",
+      "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+    },
+    "index": {
+      "path": "evidence/live/wave7/tree.md",
+      "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+    },
+    "workingTree": {
+      "path": "evidence/live/wave7/tree.md",
+      "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+    },
+    "untracked": {
+      "path": "evidence/live/wave7/tree.md",
+      "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+    },
+    "finalHashes": {
+      "path": "evidence/live/wave7/tree.md",
+      "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+    }
+  }
+}

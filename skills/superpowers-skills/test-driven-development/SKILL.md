@@ -1,9 +1,22 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: Use only when the user explicitly requests TDD, test-first, or Red-Green-Refactor, or the current Approved Task explicitly requires a TDD Process.
 ---
 
 # Test-Driven Development (TDD)
+
+## Explicit Entry Gate
+
+Enter this skill only when one of these facts is present:
+
+1. The user explicitly requests `$test-driven-development`, `TDD`, `test-first`, or `Red-Green-Refactor`.
+2. The current Approved Task explicitly requires a `TDD Process` or explicitly names `TDD`, `test-first`, or `Red-Green-Refactor` as its process.
+
+A request to add tests, or `Validation: npm test`, is ordinary implementation and validation; it does not enter this skill by itself. Do not infer TDD from task type, testing language, or validation commands.
+
+If neither fact is present, exit this skill immediately. Follow the applicable AGENTS/Task instructions for ordinary implementation and validation; do not impose this TDD workflow or redo existing code.
+
+After entry, follow the full process below. Tests after are not TDD. If a user who explicitly requested TDD later calls the work a throwaway prototype, generated code, or configuration file, ask whether they are revoking the TDD request; do not choose that exception yourself.
 
 ## Overview
 
@@ -31,21 +44,6 @@ Choose the cheapest pattern that proves the intended behavior:
 | `macro-eval` | cross-trace or multi-agent behavior patterns | expensive/scheduled |
 
 For full pattern definitions and examples, read `references/evidence-pattern-gallery.md`.
-
-## When to Use
-
-**Always:**
-- New features
-- Bug fixes
-- Refactoring
-- Behavior changes
-
-**Exceptions (ask your human partner):**
-- Throwaway prototypes
-- Generated code
-- Configuration files
-
-Thinking "skip TDD just this once"? Stop. That's rationalization.
 
 ## The Iron Law
 

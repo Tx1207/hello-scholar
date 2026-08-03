@@ -1,10 +1,10 @@
 ---
 name: handoff
-description: 将当前对话压缩成一份 handoff 文档，供另一个代理接手。
+description: 仅当用户明确要求保存会话 handoff、为下一位 Agent 准备接续上下文时使用。
 argument-hint: "下一次会话将用于什么？"
 ---
 
-写一份 handoff 文档，总结当前对话，让一个新代理可以继续工作。保存到当前任务的项目根目录或 worktree 根目录下的 `hello-scholar/memory/handoffs/YYYY-MM-DD-<topic>-handoff.md`。
+写一份 handoff 文档，总结当前对话，让一个新代理可以继续工作。保存到当前任务的项目根目录或 worktree 根目录下的 `hello-scholar/handoffs/YYYY-MM-DD-<topic>-handoff.md`。Handoff 不属于 Spec Bundle，也不进入自动生成的 Index；不要为了 Handoff 创建 `hello-scholar/memory/`。
 
 根据仓库语言偏好选择 handoff 模板：
 - 默认中文：`assets/handoff-template.zh_CN.md`

@@ -1,0 +1,25 @@
+Framework E2E Baseline environment
+
+Proposal: proposal-framework-e2e-paged-cache-v2 (approved)
+Scenario SHA-256: 9fe8cf995aecbe1a684bc1e1f8794521c435efc8bb504905191f85e8f91d5afa
+Protocol SHA-256: baf04608d17acdce547acbe0c64604a7a05a82ef27255c17fb3575fe35fdc568
+Fixture SHA-256: 1dd3ba5c756f796d5d2fa7416adf900e84fc19a290e1b8dc439d506e93f443c3
+Fixture base commit: ee7bd3f36c0aabaf2b06a8f298af3ac596d61d08
+
+Immutable Skill snapshots:
+- writing-plans: pre-change-explicit-file, directory SHA-256 3cfa8e9b0aab8e1a9da6e4df3f3efa279a09c211dd9b66b7390b0deb1865740d
+- record-experiment: pre-change-explicit-file, directory SHA-256 f17d9e2dd1941465f5ef194f350a65be1912eb67f08977866e77481dfc9fa35d
+- generating-tasks: intentionally absent
+- converge-to-spec: intentionally absent
+- docs-maintenance: intentionally absent
+
+Base-fixture preflight from a detached worktree at the base commit:
+
+  PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests
+  exit 0; Ran 3 tests; OK
+
+  PYTHONDONTWRITEBYTECODE=1 python3 scripts/benchmark_cache.py --blocks 24 --request-blocks 6
+  exit 0
+  {"fragmentation_failure": true, "free_blocks_before_request": 12, "request_blocks": 6, "total_blocks": 24}
+
+Git, Python, Node, the Fixture tests, and the deterministic baseline Benchmark were available. Missing Skills were Protocol-declared inputs, not loader failures. The pre-change CLI accepted `help` with exit 0; its missing docs subcommands are recorded as observed framework behavior in commands.txt, not an environment failure.

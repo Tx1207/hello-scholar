@@ -1,0 +1,8 @@
+{
+  "name": "webhook-signing-service-fixture",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  }
+}

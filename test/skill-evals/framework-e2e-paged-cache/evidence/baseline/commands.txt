@@ -1,0 +1,40 @@
+Framework E2E Baseline command evidence
+
+Protocol command 1:
+  python3 -m unittest discover -s tests
+  exit 0
+  .........
+  Ran 9 tests
+  OK
+
+Protocol command 2:
+  python3 scripts/benchmark_cache.py --blocks 24 --request-blocks 6
+  exit 0
+  {"allocated_block_count": 6, "fragmentation_failures": 0, "free_blocks_before_request": 12, "request_blocks": 6, "total_blocks": 24}
+
+Protocol command 3:
+  node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+  exit 1
+  usage-only output listed help, install, and uninstall; docs was not an accepted action in the pre-change CLI.
+
+Protocol command 4:
+  node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs sync
+  exit 1
+  usage-only output listed help, install, and uninstall; no file was written.
+
+Focused implementation evidence:
+- Paged test before implementation: exit 1, ModuleNotFoundError for kv_cache.paged_allocator.
+- Paged test after implementation: exit 0, Ran 5 tests, OK.
+- Compatibility red: exit 1, class identity mismatch and fragmented allocation MemoryError.
+- Full green suite: exit 0, Ran 9 tests, OK.
+- git diff --check: exit 0.
+- rg for _find_contiguous_span, old contiguous error, and mode flags: exit 1 with no matches.
+
+Formal Run 20260801-0323-paged-cache-benchmark:
+- The persistent record and intended output/result paths existed before launch.
+- The exact recorded command exited 0.
+- Raw and structured results both reported free_blocks_before_request=12, allocated_block_count=6, fragmentation_failures=0.
+
+Fresh Run handling:
+- 20260801-0332-paged-cache-fresh-benchmark was honestly finalized invalid after unsafe shell quoting consumed stdout and left no artifact.
+- A new identity, 20260801-0334-paged-cache-fresh-benchmark-retry, was recorded before launch and exited 0 with the same 12/6/0 metrics.

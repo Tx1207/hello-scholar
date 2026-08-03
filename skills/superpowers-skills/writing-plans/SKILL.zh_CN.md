@@ -1,112 +1,85 @@
 ---
 name: writing-plans
-description: 用于已有多步骤任务的规格或需求、且尚未触碰代码之前
+description: 当用户需要为已 Accepted 的 Spec 编写可审核实施 Plan 时使用。生成同一 Bundle 的高层 plan.md，并在 Plan 批准后转交 generating-tasks。
 ---
 
 # 编写计划
 
-## 概览
+为一个已 Accepted 的 `spec.md` 创建一份可审核的高层 `plan.md`。Plan 说明实施策略、边界、顺序、迁移、清理、回滚和 Tasks 生成规则。`generating-tasks` 负责可独立执行的 tracer Tasks；Tasks 获批且用户明确请求实施后，由当前主 Agent 负责执行。
 
-编写全面的实现计划，假设工程师对我们的代码库没有任何上下文，而且品味可疑。记录他们需要知道的一切：每个任务要触碰哪些文件、代码、测试、可能需要检查的文档、如何测试。把完整计划拆成小块任务交给他们。DRY。YAGNI。TDD。频繁提交。
+## 1. 建立事实源
 
-假设他们是熟练开发者，但几乎不了解我们的工具链或问题领域。假设他们不太懂优秀的测试设计。
+1. 确认项目根目录并运行：
+   ```sh
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   ```
+2. 读取目标 `spec.md`。它必须是 `status: accepted`；否则报告当前 Spec 状态并停止。
+3. 只读取为制定已接受设计所需的 Architecture、代码、测试、配置、Record 和既有 Bundle 文档。
+4. 写明 Spec ID 与 revision。Spec 定义行为、边界、不变量和验收；Plan 定义实施策略。出现材料性冲突时，回到 Spec owner 处理。
 
-**开始时宣布：** "I'm using the writing-plans skill to create the implementation plan."
+**完成条件：** 已接受的设计、当前 revision 和制定实施策略所需证据都已明确。
 
-**上下文：** 如果在隔离的 worktree 中工作，应当在执行时已经通过 `superpowers:using-git-worktrees` skill 创建。
+## 2. 设定策略边界
 
-**计划保存到当前任务的项目根目录或 worktree 根目录下：** `hello-scholar/memory/plans/YYYY-MM-DD-<feature-name>.md`
-- （用户对计划位置的偏好会覆盖此默认值）
+- 请求需要 Accepted Spec 未固定的材料性架构、公开接口、数据合同或产品决定时，指出缺失决定并停在 Spec revision 门。
+- Plan 只覆盖较大 Spec 的部分内容时，写明覆盖章节和延后章节。
+- 写入 Phase 前先映射受影响模块和精确文件边界。每类文件标为 `Add`、`Modify`、`Move or Migrate`、`Delete` 或 `Must Not Touch`；空类别写 `None` 并说明原因。
+- 保持一次语义文档事务：规划只改 `plan.md`。既有 Tasks 变为 Stale 是正常派生状态，不因此改写 `tasks.md`。
 
-根据仓库语言偏好选择计划模板：
-- 默认中文：`assets/plan-template.zh_CN.md`
-- 其他情况：`assets/plan-template.md`
-- 仓库默认语言明确时，不要根据任务提示语言推断模板语言。
+**完成条件：** Plan 有具体且边界清晰的策略，不重新开启已接受的设计决定。
 
-## 计划语言
+## 3. 写入 Bundle Plan
 
-使用所选模板中的标题和字段标签。用户可读正文使用同一模板语言。路径、命令、代码标识符、skill 名称和技术术语保持原文。
+写入前先读取 `assets/` 的对应模板。根据仓库语言偏好选择：中文使用 `assets/plan-template.zh_CN.md`，否则使用 `assets/plan-template.md`。用户可读的 Plan 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。创建或修订：
 
-## 真源门槛
+```text
+hello-scholar/specs/<topic>/SPEC-<number>-<design-name>/plan.md
+```
 
-如果存在 spec、PRD、设计文档、issue 或已确认需求，计划必须写 `规格来源`；否则写 `规格来源: 未提供`，并说明作为契约的用户请求/已发现需求。spec 定义行为、边界、invariants 和验收；plan 定义文件、顺序、测试和命令。两者冲突时，执行者先暂停并询问。不要依赖执行者自己发现 spec。
+使用以下 Front Matter：
 
-如果计划只实现较大 spec 的子集，必须写 `范围边界`：覆盖的子集和延后的 spec 章节。未说明的范围收窄是计划失败。
+```yaml
+schema: 1
+kind: plan
+spec: SPEC-000
+spec_revision: 1
+revision: 1
+status: draft
+title: <具体的计划标题>
+summary: <具体的策略摘要>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+```
 
-## 范围检查
+语义 Plan 修订会递增 `revision` 并更新 `updated`。向用户展示前，将全部模板提示替换为具体项目事实。
 
-如果规格覆盖多个独立子系统，它应当已经在头脑风暴期间被拆成多个子项目规格。如果没有，建议把它拆成独立计划，每个子系统一个。每个计划都应当独立产出可工作的、可测试的软件。
+正文固定包含 12 节：
 
-## 文件结构
+1. Implementation Goal
+2. Scope
+3. Technical Strategy
+4. Affected Modules
+5. File Change Boundaries
+6. Interface Changes
+7. Implementation Phases
+8. Test and Experiment Strategy
+9. Migration Sequence
+10. Cleanup
+11. Rollback
+12. Tasks Generation Rules
 
-在定义任务之前，先梳理会创建或修改哪些文件，以及每个文件负责什么。这是分解决策被锁定的地方。
+**完成条件：** 同一 Bundle 的 `plan.md` 绑定当前 Accepted Spec revision，完整描述实施策略，不含 Task checkbox、微步骤、代码清单或执行交接菜单。
 
-- 设计边界清晰、接口明确的单元。每个文件都应当有一个明确职责。
-- 你最擅长推理能一次装进上下文的代码；文件越聚焦，编辑越可靠。优先选择更小、更聚焦的文件，而不是承担过多职责的大文件。
-- 会一起变化的文件应当放在一起。按职责拆分，而不是按技术层拆分。
-- 在现有代码库中，遵循已有模式。如果代码库使用大文件，不要单方面重构；但如果你要修改的文件已经变得笨重，把拆分纳入计划是合理的。
+## 4. 审核与交接
 
-这个结构会影响任务分解。每个任务都应当产生自洽的变更，并且单独看也合理。
+1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。
+2. 运行：
+   ```sh
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   node <hello-scholar-repo>/bin/hello-scholar.js docs sync
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   ```
+3. 将完整 Plan 交给用户进行一次整份审核。只有用户明确批准前，它保持 `draft`。
+4. 用户明确批准后，将 `status` 设为 `approved`，通过相同 CLI 序列验证，再调用 `$generating-tasks` 生成需要独立审核的 Tasks。
 
-## 小块任务粒度
-
-**每一步都是一个动作（2-5 分钟）：**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
-
-## 计划结构
-
-写计划前先读取所选模板，然后把每个占位符替换成当前任务的具体内容。除非用户给出更强格式要求，否则保留模板结构。
-
-每个改代码的任务在步骤前必须包含 `规格覆盖`：`规格章节`（精确标题、ID 或带行号链接）、`验收门槛`（行为、invariants、错误、回归、disabled path）、`不在范围`（刻意延后的相邻工作）。没有覆盖/门槛的任务不能执行。
-
-## 不要占位符
-
-每一步都必须包含工程师需要的实际内容。这些都是**计划失败**，绝不要写：
-- "TBD"、"TODO"、"implement later"、"fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above"（没有实际测试代码）
-- "Similar to Task N"（重复代码，工程师可能乱序阅读任务）
-- 只描述要做什么却不展示如何做的步骤（代码步骤必须有代码块）
-- 引用任何任务中都没有定义的类型、函数或方法
-- 存在 spec / design / PRD 时缺少 `规格来源`
-- 只覆盖较大 spec 的一部分，却没有说明范围边界
-- 只写 `规格覆盖: 已覆盖`，没有任务到 spec 的映射
-- 验收标准只写 "tests pass"
-
-## 记住
-- 始终使用精确文件路径
-- 每一步都给完整代码；如果某一步修改代码，就展示代码
-- 精确命令与预期输出
-- DRY、YAGNI、TDD、频繁提交
-
-## 自检
-
-写完整计划后，用新的视角看规格，并对照规格检查计划。这是你自己运行的 checklist，不是 subagent 派发。
-
-**1. 真源：** 是否写明 spec / design / PRD 路径，或说明未提供？是否声明冲突时以 spec 为准？若范围窄于 spec，边界是否明确？
-
-**2. 规格覆盖：** 每个 spec 需求是否能指向任务和验收门槛？修复或列出缺口。
-
-**3. 契约保持：** 受影响的现有行为、disabled path、错误、持久化数据、API 和集成是否有回归检查？
-
-**4. 占位符扫描：** 搜索计划中的红旗，也就是上方 "No Placeholders" 章节中的任何模式。修复它们。
-
-**5. 类型一致性：** 后续任务中使用的类型、方法签名和属性名是否与你在早期任务中定义的一致？Task 3 中函数叫 `clearLayers()`，但 Task 7 中叫 `clearFullLayers()`，这是 bug。
-
-如果发现问题，直接内联修复。不需要重新 review，只要修好并继续。如果发现某个规格需求没有任务，添加任务。
-
-## 执行交接
-
-保存计划后，按所选模板语言提供执行选择。
-
-**如果选择 Subagent-Driven：**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- 每个任务使用新的 subagent + 两阶段 review
-
-**如果选择 Inline Execution：**
-- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
-- 使用带 checkpoint 的批量执行以便 review
+**完成条件：** 终态是已审核 Plan，或阻止计划的明确设计停止点。Plan 批准不代表 Tasks 或实施获得批准。

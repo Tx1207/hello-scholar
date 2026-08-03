@@ -1,67 +1,94 @@
-# Experiment Run: <run_id>
+---
+schema: 1
+kind: record
+run_id: <run-id>
+title: <human-readable title>
+status: planned
+spec: null
+spec_revision: null
+plan_revision: null
+started: null
+completed: null
+decision: pending
+summary: <current known facts only>
+---
 
-## Snapshot
+# <human-readable title>
 
-- Run ID: <run_id>
-- Status: planned
+## 1. Purpose
+
 - Purpose:
-- Created at:
-- Last updated:
-- Conclusion: pending
-- Next action:
 
-## Launch Record
+## 2. Hypothesis
+
+- Hypothesis:
+
+## 3. Experimental Variables
+
+- Variables:
+
+## 4. Controls
+
+- Controls:
+
+## 5. Execution Information
 
 - Exact command:
 - CWD:
-- Script:
-- Config file:
+- Script / entry point:
+- Config:
 - CLI overrides:
 - Seed:
 - Data version / split:
 - Preprocessing:
 - Input artifacts:
-- Upstream run ID:
+- Upstream Run ID:
 - Derived artifacts:
+- Model / checkpoint:
+- Evaluation / generation settings:
 - Git branch:
 - Git commit:
-- Git dirty status:
-- Backend: local / ssh / vast / modal / queue / other
+- Git working-tree state:
+- Backend:
 - Machine / GPU:
 - Python / environment:
-
-## Expected Behavior
-
 - Expected signal:
 - Failure signal:
 - Stop rule:
 
-## Paths
+## 6. Artifact Locations
 
-- Log path:
-- Checkpoint path:
-- Result path:
-- W&B / MLflow / TensorBoard:
+- Intended log path:
+- Intended result path:
+- Intended checkpoint path:
+- Dashboard / tracking URL:
 
-## Events
+## 7. Execution Events
 
-| time | event | observation | action |
+| Time | Event | Observation | Action |
 |---|---|---|---|
 
-## Results
+## 8. Key Results
 
-- Final status:
-- End time:
-- Exit code:
 - Metrics:
 - Result files:
 - Best checkpoint:
-- Failure reason:
+
+## 9. Observations
+
+- Observations:
+- Failure evidence:
 - Validity notes:
 
-## Conclusion
+## 10. Conclusion
 
-- Conclusion: positive / negative / mixed / failed / invalid / inconclusive / pending
-- Negative result: yes / no / unknown
+- Conclusion:
 - Caveats:
+
+## 11. Decision
+
+- Decision:
+
+## 12. Next Actions
+
 - Next action:

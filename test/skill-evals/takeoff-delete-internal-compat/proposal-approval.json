@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-takeoff-delete-internal-compat-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "9c6e80059ac8e19390feef5f02b35b4627bacfb67b1e1b8f20e8c0e8508a247b",
+  "protocolSha256": "da95cf3240f5f31aca1c9befc8e255dceb7c838febf7b3f46b95093715206627",
+  "fixtureSha256": "04c031d8297e5ff72445e2623d3d0427d5d37f43d6e2cfe934a683c80a44ebc5",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

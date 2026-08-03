@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-router-maintenance-v2-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "ff66fc4b9105244e0e5608190c12e392c5382b85e542f32c4bf0163098d884fd",
+  "protocolSha256": "69a5cc283b02ca370aeb06378e0450f78580ca94ea9e03deede1113469b4f3ec",
+  "fixtureSha256": "88747fb9162a73a145a1baafafa6a64a9d84bc1236007eb1ae921c04745ae95e",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

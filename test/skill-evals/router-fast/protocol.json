@@ -1,0 +1,137 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "router-fast",
+  "projectId": "py-text-normalizer",
+  "primarySkill": "using-helloscholar",
+  "caseId": "router-fast",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-helloscholar"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/superpowers-skills/using-helloscholar"
+  },
+  "skillExpectations": {
+    "using-helloscholar": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the unchanged project, and use that commit as the evaluation base",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "route-selection",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the localized compatible bug fix is routed to Fast and handled directly without entering Brainstorm, explicit-only TDD, document, experiment or retired execution flows."
+      },
+      {
+        "id": "scoped-fix",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the smallest implementation collapses consecutive spaces, tabs and newlines while preserving normalize_text()'s public signature, existing behavior and dependency set."
+      },
+      {
+        "id": "regression-evidence",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a focused regression test reproduces all reported whitespace forms and the current complete unittest suite passes after the fix with saved command output."
+      },
+      {
+        "id": "state-preservation",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the named source and test files change, with no parallel implementation, dependency, project document, Run or other repository state mutation."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "enters Brainstorm, TDD, or a retired execution or review Skill",
+      "creates or changes a Spec, Plan, Tasks, Record, Run, or Architecture file",
+      "changes the normalize_text public signature or adds a dependency",
+      "claims completion without a focused regression test and current full test output",
+      "writes outside the two allowed source and test files"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests"
+  ],
+  "paths": {
+    "allow": [
+      "src/text_normalizer.py",
+      "tests/test_text_normalizer.py"
+    ],
+    "deny": [
+      "hello-scholar/",
+      "runs/",
+      "docs/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "src/text_normalizer.py",
+      "tests/test_text_normalizer.py"
+    ],
+    "forbidden": [
+      "hello-scholar/",
+      "runs/",
+      "src/text_normalizer_v2.py",
+      "PLAN.md",
+      "TASKS.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the local bug-fix request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Classify the localized compatible fix as Fast, inspect the named code and tests, and make the first focused regression action without creating project documents."
+}

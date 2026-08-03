@@ -1,0 +1,321 @@
+{
+  "proposalId": "proposal-crash-audit-calibrated-none-v1-protocol-v2",
+  "scenarioSha256": "063f3bb6f91937c65e74263d83bd2f6555b7826d013986167ad8f39485098f57",
+  "protocolSha256": "f88f363c13b4fe61c2c78a1da222abd43bfdfe7bd00b257e371d808c01fb691b",
+  "fixtureSha256": "d8e22e47ee0fa1fadc0b837d6dc88b432463c2f9b952c910e47ffe4e0d230fbf",
+  "result": "fail",
+  "summary": "The absent crash-audit baseline inspected the prepared change but did not answer the two required questions separately and manufactured a non-decision-relevant residual risk.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "crash-audit": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "caaeee712879aedb076e9f528489d503b64919f6",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The isolated Fixture was committed at the recorded Base commit before the prepared review diff was created.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "63338a98cc6e41ed5001bb876234d47dba74dc8f238cb5fd1728845052c971d1"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture test suite passed without bytecode writes before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "63338a98cc6e41ed5001bb876234d47dba74dc8f238cb5fd1728845052c971d1"
+          }
+        ]
+      },
+      {
+        "id": "prepared-review-diff",
+        "passed": true,
+        "reason": "The approved preparation script created the review diff and the initial diff check passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "63338a98cc6e41ed5001bb876234d47dba74dc8f238cb5fd1728845052c971d1"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/crash_audit_calibrated_none_baseline_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/crash_audit_calibrated_none_reviewer_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "actual-diff-and-current-tests",
+      "passed": true,
+      "reason": "The response cites the prepared diff and current test and diff-check results.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+        }
+      ]
+    },
+    {
+      "id": "read-only-no-artifacts",
+      "passed": true,
+      "reason": "No file was created, staged, committed, or changed beyond the pre-prepared review diff.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+        }
+      ]
+    },
+    {
+      "id": "two-question-separation",
+      "passed": false,
+      "reason": "The response combines a conclusion and residual risk instead of separately answering the least-certain and possibly-missed questions.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+        }
+      ]
+    },
+    {
+      "id": "calibration-no-fabrication",
+      "passed": false,
+      "reason": "The residual single-token and positive-column coverage concern has no approval-changing effect because the relevant formatting logic was unchanged and public behavior is covered.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited zero in order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "80f25292e61aadb461a3efbb13fdfcbe2b5b2e55f76ce65885514dc3b4e8dc9a"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working tree, untracked, and final hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -B -m unittest discover -s tests",
+      "executedCommand": "python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "80f25292e61aadb461a3efbb13fdfcbe2b5b2e55f76ce65885514dc3b4e8dc9a"
+        }
+      ]
+    },
+    {
+      "command": "git diff --check",
+      "executedCommand": "git diff --check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "80f25292e61aadb461a3efbb13fdfcbe2b5b2e55f76ce65885514dc3b4e8dc9a"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "e617a85f17e4aee9bb49b67db603dd218c317ec50da2c57479178843b81c3fb7",
+        "promptSha256": "cf2ba3516373d7238f97450308980a42dd895bea8506cdb525854b8c6f259da1",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/prompt-round-0.md",
+            "sha256": "cf2ba3516373d7238f97450308980a42dd895bea8506cdb525854b8c6f259da1"
+          },
+          {
+            "path": "evidence/baseline/wave5/interaction.md",
+            "sha256": "9f3ef9fdf347add7a5043e1bd29c27581245ff763e45e8480e2df4a8b00aefee"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "sha256": "cf2ba3516373d7238f97450308980a42dd895bea8506cdb525854b8c6f259da1"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "diff-and-contract-reading": 100,
+        "uncertainty-calibration": 0,
+        "decision-relevance": 0,
+        "fast-verification": 100,
+        "two-question-separation": 0,
+        "concise-no-fabrication": 90
+      },
+      "reasons": {
+        "diff-and-contract-reading": "The response accurately refers to the prepared three-file diff, public contract, and current verification results.",
+        "uncertainty-calibration": "It retained a non-material residual risk rather than explicitly concluding that no material uncertainty remains.",
+        "decision-relevance": "The single-token and positive-column coverage point cannot change the next action because those logic paths did not change.",
+        "fast-verification": "The response cites the focused/full tests and the diff check as direct verification evidence.",
+        "two-question-separation": "The response does not separately answer the least-certain and possibly-missed questions.",
+        "concise-no-fabrication": "The response is concise and read-only, but includes an unnecessary residual-risk statement."
+      },
+      "evidence": {
+        "diff-and-contract-reading": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "uncertainty-calibration": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "decision-relevance": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "fast-verification": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "two-question-separation": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "concise-no-fabrication": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ]
+      },
+      "totalScore": 48.5
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 90,
+        "actionability": 90,
+        "signal-to-noise": 90
+      },
+      "reasons": {
+        "value-visibility": "The answer opens with the calibrated conclusion that no blocking issue was found.",
+        "audience-fit": "The Chinese language and project terminology fit the user's request.",
+        "information-design": "The result is scannable but does not visibly separate the two requested questions.",
+        "actionability": "It identifies that the change can be submitted, but the residual risk lacks a matching action or explicit stop point.",
+        "signal-to-noise": "The response is concise, though the non-decision residual risk slightly reduces signal density."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+          }
+        ]
+      },
+      "totalScore": 94
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+    },
+    "index": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+    },
+    "untracked": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+    }
+  }
+}

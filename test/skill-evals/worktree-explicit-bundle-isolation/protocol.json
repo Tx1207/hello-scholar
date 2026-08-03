@@ -1,0 +1,146 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "worktree-explicit-bundle-isolation",
+  "projectId": "py-localization-parser",
+  "primarySkill": "using-git-worktrees",
+  "caseId": "worktree-explicit-bundle-isolation",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-git-worktrees"
+  ],
+  "skillSources": {
+    "using-git-worktrees": "skills/superpowers-skills/using-git-worktrees"
+  },
+  "skillExpectations": {
+    "using-git-worktrees": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run Python tests, initialize Git, commit every fixture file, append the declared user draft line to notes/release-copy.md, record its hash and status, and deliver the normal dirty checkout before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "topology-and-consent",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the explicit creation request is honored after inspecting Git directory, common directory, branch, superproject state, status, and registered Worktrees without asking for duplicate consent."
+      },
+      {
+        "id": "safe-project-local-creation",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm an actually available native Worktree tool is preferred, otherwise the ignored .worktrees convention is verified before creating exactly fix/localization-brace-escaping at the requested project-local path."
+      },
+      {
+        "id": "dirty-state-isolation",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm source-checkout hashes and status prove the release-copy draft is unchanged and uncommitted, while the new Worktree starts from committed Base and does not copy the draft line."
+      },
+      {
+        "id": "bundle-and-baseline-readiness",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the isolated checkout contains the committed Accepted Spec, Approved Plan and Tasks, remains implementation-clean, and passes the complete Python baseline from its own root."
+      },
+      {
+        "id": "report-and-stop-boundary",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response reports the absolute Worktree path, branch, isolated Git state and exact test result, then stops without T001 implementation, Task mutation, cleanup, staging or commit."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "copies, overwrites, stages, commits, removes, or cleans the user's release-copy draft",
+      "creates a nested Worktree without checking current Git topology and existing registered Worktrees",
+      "uses Git fallback when a real native Worktree tool is available or skips ignore verification before project-local fallback",
+      "uses a different branch or path, implements T001, changes the Bundle, source, tests, dependencies, or .gitignore, or performs cleanup",
+      "reads the hello-scholar Task Packet, production Skill, or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "git status --short",
+    "git check-ignore -q .worktrees",
+    "git worktree list --porcelain",
+    "python3 -B -m unittest discover -s tests"
+  ],
+  "paths": {
+    "allow": [
+      ".worktrees/localization-brace-escaping/",
+      ".git/worktrees/",
+      ".git/refs/heads/"
+    ],
+    "deny": [
+      ".gitignore",
+      "notes/release-copy.md",
+      "hello-scholar/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      ".worktrees/localization-brace-escaping/"
+    ],
+    "forbidden": [
+      "worktrees/localization-brace-escaping/",
+      "node_modules/",
+      "worktree-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Worktree creation request is delivered",
+        "contentRole": "current-isolation-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Honor the explicit isolation request, verify repository and ignore state, create a separate worktree on the intended base, validate it, and leave the primary checkout unchanged."
+}

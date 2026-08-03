@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-landing-explicit-durable-queue-v1",
+  "decision": "approved",
+  "scenarioSha256": "d68c3b60e8abf94e731f0412042a378e6fb2523bd8230dea20f6fb8352f39dec",
+  "protocolSha256": "62e17c29250873948583789605c6a46f4cdbeae9beae30d6c55bd97deb59d817",
+  "fixtureSha256": "2f7adf85f968a279ee49ed83a6aca61c1210ca5c3b1bca677318dfc5397e6dea",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

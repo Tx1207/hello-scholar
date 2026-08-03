@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-record-experiment-batch-v1-exploration-backfill-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "a4c0f4829bc44fed43865fa78facd04172956db5367cb091d9e3c9eebb58ff59",
+  "protocolSha256": "cbd4c8297c31d30aab8a74ef2ac1218f3bca2bfda8140e309bb9f4f119c5c1d5",
+  "fixtureSha256": "07985278a72b14c503fbad1952d38269c91a896a7f152323aee32f5e7e7a115f",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

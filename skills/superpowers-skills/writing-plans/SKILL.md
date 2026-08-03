@@ -1,112 +1,85 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Create a high-level implementation strategy for an Accepted Spec when the user needs a reviewable implementation Plan. Produces one Bundle plan.md and routes an approved Plan to generating-tasks.
 ---
 
 # Writing Plans
 
-## Overview
+Create one reviewable, high-level `plan.md` for one Accepted `spec.md`. A Plan explains implementation strategy, boundaries, sequencing, migration, cleanup, rollback, and Tasks-generation rules. `generating-tasks` owns independently executable tracer Tasks; the current main Agent owns implementation after approved Tasks and an explicit implementation request.
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+## 1. Establish the source of truth
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+1. Confirm the project root and run:
+   ```sh
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   ```
+2. Read the target `spec.md`. It must be `status: accepted`; otherwise report the current Spec state and stop.
+3. Read only the Architecture, code, tests, configuration, records, and existing Bundle documents needed to plan the accepted design.
+4. State the Spec ID and revision. The Spec defines behavior, boundaries, invariants, and acceptance; the Plan defines the implementation strategy. A material conflict returns to the Spec owner for resolution.
 
-**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+**Completion:** the accepted design, its current revision, and the evidence needed for an implementation strategy are explicit.
 
-**Context:** If working in an isolated worktree, it should have been created via the `superpowers:using-git-worktrees` skill at execution time.
+## 2. Set the strategy boundary
 
-**Save plans under the current task's project or worktree root at:** `hello-scholar/memory/plans/YYYY-MM-DD-<feature-name>.md`
-- (User preferences for plan location override this default)
+- If the request needs a material architecture, public-interface, data-contract, or product decision not fixed by the Accepted Spec, identify the missing decision and stop for a Spec revision.
+- When the Plan covers only part of a broader Spec, name the covered sections and deferred sections.
+- Map affected modules and exact file boundaries before writing phases. Each file category is `Add`, `Modify`, `Move or Migrate`, `Delete`, or `Must Not Touch`; an empty category says `None` and why.
+- Keep one semantic document transaction: planning changes `plan.md`. Existing Tasks becoming Stale is a normal derived state, not a reason to rewrite `tasks.md`.
 
-Choose the plan template by repository language preference:
-- Chinese default: `assets/plan-template.zh_CN.md`
-- Otherwise: `assets/plan-template.md`
-- Do not infer template language from the task prompt when the repository default language is explicit.
+**Completion:** the Plan has a concrete, bounded strategy that does not reopen accepted design decisions.
 
-## Plan Language
+## 3. Write the Bundle Plan
 
-Use the selected template's headings and field labels as written. Fill user-readable prose in that same template language. Keep paths, commands, code identifiers, skill names, and technical terms as written.
+Read the matching template in `assets/` before writing. Choose `assets/plan-template.zh_CN.md` when the repository language preference is Chinese; otherwise choose `assets/plan-template.md`. user-readable Plan prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written. Create or revise:
 
-## Source-of-Truth Gate
+```text
+hello-scholar/specs/<topic>/SPEC-<number>-<design-name>/plan.md
+```
 
-If a spec, PRD, design doc, issue, or approved requirement exists, the plan must include `Spec Source`; otherwise write `Spec Source: None provided` and name the user request/discovered requirements serving as contract. The spec defines behavior, boundaries, invariants, and acceptance. The plan defines files, order, tests, and commands. On conflict, the executor stops and asks. Do not rely on the executor to discover the spec.
+Use these Front Matter values:
 
-If the plan intentionally implements only a subset of a broader spec, add `Scope Boundary`: covered subset plus deferred spec sections. Unstated scope narrowing is a plan failure.
+```yaml
+schema: 1
+kind: plan
+spec: SPEC-000
+spec_revision: 1
+revision: 1
+status: draft
+title: <concrete plan title>
+summary: <concrete strategy summary>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+```
 
-## Scope Check
+A semantic Plan revision increments `revision` and updates `updated`. Replace every template prompt with concrete project facts before presenting the file.
 
-If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+The body always contains these 12 sections:
 
-## File Structure
+1. Implementation Goal
+2. Scope
+3. Technical Strategy
+4. Affected Modules
+5. File Change Boundaries
+6. Interface Changes
+7. Implementation Phases
+8. Test and Experiment Strategy
+9. Migration Sequence
+10. Cleanup
+11. Rollback
+12. Tasks Generation Rules
 
-Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+**Completion:** one same-Bundle `plan.md` binds the current Accepted Spec revision and describes a complete implementation strategy without Task checkboxes, microsteps, code listings, or execution handoffs.
 
-- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
-- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
-- Files that change together should live together. Split by responsibility, not by technical layer.
-- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+## 4. Review and hand off
 
-This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps.
+2. Run:
+   ```sh
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   node <hello-scholar-repo>/bin/hello-scholar.js docs sync
+   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   ```
+3. Present the complete Plan for one whole-file user review. It remains `draft` until the user explicitly approves it.
+4. After explicit approval, set `status: approved`, validate through the same CLI sequence, and invoke `$generating-tasks` to produce separately reviewed Tasks.
 
-## Bite-Sized Task Granularity
-
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
-
-## Plan Structure
-
-Read the selected template before writing the plan, then replace every placeholder with concrete task-specific content. Keep the template's structure unless the user supplied a stronger format requirement.
-
-Before steps, each code-changing task must include `Spec Coverage`: `Spec sections` (exact headings, IDs, or line-linked bullets), `Acceptance gates` (behaviors, invariants, errors, regressions, disabled paths), and `Out of scope` (deferred adjacent work). No coverage/gates means the task is not executable.
-
-## No Placeholders
-
-Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
-- Steps that describe what to do without showing how (code blocks required for code steps)
-- References to types, functions, or methods not defined in any task
-- Missing `Spec Source` when a spec/design/PRD exists
-- Unstated scope narrowing when the plan covers only part of a broader spec
-- Generic `Spec coverage: covered` without task-to-spec mapping
-- Acceptance criteria that only say "tests pass"
-
-## Remember
-- Exact file paths always
-- Complete code in every step — if a step changes code, show the code
-- Exact commands with expected output
-- DRY, YAGNI, TDD, frequent commits
-
-## Self-Review
-
-After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
-
-**1. Source-of-truth:** Is the spec/design/PRD path named, or is `None provided` justified? Does spec win on conflict? If scope is narrower than spec, is the boundary explicit?
-
-**2. Spec coverage:** Can every spec requirement point to a task and acceptance gate? Fix or list gaps.
-
-**3. Contract preservation:** Are affected existing behavior, disabled paths, errors, persisted data, APIs, and integrations covered by regression checks?
-
-**4. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
-
-**5. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
-
-If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
-
-## Execution Handoff
-
-After saving the plan, offer the execution choices shown in the selected template language.
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Fresh subagent per task + two-stage review
-
-**If Inline Execution chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
-- Batch execution with checkpoints for review
+**Completion:** the terminal state is a reviewed Plan or a clear stop at the design decision that prevents one. Plan approval does not approve Tasks or implementation.

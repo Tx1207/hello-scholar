@@ -1,0 +1,141 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "landing-explicit-durable-queue",
+  "projectId": "node-background-job-scheduler",
+  "primarySkill": "landing",
+  "caseId": "landing-explicit-durable-queue",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "landing"
+  ],
+  "skillSources": {
+    "landing": "skills/hai-skills/landing"
+  },
+  "skillExpectations": {
+    "landing": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run node tests, initialize Git, commit every fixture file, verify a clean tree, and keep the feasibility evaluation read-only",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "direction-and-fact-grounding",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the answer accurately recovers the durable-log thesis and grounds every feasibility claim in the public API, consumer, scheduler behavior, tests, and operating constraints."
+      },
+      {
+        "id": "value-and-contract-ranking",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm durable ownership, FIFO per queue, at-least-once delivery, enqueue compatibility, lease recovery, and cross-region scope are explicitly ranked by user value and contract cost rather than treated as one undifferentiated ambition."
+      },
+      {
+        "id": "reality-and-resource-pricing",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one owner, one persistent volume, no approved managed queue, rollback compatibility, and restart loss are priced separately without inventing infrastructure or dismissing the durable target."
+      },
+      {
+        "id": "target-shape-and-boundaries",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response states a consumable target shape and staged evidence boundaries that preserve external contracts while preventing a temporary dual-write or adapter from becoming the permanent model."
+      },
+      {
+        "id": "verification-stop-and-user-decisions",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the smallest useful restart/redelivery proof, observable stop or shrink rules, unresolved user tradeoffs, and deliberate stop before design or implementation are clear and actionable."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "drops FIFO, at-least-once delivery, enqueue compatibility, or rollback payload compatibility without explicit project evidence and user decision",
+      "turns the current in-memory arrays into a protected contract or assumes an unapproved managed queue or datastore",
+      "preserves every Takeoff ambition without pricing cross-region scope, operator burden, and rollback complexity",
+      "provides ordered files, pull requests, migration steps, implementation code, or enters Brainstorming",
+      "modifies any Fixture file, writes a report, or reads the hello-scholar Task Packet, production Skill, or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "git diff --exit-code"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "README.md",
+      "consumers/",
+      "docs/",
+      "src/",
+      "test/",
+      "package.json"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/",
+      "landing-plan.md",
+      "plan.md",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Landing request and project direction are delivered",
+        "contentRole": "current-feasibility-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the project constraints, turn the requested aggressive direction into a feasible staged option, preserve real contracts, and give the user a decision-ready next step without starting implementation."
+}

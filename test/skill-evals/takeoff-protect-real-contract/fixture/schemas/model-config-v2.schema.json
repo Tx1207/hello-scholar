@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "model-config-v2.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "model", "limits"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "model": { "type": "string" },
+    "limits": {
+      "type": "object",
+      "required": ["maxTokens"],
+      "properties": {
+        "maxTokens": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

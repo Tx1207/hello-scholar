@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-brainstorming-batch-v1-spec-bundle-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "4813fafb14a28611958f6ec2309ceaa26adb72dc00e1b4a56be12d97dbf0cacf",
+  "protocolSha256": "6a7771c79998b7e0129fccf7512f191fc01a82feb2d432eea2966e38f7a92fa6",
+  "fixtureSha256": "35d25475e3d6e4afaf2cc772569aafe1ac82429bff708526da83fcfbeca63faf",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

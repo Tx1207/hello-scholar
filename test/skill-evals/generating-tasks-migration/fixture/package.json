@@ -1,0 +1,15 @@
+{
+  "name": "config-format-cli-fixture",
+  "version": "1.4.0",
+  "private": true,
+  "type": "commonjs",
+  "bin": {
+    "config-format": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@fixture/legacy-properties-codec": "file:vendor/legacy-properties-codec"
+  }
+}

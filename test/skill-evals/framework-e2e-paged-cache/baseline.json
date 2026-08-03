@@ -1,0 +1,267 @@
+{
+  "proposalId": "proposal-framework-e2e-paged-cache-v2",
+  "scenarioSha256": "9fe8cf995aecbe1a684bc1e1f8794521c435efc8bb504905191f85e8f91d5afa",
+  "protocolSha256": "baf04608d17acdce547acbe0c64604a7a05a82ef27255c17fb3575fe35fdc568",
+  "fixtureSha256": "1dd3ba5c756f796d5d2fa7416adf900e84fc19a290e1b8dc439d506e93f443c3",
+  "result": "fail",
+  "summary": "The old framework produced a correct paged allocator, but it could not execute the named generating-tasks, converge-to-spec, or docs-maintenance contracts, both required docs commands failed, and Eval main changed Architecture after the Implementer stopped without a matching approval.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "writing-plans": {
+      "status": "pre-change-explicit-file",
+      "sha256": "3cfa8e9b0aab8e1a9da6e4df3f3efa279a09c211dd9b66b7390b0deb1865740d"
+    },
+    "generating-tasks": {
+      "status": "absent",
+      "sha256": null
+    },
+    "record-experiment": {
+      "status": "pre-change-explicit-file",
+      "sha256": "f17d9e2dd1941465f5ef194f350a65be1912eb67f08977866e77481dfc9fa35d"
+    },
+    "converge-to-spec": {
+      "status": "absent",
+      "sha256": null
+    },
+    "docs-maintenance": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "ee7bd3f36c0aabaf2b06a8f298af3ac596d61d08",
+    "checks": [
+      {
+        "id": "approved-input-hashes",
+        "passed": true,
+        "reason": "Scenario, Protocol, Fixture, and Proposal hashes matched before the run.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.txt",
+            "sha256": "58337d9c45c4f529cc4d58ff7c07c2638f5f50159b0bb36a41624bbff8dea2c4"
+          }
+        ]
+      },
+      {
+        "id": "fixture-preflight",
+        "passed": true,
+        "reason": "The detached Base fixture passed three tests and its deterministic pre-change Benchmark reproduced fragmentation.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.txt",
+            "sha256": "58337d9c45c4f529cc4d58ff7c07c2638f5f50159b0bb36a41624bbff8dea2c4"
+          }
+        ]
+      },
+      {
+        "id": "skill-snapshot-state",
+        "passed": true,
+        "reason": "Explicit old Skill hashes and intentionally absent Skill states matched the approved Protocol.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.txt",
+            "sha256": "58337d9c45c4f529cc4d58ff7c07c2638f5f50159b0bb36a41624bbff8dea2c4"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/framework_baseline_impl",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/framework_baseline_reviewer",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "document-contract",
+      "passed": true,
+      "reason": "Plan and Tasks were independent, revision-bound documents and mapped AC-1 through AC-6 without changing the Accepted Spec.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/interactions.txt",
+          "sha256": "13d14f4839013acf607823b4682c8990c7cb6690e1294c9e1c0a49b85fcf8307"
+        },
+        {
+          "path": "evidence/baseline/tree.txt",
+          "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+        }
+      ]
+    },
+    {
+      "id": "approval-gates",
+      "passed": false,
+      "reason": "The Implementer stopped at the hash-bound Architecture Proposal, but Eval main later changed Architecture without a matching approval reply.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/interactions.txt",
+          "sha256": "13d14f4839013acf607823b4682c8990c7cb6690e1294c9e1c0a49b85fcf8307"
+        },
+        {
+          "path": "evidence/baseline/reviewer.txt",
+          "sha256": "5d501f411b80f85fac8f642675b84cde8d515f245ef425e4001158df26b94256"
+        }
+      ]
+    },
+    {
+      "id": "implementation-correctness",
+      "passed": true,
+      "reason": "One paged implementation preserved the public entry, passed nine tests, and reported zero fragmentation failures.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        },
+        {
+          "path": "evidence/baseline/tree.txt",
+          "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+        }
+      ]
+    },
+    {
+      "id": "experiment-provenance",
+      "passed": true,
+      "reason": "The formal Run was recorded before launch, the invalid fresh identity was retained, and the replacement identity used new prelaunch provenance.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        },
+        {
+          "path": "evidence/baseline/tree.txt",
+          "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+        }
+      ]
+    },
+    {
+      "id": "named-skill-workflow",
+      "passed": false,
+      "reason": "generating-tasks, converge-to-spec, and docs-maintenance were absent, so the old framework could only substitute manual behavior for their named contracts.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/environment.txt",
+          "sha256": "58337d9c45c4f529cc4d58ff7c07c2638f5f50159b0bb36a41624bbff8dea2c4"
+        },
+        {
+          "path": "evidence/baseline/reviewer.txt",
+          "sha256": "5d501f411b80f85fac8f642675b84cde8d515f245ef425e4001158df26b94256"
+        }
+      ]
+    },
+    {
+      "id": "convergence-evidence",
+      "passed": false,
+      "reason": "The named Converge and docs-maintenance capabilities were unavailable and both required docs commands exited 1, so the full current-document completion gate did not pass.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        },
+        {
+          "path": "evidence/baseline/reviewer.txt",
+          "sha256": "5d501f411b80f85fac8f642675b84cde8d515f245ef425e4001158df26b94256"
+        }
+      ]
+    },
+    {
+      "id": "direct-execution-model",
+      "passed": true,
+      "reason": "The Implementer executed approved Tasks directly without a retired execution Skill or nested implementation Agent.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/interactions.txt",
+          "sha256": "13d14f4839013acf607823b4682c8990c7cb6690e1294c9e1c0a49b85fcf8307"
+        },
+        {
+          "path": "evidence/baseline/reviewer.txt",
+          "sha256": "5d501f411b80f85fac8f642675b84cde8d515f245ef425e4001158df26b94256"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        }
+      ]
+    },
+    {
+      "command": "python3 scripts/benchmark_cache.py --blocks 24 --request-blocks 6",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        }
+      ]
+    },
+    {
+      "command": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 1,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        }
+      ]
+    },
+    {
+      "command": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs sync",
+      "exitCode": 1,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.txt",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        }
+      ]
+    }
+  ],
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/tree.txt",
+      "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+    },
+    "index": {
+      "path": "evidence/baseline/tree.txt",
+      "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/tree.txt",
+      "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+    },
+    "untracked": {
+      "path": "evidence/baseline/tree.txt",
+      "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/tree.txt",
+      "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+    }
+  },
+  "reviewerAssessment": {
+    "recommendation": "fail",
+    "scores": {
+      "document-contract": 98,
+      "approval-gates": 75,
+      "implementation-correctness": 98,
+      "experiment-provenance": 93,
+      "convergence-evidence": 89
+    },
+    "totalScore": 90.9
+  },
+  "timing": {
+    "totalElapsedMs": null,
+    "tokenCount": null,
+    "reason": "The original run did not preserve an authoritative end-to-end timer or token telemetry; no value is fabricated."
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "handoff-negative-experiment",
+  "projectId": "py-model-quantization-handoff",
+  "primarySkill": "handoff",
+  "caseId": "handoff-negative-experiment",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "handoff"
+  ],
+  "skillSources": {
+    "handoff": "skills/productivity-skills/handoff"
+  },
+  "skillExpectations": {
+    "handoff": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, run clean tests, commit the existing Runs as Base facts, then run prepare_session_state.py before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "run-fact-accuracy",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm both Run Records and result files are cited and the INT8 OOM is described as execution failure while the completed INT4 do-not-adopt run remains a valid negative result."
+      },
+      {
+        "id": "fact-hypothesis-separation",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm proven Run facts are separated from the unverified smaller-batch hypothesis, with a clear evidence requirement and stop condition before any new experiment decision."
+      },
+      {
+        "id": "path-language-and-scope",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm repository policy selects one English file at hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md and no Run, Spec, Architecture, report, Index, code, test, note or Git state changes."
+      },
+      {
+        "id": "reference-and-redaction",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Handoff links concise Run and result evidence instead of copying logs or Records and omits the fake credential, email and private model path verbatim."
+      },
+      {
+        "id": "fresh-agent-continuation",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a fresh Agent can avoid rerunning the known failed configuration, inspect the cited evidence, test the hypothesis only after its gate, and distinguish experimental evidence from Architecture truth."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "uses the Chinese template because of the request language or writes outside the one new hello-scholar/handoffs file",
+      "describes the completed do-not-adopt Run as a failed execution or omits the separate OOM failure",
+      "presents the batch-size hypothesis as proven, recommends repeating a known failed configuration, or gives no stop condition",
+      "copies full logs or Records or exposes the fixture fake token, email, or private model path",
+      "creates or changes a Run, Spec, report, Architecture, Handoff Index, code, test, Git index, or old memory path"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B scripts/verify_experiment_state.py",
+    "python3 -B scripts/verify_handoff.py hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+    ],
+    "deny": [
+      "hello-scholar/memory/",
+      "runs/",
+      ".session/",
+      "src/",
+      "tests/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/handoffs/2026-08-01-model-quantization-handoff.md",
+      "hello-scholar/handoffs/INDEX.md",
+      "runs/20260801-smaller-batch/",
+      "quantization-report.md",
+      "hello-scholar/architecture.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Handoff request is delivered after session-state construction",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect both Run Records and evidence, then create one Handoff that preserves the failure-versus-negative-result distinction and next evidence gate."
+}

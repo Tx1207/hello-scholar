@@ -1,0 +1,305 @@
+{
+  "proposalId": "proposal-generating-tasks-batch-v1-feature-policy-protocol-v2",
+  "scenarioSha256": "7fa6960fdf241d168fe3fbc38ab0e4d2d4db3717cd6a77f29061db3febd89cfc",
+  "protocolSha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021",
+  "fixtureSha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315",
+  "result": "fail",
+  "summary": "The absent generating-tasks baseline created an invalid Tasks document, failed docs check, and left prohibited untracked bytecode outside the allowed scope.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "generating-tasks": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "d51cddfbaeb34fb489dec15b0398f075d5eb149c",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The isolated Fixture was at the recorded Base commit with a clean Git status before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "5e48a9aaca97e29bf609a46d733fd0ce41d531be4faa0df94e59293c9e6092bf"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture Python test suite passed before the Implementer ran without bytecode writes.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "5e48a9aaca97e29bf609a46d733fd0ce41d531be4faa0df94e59293c9e6092bf"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs check passed with current generated indexes before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "5e48a9aaca97e29bf609a46d733fd0ce41d531be4faa0df94e59293c9e6092bf"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/generating_tasks_baseline_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/generating_tasks_baseline_wave5_reviewer",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": false,
+      "reason": "tasks.md uses the unsupported pending-approval value and lacks required top-level Task sections.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+        }
+      ]
+    },
+    {
+      "id": "coverage-and-dependencies",
+      "passed": false,
+      "reason": "The Plan's separately required migration preparation, caller update, and cleanup work is combined into one Task rather than independently contracted work.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+        }
+      ]
+    },
+    {
+      "id": "validation-and-tdd-boundary",
+      "passed": false,
+      "reason": "The TDD selection is constrained to Task 1, but its focused test does not provide an executable command or exact test identifier.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": false,
+      "reason": "Docs check failed, generated indexes remained stale, and two untracked Python bytecode files appeared under forbidden prefixes.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": false,
+      "reason": "The test command passed but the required docs check exited one because the approval value was unsupported.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "063d10bf32b92492b87ba00e12a1bf720bae3108121e15539e8ccef9c990115b"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working tree, untracked, and final hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -B -m unittest discover -s tests",
+      "executedCommand": "python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "063d10bf32b92492b87ba00e12a1bf720bae3108121e15539e8ccef9c990115b"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 1,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "063d10bf32b92492b87ba00e12a1bf720bae3108121e15539e8ccef9c990115b"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "7a1be793a1fa4ad09b285c1522bc5bd11b316451400a5d2518e889cbe0c40846",
+        "promptSha256": "c784b5462b6c77d69fcef994f754a73f915e617930427c3e8f7835bb2e1dfcb7",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/prompt-round-0.md",
+            "sha256": "c784b5462b6c77d69fcef994f754a73f915e617930427c3e8f7835bb2e1dfcb7"
+          },
+          {
+            "path": "evidence/baseline/wave5/interaction.md",
+            "sha256": "50335ff6bb33fecb6e4f3953afb7660c550cd4d4dc2415752d7a95353eec23d5"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "sha256": "c784b5462b6c77d69fcef994f754a73f915e617930427c3e8f7835bb2e1dfcb7"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 0,
+        "coverage-and-dependencies": 0,
+        "validation-and-tdd-boundary": 0,
+        "scope-discipline": 0
+      },
+      "reasons": {
+        "task-document-contract": "The approval value is invalid and required independently readable Task headings are missing.",
+        "coverage-and-dependencies": "The required migration, caller update, and cleanup obligations are not independently contracted Tasks.",
+        "validation-and-tdd-boundary": "The selected TDD task lacks an executable focused validation command or identifier.",
+        "scope-discipline": "The final tree contains stale indexes, a failed docs check, and prohibited untracked bytecode."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "coverage-and-dependencies": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "validation-and-tdd-boundary": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ]
+      },
+      "totalScore": 0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 90,
+        "audience-fit": 100,
+        "information-design": 90,
+        "actionability": 90,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The response opens by naming the created Tasks artifact and coverage.",
+        "audience-fit": "The Chinese response preserves the project terms used by the user.",
+        "information-design": "The Tasks document is organized by task, though its headings do not meet the required contract.",
+        "actionability": "The response explicitly stops for Tasks review.",
+        "signal-to-noise": "The response is concise and retains the material validation result."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+          }
+        ]
+      },
+      "totalScore": 94
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+    },
+    "index": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+    },
+    "untracked": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+    }
+  }
+}

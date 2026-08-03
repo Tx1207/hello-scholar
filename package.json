@@ -9,6 +9,8 @@
   "scripts": {
     "test": "node test/run-all.js",
     "test:js": "node --test test/test_*.js",
-    "test:py": "python3 -m unittest discover -s test"
+    "test:py": "python3 -m unittest discover -s test",
+    "docs:check": "node bin/hello-scholar.js docs check",
+    "docs:sync": "node bin/hello-scholar.js docs sync"
   }
 }

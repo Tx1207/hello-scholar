@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "host": "https://research.internal.example",
+  "retry_count": 4
+}

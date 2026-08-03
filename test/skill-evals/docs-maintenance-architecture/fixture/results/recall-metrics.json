@@ -1,0 +1,6 @@
+{
+  "dataset": "paper-search-v3",
+  "lexicalRecallAt10": 0.71,
+  "hybridRecallAt10": 0.83,
+  "publishedFilterViolations": 0
+}

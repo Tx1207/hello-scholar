@@ -1,111 +1,86 @@
-# record-experiment field guide
+# Record fields and lifecycle
 
-## Blocking launch fields
+Read this reference before creating a Full record, backfilling exploration, or closing a Run.
 
-These fields must exist before an experiment command is launched:
+## Front Matter
 
-- `Run ID`
-- `Status`
-- `Purpose`
-- `Exact command`
-- `CWD`
-- `Script` or `N/A` with reason
-- `Config file` or `N/A` with reason
-- `CLI overrides` or `None`
-- `Seed` or `N/A` with reason
-- `Data version / split` or `N/A` with reason
-- `Preprocessing` or `N/A` with reason
-- `Input artifacts` or `N/A` with reason
-- `Upstream run ID` or `N/A` with reason
-- `Derived artifacts` or `N/A` with reason
-- `Git branch`
-- `Git commit`
-- `Git dirty status`
-- `Backend`
-- `Machine / GPU`
-- `Python / environment`
-- `Log path`
-- `Checkpoint path`
-- `Result path`
-- `W&B / MLflow / TensorBoard`
-- `Expected signal`
-- `Failure signal`
-- `Stop rule`
+Every `runs/<run-id>/record.md` begins with these fields:
 
-Do not launch if `Exact command`, `CWD`, and intended log/result locations are missing.
-Do not launch or generate a derived report from existing experiment outputs unless `Input artifacts` and `Upstream run ID` are filled, or a retroactive upstream record has been created with missing facts marked `Unknown`.
+```yaml
+schema: 1
+kind: record
+run_id: <directory name>
+title: <human-readable title>
+status: planned
+spec: null
+spec_revision: null
+plan_revision: null
+started: null
+completed: null
+decision: pending
+summary: <current known facts only>
+```
 
-## Record granularity fields
+- `run_id` must equal the Run directory name.
+- `spec`, `spec_revision`, and `plan_revision` must all be set or all be null. When present, use a valid `SPEC-NNN` ID and positive revisions.
+- `planned` requires `started: null` and `completed: null`.
+- `running` requires a real timezone-qualified ISO 8601 `started` value and `completed: null`.
+- `completed`, `failed`, `interrupted`, and `cancelled` require real `started` and `completed` values, with completion no earlier than start.
+- Keep `decision: pending` until evidence supports a conclusion. Keep `summary` factual; do not predeclare success.
 
-Use the blocking launch fields for Full record decisions only. Full record means
-a durable research evidence boundary: a new experiment identity, a command that
-produces metrics/results/predictions/checkpoints/reports, a changed
-identity-defining field before launch, unrecorded upstream provenance, or a
-durable derived report.
+## Statuses and terminal evidence
 
-`Log path`, `Checkpoint path`, and `Result path` are identity-defining when they
-are intended log/result/checkpoint paths at launch. Actual paths discovered
-during the same run are Append events, not new run identities.
+Use exactly one status:
 
-For Append event decisions, keep the event concise and preserve the existing
-run identity. Do not require every launch field again. Record only the new
-durable fact: event time, event type, path, pid/job id, metric snapshot, error,
-status change, conclusion change, or next action.
+- `planned`: the reproducible launch record exists and the command has not started.
+- `running`: the process or job actually started.
+- `completed`: the run ended with usable evidence, including a valid negative result.
+- `failed`: a crash, OOM, missing required output, or other failure prevented usable evidence.
+- `interrupted`: work stopped before completion and retained evidence explains the interruption.
+- `cancelled`: the Run was intentionally cancelled before completion.
 
-For No record decisions, do not write experiment files. Read-only convenience
-queries such as opening an already-known TensorBoard URL, checking whether a
-tmux session still exists, listing already-known checkpoints, or showing the
-latest loss do not need a write unless they reveal a durable state/evidence
-change.
+A valid negative result is not failed: keep `status: completed`, state the evidence in Key Results and Observations, and make the non-adoption decision explicit. Preserve failures, interruptions, and cancellations with their evidence and next action.
 
-Prepared input, record at launch: one-row validation cache fixes, tiny
-supplemental caches, or combined cache manifests are No record when no
-experiment command launches and no model/checkpoint produces research outputs.
-Record that artifact in the future launch's Full record instead of creating a
-separate run record for the prep.
+## Required body sections
 
-Runtime and compute cost are risk amplifiers, not standalone triggers. A short
-command that writes predictions may require a Full record; a long read-only log
-review may still be No record.
+Keep the template's twelve sections in order:
 
-## Index update discipline
+1. Purpose
+2. Hypothesis
+3. Experimental Variables
+4. Controls
+5. Execution Information
+6. Artifact Locations
+7. Execution Events
+8. Key Results
+9. Observations
+10. Conclusion
+11. Decision
+12. Next Actions
 
-`INDEX.md` is a run-level summary. Update it only when a run is created or when
-`status`, `conclusion`, `result_path`, or `next_action` changes materially.
+Use Artifact Locations for paths under the same Run: `outputs/`, `results/`, `logs/`, and `checkpoints/` when they exist. Keep full logs and bulky metrics in those artifacts; the Record stores concise evidence and paths.
 
-Do not update the index for repeated monitoring reads, TensorBoard opens,
-GPU/RSS snapshots, or loss/checkpoint lookups that do not change those summary
-fields.
+## Execution Information
 
-## Status values
+A formal prelaunch Record needs the following before launch:
 
-- `planned`: record exists; command has not started.
-- `queued`: submitted to a queue or remote backend but not confirmed running.
-- `running`: process/job is running.
-- `completed`: process ended and expected result evidence exists.
-- `failed`: process crashed or could not produce usable output.
-- `stopped`: intentionally stopped before natural completion.
-- `abandoned`: no longer worth continuing, but not necessarily a runtime crash.
-- `invalid`: ran but result should not be used because setup/data/eval was wrong.
-- `not_run`: command was proposed but never executed.
+- Exact command and `CWD`.
+- Script or entry point, config, CLI overrides, seed, data version/split, and preprocessing.
+- Input artifacts, upstream Run ID, derived artifacts, model/checkpoint, and evaluation/generation settings when relevant.
+- Git branch, commit, working-tree state, backend, machine/GPU, and Python/environment.
+- Intended log, result, checkpoint, and dashboard/tracking paths.
+- Expected signal, failure signal, and stop rule.
 
-## Conclusion values
+Write `Unknown` with a short reason for unavailable facts; never reconstruct them from memory. Do not launch a formal Run when the exact command, CWD, or intended log/result locations are missing.
 
-- `positive`: valid result supports the experiment purpose.
-- `negative`: valid result does not support the experiment purpose.
-- `mixed`: some metrics support the purpose and some do not.
-- `failed`: runtime failure prevented a valid result.
-- `invalid`: result exists but should not be trusted.
-- `inconclusive`: result is not enough to judge.
-- `pending`: result not available yet.
+## Granularity and event density
 
-## Evidence rules
+`Full record` establishes a new identity or durable research boundary. `Append event` preserves a material fact inside the same identity. `No record` covers ordinary engineering work, static checks, read-only queries, and preparation that has not launched an evidence-producing command.
 
-- Prefer paths to full logs.
-- Record concise metric values and short error excerpts only when useful.
-- Mark missing evidence explicitly as `Unknown`, `Not run`, or `Pending`.
-- Never infer metrics from memory.
-- For derived artifacts, preserve provenance by linking the upstream run id and listing both consumed input files and newly written report artifacts.
-- For high-frequency metric checks, append only first observations, milestones,
-  anomalies, terminal evidence, or user-requested durable snapshots; do not turn
-  every refresh into a record event.
+Prepared input, record at launch: a small cache or manifest fix is No record until a future experiment uses it. Runtime and compute cost are risk amplifiers, not standalone triggers: a short prediction export can need a Full record, while a long read-only log review can remain No record.
+
+For an Append event, record only new durable facts: real start/end time, status, actual artifact path, PID/job ID, backend detail, citeable metric, error, decision, or next action. Repeated loss checks, TensorBoard opens, tmux liveness checks, GPU/RSS snapshots, and checkpoint listings remain read-only unless they reveal a material event.
+
+## Provenance and derived artifacts
+
+A command that loads a model or checkpoint and writes predictions, generations, or other research output is an experiment command. A durable derived report lists its consumed input artifacts, upstream Run ID, and newly written artifacts. If upstream provenance is missing, create a retroactive Record with known facts and `Unknown` for facts that cannot be recovered.

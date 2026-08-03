@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-generating-tasks-batch-v1-feature-policy-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "7fa6960fdf241d168fe3fbc38ab0e4d2d4db3717cd6a77f29061db3febd89cfc",
+  "protocolSha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021",
+  "fixtureSha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

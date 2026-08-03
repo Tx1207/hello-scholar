@@ -1,0 +1,316 @@
+{
+  "proposalId": "proposal-generating-tasks-batch-v1-migration-protocol-v2",
+  "scenarioSha256": "7c4008d8e3f85c1b398087830dee3d688b7a4df706852440eeb6d76fea8bcb07",
+  "protocolSha256": "6295c1715525f0af9533b3bfeef41a187f716a1625c0a203b2453fba19a1a252",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "result": "fail",
+  "summary": "The absent generating-tasks baseline created a dependency-ordered migration Tasks document, but it violated the required Tasks metadata and section contract and failed the final docs check.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "generating-tasks": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "459692a12f8c197e0339695ceb57add955d8abfc",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was committed and clean at the recorded Base before the Implementer received the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "55ac7624b109e1477db9d94c86b42406ba8b018dc41d51e147b8a1e63c31928c"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs sync and docs check completed successfully before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "55ac7624b109e1477db9d94c86b42406ba8b018dc41d51e147b8a1e63c31928c"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture npm test command completed successfully before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "55ac7624b109e1477db9d94c86b42406ba8b018dc41d51e147b8a1e63c31928c"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/generating_tasks_migration_baseline_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/generating_tasks_migration_reviewer_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": false,
+      "reason": "The generated tasks.md omits required revision, approval, and approved_revision metadata, uses an invalid proposed status, and does not use the required standalone Task section headings.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        }
+      ]
+    },
+    {
+      "id": "migration-and-cutover-sequence",
+      "passed": true,
+      "reason": "T1-T4 preserve migration preparation, dual-read proof, conversion, and a failure-aware cutover sequence as distinct serial Tasks.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        }
+      ]
+    },
+    {
+      "id": "cleanup-regression-and-rollback",
+      "passed": true,
+      "reason": "T5-T7 name the legacy writer, flag, codec cleanup, regression matrix, and temporary-worktree rollback drill with prerequisite evidence.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        }
+      ]
+    },
+    {
+      "id": "scope-and-parallel-discipline",
+      "passed": true,
+      "reason": "The Tasks are serial and the saved Base-to-final tree records only the allowed untracked tasks.md addition.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        }
+      ]
+    },
+    {
+      "id": "no-forbidden-eval-reads",
+      "passed": true,
+      "reason": "The independent Reviewer reported no non-allowed reads, and the saved prompt projection withheld evaluator-only materials from the Implementer.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": false,
+      "reason": "npm test passed, but the required docs check exited one with five Tasks metadata errors.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "4221c992c056fe48038167fa4516de613f18724640d208a0be4cddc61d2592a1"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working-tree, untracked, and final hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "4221c992c056fe48038167fa4516de613f18724640d208a0be4cddc61d2592a1"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 1,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "4221c992c056fe48038167fa4516de613f18724640d208a0be4cddc61d2592a1"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "e6a3f146ef3d187fdccc3836cc8eebc950e4a22bbcb98ca10a95f84a1a4ec510",
+        "promptSha256": "f86bcb7d2d239f1e6591dfa63ae3badb009bc5f4f22802b71eee6499414bf4c6",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/prompt-round-0.md",
+            "sha256": "f86bcb7d2d239f1e6591dfa63ae3badb009bc5f4f22802b71eee6499414bf4c6"
+          },
+          {
+            "path": "evidence/baseline/wave5/interaction.md",
+            "sha256": "450ca0415462b8a4f2240faa68474eb336fa66cde8232d58d3ce5ea70236e1bd"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "sha256": "f86bcb7d2d239f1e6591dfa63ae3badb009bc5f4f22802b71eee6499414bf4c6"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 0,
+        "migration-and-cutover-sequence": 100,
+        "cleanup-regression-and-rollback": 100,
+        "scope-and-parallel-discipline": 100
+      },
+      "reasons": {
+        "task-document-contract": "The Tasks metadata and required standalone section headings do not meet the approved contract.",
+        "migration-and-cutover-sequence": "The serial T1-T4 sequence preserves the dual-read, conversion, and cutover recovery requirements.",
+        "cleanup-regression-and-rollback": "The later Tasks explicitly cover legacy cleanup, regression, and rollback with named evidence.",
+        "scope-and-parallel-discipline": "The recorded work remains within the Tasks artifact boundary and does not mark dependent migration work parallel."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "migration-and-cutover-sequence": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "cleanup-regression-and-rollback": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "scope-and-parallel-discipline": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ]
+      },
+      "totalScore": 80
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 90,
+        "audience-fit": 100,
+        "information-design": 90,
+        "actionability": 90,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The response starts by identifying the generated reviewable Tasks artifact and its coverage.",
+        "audience-fit": "The saved response is Chinese and preserves the necessary project technical terms.",
+        "information-design": "The response is concise and scannable, but it omits the failed docs check.",
+        "actionability": "The response stops for review and does not begin migration, but it does not disclose the validation failure that blocks review.",
+        "signal-to-noise": "The response contains no unrelated narration."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+          }
+        ]
+      },
+      "totalScore": 94
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+    },
+    "index": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+    },
+    "untracked": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+    }
+  }
+}

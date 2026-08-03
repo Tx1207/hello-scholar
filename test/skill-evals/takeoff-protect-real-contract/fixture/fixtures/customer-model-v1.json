@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "model_id": "research-small",
+  "max_tokens": 4096
+}

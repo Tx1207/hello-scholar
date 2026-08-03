@@ -1,0 +1,139 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "worktree-explicit-create",
+  "projectId": "node-cache-key-service",
+  "primarySkill": "using-git-worktrees",
+  "caseId": "worktree-explicit-create",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-git-worktrees"
+  ],
+  "skillSources": {
+    "using-git-worktrees": "skills/superpowers-skills/using-git-worktrees"
+  },
+  "skillExpectations": {
+    "using-git-worktrees": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit every fixture file, create the ignored empty .worktrees directory, append the exact declared user draft line to docs/cache-key-notes.md, record its hash and status, then run initial tests before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "isolation-detection",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Git directory, common directory, branch, superproject, status and existing Worktrees are inspected to establish a normal checkout before creating nested isolation."
+      },
+      {
+        "id": "safe-worktree-creation",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm an actually available native Worktree tool is preferred, otherwise the ignored .worktrees convention is verified and the exact fix/cache-key-normalization branch and project-local path are created once."
+      },
+      {
+        "id": "dirty-state-preservation",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm source-checkout hashes and Git status prove the user's dirty cache-key note is neither copied, overwritten, staged, committed nor removed and no other project byte changes."
+      },
+      {
+        "id": "baseline-and-stop",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm node tests run successfully inside the new Worktree and the response reports its absolute path, branch and exact result before stopping without implementation or cleanup."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "overwrites, stages, commits, or removes the user's dirty documentation change",
+      "creates a nested Worktree without checking existing isolation and submodule state",
+      "uses Git fallback when an actual native Worktree tool is available",
+      "skips ignore verification before project-local Git fallback",
+      "implements the cache-key feature or cleans up without separate authorization"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "git status --short",
+    "git check-ignore -q .worktrees",
+    "git worktree list --porcelain",
+    "node --test"
+  ],
+  "paths": {
+    "allow": [
+      ".worktrees/cache-key-normalization/",
+      ".git/worktrees/",
+      ".git/refs/heads/"
+    ],
+    "deny": [
+      ".gitignore",
+      "docs/cache-key-notes.md",
+      "src/",
+      "test/",
+      "package.json"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      ".worktrees/cache-key-normalization/"
+    ],
+    "forbidden": [
+      "worktrees/cache-key-normalization/",
+      "node_modules/",
+      "worktree-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Worktree creation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect repository topology and dirty state, create exactly one authorized isolated Worktree, run its baseline tests, and stop before implementation."
+}

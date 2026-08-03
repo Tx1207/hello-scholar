@@ -1,0 +1,150 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "takeoff-protect-real-contract",
+  "projectId": "node-model-config-sdk",
+  "primarySkill": "takeoff",
+  "caseId": "takeoff-protect-real-contract",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "takeoff"
+  ],
+  "skillSources": {
+    "takeoff": "skills/hai-skills/takeoff"
+  },
+  "skillExpectations": {
+    "takeoff": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the unchanged SDK tree, and keep all direction analysis read-only",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "repository-fact-reading",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm README, both versioned schemas, persisted v1/v2 fixtures, two consumer examples, SDK source, internal wrapper and tests are inspected before judgment."
+      },
+      {
+        "id": "contract-classification",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the internal LegacyModelConfig dual track is separated from the observable load entry point and v1 persisted format, which are priced as migration/version contracts rather than dismissed."
+      },
+      {
+        "id": "clean-target-thesis",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the clean target is one internal model and one normalized runtime representation while preserving an explicit boundary for supported external input versions."
+      },
+      {
+        "id": "option-tradeoffs",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm conservative retention, immediate clean target and staged convergence are compared on user breakage, internal complexity, migration evidence and time to simplicity."
+      },
+      {
+        "id": "proof-falsifier-payoff",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the first proof point asks for active-version/consumer evidence, the falsifier changes the deletion boundary, and the payoff ledger quantifies removed dual-track cost without hiding compatibility work."
+      },
+      {
+        "id": "direction-stage-boundary",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the output stays at high-level direction with an asking next move, makes no file change or migration plan, and does not auto-enter Brainstorming or Landing."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "does not inspect the documented API, versioned schema, persisted v1 file, and both consumer examples",
+      "treats a documented or persisted external contract as disposable merely because the user asked for boldness",
+      "keeps the internal legacy wrapper forever without offering a clean target model",
+      "writes migration steps, edits the fixture, or creates design artifacts",
+      "automatically starts brainstorming or landing"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node examples/training-worker.js fixtures/customer-model-v1.json",
+    "node examples/eval-worker.js fixtures/customer-model-v1.json",
+    "git diff --exit-code"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "README.md",
+      "examples/",
+      "fixtures/",
+      "schemas/",
+      "src/",
+      "test/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/",
+      "migration-plan.md",
+      "schemas/model-config-v3.schema.json",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Takeoff direction request has been delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read public entry points, schemas, persisted v1 data, consumers, and internal wrappers, then separate removable internal dual-track state from priced external contracts."
+}

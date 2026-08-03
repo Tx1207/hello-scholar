@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-generating-tasks-batch-v1-migration-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "7c4008d8e3f85c1b398087830dee3d688b7a4df706852440eeb6d76fea8bcb07",
+  "protocolSha256": "6295c1715525f0af9533b3bfeef41a187f716a1625c0a203b2453fba19a1a252",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

@@ -1,0 +1,8 @@
+{
+  "completed_at": "2026-07-30T09:00:08Z",
+  "error_type": "CUDAOutOfMemoryError",
+  "exit_code": 137,
+  "free_gib_before_allocation": 0.64,
+  "requested_allocation_gib": 2.5,
+  "valid_result": false
+}

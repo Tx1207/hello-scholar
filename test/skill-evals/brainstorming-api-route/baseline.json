@@ -1,0 +1,284 @@
+{
+  "proposalId": "proposal-brainstorming-batch-v1-api-route-protocol-v2",
+  "scenarioSha256": "9019bde78938e2aa3daeec18fafb20f8e5265099f2ee3544dbb866c870f7a7cf",
+  "protocolSha256": "b356dc19f13a13675a38a34c243fc4359ead2aea011add3d7ba4dc7c403d5165",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "result": "fail",
+  "summary": "The pre-change brainstorming run skipped the approved first clarification stop and requested a later creation approval, so the Protocol could not continue.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "brainstorming": {
+      "status": "pre-change-explicit-file",
+      "sha256": "8704beaf862bad1087b1809ef9a631be4b5c156ebabf5288e6be0d4186700d4e"
+    },
+    "manage-specs": {
+      "status": "absent",
+      "sha256": null
+    },
+    "writing-plans": {
+      "status": "pre-change-explicit-file",
+      "sha256": "036843cd95c609e0fda28b196a813733b30152ec83a57bab3f67686d93c89790"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "8a2b4ffac6161daabab0e157f0c3c740fd615f35",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The temporary Fixture was at the recorded Base commit with no tracked or untracked changes before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "506ef19a92f561a34b75b9a22aba50f20c9a0843cb8d037968e1b85aab38d990"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Node Fixture test suite passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "506ef19a92f561a34b75b9a22aba50f20c9a0843cb8d037968e1b85aab38d990"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs check passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "506ef19a92f561a34b75b9a22aba50f20c9a0843cb8d037968e1b85aab38d990"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/brainstorming_api_baseline",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/brainstorming_api_reviewer_retry",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "required-first-material-question",
+      "passed": false,
+      "reason": "The Implementer presented all alternatives and asked for creation approval instead of asking exactly one material API question at the approved first stop.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/interaction.md",
+          "sha256": "ba41755ee726aa89853672d0d719d32830fa48372a1b3e64350e85490dec7550"
+        },
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+        }
+      ]
+    },
+    {
+      "id": "no-unauthorized-project-writes",
+      "passed": true,
+      "reason": "No committed, index, working-tree, or untracked project changes appeared.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/tree.md",
+          "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved final commands exited zero in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+          "sha256": "f279aebfdff17e0cc0a6fa64ef76c3483036ae38f15efbf5621ef5549476772a"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+          "sha256": "f279aebfdff17e0cc0a6fa64ef76c3483036ae38f15efbf5621ef5549476772a"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+          "sha256": "f279aebfdff17e0cc0a6fa64ef76c3483036ae38f15efbf5621ef5549476772a"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa",
+        "promptSha256": "ead89c8f86e47abb79ea525e5b2c165439dcd862810c6a8bc6dac2d5ea42d4d2",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/prompt-round-0.md",
+            "sha256": "ead89c8f86e47abb79ea525e5b2c165439dcd862810c6a8bc6dac2d5ea42d4d2"
+          },
+          {
+            "path": "evidence/baseline/interaction.md",
+            "sha256": "ba41755ee726aa89853672d0d719d32830fa48372a1b3e64350e85490dec7550"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "sha256": "ead89c8f86e47abb79ea525e5b2c165439dcd862810c6a8bc6dac2d5ea42d4d2"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "dialogue-and-alternatives": 0,
+        "whole-spec-review": 0,
+        "api-spec-identity": 0,
+        "planning-handoff": 0
+      },
+      "reasons": {
+        "dialogue-and-alternatives": "The mandatory one-question clarification stop was skipped before the comparison.",
+        "whole-spec-review": "The run could not legitimately reach an identity-approved whole-Spec review.",
+        "api-spec-identity": "No authorized manage-specs identity decision or approved SPEC-014 creation occurred.",
+        "planning-handoff": "No approved Spec existed to verify and hand off to writing-plans."
+      },
+      "evidence": {
+        "dialogue-and-alternatives": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "whole-spec-review": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "api-spec-identity": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "planning-handoff": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ]
+      },
+      "totalScore": 0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 90,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 0,
+        "signal-to-noise": 90
+      },
+      "reasons": {
+        "value-visibility": "The recommended direction is visible near the start of the response.",
+        "audience-fit": "The response uses the user's language and concrete project API terminology.",
+        "information-design": "The alternatives table makes the comparison easy to scan.",
+        "actionability": "The response asked for the wrong next approval, so the approved protocol cannot proceed.",
+        "signal-to-noise": "The comparison remains focused with only a minor overstatement about project rules."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+          }
+        ]
+      },
+      "totalScore": 76
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+    },
+    "index": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+    },
+    "untracked": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+    }
+  }
+}

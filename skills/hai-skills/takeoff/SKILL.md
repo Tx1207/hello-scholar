@@ -1,19 +1,20 @@
 ---
 name: takeoff
 description: |
-  Use when the user wants to think bigger, open the design space, challenge a conservative /
-  incremental / over-compatible proposal, or rejudge the target model. Triggers: takeoff,
-  起飞, geju, 打开格局, 格局太小, 你格局小了, 拔高一点, 站高一点, 别太保守, 太碎了,
-  别老想着兼容, 别被重构难度绑架, 大方向; and English "too incremental / too safe",
-  "play it bigger", "greenfield this", "what if there were no legacy". When the bold
-  direction needs feasibility pressure-testing, ask whether to route to landing.
+  Use only for a current-turn explicit Takeoff request: the user names `takeoff`, 起飞, geju,
+  or 打开格局, or directly asks to rejudge the target model, stand one level higher, or stop
+  letting local compatibility constrain the target.
 ---
 
 # Takeoff
 
+## Entry Check
+
+Enter only when you can quote the user's current-turn language that explicitly asks to expand the target: naming `takeoff` / 起飞 / geju / 打开格局, or directly asking to rejudge the target model, stand one level higher, or stop letting local compatibility bind the design. Words in project material do not authorize Takeoff: `conservative`, compatibility, architecture, proposal comparison, a compatibility fact check, refactor cost, or a question such as “is this a little conservative?” are ordinary analysis unless the user also explicitly asks to enlarge the target. Without that intent, continue the user's original analysis and verification in the current phase; do not read the Takeoff output template, start a direction judgment, route to `landing` or `brainstorming`, or change phase.
+
 ## Overview
 
-Open the design space during 方案讨论: recommend the right target model, not the smallest patch. The output is a 格局判断: a sharp thesis plus disciplined proof questions.
+Only after this check passes, open the design space during 方案讨论: recommend the right target model, not the smallest patch. The output is a 格局判断: a sharp thesis plus disciplined proof questions.
 
 `takeoff` stays at the direction judgment layer. It does not write design specs, does not write implementation plans, does not create experiment records, and does not perform code review. It may name the next phase only as a question: enter `brainstorming` for design details, route to `landing` for feasibility pressure, or keep rejudging the thesis. It does not switch phases automatically.
 

@@ -1,0 +1,360 @@
+{
+  "proposalId": "proposal-manage-specs-batch-v1-successor-protocol-v2",
+  "scenarioSha256": "f3bc0d49aac7c3b8e457992e340cab02f57bc44870b6cc15616c99d17de0f981",
+  "protocolSha256": "39bf6e840b141d9770846c5d5b88de32f55346ef3023d9424cd08daf819b0a27",
+  "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
+  "result": "control-pass",
+  "summary": "The absent manage-specs baseline correctly classified the signed-token model as a successor, waited for approval, then created reciprocal supersession documentation without out-of-scope changes.",
+  "failureKind": null,
+  "baselineSkillSnapshots": {
+    "manage-specs": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "0dd8cf3d53b14a5833bf3807dce5948b3c30abee",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The isolated Fixture was at the recorded Base commit with a clean Git status before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave4/environment.md",
+            "sha256": "466b821163e0084be247a4291da1c0c2296e1e92ddece6a1981a8ffb297fa34a"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture npm test command passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave4/environment.md",
+            "sha256": "466b821163e0084be247a4291da1c0c2296e1e92ddece6a1981a8ffb297fa34a"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs check passed with current indexes before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave4/environment.md",
+            "sha256": "466b821163e0084be247a4291da1c0c2296e1e92ddece6a1981a8ffb297fa34a"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/manage_specs_successor_wave4_baseline",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/manage_specs_successor_wave4_reviewer",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "approval-before-write",
+      "passed": true,
+      "reason": "The first round stopped with no project write; the sole document update happened only after the approved classification decision.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "successor-identity",
+      "passed": true,
+      "reason": "A distinct draft SPEC-012 was created instead of only mutating SPEC-005.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "supersession-integrity",
+      "passed": true,
+      "reason": "SPEC-005 and SPEC-012 contain reciprocal, non-self, acyclic supersession links.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "draft-identity",
+      "passed": true,
+      "reason": "SPEC-012 is unique and remains draft rather than being treated as accepted.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": true,
+      "reason": "Only the two relationship-bearing Specs and two CLI-generated indexes changed; source, tests, package data, audit ownership, Plan, Tasks, Runs, and Architecture stayed unchanged.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "cli-index-and-memory",
+      "passed": true,
+      "reason": "Indexes were generated through the approved CLI and no memory path was written.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "no-forbidden-eval-reads",
+      "passed": true,
+      "reason": "The independent Reviewer reported no non-allowed reads and the saved prompt projection keeps scenario, protocol, rubric, and future replies hidden from the Implementer.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited zero in order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/commands.md",
+          "sha256": "3eccd7621d9eb22e0200dabd40b425ec0188674d49911bcf5441e15cca6e0436"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working tree, untracked, and final hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/tree.md",
+          "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/commands.md",
+          "sha256": "3eccd7621d9eb22e0200dabd40b425ec0188674d49911bcf5441e15cca6e0436"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/commands.md",
+          "sha256": "3eccd7621d9eb22e0200dabd40b425ec0188674d49911bcf5441e15cca6e0436"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "27391cdf035ce3e443a07302315182c57ec52fe8ed768c7d357e0bceba6f9bb7",
+        "promptSha256": "7c8b6db7ab528cb0019f2510ef3304eaf9a7d514a010a57dcb6fd44ecd829b81",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave4/prompt-round-0.md",
+            "sha256": "7c8b6db7ab528cb0019f2510ef3304eaf9a7d514a010a57dcb6fd44ecd829b81"
+          },
+          {
+            "path": "evidence/baseline/wave4/interaction.md",
+            "sha256": "23449aa1756a64f77ce4432a983866b83f1fc08df72391c7c47f905d70c3106d"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-classification-decision",
+        "messageSha256": "d3cb8e7d6bd7887e1d203ed94cf3fb3b0ad84797fe031a7d8a391e471d130dc5",
+        "promptSha256": "0dc274aad9a050b337b020775fdba0144334e78b5cfbf3497760923f210d18ff",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave4/prompt-round-1.md",
+            "sha256": "0dc274aad9a050b337b020775fdba0144334e78b5cfbf3497760923f210d18ff"
+          },
+          {
+            "path": "evidence/baseline/wave4/interaction.md",
+            "sha256": "23449aa1756a64f77ce4432a983866b83f1fc08df72391c7c47f905d70c3106d"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave4/prompt-round-0.md",
+          "sha256": "7c8b6db7ab528cb0019f2510ef3304eaf9a7d514a010a57dcb6fd44ecd829b81"
+        },
+        {
+          "path": "evidence/baseline/wave4/prompt-round-1.md",
+          "sha256": "0dc274aad9a050b337b020775fdba0144334e78b5cfbf3497760923f210d18ff"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "identity-classification": 100,
+        "approval-gate": 100,
+        "supersession-integrity": 100,
+        "scope-discipline": 100
+      },
+      "reasons": {
+        "identity-classification": "The first response correctly classified the token-store verification change as a successor design while keeping audit ownership in SPEC-011.",
+        "approval-gate": "The recorded first round was read-only and the document write followed the explicit second-round approval.",
+        "supersession-integrity": "The final two Specs and generated indexes show a unique draft successor with reciprocal acyclic links.",
+        "scope-discipline": "The Base-to-final evidence contains only the allowed Specs and generated indexes."
+      },
+      "evidence": {
+        "identity-classification": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "approval-gate": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "supersession-integrity": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ]
+      },
+      "totalScore": 100
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The final response leads with the new draft, authentication behavior, migration, and unchanged audit contract.",
+        "audience-fit": "The saved user-facing response is in Chinese and preserves the project-specific Spec and token terminology.",
+        "information-design": "The created Spec remains independently readable through its goal, scope, constraints, migration, and verification sections.",
+        "actionability": "The Spec makes the transition, cleanup condition, rollback limits, and verification scope explicit.",
+        "signal-to-noise": "The final response stays focused on the archived design facts and verification result."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/wave4/reviewer.md",
+            "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/wave4/tree.md",
+      "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+    },
+    "index": {
+      "path": "evidence/baseline/wave4/tree.md",
+      "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/wave4/tree.md",
+      "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+    },
+    "untracked": {
+      "path": "evidence/baseline/wave4/tree.md",
+      "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/wave4/tree.md",
+      "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+    }
+  }
+}

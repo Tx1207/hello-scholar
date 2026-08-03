@@ -1,0 +1,5 @@
+evaluation completed: 1200/1200 samples
+control_exact_match=0.812
+int4_exact_match=0.761
+quality_delta=-0.051
+exit_code=0

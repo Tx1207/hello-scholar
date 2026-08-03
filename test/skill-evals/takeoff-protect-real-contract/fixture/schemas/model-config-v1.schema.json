@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "model-config-v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "model_id", "max_tokens"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "model_id": { "type": "string" },
+    "max_tokens": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": false
+}

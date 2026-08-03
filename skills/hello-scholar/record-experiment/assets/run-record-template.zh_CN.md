@@ -1,67 +1,94 @@
-# 实验运行：<run_id>
+---
+schema: 1
+kind: record
+run_id: <run-id>
+title: <用户可读标题>
+status: planned
+spec: null
+spec_revision: null
+plan_revision: null
+started: null
+completed: null
+decision: pending
+summary: <当前已知事实>
+---
 
-## 快照
+# <用户可读标题>
 
-- 运行 ID: <run_id>
-- 状态: planned
+## 1. 目的
+
 - 目的:
-- 创建时间:
-- 最后更新:
-- 结论: pending
-- 下一步:
 
-## 启动记录
+## 2. 假设
+
+- 假设:
+
+## 3. 实验变量
+
+- 变量:
+
+## 4. 控制条件
+
+- 控制条件:
+
+## 5. 执行信息
 
 - 精确命令:
 - 工作目录:
-- 脚本:
-- 配置文件:
+- 脚本 / 入口:
+- 配置:
 - CLI 覆盖参数:
 - 随机种子:
 - 数据版本 / 划分:
 - 预处理:
 - 输入产物:
-- 上游运行 ID:
+- 上游 Run ID:
 - 派生产物:
+- Model / checkpoint:
+- 评估 / 生成设置:
 - Git 分支:
 - Git 提交:
 - Git 工作区状态:
-- 后端: local / ssh / vast / modal / queue / other
+- Backend:
 - 机器 / GPU:
 - Python / 环境:
-
-## 预期行为
-
 - 预期信号:
 - 失败信号:
 - 停止规则:
 
-## 路径
+## 6. 产物位置
 
-- 日志路径:
-- 检查点路径:
-- 结果路径:
-- W&B / MLflow / TensorBoard:
+- 预期日志路径:
+- 预期结果路径:
+- 预期 checkpoint 路径:
+- Dashboard / tracking URL:
 
-## 事件
+## 7. 执行事件
 
 | 时间 | 事件 | 观察 | 处理 |
 |---|---|---|---|
 
-## 结果
+## 8. 关键结果
 
-- 最终状态:
-- 结束时间:
-- 退出码:
 - 指标:
 - 结果文件:
-- 最佳检查点:
-- 失败原因:
+- 最佳 checkpoint:
+
+## 9. 观察
+
+- 观察:
+- 失败证据:
 - 有效性说明:
 
-## 结论
+## 10. 结论
 
-- 结论: positive / negative / mixed / failed / invalid / inconclusive / pending
-- 负结果: yes / no / unknown
+- 结论:
 - 注意事项:
-- 下一步:
+
+## 11. 决定
+
+- 决定:
+
+## 12. 后续行动
+
+- 后续行动:

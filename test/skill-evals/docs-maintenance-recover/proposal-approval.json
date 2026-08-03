@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-docs-maintenance-batch-v1-recover-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "b3d3539795182431be96a1b314ac92c637f5bb12ae51910e78b43d66499622f6",
+  "protocolSha256": "313fb028cc64e0c64ad99679fb5a2a7e20283957128195316cfb1e87638160cf",
+  "fixtureSha256": "022c90fb58ae0afa4b657740397ea28e30eb3e450c0351f32cd13d10501b0880",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

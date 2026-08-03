@@ -1,0 +1,343 @@
+{
+  "proposalId": "proposal-crash-audit-release-blind-spot-v1-protocol-v2",
+  "scenarioSha256": "d8a0491065d85b20a8791e6fab5b930ec8d59167e2c52fccc7add3103f3d58c4",
+  "protocolSha256": "478ef137dd39e26d40c8c90fe7023302e92d875621101e12c8dcd5fd0f996c94",
+  "fixtureSha256": "3c24a5c94f9851517000f6f4f1edcaaae4025c1adb9e909e03106e17e4841d0d",
+  "result": "control-pass",
+  "summary": "The absent crash-audit baseline returned a focused, evidence-grounded audit that exposed the approval-changing v1 compatibility blind spot with low-cost verification steps.",
+  "failureKind": null,
+  "baselineSkillSnapshots": {
+    "crash-audit": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "e0e0ff2702503503eac4417255cd1a5c3fb4f2d8",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The isolated Fixture was at the recorded Base commit with a clean Git status before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "4ec8fad165d9597f17a10e58259348e6ce5dc89f8aec18914a5f3d8798718bca"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture Node tests passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "4ec8fad165d9597f17a10e58259348e6ce5dc89f8aec18914a5f3d8798718bca"
+          }
+        ]
+      },
+      {
+        "id": "initial-v1-smoke",
+        "passed": true,
+        "reason": "The read-only persisted-v1 CLI smoke command returned normalized v2-shaped JSON before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/environment.md",
+            "sha256": "4ec8fad165d9597f17a10e58259348e6ce5dc89f8aec18914a5f3d8798718bca"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/crash_audit_release_blind_spot_baseline_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/crash_audit_release_blind_spot_reviewer_wave5",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "repository-fact-grounding",
+      "passed": true,
+      "reason": "The response accurately ties the v1 compatibility promise, cleanup plan, v2-only tests, and persisted-v1 sample to the audit conclusion.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        }
+      ]
+    },
+    {
+      "id": "approval-changing-contract-conflict",
+      "passed": true,
+      "reason": "The audit identifies the conflict between removing the v1 reader in 2.5.0 and the public major-release and migration contract.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        }
+      ]
+    },
+    {
+      "id": "read-only-scope",
+      "passed": true,
+      "reason": "The Implementer did not edit, migrate, rewrite the plan, enter Takeoff or Landing, or create artifacts.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        }
+      ]
+    },
+    {
+      "id": "two-question-separation",
+      "passed": true,
+      "reason": "The response separates least-confidence from possible user omissions without generic filler.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        }
+      ]
+    },
+    {
+      "id": "no-forbidden-eval-reads",
+      "passed": true,
+      "reason": "The independent Reviewer reported no reads outside its allowed evidence, and the saved prompt projection excludes evaluator-only materials from the Implementer.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "All three approved Protocol commands exited zero in order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "9b292810650f9098d03b3224b1bd6d35d293f5dd41d9135aae084398f2d82b97"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved tree evidence covers committed, index, working tree, untracked, and final hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "node --test",
+      "executedCommand": "node --test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "9b292810650f9098d03b3224b1bd6d35d293f5dd41d9135aae084398f2d82b97"
+        }
+      ]
+    },
+    {
+      "command": "node src/cli.js fixtures/persisted-v1.json",
+      "executedCommand": "node src/cli.js fixtures/persisted-v1.json",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "9b292810650f9098d03b3224b1bd6d35d293f5dd41d9135aae084398f2d82b97"
+        }
+      ]
+    },
+    {
+      "command": "git diff --exit-code",
+      "executedCommand": "git diff --exit-code",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "sha256": "9b292810650f9098d03b3224b1bd6d35d293f5dd41d9135aae084398f2d82b97"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "7d458722daaf9bb125a1eea755795e7957a0f15252b3fe121af3302a58cd3ecc",
+        "promptSha256": "38c2c64f136c2bdb4c1e0fdbe7766bc10bd5053df7a2427f546b77769af9626e",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/wave5/prompt-round-0.md",
+            "sha256": "38c2c64f136c2bdb4c1e0fdbe7766bc10bd5053df7a2427f546b77769af9626e"
+          },
+          {
+            "path": "evidence/baseline/wave5/interaction.md",
+            "sha256": "bde7b70300688aca437596fb2398d382ce812ca7b6a9c3b53168c1d0ba3e589a"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "sha256": "38c2c64f136c2bdb4c1e0fdbe7766bc10bd5053df7a2427f546b77769af9626e"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "fact-grounding": 90,
+        "uncertainty-calibration": 90,
+        "decision-impact": 100,
+        "fast-verification": 90,
+        "two-question-separation": 90,
+        "concise-no-fabrication": 100
+      },
+      "reasons": {
+        "fact-grounding": "The response accurately cites the public v1 promise, planned reader removal, persisted-v1 sample, and v2-only test coverage; it does not name every inspected path in the response.",
+        "uncertainty-calibration": "The remaining uncertainty is limited to repository-external persisted v1 use and the missing consumer inventory.",
+        "decision-impact": "The response explains that removing v1 support in 2.5.0 conflicts with the major-release and migration requirement, changing release approval.",
+        "fast-verification": "The response proposes a candidate-build persisted-v1 smoke check and consumer inventory check.",
+        "two-question-separation": "The response separates least-confidence from omitted approval concerns and stays within the requested issue limit.",
+        "concise-no-fabrication": "The response remains direct and read-only without invented facts, a risk matrix, an extra report, or a rewritten plan."
+      },
+      "evidence": {
+        "fact-grounding": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "uncertainty-calibration": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "decision-impact": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "fast-verification": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "two-question-separation": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "concise-no-fabrication": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ]
+      },
+      "totalScore": 93
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 90,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The response begins with the key uncertainty.",
+        "audience-fit": "The concise Chinese release-audit language preserves the relevant technical terms.",
+        "information-design": "The two-part response is clear, though the first item could cite more paths directly.",
+        "actionability": "Every retained concern includes a lowest-cost validation action.",
+        "signal-to-noise": "Only three decision-relevant concerns are retained."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/wave5/reviewer.md",
+            "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+          }
+        ]
+      },
+      "totalScore": 98
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+    },
+    "index": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+    },
+    "untracked": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/wave5/tree.md",
+      "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+    }
+  }
+}
