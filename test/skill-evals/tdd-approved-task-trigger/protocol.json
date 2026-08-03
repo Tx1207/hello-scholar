@@ -1,0 +1,138 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "tdd-approved-task-trigger",
+  "projectId": "py-config-upgrader",
+  "primarySkill": "test-driven-development",
+  "caseId": "tdd-approved-task-trigger",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "test-driven-development"
+  ],
+  "skillSources": {
+    "test-driven-development": "skills/superpowers-skills/test-driven-development"
+  },
+  "skillExpectations": {
+    "test-driven-development": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the approved Bundle and project files, verify a clean tree, and run both initial commands before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "approved-task-trigger",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Implementer reads current approved Task T001 and recognizes its explicit Process: test-driven-development as the trigger even though the user does not repeat TDD."
+      },
+      {
+        "id": "red-green-sequence",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a focused unknown-key test is written first and fails because the key is silently accepted, followed by the minimum validation and saved focused and full Green evidence."
+      },
+      {
+        "id": "validation-correctness",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every top-level key outside version, endpoint and retries raises a message naming the unknown key while valid input still emits the unchanged version-2 JSON shape."
+      },
+      {
+        "id": "bundle-scope",
+        "weight": 20,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only source, focused tests and T001 completion state change, and T001 is checked only after evidence while Spec, Plan, valid sample, schema, later Tasks and dependencies remain unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "fails to treat the approved Task Process as an explicit TDD trigger",
+      "changes production code before observing the focused behavior failure",
+      "uses an invalid fixture, syntax error, or already-passing test as Red",
+      "changes the accepted Spec, approved Plan, or valid output schema",
+      "marks T001 complete before focused and full Green verification"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests -p 'test_*.py'",
+    "python3 -B src/config_upgrader.py samples/valid-v1.json"
+  ],
+  "paths": {
+    "allow": [
+      "src/config_upgrader.py",
+      "tests/test_config_upgrader.py",
+      "hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/tasks.md"
+    ],
+    "deny": [
+      ".git/",
+      "hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/spec.md",
+      "hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/plan.md",
+      "samples/valid-v1.json"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "src/config_upgrader.py",
+      "tests/test_config_upgrader.py",
+      "hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/tasks.md"
+    ],
+    "forbidden": [
+      "src/config_upgrader_v2.py",
+      "requirements.txt",
+      "migration-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the user authorizes execution of approved Task T001",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the explicit Approved Task trigger, create and observe the focused failing test, then make the minimum Green change before full validation."
+}

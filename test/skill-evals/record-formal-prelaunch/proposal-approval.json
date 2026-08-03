@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-record-experiment-batch-v1-formal-prelaunch-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "e42d3edb384cbc11f06075ad53a0ea445f06264ec05b8b850a165cb715327383",
+  "protocolSha256": "4536009be53ce6635c40887deb34e0e75361c0c7fc7122f574ea8ce5d14eb58a",
+  "fixtureSha256": "3f6540537422871ce497daade4cd69536a0ef1ec3399d2311fbbc5872b7c03a1",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-converge-to-spec-batch-v1-semantic-audit-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "77c28be3e0c9cbe2985b1f879d341ca795dc3fb7511c6fb4fa740cbfcaded531",
+  "protocolSha256": "b4e015759ebb31118022f5af69da25e9eb9904fdbb9d84af2e889e359917fdd7",
+  "fixtureSha256": "106c41f5b3efe93abbe57f8ffe84fb10ed4a49dc23312910cc47a1df7e11add9",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

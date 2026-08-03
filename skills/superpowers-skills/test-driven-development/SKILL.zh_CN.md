@@ -1,9 +1,22 @@
 ---
 name: test-driven-development
-description: 在实现任何功能或 bug 修复时，在编写实现代码前使用
+description: 仅当用户明确请求 TDD、测试优先或 Red-Green-Refactor，或当前 Approved Task 明确要求 TDD Process 时使用。
 ---
 
 # 测试驱动开发（TDD）
+
+## 显式入口门
+
+仅在以下任一事实存在时进入此 skill：
+
+1. 用户明确请求 `$test-driven-development`、`TDD`、`测试优先` 或 `Red-Green-Refactor`。
+2. 当前 Approved Task 明确要求 `TDD Process`，或将 `TDD`、`测试优先` 或 `Red-Green-Refactor` 明确列为过程。
+
+“请加测试”或 `Validation: npm test` 属于普通实现和验证，单独出现时不进入此 skill。不要从任务类型、测试措辞或验证命令推断 TDD。
+
+如果两项事实都不存在，立即退出此 skill。遵循适用的 AGENTS/Task 普通实现与验证要求；不要强加此 TDD 流程，也不要重做已有代码。
+
+进入后，完整遵循下述流程。事后测试不是 TDD。明确请求 TDD 的用户若随后将工作称为一次性原型、生成代码或配置文件，先询问其是否撤销 TDD 请求；skill 不得自行选择该例外。
 
 ## 概述
 
@@ -31,21 +44,6 @@ description: 在实现任何功能或 bug 修复时，在编写实现代码前�
 | `macro-eval` | 跨 trace 或多 agent 行为模式 | expensive/scheduled |
 
 完整 pattern 定义和例子见 `references/evidence-pattern-gallery.zh_CN.md`。
-
-## 何时使用
-
-**始终使用：**
-- 新功能
-- Bug 修复
-- 重构
-- 行为变更
-
-**例外（询问你的人类伙伴）：**
-- 一次性原型
-- 生成代码
-- 配置文件
-
-想着“这次就跳过 TDD”？停止。这是合理化借口。
 
 ## 铁律
 

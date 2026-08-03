@@ -1,0 +1,143 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "docs-maintenance-index",
+  "projectId": "node-run-index-project",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-index",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "run the Fixture idempotence verifier with the absolute hello-scholar CLI, copy the intentionally stale Fixture, run node tests and docs check, initialize Git, commit every Fixture file, and verify a clean tree before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "mode-and-command-selection",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm stale CLI-owned navigation is handled in docs-maintenance index mode using the absolute docs sync command rather than manual Markdown, design, recovery or implementation work."
+      },
+      {
+        "id": "generated-index-correctness",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the first sync rebuilds exactly the global Spec, run-navigation Topic and Run indexes from current Spec and Record titles, summaries and statuses with deterministic links and ordering."
+      },
+      {
+        "id": "write-boundary",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the three canonical generated Index paths change and every Spec, Record, Architecture, source, test, package and project-rule byte remains unchanged."
+      },
+      {
+        "id": "second-run-idempotence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the second absolute docs sync exits zero and command, Base-to-first, first-to-second and final-hash evidence proves a zero-diff second run."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "manually edits generated Markdown instead of using the absolute hello-scholar docs sync CLI",
+      "changes any Spec, Record, Architecture, source, test, package, or project-rule file",
+      "writes outside the three canonical Index paths or creates a report, Plan, Tasks, or Run",
+      "omits the second sync or claims idempotence without Base-to-final and final-hash evidence",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/run-navigation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/run-navigation/SPEC-204-run-summary/spec.md",
+      "runs/20260731-1200-summary-order/record.md",
+      "src/",
+      "test/",
+      "package.json",
+      "AGENTS.md"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/run-navigation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/run-navigation/SPEC-204-run-summary/plan.md",
+      "hello-scholar/specs/run-navigation/SPEC-204-run-summary/tasks.md",
+      "hello-scholar/recovery.md",
+      "runs/20260801-index-refresh/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the generated navigation synchronization request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run the canonical index sync, verify the generated navigation, and reach the second zero-diff sync without manual Markdown edits."
+}

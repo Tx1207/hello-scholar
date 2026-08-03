@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-router-execution-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "da960b6c0ccba2846273f6be6805ced27ab76e46f1ddd0803c6c2e046cf1a85f",
+  "protocolSha256": "73dfbb419e475a1ccaf11f91c025a1c7d82c57d969dbd28a0f5789c5253de476",
+  "fixtureSha256": "85bfac58e203230eb57d1d750cbdc2884335e69e1514650f5b8d27c32b14ab90",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

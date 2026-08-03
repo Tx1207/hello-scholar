@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-docs-maintenance-batch-v1-check-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "b612511ef41c55e5b0d66310d384ad86ae6596e5fbdab99d1bd14a3cc40995bc",
+  "protocolSha256": "20e242ff4c989e198694345e1ba17e4874d97309b80ab0c1f58cf6e20bf34dd8",
+  "fixtureSha256": "391d12ede4c33d012234c4b11cb375828e918b9210b102dc80d5bbffbe6590f9",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

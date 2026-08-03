@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-framework-e2e-paged-cache-v2-successor-v1",
+  "decision": "approved",
+  "scenarioSha256": "94244518fc46a6a0e28cacc22370727e28142826a0b7feaaf53b0d78cf5cae19",
+  "protocolSha256": "1b9f892e54e1c42406978bde08d697ead35e0379524d5c03c9f0a2ab947f1c45",
+  "fixtureSha256": "a4e4058cfd13ee333cfde9576bc782f48c13d5f296992e85009f4f9017937a60",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

@@ -99,7 +99,46 @@ Strong success criteria let you loop independently. Weak success criteria requir
 - When you do add a dependency, say why, so the choice is visible rather than smuggled into the manifest.
 - When a dependency change affects the manifest, lockfile, docs, or deployment configuration, update them together and state the impact.
 
-## 9. Communication
+## 9. Function Contract Comments
+
+**A function should state its contract where a maintainer reads its body.**
+
+- Every named function or method added or behaviorally modified in production code or a reusable script/helper must have a concise contract comment immediately inside its body.
+- State `Purpose`, `Input`, and `Output`. Add `Errors` or `Side effects` when the function can throw, mutate external state, write files, spawn work, or otherwise affects more than its return value.
+- In Python, use the first-statement docstring. In JavaScript/TypeScript, use the first body comment. Keep the contract concrete and update it in the same change when behavior changes.
+- Immutable Eval Fixtures and saved Baseline/Live evidence describe external or historical projects; do not rewrite them only to satisfy repository style. Anonymous callbacks are exempt unless they contain reusable behavior.
+
+Examples:
+
+```python
+def parse_record(path):
+    """Purpose: parse one Record; Input: Markdown path; Output: validated metadata; Errors: malformed input."""
+```
+
+```javascript
+function parseRecord(path) {
+  // Purpose: parse one Record; Input: Markdown path; Output: validated metadata; Errors: malformed input.
+}
+```
+
+## 10. Sonnet Eval Subagent Recovery
+
+**A broken handoff is invalid evidence, not a reason to weaken the Eval contract.**
+
+- Create Eval Implementers and Reviewers with a fresh Agent ID, dispatch selector `model: sonnet`, and `fork_turns: none`; the two roles must use different IDs. Persist only canonical `model: claude-sonnet-5` in Protocol, Baseline, Scorecard, manifest, review, and run evidence.
+- Send the task directly through the collaboration tool as a short plaintext message. For a completed run's Reviewer, prefer one absolute `reviewer-task.md` path and no copied rubric, answer, or transcript in the handoff message.
+- Never copy, forward, decode, or treat a `gAAAA...` payload as an Agent task. If an Agent only receives such a payload or cannot parse its task, discard that attempt and do not use its interaction, output, or Reviewer conclusion as Eval evidence.
+- Verify delivery from the Agent's actual response and saved run evidence, not from an encrypted or masked tool-trace display.
+- Keep no more than one active formal Eval subagent. Do not use `codex exec`, external runners, API fallbacks, `codex doctor`, or a main-Agent self-review to replace the required independent Sonnet run.
+- If Sonnet is unavailable, stop and report an environment block. Do not fall back to Terra, Opus, another model, or a selector string in persisted evidence.
+- For an Implementer, keep the plaintext projection limited to its isolated Fixture directory, current user message, project `AGENTS.md`, authorized Skill snapshot path and hash when applicable, absolute CLI entry, read boundary, and safety stop. Do not reveal Scenario, Protocol, rubric, hard rejects, expected answer, or future reply.
+- Before starting an Eval subagent, inspect the live Agent registry and run at most one at a time for this project. Treat `completed` as closed; do not start the next role until the prior Agent is completed, and retain distinct fresh IDs for Implementer and Reviewer.
+- Assign work only through the direct collaboration `spawn_agent` call. A shell command, local `exec`, masked trace, or prose statement is not task delivery and cannot be evidence.
+- If one direct dispatch fails or does not return a new Agent handle, make one read-only registry check, preserve prepared evidence, and report the exact tool error. Do not issue repeated no-op, local `exec`, or fake dispatch retries in the same turn; do not blame quota without current registry evidence.
+- Dispatch from the current conversation through the direct collaboration tools in this order: direct `list_agents`; direct `spawn_agent` with the prepared plaintext task only when no Eval Agent is running; wait for its actual final response; then direct `list_agents` and require `completed` before the next role.
+- Do not treat a shell command, local `exec`, masked trace, XML/text imitation, or prose statement as a tool call. Do not recommend a new conversation, restart, version change, CLI workaround, or external runner unless the direct collaboration tool itself returns an explicit unavailable/error result.
+
+## 11. Communication
 
 **Say what you did, why you did it, and what remains uncertain.**
 
@@ -108,7 +147,7 @@ Strong success criteria let you loop independently. Weak success criteria requir
 - Be precise about uncertainty and tell the user what to verify. For example: "I am not sure this library supports streaming; check X."
 - Do not use "I think this should work" as a substitute for verifiable explanation.
 
-## 10. Common Failure Modes
+## 12. Common Failure Modes
 
 **When you recognize a failure mode, stop instead of continuing to work.**
 Common failure modes:

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-manage-specs-batch-v1-independent-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "5eb41e95bdfcdcee4f4a53cabb743fade2395ec8f5adc3f1f7b9c3ea3c64c93f",
+  "protocolSha256": "1f8eaced3bb6484b8e8539264a6578ac48ba2ac35df0325588bcfd22af31e148",
+  "fixtureSha256": "f15f63621db5e9ca31c9e31285956d31d4e32939c0f9ce5541708b2f8eb71c1c",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

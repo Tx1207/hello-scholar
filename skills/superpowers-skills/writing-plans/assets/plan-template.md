@@ -1,91 +1,72 @@
-# [Feature Name] Implementation Plan
-
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans. Implement this plan task-by-task and track steps with checkbox (`- [ ]`) syntax.
-
-**Goal:** [One sentence describing what this builds]
-
-**Spec Source:** [Path to the spec/design/PRD/issue that is the behavior source of truth, or "None provided"]
-
-**Source-of-Truth Rule:** Spec defines behavior, boundaries, invariants, and acceptance; plan defines execution. If they conflict, stop and ask before coding.
-
-**Scope Boundary:** [Full spec, or the covered subset plus deferred spec sections]
-
-**Architecture:** [2-3 sentences about the approach]
-
-**Tech Stack:** [Key technologies/libraries]
-
+---
+schema: 1
+kind: plan
+spec: SPEC-000
+spec_revision: 1
+revision: 1
+status: draft
+title: <Clear implementation plan title>
+summary: <Concrete implementation strategy summary>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
 ---
 
-## Assumptions
+# <Clear implementation plan title>
 
-- [Assumption]
+## 1. Implementation Goal
 
-## File Structure
+<State the accepted outcome this Plan will implement.>
 
-- Modify: `path/to/file`
-  - [Responsibility and reason]
+## 2. Scope
 
-## Implementation Tasks
+<Name covered Spec sections, deferred sections, and explicit non-goals.>
 
-### Task 1: [Component Name]
+## 3. Technical Strategy
 
-**Files:**
-- Modify: `path/to/file`
-- Test: `tests/path/to/test_file.py`
+<Describe the implementation approach without reopening accepted product decisions.>
 
-**Spec Coverage:**
-- Spec sections: [Exact source headings, requirement IDs, or line-linked bullets]
-- Acceptance gates:
-  - [Behavior or invariant this task must satisfy]
-  - [Error, regression, disabled-path, or integration contract]
-- Out of scope:
-  - [Related work intentionally deferred]
+## 4. Affected Modules
 
-- [ ] **Step 1: Write the failing test**
+<List each affected module and its responsibility in the strategy.>
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+## 5. File Change Boundaries
 
-- [ ] **Step 2: Run the focused test and verify it fails**
+- Add: <paths or None with reason>
+- Modify: <paths or None with reason>
+- Move or Migrate: <paths or None with reason>
+- Delete: <paths or None with reason>
+- Must Not Touch: <paths or boundaries>
 
-Run: `pytest tests/path/to/test_file.py::test_specific_behavior -q`
-Expected: [Expected failure and reason]
+## 6. Interface Changes
 
-- [ ] **Step 3: Implement the minimal change**
+<Describe public interfaces, data contracts, compatibility behavior, or state that changes; state None with a reason when applicable.>
 
-```python
-def function(input):
-    return expected
-```
+## 7. Implementation Phases
 
-- [ ] **Step 4: Run the focused test and verify it passes**
+<Describe dependency-ordered phases and their observable outcomes.>
 
-Run: `pytest tests/path/to/test_file.py::test_specific_behavior -q`
-Expected: [Expected pass result]
+## 8. Test and Experiment Strategy
 
-- [ ] **Step 5: Commit**
+<Describe unit, integration, regression, benchmark, Eval, or formal experiment evidence required by the Spec.>
 
-```bash
-git add path/to/file tests/path/to/test_file.py
-git commit -m "feat: add specific feature"
-```
+## 9. Migration Sequence
 
-## Self-Review Notes
+<Describe the compatibility window, conversion order, and cutover gate; state None with a reason when no migration exists.>
 
-- Source-of-truth: [Spec source named/conflict rule present, scope boundary explicit if narrowed, or no spec provided]
-- Spec coverage: [Each spec requirement maps to a task and acceptance gate]
-- Contract preservation: [Regression checks for affected behavior, disabled paths, errors, APIs, data, integrations]
-- Simplicity check: [Why this is the minimum useful change]
-- Risk check: [Known risk and mitigation]
+## 10. Cleanup
 
-## Execution Handoff
+<Name obsolete callers, configuration, data, flags, dependencies, or files and the evidence required before removal; state None with a reason when applicable.>
 
-Plan complete and saved under the current task's project or worktree root at `hello-scholar/memory/plans/<filename>.md`.
+## 11. Rollback
 
-Two execution options:
+<Describe recovery actions, preserved evidence, and the boundary that triggers rollback; state None with a reason when applicable.>
 
-1. Subagent-Driven (recommended) - Dispatch a fresh subagent per task and review between tasks.
-2. Inline Execution - Execute in this session using executing-plans with review checkpoints.
+## 12. Tasks Generation Rules
+
+<Describe the required tracer-task coverage, dependencies, parallel boundaries, validation, and explicit TDD selections for generating-tasks.>
+
+## Plan Self-Review
+
+<Confirm alignment with the current Accepted Spec revision, exact file boundaries, migration/cleanup/rollback coverage, and unresolved design decisions.>
+
+Plan written in the current Spec Bundle. It awaits whole-file user review; after approval, invoke `$generating-tasks`.

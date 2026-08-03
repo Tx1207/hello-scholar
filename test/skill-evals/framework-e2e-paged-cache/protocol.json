@@ -1,0 +1,183 @@
+{
+  "protocolVersion": 1,
+  "scenarioId": "framework-e2e-paged-cache",
+  "projectId": "py-paged-cache-engine",
+  "primarySkill": "framework-e2e",
+  "caseId": "framework-e2e-paged-cache",
+  "countsTowardProductSkill": false,
+  "targetSkills": [
+    "writing-plans",
+    "generating-tasks",
+    "record-experiment",
+    "converge-to-spec",
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans",
+    "generating-tasks": "skills/superpowers-skills/generating-tasks",
+    "record-experiment": "skills/hello-scholar/record-experiment",
+    "converge-to-spec": "skills/hello-scholar/converge-to-spec",
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "load": "pre-change-explicit-file",
+      "branch": "enter"
+    },
+    "generating-tasks": {
+      "load": "absent",
+      "branch": "enter"
+    },
+    "record-experiment": {
+      "load": "pre-change-explicit-file",
+      "branch": "enter"
+    },
+    "converge-to-spec": {
+      "load": "absent",
+      "branch": "enter"
+    },
+    "docs-maintenance": {
+      "load": "absent",
+      "branch": "enter"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, and commit before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "document-contract",
+        "weight": 20,
+        "critical": true,
+        "minimum": 85
+      },
+      {
+        "id": "approval-gates",
+        "weight": 20,
+        "critical": true,
+        "minimum": 85
+      },
+      {
+        "id": "implementation-correctness",
+        "weight": 25,
+        "critical": true,
+        "minimum": 85
+      },
+      {
+        "id": "experiment-provenance",
+        "weight": 15,
+        "critical": true,
+        "minimum": 85
+      },
+      {
+        "id": "convergence-evidence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 85
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes Plan, Tasks, implementation, or Architecture before its matching approval gate",
+      "changes the Accepted Spec to reduce scope",
+      "uses a retired execution Skill or nested implementation subagent",
+      "leaves contiguous allocation as the formal execution path",
+      "starts the formal Benchmark before the root Run record exists",
+      "claims completion without current tests, Benchmark, docs, and full-tree evidence"
+    ]
+  },
+  "speed": {
+    "absoluteTimeoutSeconds": 1200
+  },
+  "commands": [
+    "python3 -m unittest discover -s tests",
+    "python3 scripts/benchmark_cache.py --blocks 24 --request-blocks 6",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/plan.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/tasks.md",
+      "src/kv_cache/",
+      "tests/",
+      "scripts/",
+      "runs/"
+    ],
+    "deny": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/plan.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/tasks.md",
+      "src/kv_cache/paged_allocator.py",
+      "tests/test_paged_allocator.py",
+      "scripts/benchmark_cache.py",
+      "runs/RUN-ID/record.md",
+      "runs/RUN-ID/outputs/benchmark.json",
+      "runs/RUN-ID/results/metrics.json"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      "runs/RUN-ID/run.json",
+      "runs/RUN-ID/README.md",
+      "src/kv_cache/paged_allocator_v2.py",
+      "src/kv_cache/paged_allocator_final.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "initial request delivered",
+        "contentRole": "current-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has shown the draft Plan summary and made no later-stage writes",
+        "contentRole": "future-plan-decision"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has shown pending-review Tasks coverage and dependencies",
+        "contentRole": "future-tasks-decision"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has recorded approved Tasks and stopped again",
+        "contentRole": "future-implementation-authorization"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Converge and fresh evidence are complete and an Architecture Proposal includes the current hash",
+        "contentRole": "future-architecture-decision"
+      }
+    ]
+  }
+}

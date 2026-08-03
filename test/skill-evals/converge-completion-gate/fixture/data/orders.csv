@@ -1,0 +1,4 @@
+order_id,region,amount_cents
+o-101,east,1200
+o-102,west,500
+o-103,east,800

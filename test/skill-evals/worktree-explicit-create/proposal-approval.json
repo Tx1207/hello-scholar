@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-worktree-explicit-create-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "4c685c371e438769241706c186ee0eec4614bbcc0324a68771dbeefa73131c4e",
+  "protocolSha256": "771af6e75526f724e9b73c81048951101df5244fca33f049dd7a48f66f227ede",
+  "fixtureSha256": "ab1aa30bf912984ceacf20f2192642586eeedcf9cd44c5134798a81d91abc1c3",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

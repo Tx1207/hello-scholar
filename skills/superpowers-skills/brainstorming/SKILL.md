@@ -1,173 +1,104 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: Use when a request needs design tradeoffs for a new capability or a material external behavior, interface, or module change. Explore the design, establish its Spec identity through manage-specs, and stop before implementation.
 ---
 
-# Brainstorming Ideas Into Designs
+# Brainstorming
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+Turn a material design request into one reviewable Spec Bundle. Keep design, Spec identity, Plan, Tasks, implementation, and experiments in their separate owners.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+## 1. Confirm that design work is needed
 
-<HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
-</HARD-GATE>
+Enter for a new capability, a material external behavior/interface/module change, or material tradeoffs that project facts cannot resolve. Routine implementation, a small internal correction within an accepted contract, and existing-code experiments do not enter this Skill: continue the current Task flow or use `$record-experiment` for the experiment.
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+Once entered, do not implement source code, create a Plan or Tasks, or run an implementation skill before the Spec is accepted.
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+**Completion:** the request has either remained on its existing path or has a bounded material design question.
 
-## Checklist
+## 2. Establish design facts
 
-You MUST create a task for each of these items and complete them in order:
+1. Read only the relevant Architecture, accepted Bundle documents, code, tests, configuration, Records, and current Git facts.
+2. If the request contains independently valuable capabilities with separate approval, implementation, validation, or rollback boundaries, explain the decomposition and design one bounded capability at a time.
+3. Ask one question at a time only for a material uncertainty about value, behavior, interface, data, lifecycle, risk, or acceptance. Do not ask again for facts already established by project evidence or the user.
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save under the current task's project or worktree root at `hello-scholar/memory/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+**Completion:** the problem, constraints, observable success criteria, and the bounded design surface are explicit.
 
-## Process Flow
+## 3. Compare and approve the design decision
+
+Present 2–3 approaches with tradeoffs and a recommendation. Cover the affected modules, interfaces, data flow, error behavior, test/experiment evidence, migration implications, and deliberate non-goals. Keep unrelated refactoring outside the design.
+
+Present the complete proposed decision and obtain user approval before any Spec write. Approval of the decision does not classify a Spec, accept a Spec, approve a Plan, approve Tasks, or authorize implementation.
+
+**Completion:** the user-approved design content is specific enough to fill a complete Spec without inventing material decisions.
 
 ```dot
 digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans skill" [shape=doublecircle];
-
-    "Explore project context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Explore project context" -> "Ask clarifying questions";
+    "Ask clarifying questions" -> "Compare approaches";
+    "Compare approaches" -> "Approve design";
+    "Approve design" -> "manage-specs";
+    "manage-specs" -> "Write or update Spec";
+    "Write or update Spec" -> "Self-review";
+    "Self-review" -> "Whole-file review";
+    "Whole-file review" -> "Route";
 }
 ```
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+## 4. Establish the Spec Bundle
 
-## The Process
+Invoke `$manage-specs` with the design context before writing. It returns exactly one classification:
 
-**Understanding the idea:**
+- `Update Existing Spec`
+- `Create Independent Spec`
+- `Create Successor Spec`
+- `Need Human Classification`
 
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+Use its classification, confirmation gate, selected Bundle path, and current identity. Do not duplicate its ID allocation, revision, successor, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get that confirmation before writing.
 
-**Exploring approaches:**
+Read the selected template from `skills/hello-scholar/manage-specs/assets/`: use `spec-template.zh_CN.md` for a Chinese repository language preference; otherwise use `spec-template.md`. user-readable Spec prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written.
 
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+Write or revise only the selected Bundle file:
 
-**Presenting the design:**
+```text
+hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
+```
 
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+Fill all seven core sections with the approved design:
 
-**Design for isolation and clarity:**
+1. Value and Current Decision
+2. Problem and Current Facts
+3. Goals and Non-goals
+4. Target Design
+5. Interfaces, Data, and Invariants
+6. Implementation Boundaries
+7. Acceptance and Validation
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+Add a conditional section only when a material risk requires it. The saved revision remains `status: draft` until whole-file review. Do not create an intermediate design document, hand-edit generated Indexes, or write Plan, Tasks, source code, or Record files.
 
-**Working in existing codebases:**
+Run:
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+```sh
+node <hello-scholar-repo>/bin/hello-scholar.js docs check
+node <hello-scholar-repo>/bin/hello-scholar.js docs sync
+node <hello-scholar-repo>/bin/hello-scholar.js docs check
+```
 
-## After the Design
+**Completion:** exactly one selected `spec.md` transaction and CLI-generated Indexes reflect the approved design decision.
 
-**Documentation:**
+## 5. Self-review and whole-file review
 
-- Write the validated design (spec) under the current task's project or worktree root at `hello-scholar/memory/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Choose the spec template by repository language preference:
-  - Chinese default: `assets/spec-template.zh_CN.md`
-  - Otherwise: `assets/spec-template.md`
-  - Do not infer template language from the task prompt when the repository default language is explicit.
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+Review the saved Spec for all seven core sections, any necessary conditional section, placeholders, contradictions, ambiguity, scope, acceptance evidence, language, and agreement with the `manage-specs` classification, ID, revision, and Bundle path. Correct only the selected draft and rerun the same validation sequence.
 
-**Spec language:**
+Present the complete file for one whole-file user review. On explicit acceptance of that exact revision, set `status: accepted`, validate through the same CLI sequence, and stop if the user requests design-only work. Classification confirmation is not Spec acceptance.
 
-- Use the selected template's headings as written. Fill user-readable prose in that same template language. Keep paths, commands, code identifiers, skill names, and technical terms as written.
+**Completion:** the result is either an explicit review stop, a corrected draft awaiting review, or an accepted current Spec.
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+## 6. Route after acceptance
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
-5. **Language check:** Does the spec use the selected template language throughout while preserving required original terms?
+Only after the Spec is accepted, choose one terminal route:
 
-Fix any issues inline. No need to re-review — just fix and move on.
+- Existing-code experiment only: invoke `$record-experiment`; do not create a Plan.
+- Implementation is requested: invoke `$writing-plans`; do not create `plan.md`, `tasks.md`, or source code here.
+- Design-only: end after reporting the accepted Spec path and revision.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
-
-**Implementation:**
-
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
-
-## Key Principles
-
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
-
-## Visual Companion
-
-A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
-
-**Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
-> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
-
-**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only brainstorming.
-
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
-
-- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
-- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
-
-A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
-
-If they agree to the companion, read the detailed guide before proceeding:
-`skills/brainstorming/visual-companion.md`
+**Completion:** the next owner is named without starting its work, or the design-only branch ends.

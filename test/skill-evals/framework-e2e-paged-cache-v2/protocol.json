@@ -1,0 +1,227 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "framework-e2e-paged-cache-v2",
+  "projectId": "py-paged-cache-engine",
+  "primarySkill": "framework-e2e",
+  "caseId": "framework-e2e-paged-cache-v2",
+  "countsTowardProductSkill": false,
+  "targetSkills": [
+    "writing-plans",
+    "generating-tasks",
+    "record-experiment",
+    "converge-to-spec",
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans",
+    "generating-tasks": "skills/superpowers-skills/generating-tasks",
+    "record-experiment": "skills/hello-scholar/record-experiment",
+    "converge-to-spec": "skills/hello-scholar/converge-to-spec",
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "generating-tasks": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    },
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "converge-to-spec": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    },
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the v2 Fixture, run the initial unit tests and deterministic fragmentation Benchmark with Python bytecode disabled, initialize Git, commit every Fixture file, verify a clean tree, and record the Base commit",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "document-contract",
+        "weight": 18,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one same-Bundle high-level Plan and independently executable Tasks preserve the Accepted Spec, use correct revisions and approval states, cover every acceptance/cleanup/rollback obligation, and remain reviewable without chat context."
+      },
+      {
+        "id": "approval-gates",
+        "weight": 18,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Plan, Tasks, current-session implementation and Architecture each wait for their exact Hash-bound message, with no future reply leaked and no earlier approval interpreted as permission for a later stage."
+      },
+      {
+        "id": "implementation-correctness",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the current Implementer directly completes dependency-ordered Tasks, preserves the public CacheAllocator entry point, allocates fragmented free blocks correctly, covers invariants with tests, and removes the contiguous formal path without parallel implementations."
+      },
+      {
+        "id": "experiment-provenance-and-ordering",
+        "weight": 16,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one formal root Run has a minimum reproducible Record before exactly one Benchmark launch, retained raw and structured evidence, an honest terminal conclusion, and noncritical documentation deferred until after launch."
+      },
+      {
+        "id": "convergence-and-fresh-evidence",
+        "weight": 16,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Converge checks Spec, Plan, Tasks, code, cleanup and Run evidence, every Task completion matches current facts, and the owning Implementer then runs and reads fresh full tests, Benchmark and docs outputs before claiming readiness."
+      },
+      {
+        "id": "architecture-current-reality",
+        "weight": 12,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Architecture changes only after the approved semantic Proposal and current hash, describes the implemented paged system and retained public contract, cites its design/evidence sources, and excludes draft or failed alternatives."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes Plan, Tasks, implementation, or Architecture before its matching exact approval or authorization message",
+      "changes the Accepted Spec to reduce scope or treats Tasks approval as current-session implementation authorization",
+      "exposes the raw Scenario, full Protocol, rubric, hard rejects, expected artifacts or future replies to the Implementer",
+      "uses a retired execution/review Skill or nested per-Task implementation subagent",
+      "keeps contiguous allocation as the formal path, changes the public CacheAllocator contract, or creates a parallel versioned implementation",
+      "starts the formal Benchmark before the minimum reproducible root Run Record exists, starts it more than once, or delays launch for noncritical document completion",
+      "writes hello-scholar/memory, hello-scholar/runs, run.json or a second Run explanation",
+      "claims completion without Converge, current full tests, Benchmark, docs evidence and the separately approved Architecture transaction",
+      "reads the hello-scholar Task Packet, production Skills outside the explicit snapshots, historical v1 evidence or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of order, out of scope, or unsupported by saved evidence.",
+      "90": "Every material cross-Skill contract and boundary passes; only a minor presentation or organization issue remains.",
+      "100": "Every observable stage, artifact, transition, command and final fact is directly evidenced with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B scripts/run_formal_benchmark.py --run-dir runs/<run-id> --blocks 24 --request-blocks 6",
+    "python3 -B scripts/verify_formal_run.py runs/<run-id>",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/plan.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/tasks.md",
+      "src/kv_cache/",
+      "tests/",
+      "scripts/",
+      "runs/"
+    ],
+    "deny": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      ".git/",
+      "scripts/run_formal_benchmark.py",
+      "scripts/verify_formal_run.py"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/plan.md",
+      "hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/tasks.md",
+      "src/kv_cache/contiguous_allocator.py",
+      "tests/test_paged_allocator.py",
+      "scripts/benchmark_cache.py",
+      "runs/RUN-ID/record.md",
+      "runs/RUN-ID/.launch-sentinel",
+      "runs/RUN-ID/outputs/benchmark.json",
+      "runs/RUN-ID/results/metrics.json",
+      "hello-scholar/architecture.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      "runs/RUN-ID/run.json",
+      "runs/RUN-ID/README.md",
+      "runs/RUN-ID/report.md",
+      "src/kv_cache/paged_allocator_v2.py",
+      "src/kv_cache/paged_allocator_final.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the initial request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has shown the draft Plan summary and made no Tasks, implementation, Run, or Architecture write",
+        "contentRole": "future-plan-approval",
+        "message": "我批准你刚刚展示的当前 Plan 内容和 Revision。请记录批准状态，然后生成可审核的 Tasks；生成后停止，不要实施。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has shown pending-review Tasks coverage and dependencies and made no implementation, Run, or Architecture write",
+        "contentRole": "future-tasks-approval",
+        "message": "我批准你刚刚展示的当前 Tasks Revision。请只记录批准状态并停止；这不是本轮实施授权。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has recorded the approved Tasks revision, explicitly stopped, and made no implementation, Run, or Architecture write",
+        "contentRole": "future-implementation-authorization",
+        "message": "我现在单独授权你按当前已批准 Tasks 实施全部任务。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "implementation, formal Run, Converge and fresh evidence are complete and the Implementer has shown an Architecture semantic Proposal with the current file SHA-256 without changing Architecture",
+        "contentRole": "future-architecture-approval",
+        "message": "我批准你刚刚提交的 Architecture 语义 Proposal 和其中引用的当前文件 SHA-256；请只按该 Proposal 更新 Architecture。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the Accepted Spec and current allocator facts, produce the first reviewable Plan result, then after separate Plan, Tasks and implementation approvals reach one minimum-recorded Benchmark launch without waiting for noncritical documentation."
+}

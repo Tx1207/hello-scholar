@@ -1,0 +1,148 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "manage-specs-independent",
+  "projectId": "py-batch-retrieval-api",
+  "primarySkill": "manage-specs",
+  "caseId": "manage-specs-independent",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "manage-specs"
+  ],
+  "skillSources": {
+    "manage-specs": "skills/hello-scholar/manage-specs"
+  },
+  "skillExpectations": {
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync and initial tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "identity-classification",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm repository evidence distinguishes the independently deployable batch endpoint, request and partial-failure contract, rollout and rollback lifecycle from existing ranking and tracing ownership."
+      },
+      {
+        "id": "approval-gate",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm round one reports one evidence-backed independent-design classification and stops with zero writes, and creation begins only after the exact future approval."
+      },
+      {
+        "id": "id-and-document-contract",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the new document is draft SPEC-010, allocated after the global maximum in the batch-retrieval Topic, captures the ordered 100-ID partial-failure and rollout contract, and has CLI-generated indexes."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only one justified Spec and generated indexes are written after approval, with runtime, Architecture, Plan, Tasks, Runs and legacy or suffix-named alternatives unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes any project file before the future classification approval",
+      "folds the independently deployable batch API into ranking or tracing without lifecycle evidence",
+      "reuses an existing or retired Spec ID instead of allocating after the global maximum",
+      "creates a non-draft Spec or treats creation approval as Spec acceptance",
+      "modifies source, tests, Architecture, Plan, Tasks, or Runs",
+      "manually edits generated Index content or writes under hello-scholar/memory",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/batch-retrieval/SPEC-010-batch-retrieval-api/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/batch-retrieval/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/batch-retrieval/SPEC-010-batch-retrieval-api/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/batch-retrieval/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/2026-08-01-batch-retrieval.md",
+      "hello-scholar/specs/batch-retrieval/SPEC-003-batch-v2/spec.md",
+      "hello-scholar/memory/",
+      "src/batch_api.py",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original request is delivered and no project bytes have changed",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has reported one evidence-backed classification and stopped without writes",
+        "contentRole": "future-classification-decision",
+        "message": "同意把它归类为独立设计并创建新 Spec。使用全局下一个 ID SPEC-010，在 batch-retrieval Topic 下写 draft spec.md；只用 docs sync 更新生成 Index，不创建 Plan、Tasks、代码或 Run。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read repository ownership evidence, present an independent-Spec classification, and stop before creation until the hash-bound approval arrives."
+}

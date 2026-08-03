@@ -1,0 +1,182 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "brainstorming-api-route",
+  "projectId": "node-retrieval-api",
+  "primarySkill": "brainstorming",
+  "caseId": "brainstorming-api-route",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "brainstorming",
+    "manage-specs",
+    "writing-plans"
+  ],
+  "skillSources": {
+    "brainstorming": "skills/superpowers-skills/brainstorming",
+    "manage-specs": "skills/hello-scholar/manage-specs",
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "brainstorming": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    },
+    "writing-plans": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync and npm test, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "dialogue-and-alternatives",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm project, caller and interface facts are read before one material API question, and synchronous batch, asynchronous job and client aggregation are all compared before recommending the ordered per-item synchronous contract."
+      },
+      {
+        "id": "whole-spec-review",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm that after the identity decision, one complete seven-core-section Spec with only material conditional sections is presented as a single review unit, and no project write occurs until its exact whole-document approval."
+      },
+      {
+        "id": "api-spec-identity",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm manage-specs classifies an independent identity and stops before writing, then only after identity approval prepares the complete draft and only after whole-document approval produces SPEC-014 with the reviewed 100-item API contract and CLI-generated current indexes."
+      },
+      {
+        "id": "planning-handoff",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the approved whole Spec is written exactly, checked and self-reviewed as draft, then the already stated continue intent routes to writing-plans by naming its inputs and owner while creating no Plan, Tasks or implementation."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes code or a formal document before both the identity and whole-Spec approvals",
+      "skips the caller and interface evidence or fails to compare all three requested directions",
+      "creates a date-named memory document or writes a new Spec before its creation approval",
+      "asks for section-by-section approval or writes content that was not part of the reviewed complete Spec",
+      "creates Plan, Tasks, or implementation instead of stopping at the writing-plans transition",
+      "offers or starts the retired Visual Companion",
+      "changes source, clients, tests, package files, Architecture, or Runs",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/batch-retrieval/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "clients/",
+      "test/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/batch-retrieval/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/specs/2026-08-01-batch-api-design.md",
+      "hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/plan.md",
+      "hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/tasks.md",
+      "src/batch-retrieval.js"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the initial design request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has read project and caller facts and asked one material API question",
+        "contentRole": "future-clarification-answer",
+        "message": "批量上限固定为 100。导出服务需要一次请求拿到逐项结果；单项缺失或失败不能丢掉成功项，并且调用方要能按项重试。本轮不需要异步进度查询。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "all three approaches and one recommendation have been presented without writes",
+        "contentRole": "future-approach-selection",
+        "message": "选择同步批量入口。请保留异步作业和客户端聚合的取舍说明，但把同步逐项结果作为推荐目标。现在进入 manage-specs，只做 Spec 身份判断并停下来，不要写文件。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "manage-specs has proposed an independent identity and stopped before project writes",
+        "contentRole": "future-spec-identity-decision",
+        "message": "同意把它作为独立 Spec，使用全局下一个 ID SPEC-014 和 batch-retrieval Topic。请先一次给出包含七个核心章节和必要条件章节的完整 Spec 草稿让我整份审核；现在仍不要写文件。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "one complete Spec has been presented as a whole review unit and no project writes exist",
+        "contentRole": "future-whole-spec-approval",
+        "message": "完整 Spec 整份审核通过。按刚才审阅的精确内容写入 draft SPEC-014，运行 CLI 生成 Index 并自审；保持 draft，不冒充正式 acceptance。完成后按我已经说明的继续意图转交 writing-plans，只说明规划 owner 和输入，不创建 plan.md、tasks.md 或代码。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the API callers and current contracts, ask the first material question, and deliver the first evidence-backed design comparison before any document write."
+}

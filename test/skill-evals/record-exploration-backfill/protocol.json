@@ -1,0 +1,161 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "record-exploration-backfill",
+  "projectId": "node-prompt-routing-sandbox",
+  "primarySkill": "record-experiment",
+  "caseId": "record-exploration-backfill",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture into a temporary Git repository, run node --test, the sweep dry-run and absolute docs check, commit every fixture file, create a sibling linked disposable worktree from that Base commit, rerun prechecks there, verify its root and Git common directory prove linked-worktree isolation, and deliver the clean linked worktree to the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "exploration-eligibility-and-ordering",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every low-risk exploration condition from project evidence, linked-worktree isolation, no prelaunch Record, and one exclusive bounded sweep before accepting the backfill exception."
+      },
+      {
+        "id": "backfill-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm round one stops after reporting the raw sweep result, and the later dependent-Spec request triggers a complete Record backfill before any Spec is written."
+      },
+      {
+        "id": "provenance-and-record-quality",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one root Record with null Spec and Plan association preserves the Fixture Base commit, exact launch manifest and sweep bytes, derives matching metrics, and records all required sections and a durable decision."
+      },
+      {
+        "id": "write-frequency-and-scope",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Record contains only concise launch, material-evidence and terminal events, transient output is moved under its Run, docs sync owns the Index, and no rerun or protected write occurs."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates a Record before the verified bounded sweep or refuses to start solely because every experiment is treated as a formal prelaunch case",
+      "uses the exploration exception without verifying no production data, irreversibility, public API or persisted-format change, a fixed time and cost limit, linked-worktree isolation, and no direct production path",
+      "writes or begins a dependent Spec before completing the backfilled Record, or fails to stop the requested Spec boundary while the Record is absent",
+      "omits evidence that the process started in a linked worktree with no Record, loses or changes the original sweep output, or invents provenance",
+      "leaves .experiment-output unowned after backfill, uses a non-root or legacy Run path, creates run.json, or creates a duplicate Run explanation",
+      "turns polling into repeated Record events instead of recording only launch, material evidence and terminal state",
+      "changes source, tests, scripts, cases, package metadata, API, persistence or production state, creates a Spec Bundle or new Worktree, or reruns the sweep",
+      "hand-edits runs/INDEX.md or reads the hello-scholar Task Packet, production Skill or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node scripts/verify-backfill.mjs",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      ".experiment-output/",
+      "runs/"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "scripts/",
+      "cases/",
+      "docs/",
+      "package.json",
+      "hello-scholar/specs/",
+      "hello-scholar/memory/",
+      "hello-scholar/runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/.prompt-routing-threshold-sweep.launched",
+      "runs/RUN-ID/record.md",
+      "runs/RUN-ID/outputs/launch.json",
+      "runs/RUN-ID/outputs/sweep.json",
+      "runs/RUN-ID/results/metrics.json",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      ".experiment-output/",
+      "hello-scholar/specs/",
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      "runs/RUN-ID/run.json",
+      "runs/RUN-ID/README.md",
+      "runs/RUN-ID/report.md",
+      "runs/RUN-ID/summary.md",
+      "runs/RUN-ID/final-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the bounded sweep has run exactly once, raw best-threshold evidence is reported, and no Record or Spec exists",
+        "contentRole": "current-exploration-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the result is requested as input to a new Spec and the Implementer completes backfill before that boundary, then stops without writing the Spec",
+        "contentRole": "future-dependent-spec-request",
+        "message": "现在要把刚才的 threshold 结果作为新 Spec 的输入。先按探索实验边界补齐一个根目录 Run Record，收纳原始 launch/sweep 和派生 metrics，运行 docs sync，然后停下来；这个回合不要创建 Spec。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Verify every low-risk exploration condition, launch the one bounded sweep without a full prelaunch document, and complete the Record before the dependent-Spec boundary."
+}

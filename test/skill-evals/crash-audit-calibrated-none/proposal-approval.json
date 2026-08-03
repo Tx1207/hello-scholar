@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-crash-audit-calibrated-none-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "063f3bb6f91937c65e74263d83bd2f6555b7826d013986167ad8f39485098f57",
+  "protocolSha256": "f88f363c13b4fe61c2c78a1da222abd43bfdfe7bd00b257e371d808c01fb691b",
+  "fixtureSha256": "d8e22e47ee0fa1fadc0b837d6dc88b432463c2f9b952c910e47ffe4e0d230fbf",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

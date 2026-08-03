@@ -1,0 +1,133 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "docs-maintenance-check",
+  "projectId": "py-spec-bundle-validator",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-check",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the Fixture, run the unit tests and read-only check verifier, initialize Git, commit every Fixture file, and verify a clean tree before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "mode-and-command-selection",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the request is handled in docs-maintenance check mode with the absolute read-only docs check command and unit tests, without sync, repair, Recover, Architecture or implementation work."
+      },
+      {
+        "id": "diagnostic-fidelity",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the report distinguishes the unsupported Record Schema error from the plan-stale notice, includes both relative paths and meanings, and routes each repair to a future owner."
+      },
+      {
+        "id": "zero-write-boundary",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm byte, mtime and complete Git-state evidence proves no tracked, staged, working-tree or untracked file changed, including generated Indexes and malformed inputs."
+      },
+      {
+        "id": "evidence-and-honesty",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm saved command output and exit status show tests passing and docs check failing for the reported error, without describing the nonzero check as successful or omitting notices."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "runs docs sync or changes any tracked, staged, working-tree, or untracked project file",
+      "repairs Front Matter, updates Plan bindings, touches an Index, or creates a report without authorization",
+      "claims docs check succeeded or omits either the invalid Record error or the Stale Plan notice",
+      "uses a non-check maintenance mode or enters design, implementation, Architecture, or Recover work",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B scripts/verify_check_contract.py <hello-scholar-repo>"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "hello-scholar/",
+      "runs/",
+      "src/",
+      "tests/",
+      "scripts/",
+      "AGENTS.md"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "repair-report.md",
+      "hello-scholar/recovery.md",
+      "hello-scholar/architecture-proposal.md",
+      "runs/20260801-docs-check/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the read-only documentation check request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run the read-only document check and report the first real diagnostic with its owner and meaning without attempting repair."
+}

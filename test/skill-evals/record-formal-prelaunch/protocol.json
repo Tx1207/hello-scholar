@@ -1,0 +1,151 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "record-formal-prelaunch",
+  "projectId": "py-cache-benchmark",
+  "primarySkill": "record-experiment",
+  "caseId": "record-formal-prelaunch",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync, docs check, unit tests, and the benchmark dry-run, initialize Git, commit every resulting fixture file, verify a clean tree and record the Base commit without launching the formal benchmark",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "prelaunch-gate-and-identity",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one matching root Run Record existed before process start, named the exact command, CWD and artifact locations, and is bound to one exclusive launch sentinel and process-start manifest."
+      },
+      {
+        "id": "reproducibility-and-provenance",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Record preserves the Fixture Base commit, Python environment, fixed config, request trace and seed, expected and failure signals, stop condition, and mutually consistent process, metric and log evidence."
+      },
+      {
+        "id": "run-layout-and-index-ownership",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Run uses the root runs/<run-id>/record.md layout, owns raw output, metrics and logs in their declared directories, declares checkpoints, and updates runs/INDEX.md only through docs sync."
+      },
+      {
+        "id": "terminal-evidence-and-scope",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm final status, times, results, conclusion, decision and next action match retained evidence, exactly one launch occurred, and no protected project input or duplicate Run document changed."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "starts the formal benchmark before runs/<run-id>/record.md exists with the exact command, CWD, inputs, expected signals, failure signals, stop condition and artifact paths",
+      "writes a new Run under hello-scholar/memory or hello-scholar/runs, creates run.json, or creates more than one explanatory document in the Run",
+      "omits required Front Matter, any of the 12 Record sections, the Base Git commit, configuration, request trace, seed, or process evidence",
+      "does not preserve outputs/process-start.json, results/metrics.json and logs/benchmark.log or claims a result inconsistent with those files",
+      "runs the benchmark more than once, changes the algorithm, tests, scripts, inputs, Spec Bundle, Architecture or dependencies, or manufactures a favorable result",
+      "hand-edits runs/INDEX.md, leaves it stale, or fails to use the absolute hello-scholar docs sync owner",
+      "creates README.md, report.md, summary.md or final-report.md in the Run",
+      "reads the hello-scholar Task Packet, production Skill or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B scripts/verify_formal_run.py runs/RUN-ID",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "runs/"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "scripts/",
+      "benchmark/",
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/",
+      "hello-scholar/memory/",
+      "hello-scholar/runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/RUN-ID/record.md",
+      "runs/RUN-ID/.launch-sentinel",
+      "runs/RUN-ID/outputs/process-start.json",
+      "runs/RUN-ID/results/metrics.json",
+      "runs/RUN-ID/logs/benchmark.log",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      "runs/RUN-ID/run.json",
+      "runs/RUN-ID/README.md",
+      "runs/RUN-ID/report.md",
+      "runs/RUN-ID/summary.md",
+      "runs/RUN-ID/final-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicitly authorized formal Spec-acceptance benchmark request is delivered",
+        "contentRole": "current-request-and-run-authorization",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Create only the minimum reproducible Record needed for the authorized formal benchmark, launch once, then complete noncritical documentation and terminal evidence off the launch path."
+}

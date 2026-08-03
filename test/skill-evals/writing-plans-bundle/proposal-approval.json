@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-writing-plans-batch-v1-bundle-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "dea6b42a0980c7e61b941d4af2748184d399ec4eea4460748592a955db9ecb65",
+  "protocolSha256": "e04da35846b2315a324eede54fab457d391df5ebde39ea89934754c6a1cd0930",
+  "fixtureSha256": "ffd01092431e667fd9e9b2ae7a3f4fdce48e17b5eba76efc5233608742cd7c27",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

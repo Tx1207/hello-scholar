@@ -99,7 +99,44 @@
 - 确实添加依赖时，要说明原因，让这个选择可见，而不是悄悄塞进 manifest。
 - 依赖变更涉及 manifest、lockfile、文档或部署配置时，同步更新并说明影响。
 
-## 9. 沟通
+## 9. 函数合同注释
+
+**维护者读函数体时，应该能立刻看到它的合同。**
+
+- 生产代码或可复用 script/helper 中，每个新增或发生行为修改的命名函数和方法，都必须在函数体第一处放一条简洁的合同注释。
+- 注释至少写明 `Purpose`、`Input` 和 `Output`。函数可能抛错、修改外部状态、写文件、启动任务或产生其他非返回值影响时，再写明 `Errors` 或 `Side effects`。
+- Python 使用函数体第一条 docstring；JavaScript/TypeScript 使用函数体第一条注释。合同必须具体；函数行为变化时，同一变更内同步更新注释。
+- Eval Fixture 和已保存的 Baseline/Live evidence 描述外部项目或历史事实，不为满足仓库风格而改写。匿名 callback 默认豁免，除非其中包含可复用行为。
+
+示例：
+
+```python
+def parse_record(path):
+    """Purpose: 解析一个 Record；Input: Markdown 路径；Output: 已校验 metadata；Errors: 输入格式错误。"""
+```
+
+```javascript
+function parseRecord(path) {
+  // Purpose: 解析一个 Record；Input: Markdown 路径；Output: 已校验 metadata；Errors: 输入格式错误。
+}
+```
+
+## 10. Sonnet Eval 子 Agent 恢复
+
+**交接损坏意味着证据无效，不是降低 Eval 合同的理由。**
+
+- Eval Implementer 和 Reviewer 都使用新的 Agent ID、实际 dispatch selector `model: sonnet` 与 `fork_turns: none`；两个角色必须使用不同 ID。Protocol、Baseline、Scorecard、manifest、review 和运行证据只保存 canonical `model: claude-sonnet-5`，不能保存 selector。
+- 只通过 direct collaboration `spawn_agent` 发送简短明文任务。已完成运行的 Reviewer 只接收一个绝对 `reviewer-task.md` 路径；handoff 不复制 rubric、答案或 transcript。
+- 不得复制、转发、解码或把 `gAAAA...` payload 当作 Agent 任务。Agent 只收到此类 payload 或无法解析任务时，丢弃本次尝试，不得使用其交互、输出或 Reviewer 结论作 Eval evidence。
+- 通过 Agent 的真实回复和已保存运行证据验证交付，不以加密、masked tool trace 或文字声明替代。
+- 每次最多一个正式 Eval Agent。不得用 `codex exec`、外部 runner、API fallback、`codex doctor` 或主 Agent 自审替代独立 Sonnet 运行。
+- Sonnet 不可用时停止并报告环境阻塞；不得回退到 Terra、Opus 或其他模型，也不得把替代模型或 selector 写入持久化证据。
+- Implementer 明文投影只能包含隔离 Fixture 目录、当前用户消息、项目 `AGENTS.md`、已授权 Skill snapshot 路径/Hash（如适用）、绝对 CLI、读取边界和安全停止条件；不得泄漏 Scenario、Protocol、rubric、hard rejects、预期答案或未来回复。
+- 启动 Eval Agent 前检查 live Agent registry；只有没有运行中 Eval Agent 时才 dispatch。等待实际最终回复后再次检查 registry，确认前一 Agent 为 `completed` 才能启动下一角色。
+- 只能通过 direct collaboration `spawn_agent` 分配工作。shell 命令、local `exec`、masked trace 或文字声明都不是任务交付，也不能构成 evidence。
+- 如果一次 direct dispatch 失败或没有返回新的 Agent handle，进行一次只读 registry 检查、保留准备好的 evidence，并报告原始工具错误；同一轮不得重复无效 dispatch、local `exec` 或伪造重试。
+
+## 11. 沟通
 
 **说清楚做了什么、为什么做、哪里不确定。**
 
@@ -108,7 +145,7 @@
 - 对不确定性要精确，告诉用户该验证什么。例如：“我不确定这个库是否支持 streaming，需要检查 X”。
 - 不要用“我觉得这应该能工作”替代可验证说明。
 
-## 10. 常见失败模式
+## 11. 常见失败模式
 
 **识别到失败模式时，停下来而不是继续工作。**
 常见失败模式：

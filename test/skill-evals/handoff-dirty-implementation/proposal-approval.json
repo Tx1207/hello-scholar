@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-handoff-dirty-implementation-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "d687d7f38fdd872ff91f0c588ab8863a080751b241ed63374d9a43aa66883dc4",
+  "protocolSha256": "855d35b96cc76af7459ee279c23d96324fc962de668a6a2119cc5575e34d7e4b",
+  "fixtureSha256": "e7c0638bd3aa916585612e1ad07cb2ce57a771905dd83d8bb18114d643e68c59",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

@@ -1,0 +1,153 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "docs-maintenance-recover",
+  "projectId": "node-agent-eval-repository",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-recover",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the Fixture with missing Architecture and Indexes, run node tests and read-only docs check, initialize Git, commit every Fixture file, and verify a clean tree before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "recover-mode-selection",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm missing navigation plus missing formal Architecture is routed to Recover, separating deterministically recoverable indexes from an Architecture draft that still needs human review."
+      },
+      {
+        "id": "derived-index-recovery",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the absolute docs sync CLI recreates exactly the global Spec, agent-evaluation Topic and Run indexes from current source documents without hand-authored tables."
+      },
+      {
+        "id": "diagnostic-coverage",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response reports SPEC-421 as orphaned, SPEC-420 Tasks as stale, the provider sample Run as unassociated and formal Architecture as missing with concrete paths."
+      },
+      {
+        "id": "review-draft-quality",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the chat-only Architecture draft is complete, source-traceable, explicitly marked Needs Human Review and separates verified current facts from inferences rather than claiming review or implementation."
+      },
+      {
+        "id": "formal-write-boundary",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm formal architecture.md remains absent and only three generated Indexes are written, with no recovery report, draft file, Spec, Plan, Tasks, Record, Run, runtime or package change."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates or overwrites hello-scholar/architecture.md without a separate approved Architecture Proposal and current hash",
+      "writes a recovery report, Architecture draft file, Spec, Plan, Tasks, Record, Run, source, test, package, or project-rule change",
+      "manually authors generated Index tables instead of using the absolute hello-scholar docs sync CLI",
+      "omits the orphan Spec, Stale Tasks, unassociated Run, or missing Architecture diagnosis",
+      "presents inferred Architecture as current fact or omits the Needs Human Review marker",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/agent-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization/",
+      "hello-scholar/specs/agent-evaluation/SPEC-421-evaluator-provenance/",
+      "runs/20260727-1800-provider-sample/record.md",
+      "src/",
+      "test/",
+      "package.json",
+      "AGENTS.md"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/agent-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/architecture-draft.md",
+      "hello-scholar/recovery.md",
+      "recovery-report.md",
+      "runs/20260801-recovery/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the recover-to-reviewable-state request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Separate deterministic index recovery from review-only Architecture inference, restore owned indexes, and present the first evidence-backed recovery finding."
+}

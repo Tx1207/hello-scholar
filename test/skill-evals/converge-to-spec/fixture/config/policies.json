@@ -1,0 +1,19 @@
+{
+  "tenant-a": {
+    "defaultAllow": false,
+    "rules": [
+      {
+        "id": "allow-editors",
+        "actorRole": "editor",
+        "resource": "papers",
+        "effect": "allow"
+      },
+      {
+        "id": "deny-suspended",
+        "actorRole": "suspended",
+        "resource": "papers",
+        "effect": "deny"
+      }
+    ]
+  }
+}

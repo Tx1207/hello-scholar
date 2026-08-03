@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-worktree-explicit-bundle-isolation-v1",
+  "decision": "approved",
+  "scenarioSha256": "37ae9038b727e8272690113129852a4b0761b0253f7f7000482a9f0ca06a2ab2",
+  "protocolSha256": "b22d30cc085637df5a1464f71948b4e4e4537086744f0b4355dcda59b100323c",
+  "fixtureSha256": "74cf31ea1af3151b03af1feb7bb6e9740640c905702fdbc63b97ef99b640721b",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

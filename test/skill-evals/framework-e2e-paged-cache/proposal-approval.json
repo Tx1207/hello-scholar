@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-framework-e2e-paged-cache-v2",
+  "decision": "approved",
+  "scenarioSha256": "9fe8cf995aecbe1a684bc1e1f8794521c435efc8bb504905191f85e8f91d5afa",
+  "protocolSha256": "baf04608d17acdce547acbe0c64604a7a05a82ef27255c17fb3575fe35fdc568",
+  "fixtureSha256": "1dd3ba5c756f796d5d2fa7416adf900e84fc19a290e1b8dc439d506e93f443c3",
+  "replyEvidence": "用户在当前会话明确批准 proposal-framework-e2e-paged-cache-v2 及其当时绑定的 Scenario、Protocol 与 Fixture Hash。"
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-router-fast-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "6d8a6d0c807b97b57e8e36e96aa4113c0010da6d6753be6adf0777641ee8cac5",
+  "protocolSha256": "690f3109c4eda6c9f3cdd797a7cebea722f2cb388876acb796bd1e126d2c84db",
+  "fixtureSha256": "9002fb65ec9a7c825626fb8b4f1a0abc8cf6f34e4654861fa32efe6f673123a5",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

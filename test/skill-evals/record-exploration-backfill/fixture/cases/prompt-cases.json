@@ -1,0 +1,11 @@
+{
+  "cases": [
+    {"prompt": "summarize this paper", "expected": "fast", "confidence": 0.92},
+    {"prompt": "fix a typo in citation", "expected": "fast", "confidence": 0.78},
+    {"prompt": "design a new retrieval API", "expected": "design", "confidence": 0.31},
+    {"prompt": "compare routing tradeoffs", "expected": "design", "confidence": 0.58},
+    {"prompt": "run the accepted benchmark", "expected": "experiment", "confidence": 0.67},
+    {"prompt": "evaluate model quality", "expected": "experiment", "confidence": 0.72}
+  ],
+  "thresholds": [0.5, 0.65, 0.8]
+}

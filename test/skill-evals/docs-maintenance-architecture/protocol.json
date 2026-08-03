@@ -1,0 +1,145 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "docs-maintenance-architecture",
+  "projectId": "py-retrieval-architecture",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-architecture",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the Fixture, run docs sync and unit tests, initialize Git, commit every resulting Fixture file, record the Architecture hash, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "proposal-and-source-evidence",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm round one reads Architecture, completed SPEC-310 Bundle, implementation, tests, Recall Eval Record and Git facts, then presents the current SHA-256 and a source-backed semantic diff of additions, modifications and retained facts."
+      },
+      {
+        "id": "approval-and-hash-gate",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm round one is write-free and the exact proposed semantics are applied only after approval bound to the observed Architecture hash, with any hash or proposal drift requiring a new review."
+      },
+      {
+        "id": "current-reality-accuracy",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Architecture describes the implemented lexical-vector score fusion and stable post-filter ordering, cites SPEC-310 and Recall Eval, preserves true process boundaries, and excludes every unimplemented SPEC-311 capability."
+      },
+      {
+        "id": "single-file-boundary",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the approved second round changes only hello-scholar/architecture.md and creates no proposal file, report, second Architecture, Spec, Plan, Tasks, Record, Index, runtime or Git-history mutation."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes Architecture or any other file before the Eval main agent approves the observed Proposal and current Architecture hash",
+      "writes an unapproved semantic change or continues after the approved file hash changes",
+      "describes Draft SPEC-311 or another unimplemented design as current system reality",
+      "changes any Spec, Plan, Tasks, Record, Index, source, test, result, project rule, or Git history",
+      "creates an Architecture proposal file, recovery report, second Architecture, Plan, Tasks, or Run",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/architecture.md"
+    ],
+    "deny": [
+      "hello-scholar/specs/",
+      "runs/",
+      "src/",
+      "tests/",
+      "results/",
+      "AGENTS.md"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/architecture.md"
+    ],
+    "forbidden": [
+      "hello-scholar/architecture-proposal.md",
+      "hello-scholar/architecture-draft.md",
+      "hello-scholar/recovery.md",
+      "architecture-report.md",
+      "runs/20260801-architecture-update/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the evidence-bound Architecture proposal request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "a source-backed semantic diff Proposal and current Architecture hash have been presented with zero workspace writes",
+        "contentRole": "future-architecture-proposal-approval",
+        "message": "批准你刚才提交的 Architecture 语义 diff Proposal，并确认当前 hello-scholar/architecture.md 的 SHA-256 是 f8a8026855e11793a1fede29f57302ebdd59ea4ccc07e14e12ff21f9b6ef3534。只应用该 Proposal 到正式 Architecture；不要修改其他文件，也不要写入 SPEC-311 的草案能力。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read current Architecture and milestone evidence, then present the current hash and first source-backed semantic change proposal before any write."
+}

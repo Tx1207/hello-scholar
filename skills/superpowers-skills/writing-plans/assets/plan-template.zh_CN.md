@@ -1,91 +1,72 @@
-# [功能名称] 实现计划
-
-> **给代理执行者:** 必需子技能：`superpowers:subagent-driven-development`（推荐）或 `superpowers:executing-plans`。按任务逐项执行，并用 checkbox (`- [ ]`) 语法追踪步骤。
-
-**目标:** [一句话说明要构建什么]
-
-**规格来源:** [作为行为真源的 spec / design / PRD / issue 路径，或写“未提供”]
-
-**真源规则:** spec 定义行为、边界、invariants 和验收；plan 定义执行。两者冲突时，先暂停并询问，再写代码。
-
-**范围边界:** [完整 spec，或覆盖的子集和延后的 spec 章节]
-
-**架构:** [用 2-3 句话说明实现方案]
-
-**技术栈:** [关键技术或库]
-
+---
+schema: 1
+kind: plan
+spec: SPEC-000
+spec_revision: 1
+revision: 1
+status: draft
+title: <清晰的实施计划标题>
+summary: <具体的实施策略摘要>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
 ---
 
-## 假设
+# <清晰的实施计划标题>
 
-- [假设]
+## 1. Implementation Goal
 
-## 文件结构
+<说明本 Plan 要实施的已接受结果。>
 
-- 修改: `path/to/file`
-  - [职责和原因]
+## 2. Scope
 
-## 实现任务
+<写明覆盖的 Spec 章节、延后章节和明确非目标。>
 
-### 任务 1：[组件名称]
+## 3. Technical Strategy
 
-**文件:**
-- 修改: `path/to/file`
-- 测试: `tests/path/to/test_file.py`
+<描述实施方法，不重新开启已接受的产品决定。>
 
-**规格覆盖:**
-- 规格章节: [真源中的精确标题、需求 ID，或带行号链接的条目]
-- 验收门槛:
-  - [该任务必须满足的行为或 invariant]
-  - [错误、回归、disabled-path 或集成契约]
-- 不在范围:
-  - [刻意延后的相关工作]
+## 4. Affected Modules
 
-- [ ] **步骤 1：编写失败测试**
+<列出每个受影响模块及其在策略中的职责。>
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+## 5. File Change Boundaries
 
-- [ ] **步骤 2：运行聚焦测试并确认失败**
+- Add: <路径，或 None 与原因>
+- Modify: <路径，或 None 与原因>
+- Move or Migrate: <路径，或 None 与原因>
+- Delete: <路径，或 None 与原因>
+- Must Not Touch: <路径或边界>
 
-运行: `pytest tests/path/to/test_file.py::test_specific_behavior -q`
-预期: [预期失败及原因]
+## 6. Interface Changes
 
-- [ ] **步骤 3：实现最小变更**
+<描述改变的公共接口、数据合同、兼容行为或状态；不适用时写 None 与原因。>
 
-```python
-def function(input):
-    return expected
-```
+## 7. Implementation Phases
 
-- [ ] **步骤 4：运行聚焦测试并确认通过**
+<描述按依赖排序的阶段及其可观察结果。>
 
-运行: `pytest tests/path/to/test_file.py::test_specific_behavior -q`
-预期: [预期通过结果]
+## 8. Test and Experiment Strategy
 
-- [ ] **步骤 5：提交**
+<描述 Spec 要求的单元、集成、回归、Benchmark、Eval 或正式实验证据。>
 
-```bash
-git add path/to/file tests/path/to/test_file.py
-git commit -m "feat: add specific feature"
-```
+## 9. Migration Sequence
 
-## 自检记录
+<描述兼容窗口、转换顺序和切换门；没有迁移时写 None 与原因。>
 
-- 真源: [已写明规格来源和冲突规则；若收窄范围，边界明确；或确认没有 spec]
-- 规格覆盖: [每个 spec 需求都映射到任务和验收门槛]
-- 契约保持: [为受影响行为、disabled path、错误、API、数据和集成加入回归检查]
-- 简化检查: [为什么这是最小有用变更]
-- 风险检查: [已知风险和缓解方式]
+## 10. Cleanup
 
-## 执行交接
+<写明废弃 caller、配置、数据、flag、依赖或文件，以及删除前所需证据；不适用时写 None 与原因。>
 
-计划已保存到当前任务的项目根目录或 worktree 根目录下的 `hello-scholar/memory/plans/<filename>.md`。
+## 11. Rollback
 
-执行方式有两种：
+<描述恢复动作、保留证据和触发回滚的边界；不适用时写 None 与原因。>
 
-1. 子代理执行（推荐）- 每个任务派发新的 subagent，并在任务间 review。
-2. 当前会话执行 - 在本会话中使用 executing-plans，并通过 checkpoint review。
+## 12. Tasks Generation Rules
+
+<描述交给 generating-tasks 的 tracer Task 覆盖、依赖、并行边界、验证和明确 TDD 选择。>
+
+## Plan Self-Review
+
+<确认与当前 Accepted Spec revision 对齐、文件边界精确、迁移/清理/回滚已覆盖，以及未决设计决定。>
+
+Plan 已写入当前 Spec Bundle，等待整份用户审核；批准后调用 `$generating-tasks`。

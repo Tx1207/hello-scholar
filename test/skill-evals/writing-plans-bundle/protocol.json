@@ -1,0 +1,149 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "writing-plans-bundle",
+  "projectId": "py-event-export-service",
+  "primarySkill": "writing-plans",
+  "caseId": "writing-plans-bundle",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "writing-plans"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync and initial tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "source-of-truth-and-gates",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Architecture, accepted SPEC-017 revision 3, source, tests, callers and rules are read as the fixed design, with revision 1 remaining draft until the exact future Plan approval."
+      },
+      {
+        "id": "high-level-plan-contract",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm plan.md is an independently reviewable high-level implementation strategy with goal, scope, approach, module and file boundaries, interfaces, phases and testing, without Task checklists, source-level steps or executor choices."
+      },
+      {
+        "id": "coverage-and-migration",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every accepted criterion and Must Not Touch boundary is mapped, including compatibility, migration window, cleanup gate, error contract, rollback and the rule for later Tasks generation."
+      },
+      {
+        "id": "scope-and-terminal-routing",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the same-Bundle Plan and generated indexes change, approval changes only after review, and the run stops with generating-tasks as next owner without Tasks, code, Runs or upstream edits."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes outside the current Bundle plan and generated Indexes",
+      "writes under hello-scholar/memory or creates tasks.md, code, tests, Runs, or an implementation report",
+      "includes Task checkboxes, complete implementation code, executor micro-steps, per-step commits, or an execution-agent menu",
+      "omits an accepted AC, interface, migration, cleanup, rollback, or Must Not Touch boundary",
+      "marks the Plan approved before its matching future user reply or begins implementation after approval",
+      "changes the Accepted Spec or silently makes a new architecture or public-contract decision",
+      "routes anywhere other than generating-tasks after Plan approval",
+      "reads the hello-scholar Task Packet, current production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/event-export/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "clients/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/event-export/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/tasks.md",
+      "implementation-report.md",
+      "src/gzip_exporter_v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Plan request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the draft Plan is complete and summarized, while Tasks, implementation, Runs, and Architecture remain unchanged",
+        "contentRole": "future-plan-decision",
+        "message": "批准当前 plan.md revision 1。只把 Plan 状态更新为 approved，保持 Spec、代码和其他文档不变；说明下一步 owner 是 generating-tasks 后停止，不创建 tasks.md。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the Accepted Spec and real implementation boundaries, then create the first reviewable high-level Plan and stop before Tasks or code."
+}

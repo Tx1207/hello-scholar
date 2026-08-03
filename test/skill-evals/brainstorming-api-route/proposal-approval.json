@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-brainstorming-batch-v1-api-route-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "9019bde78938e2aa3daeec18fafb20f8e5265099f2ee3544dbb866c870f7a7cf",
+  "protocolSha256": "b356dc19f13a13675a38a34c243fc4359ead2aea011add3d7ba4dc7c403d5165",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

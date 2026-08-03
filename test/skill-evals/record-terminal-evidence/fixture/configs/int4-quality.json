@@ -1,0 +1,6 @@
+{
+  "bits": 4,
+  "evaluation_samples": 1200,
+  "maximum_accuracy_drop": 0.02,
+  "seed": 0
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-tdd-user-trigger-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "60a722973b5b37d40fd822a4a6d878e06e5ffb576f866b01490efd6b9043df7d",
+  "protocolSha256": "2d70f24dc1f24509255368d57e0038b2781f2160ca8b13485cd615140684afcd",
+  "fixtureSha256": "bd6ff75d8eedb8ee39dacb19c2eec3e89f0e7edeaeec753d17d7079576755456",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

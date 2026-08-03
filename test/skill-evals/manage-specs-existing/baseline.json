@@ -1,0 +1,309 @@
+{
+  "proposalId": "proposal-manage-specs-batch-v1-existing-protocol-v2",
+  "scenarioSha256": "0ba0386c0c0f0545ebe53a071993bede13b8c2a00ded2f8d01d14732bb85c854",
+  "protocolSha256": "5c64ae8286e11aa4645635c0fd77bdcd6699bf9348844667df6dede669251164",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "summary": "The absent manage-specs guidance allowed an otherwise correct document revision to leave untracked Python bytecode outside the approved scope.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "manage-specs": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "c869f2b86b5e541eaa5eb92e4b36794688686e68",
+    "checks": [
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The temporary Fixture was at the recorded Base commit with no tracked or untracked changes before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "136d94e945a674d95f3e8905398ff7fd4472600885d8327b9c45ceaeeb07f4e1"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Python Fixture test suite passed before the Implementer ran with bytecode writing disabled.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "136d94e945a674d95f3e8905398ff7fd4472600885d8327b9c45ceaeeb07f4e1"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs check passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/environment.md",
+            "sha256": "136d94e945a674d95f3e8905398ff7fd4472600885d8327b9c45ceaeeb07f4e1"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "/root/manage_specs_existing_baseline",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "/root/manage_specs_existing_reviewer",
+      "model": "gpt-5.6-terra",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "existing-identity-and-revision",
+      "passed": true,
+      "reason": "SPEC-001 retained its identity, Topic, and Bundle path while advancing exactly once to Revision 3.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+        }
+      ]
+    },
+    {
+      "id": "documented-design-change",
+      "passed": true,
+      "reason": "The saved Spec records phrase priority, the 0.68 fallback threshold, and preserved public and diversity contracts.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": false,
+      "reason": "The final tree contains two untracked Python bytecode files outside the three allowed documentation paths.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/tree.md",
+          "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+        },
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+        }
+      ]
+    },
+    {
+      "id": "no-forbidden-eval-reads",
+      "passed": true,
+      "reason": "The independent Reviewer found no evidence that the Implementer read the Task Packet, production Skill, or another Eval case.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved final commands exited zero in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+            "sha256": "e26ae9d89f26a2f052e3fb64715d3334b4bc55bff71428e87bb08f1a1cff7ec1"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The final tree evidence covers committed, index, working-tree, untracked, and final-hash states.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/tree.md",
+          "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -B -m unittest discover -s tests",
+      "executedCommand": "python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+          "sha256": "e26ae9d89f26a2f052e3fb64715d3334b4bc55bff71428e87bb08f1a1cff7ec1"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/commands.md",
+          "sha256": "e26ae9d89f26a2f052e3fb64715d3334b4bc55bff71428e87bb08f1a1cff7ec1"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "ecb2a3f0b792f7c53232806007c31c73c3345c66f2ea604e41a1d936b4cf1afb",
+        "promptSha256": "692b6370b1b9ffcfc2c5f779f7bfab3758703e1a8490029f3e4052640c3b4e76",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/prompt-round-0.md",
+            "sha256": "692b6370b1b9ffcfc2c5f779f7bfab3758703e1a8490029f3e4052640c3b4e76"
+          },
+          {
+            "path": "evidence/baseline/interaction.md",
+            "sha256": "3b0962b9ec7c3ae9d6219cb77afb799758ce626c50c5430268a2e1adc8b7068f"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "sha256": "692b6370b1b9ffcfc2c5f779f7bfab3758703e1a8490029f3e4052640c3b4e76"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "identity-classification": 100,
+        "revision-transaction": 100,
+        "docs-evidence": 100,
+        "scope-discipline": 0
+      },
+      "reasons": {
+        "identity-classification": "The existing ranking owner was identified correctly while diversity remained independently owned.",
+        "revision-transaction": "The original Spec received one meaningful Revision and preserved its stable public contracts.",
+        "docs-evidence": "The required Python tests and absolute docs check both passed with current generated Indexes.",
+        "scope-discipline": "Two untracked Python bytecode files remain outside the approved documentation scope."
+      },
+      "evidence": {
+        "identity-classification": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "revision-transaction": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "docs-evidence": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ]
+      },
+      "totalScore": 80
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 90,
+        "actionability": 100,
+        "signal-to-noise": 90
+      },
+      "reasons": {
+        "value-visibility": "The response opens with the document change and the contracts that remain stable.",
+        "audience-fit": "The response uses Chinese and preserves the project's exact technical names.",
+        "information-design": "The result is readable and scannable, with only a minor excess of verification detail.",
+        "actionability": "It explicitly stops after documentation and identifies that implementation requires a later instruction.",
+        "signal-to-noise": "The response is focused, with only minor internal agent-label boilerplate."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/reviewer.md",
+            "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+          }
+        ]
+      },
+      "totalScore": 96
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+    },
+    "index": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+    },
+    "untracked": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/tree.md",
+      "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+    }
+  }
+}

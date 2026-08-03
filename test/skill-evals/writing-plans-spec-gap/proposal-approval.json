@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-writing-plans-batch-v1-spec-gap-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "6e1facfd459a71835762e3551f0d8bca2235fdb710cb45fa890db5752fb16ee4",
+  "protocolSha256": "f168470cecb69661f448b61ed0f5f4fe1fe3c6597cda5b35e6dd5475812413d8",
+  "fixtureSha256": "b717d5d31a1acc7da9de11bad89dd2fdd3d9531399af6267b26476409accc8c2",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

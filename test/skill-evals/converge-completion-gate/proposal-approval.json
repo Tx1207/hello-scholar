@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-converge-to-spec-batch-v1-completion-gate-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "d964d9e5afb618073a6e4cad6e60245dcdfe94f245d8b94660c88c5d5a44931e",
+  "protocolSha256": "44d61e23d71217fdc7d9fdbf4cf1039c810c0ce3580f9a51fe6be303bf29d049",
+  "fixtureSha256": "8f5c5c2ab356b6a8ff3a9edde348591156bbae8f58fc6f87274ac615f12af1d4",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

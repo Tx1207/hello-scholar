@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-crash-audit-release-blind-spot-v1-protocol-v2",
+  "decision": "approved",
+  "scenarioSha256": "d8a0491065d85b20a8791e6fab5b930ec8d59167e2c52fccc7add3103f3d58c4",
+  "protocolSha256": "478ef137dd39e26d40c8c90fe7023302e92d875621101e12c8dcd5fd0f996c94",
+  "fixtureSha256": "3c24a5c94f9851517000f6f4f1edcaaae4025c1adb9e909e03106e17e4841d0d",
+  "replyEvidence": "User reviewed the published Batch ID and SHA-256 meaning, then approved starting this exact batch by replying: 同意，开始吧 (2026-08-02)."
+}

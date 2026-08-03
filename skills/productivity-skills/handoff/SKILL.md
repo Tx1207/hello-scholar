@@ -1,10 +1,10 @@
 ---
 name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
+description: Use when the user explicitly asks to save a session handoff so a fresh agent can continue the work.
 argument-hint: "What will the next session be used for?"
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save it under the current task's project or worktree root at `hello-scholar/memory/handoffs/YYYY-MM-DD-<topic>-handoff.md`.
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save it under the current task's project or worktree root at `hello-scholar/handoffs/YYYY-MM-DD-<topic>-handoff.md`. A Handoff does not belong to the Spec Bundle or a generated Index; do not create `hello-scholar/memory/` for a Handoff.
 
 Choose the handoff template by repository language preference:
 - Chinese default: `assets/handoff-template.zh_CN.md`

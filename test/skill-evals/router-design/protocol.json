@@ -1,0 +1,180 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "router-design",
+  "projectId": "node-batch-query-api",
+  "primarySkill": "using-helloscholar",
+  "caseId": "router-design",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-helloscholar",
+    "brainstorming",
+    "manage-specs"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/superpowers-skills/using-helloscholar",
+    "brainstorming": "skills/superpowers-skills/brainstorming",
+    "manage-specs": "skills/hello-scholar/manage-specs"
+  },
+  "skillExpectations": {
+    "using-helloscholar": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "brainstorming": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, run the initial Node tests, and commit the unchanged project before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "route-selection",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the novel public API and cross-layer contract are routed to Design, with brainstorming before manage-specs ownership rather than Fast, Execution, Experiment or Maintenance."
+      },
+      {
+        "id": "constraint-discovery",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Implementer asks one material question before writing and incorporates the 50-item limit, ordered per-item results, partial failure semantics and single-query compatibility into the design."
+      },
+      {
+        "id": "design-tradeoffs",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm multiple viable service and transport designs are compared on validation, error semantics and ownership, with a reasoned recommendation for the synchronous batch service API."
+      },
+      {
+        "id": "approval-and-spec-ownership",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm each scripted stop is respected, manage-specs identifies the independent owner before writing, and only one final whole-document approval lets it create the exact complete draft Spec and generated indexes."
+      },
+      {
+        "id": "implementation-boundary",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm source, tests and package metadata remain unchanged and the run ends after the draft Spec without Plan, Tasks, Run, Architecture or a second design document."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "chooses Fast, Execution, Experiment, or Maintenance as the immediate path",
+      "writes source, tests, package metadata, Plan, or Tasks before their own authorization",
+      "skips clarification and meaningful alternatives before recommending a design",
+      "writes a formal Spec without entering the manage-specs ownership step",
+      "asks for section-by-section approval or writes a Spec that was not reviewed as one complete document",
+      "includes future user decisions in the first prompt or continues past a real stop point"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "package.json",
+      "runs/",
+      "hello-scholar/architecture.md",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/batch-query/SPEC-001-public-batch-query-api/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/batch-query/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/batch-query/SPEC-001-public-batch-query-api/plan.md",
+      "hello-scholar/specs/batch-query/SPEC-001-public-batch-query-api/tasks.md",
+      "hello-scholar/architecture.md",
+      "runs/",
+      "docs/batch-api-design.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the initial public API design request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has asked one material clarification question and made no writes",
+        "contentRole": "future-constraint-reply",
+        "message": "单次最多 50 条查询。响应必须按输入顺序逐项返回；单项校验或搜索失败不能抹掉其他成功项，调用方可以按项重试。现有单查询 API 必须保持兼容。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has compared alternatives, recommended one, and stopped for a choice",
+        "contentRole": "future-option-decision",
+        "message": "选择你推荐的同步批量 service API，并保留 transport 只负责 HTTP 映射。请进入 manage-specs，给出身份判断后一次展示包含七个核心章节和必要条件章节的完整 Spec，让我整份审核；不要修改项目文件。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "Implementer has classified an independent identity, presented one complete Spec, and stopped with no project writes",
+        "contentRole": "future-whole-spec-approval",
+        "message": "当前完整 Spec 整份审核通过，并同意 manage-specs 为它分配独立的 batch-query 身份。只把刚才审阅的精确内容写入 draft hello-scholar/specs/batch-query/SPEC-001-public-batch-query-api/spec.md 并生成 Index；不要创建 Plan、Tasks 或实现。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Classify the request as Design, ask the first material API question, and reach an approved draft Spec through the required design stops without entering implementation."
+}

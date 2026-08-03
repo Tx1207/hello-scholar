@@ -1,20 +1,24 @@
 ---
 name: landing
 description: |
-  Automatically use only after takeoff/geju output needs a feasible revised plan. Also use when user explicitly asks and a prior direction is recoverable. Post-takeoff triggers: landing, 落地, too idealistic, make it real, cut scope, executable, verifiable, and "is this plan plausible?" Do not use for routine planning, training/eval rollout, ordinary next-step questions, or generic "should we do X before Y" decisions.
+  Landing: use only when the user explicitly names `landing`, or explicitly asks in this turn to pressure-test a recoverable prior direction for real-world feasibility—ground or narrow it, and define a stop rule.
 ---
 
 # Landing
 
 ## Overview
 
-Automatically use this skill only after `takeoff` has produced a prior direction that needs feasibility pressure. User-explicit `landing` requests are valid triggers, but still need a prior direction. `landing` should rewrite the bold direction into a feasible plan: keep the ambition, rewrite the parts that cannot survive reality, and produce a feasible revised direction. The output is not just the first move and not the whole execution plan.
+Enter `landing` only when the user explicitly expresses Landing intent in this turn. Existing `takeoff` context is input, not authorization; without that authorization, stay in the current phase. A valid intent either names `landing` or explicitly asks to reality-test a direction by making it feasible, grounding or shrinking it, and defining a stop rule.
 
-If `brainstorming` also applies, deliver the `landing` judgment first before any brainstorming-style clarification begins. Brainstorming starts only after the user accepts the landed direction or explicitly asks to refine it. When design work is next, ask the user whether to enter `brainstorming`. Do not switch phases automatically.
+`landing` rewrites the bold direction into a feasible plan: keep the ambition, rewrite the parts that cannot survive reality, and produce a feasible revised direction. The output is not just the first move and not the whole execution plan.
 
-`landing` receives the takeoff hypothesis from context. A valid context must make the bold thesis, the old model it replaces, and the main reality question recoverable from the current context. If not, do not run the landing template; ask for the missing direction or answer the ordinary question.
+If `brainstorming` also applies, deliver the `landing` judgment first before any brainstorming-style clarification begins. Brainstorming starts only after the user accepts the landed direction or explicitly asks to refine it. When design work is next, ask the user whether to enter `brainstorming`; wait for their answer before changing phase.
 
-Do not infer this skill from generic words like "first", "validate", "risk", "MVP", "architecture", or "stop rule" when there is no prior direction and no explicit landing request.
+After entry is authorized, recover the prior direction from current context. A valid context makes the bold thesis, the old model it replaces, and the main reality question recoverable. If an explicit Landing request lacks those inputs, ask for the missing direction; explicit intent does not permit guessing the thesis. Ordinary risk, MVP, verification, or next-step questions do not authorize Landing.
+
+## Entry Check
+
+Before reading the Workflow, quote the user's triggering words from this turn. A future Approved Task may authorize entry only if an explicit contract adds that path. If there is no explicit Landing intent, stay in the current phase and do not read the workflow below to self-trigger. Once authorized, verify that the bold thesis, old model, and main reality question are recoverable; otherwise ask the one missing-direction question before using any template. Complete this check only with an authorization quote plus recoverable direction, or with that missing-input question.
 
 ## Value Criteria
 

@@ -444,16 +444,25 @@ class LandingSkillScopeTests(unittest.TestCase):
         self.assertNotIn("## Landing Transition", chinese)
         self.assertNotIn("references/output-template.md", chinese)
 
-    def test_takeoff_description_is_trigger_only_not_output_summary(self) -> None:
+    def test_takeoff_description_is_an_explicit_intent_gate_not_output_summary(self) -> None:
         english = (TAKEOFF_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (TAKEOFF_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
         english_description = frontmatter_description(english)
         chinese_description = frontmatter_description(chinese)
 
-        self.assertTrue(english_description.startswith("Use when"))
-        self.assertIn("think bigger", english_description)
-        self.assertIn("open the design space", english_description)
-        self.assertIn("route to landing", english_description)
+        self.assertTrue(
+            english_description.startswith("Use only for a current-turn explicit Takeoff request")
+        )
+        for trigger in (
+            "`takeoff`",
+            "起飞",
+            "geju",
+            "打开格局",
+            "rejudge the target model",
+            "stand one level higher",
+            "local compatibility",
+        ):
+            self.assertIn(trigger, english_description)
         self.assertLess(len(english_description), 520)
         for forbidden in (
             "Produces",
@@ -467,9 +476,14 @@ class LandingSkillScopeTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, english_description)
 
-        self.assertIn("当用户想", chinese_description)
-        self.assertIn("打开设计空间", chinese_description)
-        self.assertIn("转给 landing", chinese_description)
+        self.assertIn("只在用户本轮明确", chinese_description)
+        for trigger in (
+            "Takeoff / 起飞 / geju / 打开格局",
+            "重新判断目标模型",
+            "站高一层",
+            "别被局部兼容绑架",
+        ):
+            self.assertIn(trigger, chinese_description)
         self.assertLess(len(chinese_description), 260)
         for forbidden in (
             "产出一份",
@@ -542,13 +556,13 @@ class LandingSkillScopeTests(unittest.TestCase):
 
         self.assertIn("Do not add a separate hypothesis handoff", takeoff_english)
         self.assertIn("landing can read the current context", takeoff_english)
-        self.assertIn("receives the takeoff hypothesis", landing_english)
-        self.assertIn("recoverable from the current context", landing_english)
+        self.assertIn("Existing `takeoff` context is input, not authorization", landing_english)
+        self.assertIn("recover the prior direction from current context", landing_english)
 
         self.assertIn("同一对话里不要额外输出假设交接包", takeoff_chinese)
         self.assertIn("landing 可以读取当前上下文", takeoff_chinese)
-        self.assertIn("接收 takeoff 假设", landing_chinese)
-        self.assertIn("能从当前上下文恢复", landing_chinese)
+        self.assertIn("已有 `takeoff` 上下文只是输入，不是授权", landing_chinese)
+        self.assertIn("从当前上下文恢复前序方向", landing_chinese)
         self.assertNotIn("**Bold Thesis** / **Old Model** / **Main Reality Question**", takeoff_english)
         self.assertNotIn("**Bold Thesis** / **Old Model** / **Main Reality Question**", takeoff_chinese)
 
@@ -580,106 +594,72 @@ class LandingSkillScopeTests(unittest.TestCase):
         self.assertFalse((TAKEOFF_DIR / "references" / "output-template.md").exists())
         self.assertFalse((LANDING_DIR / "references" / "output-template.md").exists())
 
-    def test_english_description_is_scoped_to_takeoff_followup(self) -> None:
-        english = (LANDING_DIR / "SKILL.md").read_text(encoding="utf-8")
-        description = frontmatter_description(english)
-
-        self.assertRegex(description, r"\bafter (a )?takeoff\b")
-        self.assertIn("only", description.lower())
-        self.assertIn("explicitly asks", description)
-        self.assertIn("Post-takeoff triggers", description)
-        self.assertIn("too idealistic", description)
-        self.assertIn("make it real", description)
-        self.assertIn("cut scope", description)
-        self.assertIn("feasible", description)
-        self.assertIn("revised", description)
-        self.assertNotIn("takeoff-like", description)
-        self.assertNotIn("architecture discussion", description)
-        self.assertNotIn("Use whenever", description)
-        self.assertNotIn("even if they never name the skill", description)
-        self.assertNotIn("what do I do first", description)
-        self.assertNotIn("one proof point", description)
-        self.assertNotIn("minimum-viable", description)
-        self.assertNotIn("cut list", description)
-        self.assertNotIn("success/failure signals", description)
-        self.assertNotIn("stop rule", description)
-        self.assertNotIn("record-experiment", description)
-        self.assertNotIn("writing-plans", description)
-        self.assertNotIn("answer with", description)
-        self.assertLess(len(description), 420)
-
-    def test_chinese_description_is_scoped_to_takeoff_followup(self) -> None:
-        chinese = (LANDING_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
-        description = frontmatter_description(chinese)
-
-        self.assertIn("自动触发只在 takeoff", description)
-        self.assertIn("用户明确要求", description)
-        self.assertIn("takeoff/geju 后触发词", description)
-        self.assertIn("别太飘", description)
-        self.assertIn("把它做成真的", description)
-        self.assertIn("这计划靠不靠谱", description)
-        self.assertIn("可行方案", description)
-        self.assertIn("改写", description)
-        self.assertNotIn("类似 takeoff", description)
-        self.assertNotIn("架构讨论", description)
-        self.assertNotIn("哪怕用户没点名", description)
-        self.assertNotIn("第一步先干嘛", description)
-        self.assertNotIn("可执行、可验证、最小可行", description)
-        self.assertNotIn("压成一个证明点", description)
-        self.assertNotIn("砍掉清单", description)
-        self.assertNotIn("成功/失败信号", description)
-        self.assertNotIn("止损规则", description)
-        self.assertNotIn("record-experiment", description)
-        self.assertNotIn("writing-plans", description)
-        self.assertNotIn("根据情况直接回答", description)
-        self.assertLess(len(description), 260)
-
-    def test_routine_research_rollout_is_explicitly_not_landing(self) -> None:
+    def test_landing_description_is_scoped_to_explicit_current_turn_intent(self) -> None:
         english = (LANDING_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (LANDING_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
         english_description = frontmatter_description(english)
         chinese_description = frontmatter_description(chinese)
 
-        self.assertIn("routine planning, training/eval rollout", english_description)
-        self.assertIn("常规规划、常规训练/评估 rollout", chinese_description)
-        self.assertNotIn("record-experiment", english)
-        self.assertNotIn("writing-plans", english)
-        self.assertNotIn("executing-plans", english)
-        self.assertNotIn("direct response", english)
-        self.assertNotIn("record-experiment", chinese)
-        self.assertNotIn("writing-plans", chinese)
-        self.assertNotIn("executing-plans", chinese)
-        self.assertNotIn("直接回答", chinese)
+        self.assertTrue(english_description.startswith("Landing: use only"))
+        self.assertIn("explicitly names `landing`", english_description)
+        self.assertIn("this turn", english_description)
+        self.assertIn("recoverable prior direction", english_description)
+        self.assertIn("feasibility", english_description)
+        self.assertNotIn("Post-takeoff triggers", english_description)
+        self.assertNotIn("Automatically use", english_description)
+        self.assertNotIn("takeoff-like", english_description)
+        self.assertNotIn("architecture discussion", english_description)
+        self.assertNotIn("Use whenever", english_description)
+        self.assertNotIn("even if they never name the skill", english_description)
+        self.assertNotIn("record-experiment", english_description)
+        self.assertNotIn("writing-plans", english_description)
+        self.assertNotIn("answer with", english_description)
+        self.assertLess(len(english_description), 420)
+
+        self.assertIn("仅当用户在本轮点名", chinese_description)
+        self.assertIn("`landing`/落地", chinese_description)
+        self.assertIn("现实可行性压力测试", chinese_description)
+        self.assertNotIn("自动触发", chinese_description)
+        self.assertNotIn("takeoff/geju 后触发词", chinese_description)
+        self.assertNotIn("类似 takeoff", chinese_description)
+        self.assertNotIn("架构讨论", chinese_description)
+        self.assertNotIn("哪怕用户没点名", chinese_description)
+        self.assertNotIn("record-experiment", chinese_description)
+        self.assertNotIn("writing-plans", chinese_description)
+        self.assertNotIn("根据情况直接回答", chinese_description)
+        self.assertLess(len(chinese_description), 260)
 
     def test_landing_requires_explicit_input_contract(self) -> None:
         english = (LANDING_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (LANDING_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
 
-        self.assertIn("Automatically use this skill only after `takeoff`", english)
-        self.assertIn("User-explicit `landing` requests are valid triggers", english)
+        self.assertIn("only when the user explicitly expresses Landing intent in this turn", english)
+        self.assertIn("Existing `takeoff` context is input, not authorization", english)
         self.assertIn("prior direction", english)
-        self.assertIn("valid context must make", english)
+        self.assertIn("valid context makes", english)
         self.assertIn("bold thesis", english)
         self.assertIn("old model it replaces", english)
         self.assertIn("main reality question", english)
-        self.assertIn("do not run the landing template", english)
+        self.assertIn("do not read the workflow below", english)
+        self.assertIn("Ordinary risk, MVP, verification, or next-step questions do not authorize Landing", english)
         self.assertNotIn("takeoff-like architecture discussion", english)
 
-        self.assertIn("自动触发只在 `takeoff`", chinese)
-        self.assertIn("用户明确要求 `landing` 是有效触发", chinese)
+        self.assertIn("本轮用户明确提出 Landing 意图时才进入", chinese)
+        self.assertIn("已有 `takeoff` 上下文只是输入，不是授权", chinese)
         self.assertIn("前序方向", chinese)
         self.assertIn("有效上下文必须能恢复", chinese)
         self.assertIn("bold thesis", chinese)
         self.assertIn("它替代的旧模型", chinese)
         self.assertIn("主要现实疑问", chinese)
-        self.assertIn("不要运行落地模板", chinese)
+        self.assertIn("不要读取后续工作流", chinese)
+        self.assertIn("普通的风险、MVP、验证或下一步问题不授权进入 Landing", chinese)
         self.assertNotIn("类似 takeoff 的架构讨论", chinese)
 
     def test_landing_rewrites_takeoff_output_into_feasible_plan(self) -> None:
         english = (LANDING_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (LANDING_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
 
-        self.assertIn("rewrite the bold direction into a feasible plan", english)
+        self.assertIn("rewrites the bold direction into a feasible plan", english)
         self.assertIn("keep the ambition", english)
         self.assertIn("rewrite the parts that cannot survive reality", english)
         self.assertIn("feasible revised direction", english)
@@ -807,7 +787,7 @@ class LandingSkillScopeTests(unittest.TestCase):
         self.assertIn("ask the user whether to enter `brainstorming`", english)
         self.assertIn("Ask whether to proceed with that judgment", english)
         self.assertIn("Next Move must ask", english)
-        self.assertIn("Do not switch phases automatically", english)
+        self.assertIn("wait for their answer before changing phase", english)
         self.assertNotIn("hello-scholar/memory/framing/", english)
         self.assertNotIn("Status: landing-reviewed", english)
         self.assertNotIn("Status: user-approved", english)

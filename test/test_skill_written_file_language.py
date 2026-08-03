@@ -44,8 +44,8 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     FileWritingSkillCase(
         skill_id="record-experiment",
         skill_path=REPO_ROOT / "skills" / "hello-scholar" / "record-experiment",
-        output_root=Path("hello-scholar/memory/experiment-records"),
-        required_path_parts=("runs",),
+        output_root=Path("runs"),
+        required_path_parts=(),
         protected_terms=(
             "python eval.py --config configs/baseline.yaml --seed 0 --split test",
         ),
@@ -83,7 +83,7 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     FileWritingSkillCase(
         skill_id="brainstorming",
         skill_path=REPO_ROOT / "skills" / "superpowers-skills" / "brainstorming",
-        output_root=Path("hello-scholar/memory/specs"),
+        output_root=Path("hello-scholar/specs"),
         required_path_parts=(),
         protected_terms=(
             "search.py",
@@ -104,7 +104,7 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     FileWritingSkillCase(
         skill_id="handoff",
         skill_path=REPO_ROOT / "skills" / "productivity-skills" / "handoff",
-        output_root=Path("hello-scholar/memory/handoffs"),
+        output_root=Path("hello-scholar/handoffs"),
         required_path_parts=(),
         protected_terms=(
             "test/test_skill_written_file_language.py",
@@ -166,6 +166,8 @@ def output_files(workspace: Path, case: FileWritingSkillCase) -> list[Path]:
     root = workspace / case.output_root
     if not root.exists():
         return []
+    if case.skill_id == "record-experiment":
+        return sorted(path for path in root.glob("*/record.md") if path.is_file())
     files = sorted(path for path in root.rglob("*.md") if path.is_file())
     for part in case.required_path_parts:
         files = [path for path in files if part in path.relative_to(root).parts]
@@ -245,6 +247,20 @@ def validate_workspace(
     testcase.assertGreaterEqual(len(files), 1, f"No output files for {case.skill_id}")
 
     text = read_outputs(workspace, case)
+    if case.skill_id == "record-experiment":
+        for path in files:
+            relative = path.relative_to(workspace)
+            testcase.assertEqual("runs", relative.parts[0])
+            testcase.assertEqual("record.md", relative.parts[2])
+        for field in (
+            "schema: 1",
+            "kind: record",
+            "status: planned",
+            "started: null",
+            "completed: null",
+            "decision: pending",
+        ):
+            testcase.assertIn(field, text)
     for term in case.protected_terms:
         testcase.assertIn(term, text)
     for relative_path in case.forbidden_workspace_files:
@@ -277,7 +293,9 @@ def validate_workspace(
 
 def write_fixture_output(workspace: Path, case: FileWritingSkillCase, default_language: str) -> None:
     root = workspace / case.output_root
-    if case.required_path_parts:
+    if case.skill_id == "record-experiment":
+        root = root / "20260803-1200-language-fixture"
+    elif case.required_path_parts:
         root = root.joinpath(*case.required_path_parts)
     root.mkdir(parents=True, exist_ok=True)
 
@@ -302,12 +320,83 @@ Protected:
 {chr(10).join(f"- {term}" for term in case.protected_terms)}
 """
 
+    if case.skill_id == "record-experiment":
+        body = f"""---
+schema: 1
+kind: record
+run_id: 20260803-1200-language-fixture
+title: {case.skill_id} fixture
+status: planned
+spec: null
+spec_revision: null
+plan_revision: null
+started: null
+completed: null
+decision: pending
+summary: {marker}
+---
+# {case.skill_id} fixture
+
+## 1. Purpose
+
+{body}
+
+## 2. Hypothesis
+
+- Pending launch.
+
+## 3. Experimental Variables
+
+- Fixture only.
+
+## 4. Controls
+
+- Fixed fixture.
+
+## 5. Execution Information
+
+- Exact command: {case.protected_terms[0]}
+
+## 6. Artifact Locations
+
+- Intended result path: results/fixture.json
+
+## 7. Execution Events
+
+| Time | Event | Observation | Action |
+|---|---|---|---|
+
+## 8. Key Results
+
+- Pending launch.
+
+## 9. Observations
+
+- Pending launch.
+
+## 10. Conclusion
+
+- Pending launch.
+
+## 11. Decision
+
+- pending
+
+## 12. Next Actions
+
+- Pending launch.
+"""
+        (root / "record.md").write_text(body, encoding="utf-8")
+        return
+
     (root / f"{case.skill_id}-{default_language.lower()}.md").write_text(body, encoding="utf-8")
 
 
 def write_mixed_language_fixture_output(workspace: Path, case: FileWritingSkillCase) -> None:
     root = workspace / case.output_root
-    if case.required_path_parts:
+    if case.skill_id == "record-experiment":
+        root = root / "20260803-1200-mixed-language"
+    elif case.required_path_parts:
         root = root.joinpath(*case.required_path_parts)
     root.mkdir(parents=True, exist_ok=True)
 
@@ -322,19 +411,88 @@ Protected:
 {chr(10).join(f"- {term}" for term in case.protected_terms)}
 """
 
+    if case.skill_id == "record-experiment":
+        body = f"""---
+schema: 1
+kind: record
+run_id: 20260803-1200-mixed-language
+title: {case.skill_id} mixed-language fixture
+status: planned
+spec: null
+spec_revision: null
+plan_revision: null
+started: null
+completed: null
+decision: pending
+summary: {case.chinese_markers[0]}并保留当前任务目标。
+---
+{body}
+
+## 1. Purpose
+
+{body}
+
+## 2. Hypothesis
+
+- Pending launch.
+
+## 3. Experimental Variables
+
+- Fixture only.
+
+## 4. Controls
+
+- Fixed fixture.
+
+## 5. Execution Information
+
+- Exact command: {case.protected_terms[0]}
+
+## 6. Artifact Locations
+
+- Intended result path: results/fixture.json
+
+## 7. Execution Events
+
+| Time | Event | Observation | Action |
+|---|---|---|---|
+
+## 8. Key Results
+
+- Pending launch.
+
+## 9. Observations
+
+- Pending launch.
+
+## 10. Conclusion
+
+- Pending launch.
+
+## 11. Decision
+
+- pending
+
+## 12. Next Actions
+
+- Pending launch.
+"""
+        (root / "record.md").write_text(body, encoding="utf-8")
+        return
+
     (root / f"{case.skill_id}-mixed-language.md").write_text(body, encoding="utf-8")
 
 
 class SkillWrittenFileLanguageTests(unittest.TestCase):
-    def test_brainstorming_forward_tests_must_respect_user_approval_gate(self) -> None:
+    def test_brainstorming_forward_tests_respect_bundle_review_gate(self) -> None:
         brainstorming = next(case for case in CASES if case.skill_id == "brainstorming")
         text = (brainstorming.skill_path / "SKILL.md").read_text(encoding="utf-8")
 
-        self.assertIn("Do NOT invoke any implementation skill", text)
-        self.assertIn("get user approval", text)
-        self.assertIn("Write design doc", text)
-        self.assertIn("Language check", text)
-        self.assertIn("assets/spec-template.zh_CN.md", text)
+        self.assertIn("do not implement source code", text.lower())
+        self.assertIn("user approval", text.lower())
+        self.assertIn("$manage-specs", text)
+        self.assertIn("whole-file", text)
+        self.assertIn("skills/hello-scholar/manage-specs/assets/", text)
         self.assertIn("The design has already been approved by the user", PROMPTS[(brainstorming.skill_id, "Chinese", "English")])
 
     def test_all_file_writing_skills_have_prompt_matrix(self) -> None:
@@ -368,13 +526,21 @@ class SkillWrittenFileLanguageTests(unittest.TestCase):
         expected_templates = {
             "record-experiment": ("assets/run-record-template.md", "assets/run-record-template.zh_CN.md"),
             "writing-plans": ("assets/plan-template.md", "assets/plan-template.zh_CN.md"),
-            "brainstorming": ("assets/spec-template.md", "assets/spec-template.zh_CN.md"),
             "handoff": ("assets/handoff-template.md", "assets/handoff-template.zh_CN.md"),
         }
+        manage_specs_assets = REPO_ROOT / "skills" / "hello-scholar" / "manage-specs" / "assets"
         for case in CASES:
             with self.subTest(skill=case.skill_id):
                 english = (case.skill_path / "SKILL.md").read_text(encoding="utf-8")
                 chinese = (case.skill_path / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+                if case.skill_id == "brainstorming":
+                    self.assertIn("skills/hello-scholar/manage-specs/assets/", english)
+                    self.assertIn("skills/hello-scholar/manage-specs/assets/", chinese)
+                    for template in ("spec-template.md", "spec-template.zh_CN.md"):
+                        self.assertIn(template, english)
+                        self.assertIn(template, chinese)
+                        self.assertTrue((manage_specs_assets / template).exists())
+                    continue
                 for template in expected_templates[case.skill_id]:
                     self.assertIn(template, english)
                     self.assertIn(template, chinese)

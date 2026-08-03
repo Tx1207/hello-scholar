@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "writeFormat": "json-v2",
+  "allowLegacyRead": true,
+  "phase": "dual-read"
+}

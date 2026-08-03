@@ -1,0 +1,45 @@
+Framework E2E Baseline full-tree evidence
+
+Fixture base commit: ee7bd3f36c0aabaf2b06a8f298af3ac596d61d08
+HEAD after the run: unchanged at the fixture base commit
+Committed diff after base: empty
+Index after HEAD: empty
+
+Working-tree tracked modifications:
+- hello-scholar/architecture.md
+- scripts/benchmark_cache.py
+- src/kv_cache/contiguous_allocator.py
+- tests/test_contiguous_allocator.py
+
+Untracked files:
+- hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/plan.md
+- hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/tasks.md
+- runs/20260801-0323-paged-cache-benchmark/outputs/benchmark.json
+- runs/20260801-0323-paged-cache-benchmark/record.md
+- runs/20260801-0323-paged-cache-benchmark/results/metrics.json
+- runs/20260801-0332-paged-cache-fresh-benchmark/record.md
+- runs/20260801-0334-paged-cache-fresh-benchmark-retry/outputs/benchmark.json
+- runs/20260801-0334-paged-cache-fresh-benchmark-retry/record.md
+- runs/20260801-0334-paged-cache-fresh-benchmark-retry/results/metrics.json
+- src/kv_cache/paged_allocator.py
+- tests/test_paged_allocator.py
+
+Final SHA-256 values:
+- ff2cd289a3697821fcdaffb071ba992536548536026f4d8613164e82a6c539ad  hello-scholar/architecture.md
+- 8ebb698ec83e8b0551718a47752376bb111fa9abc9afd851cdfec25f9e1c07c8  spec.md
+- 1b84e0b119976b348c6a2072f11650f4c006f60b93eabe476652055bc3205981  plan.md
+- 30cecb23f01bb59408161eddf5ab5b26ec1efd60873883725fc7c5b3607db0a6  tasks.md
+- 3c66f9530730dd7d924aaa81456bf806418925cca0fcdf939c12194c4ed8f5ac  src/kv_cache/contiguous_allocator.py
+- dbd9940e9f9ae7d1abebc5277a876894ff2692a21ccb787a64771650af44605c  src/kv_cache/paged_allocator.py
+- 890f33f40723c9795d0456c679c96233b053faa2b4a0dcb39dec6f19c4341b15  tests/test_contiguous_allocator.py
+- 0ce10f58351e2d56589fb5eed3a0cd5e388d9dcfc9fd41763a040b02bbb95514  tests/test_paged_allocator.py
+- 59873ee97ce072e38803dc3efd3b68f00f68a756db79e7d47ec1a2da590cc063  scripts/benchmark_cache.py
+- 039b3bbe0ccfc970910fe626610333656a578eaef0b82f33f4b9a4776a19af07  formal record.md
+- 5e57471d43c8001cedcddd101bacab23d8d07b3ad9938df86ddf518b569326d0  formal raw benchmark.json
+- a4dd2c9501fdf70cf1ac1ff6a06048eb781676df640a115d693732bb3d624140  formal metrics.json
+- a322cbc509c551be68451b6332a7a5a12e60c835ff6fd571361ea06caae98be3  invalid fresh record.md
+- 4b7ed4c260e13e5318a0d5c3b73d26ed1f6cae51658a05cda6f2040e8ae02f73  valid fresh record.md
+- 5e57471d43c8001cedcddd101bacab23d8d07b3ad9938df86ddf518b569326d0  valid fresh raw benchmark.json
+- a4dd2c9501fdf70cf1ac1ff6a06048eb781676df640a115d693732bb3d624140  valid fresh metrics.json
+
+No forbidden hello-scholar/memory, hello-scholar/runs, run.json, second Run guide, version-suffixed allocator, alternate mode, or untracked bytecode remained. The base-tracked contiguous_allocator.pyc was restored byte-identically.

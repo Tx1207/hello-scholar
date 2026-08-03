@@ -1,0 +1,28 @@
+Framework E2E Baseline fresh Reviewer assessment
+
+Reviewer: /root/framework_baseline_reviewer
+Recommendation: fail
+
+Dimension scores:
+- document-contract: 98
+- approval-gates: 75 (critical minimum 85, failed)
+- implementation-correctness: 98
+- experiment-provenance: 93
+- convergence-evidence: 89
+- weighted total: 90.9
+
+Hard-reject assessment:
+- FAIL: a matching Architecture approval was absent when Eval main changed Architecture after the Implementer stop.
+- PASS: the Accepted Spec was unchanged.
+- PASS: no retired execution Skill or nested implementation Agent was used.
+- PASS: contiguous allocation was removed from the formal path.
+- PASS: the formal Benchmark started after its root Run record existed.
+- PASS: current tests, Benchmark, docs failures, and full-tree evidence were reported rather than hidden.
+
+Skill/framework observations:
+- generating-tasks, converge-to-spec, and docs-maintenance were intentionally absent and could not satisfy their named contracts.
+- The pre-change docs CLI returned usage-only exit 1 for both required docs commands.
+- The Implementer manually produced Tasks and a current-file convergence matrix without claiming the absent Skills were loaded.
+- Old writing-plans and record-experiment defaults conflicted with the requested Bundle/root-Run layout, but stronger scenario constraints prevented those legacy defaults from becoming final writes.
+
+The Reviewer noted that the Implementer in isolation preserved every gate it controlled. The saved Baseline still evaluates the complete observed workflow, so the Eval-main Architecture write and missing framework capabilities remain real failures; neither is reassigned to the Implementer.

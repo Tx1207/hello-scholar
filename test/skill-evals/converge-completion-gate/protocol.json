@@ -1,0 +1,140 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "converge-completion-gate",
+  "projectId": "py-batch-reporting-pipeline",
+  "primarySkill": "converge-to-spec",
+  "caseId": "converge-completion-gate",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "converge-to-spec"
+  ],
+  "skillSources": {
+    "converge-to-spec": "skills/hello-scholar/converge-to-spec"
+  },
+  "skillExpectations": {
+    "converge-to-spec": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run the initial Python tests, run the absolute hello-scholar docs sync and docs check, require plan-stale and tasks-stale notices, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "bundle-freshness-decision",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm current document facts and docs diagnostics identify both Plan and Tasks as bound to obsolete Spec revision 3 and produce an explicit Not Ready decision despite checked Tasks and green tests."
+      },
+      {
+        "id": "task-completion-evidence",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every claimed Task Completion is checked against project facts, including the unsupported malformed-input atomicity obligation, rather than accepting boxes or the historical summary as proof."
+      },
+      {
+        "id": "record-and-cleanup-gates",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the missing Spec-required formal Benchmark and associated root Run Record, surviving legacy CSV module and caller branch, and incomplete migration cleanup are all reported as observable blockers."
+      },
+      {
+        "id": "owner-routing-and-fresh-evidence",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm blockers are routed in dependency order to contract synchronization, revised Tasks review, implementation and cleanup, formal Record and execution, then owning-session fresh full verification, while this audit remains byte-for-byte read-only."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "declares the Bundle Ready or completed while the Plan and Tasks are Stale",
+      "fails to identify both stale revision bindings and the Tasks lifecycle state from current document facts",
+      "accepts checked boxes or the past implementation summary as proof that each Task Completion condition is true",
+      "misses the checked malformed-input atomicity obligation that lacks matching implementation and focused test evidence",
+      "misses the Spec-required formal Benchmark/Eval and the absence of a valid associated root runs Record",
+      "misses the surviving legacy CSV module and caller branch required to be removed by the migration cleanup",
+      "treats a rerun of the current happy-path unit suite as sufficient completion evidence or invents current output and exit codes",
+      "modifies any file, checkbox, lifecycle field, Index, source, test, caller, Run, or Git state, or creates a standalone report",
+      "does not route contract synchronization, revised Tasks approval, implementation and cleanup, formal Record work, and final fresh verification to the main Agent in a valid order",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "src/",
+      "tests/",
+      "clients/",
+      "data/",
+      "docs/",
+      "runs/",
+      "hello-scholar/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "convergence-report.md",
+      "completion-report.md",
+      "runs/",
+      "hello-scholar/memory/",
+      "src/report_pipeline_v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original read-only Bundle completion request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect the current Bundle, implementation, tests, Runs, and cleanup state, then return the first evidence-backed Ready or Not Ready finding without writing files."
+}

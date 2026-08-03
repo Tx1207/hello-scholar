@@ -1,0 +1,47 @@
+{
+  "rubricId": "hello-scholar-user-value-v1",
+  "rubricVersion": 1,
+  "dimensions": [
+    {
+      "id": "value-visibility",
+      "weight": 20,
+      "critical": true,
+      "minimum": 90,
+      "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+    },
+    {
+      "id": "audience-fit",
+      "weight": 20,
+      "critical": true,
+      "minimum": 90,
+      "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+    },
+    {
+      "id": "information-design",
+      "weight": 20,
+      "critical": true,
+      "minimum": 90,
+      "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+    },
+    {
+      "id": "actionability",
+      "weight": 20,
+      "critical": true,
+      "minimum": 90,
+      "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+    },
+    {
+      "id": "signal-to-noise",
+      "weight": 20,
+      "critical": true,
+      "minimum": 90,
+      "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+    }
+  ],
+  "minimumTotal": 90,
+  "scoreAnchors": {
+    "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+    "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+    "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+  }
+}

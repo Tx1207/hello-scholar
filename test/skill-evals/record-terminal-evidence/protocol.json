@@ -1,0 +1,164 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "record-terminal-evidence",
+  "projectId": "py-model-quantization-lab",
+  "primarySkill": "record-experiment",
+  "caseId": "record-terminal-evidence",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync, docs check and unit tests without running either quantization command, initialize Git, commit every resulting fixture file, record the Base commit, verify both source Records are running with terminal evidence already present, and deliver a clean tree",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "evidence-classification",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the read-only first round uses each command, exit code, log and structured result to classify CUDA OOM as execution failure and the valid INT4 result as hypothesis-rejecting evidence without writing files."
+      },
+      {
+        "id": "approval-gate-and-terminal-state",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm no Record changes precede the exact future approval, then the two existing Records become failed and completed respectively with real completion times and an explicit do-not-adopt decision."
+      },
+      {
+        "id": "provenance-and-conclusion-quality",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm both Records retain exact commands, Fixture Base commit, model, config, seed and artifact paths, and add concise evidence-based results, observations, conclusions, decisions and next actions."
+      },
+      {
+        "id": "evidence-preservation-and-scope",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm logs and structured results remain byte-identical, no experiment reruns, and only the two existing Records plus the docs-sync-owned Run Index change without replacement Runs or duplicate explanations."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes either Record before the future classification confirmation or skips the read-only first-round stop",
+      "classifies the CUDA OOM as completed, classifies the valid INT4 negative result as failed, or hides, deletes or turns either result into success",
+      "omits terminal timestamps, exact command, Base Git commit, model/config/seed, short failure or metric evidence, conclusion, decision or next action",
+      "reruns either experiment or modifies source, tests, scripts, configs, model facts, logs or structured results",
+      "copies a large log into record.md instead of linking logs and concise evidence, or appends polling noise",
+      "creates a replacement Run, legacy-path Record, run.json or second Run explanation",
+      "hand-edits runs/INDEX.md, leaves it stale, or changes files beyond the two Records and generated Run Index",
+      "reads the hello-scholar Task Packet, production Skill or another Eval case"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B scripts/verify_terminal_records.py",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "runs/20260730-0900-int8-cuda-oom-s0/record.md",
+      "runs/20260731-1400-int4-quality-s0/record.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "scripts/",
+      "configs/",
+      "models/",
+      "runs/20260730-0900-int8-cuda-oom-s0/logs/",
+      "runs/20260730-0900-int8-cuda-oom-s0/results/",
+      "runs/20260731-1400-int4-quality-s0/logs/",
+      "runs/20260731-1400-int4-quality-s0/results/",
+      "hello-scholar/memory/",
+      "hello-scholar/runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/20260730-0900-int8-cuda-oom-s0/record.md",
+      "runs/20260730-0900-int8-cuda-oom-s0/logs/stderr.log",
+      "runs/20260730-0900-int8-cuda-oom-s0/results/failure.json",
+      "runs/20260731-1400-int4-quality-s0/record.md",
+      "runs/20260731-1400-int4-quality-s0/logs/eval.log",
+      "runs/20260731-1400-int4-quality-s0/results/metrics.json",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/runs/",
+      "runs/20260730-0900-int8-cuda-oom-s0/run.json",
+      "runs/20260730-0900-int8-cuda-oom-s0/README.md",
+      "runs/20260730-0900-int8-cuda-oom-s0/report.md",
+      "runs/20260731-1400-int4-quality-s0/run.json",
+      "runs/20260731-1400-int4-quality-s0/README.md",
+      "runs/20260731-1400-int4-quality-s0/summary.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the Implementer has inspected both evidence sets, reported the failed-versus-valid-negative classification, and made no writes",
+        "contentRole": "current-read-only-classification-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the classification is confirmed and both existing Records are finalized from preserved evidence without rerunning experiments",
+        "contentRole": "future-terminal-classification-approval",
+        "message": "确认你的分类：INT8 CUDA OOM 是执行失败；INT4 是执行有效但不支持假设的负结果。现在只根据现有日志和结果一次性完成两份 Record 的终态与结论，并用 docs sync 更新 Run Index；不要重跑实验或修改证据。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Classify the saved failed and negative runs from immutable evidence, then update both existing Records once after the explicit write approval."
+}

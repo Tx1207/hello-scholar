@@ -1,0 +1,134 @@
+{
+  "protocolVersion": 2,
+  "scenarioId": "writing-plans-spec-gap",
+  "projectId": "node-webhook-signing-service",
+  "primarySkill": "writing-plans",
+  "caseId": "writing-plans-spec-gap",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "writing-plans"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "exit",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "gpt-5.6-terra"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, run docs sync and initial tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "fact-reading-and-gap-detection",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the accepted Spec, handler, verifier, callers and tests are read and the unresolved key identifier, missing or retired-key HTTP response, and legacy-signature window are identified as real contract gaps."
+      },
+      {
+        "id": "contract-impact-and-questions",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm each gap is tied to the affected Spec section and real files, its public, security or migration impact is explained, and only the minimum user decision questions are asked without invented defaults."
+      },
+      {
+        "id": "zero-write-stop-gate",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the complete Git tree stays byte-identical and no placeholder Plan, Tasks, Index, report, source, test, Spec or Architecture file is created or modified."
+      },
+      {
+        "id": "terminal-routing",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response stops and routes unresolved design back to brainstorming and manage-specs rather than continuing to Tasks or implementation."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates or modifies plan.md, tasks.md, a report, an Index, source, tests, Spec, or Architecture",
+      "chooses a key identity, HTTP failure contract, or compatibility window not accepted by the Spec",
+      "treats accepted status as sufficient while ignoring explicit unresolved design decisions",
+      "asks generic implementation questions without citing affected Spec sections and real project files",
+      "routes directly to Tasks or implementation instead of brainstorming/manage-specs",
+      "reads the hello-scholar Task Packet, current production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "hello-scholar/",
+      "src/",
+      "server/",
+      "clients/",
+      "test/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation/plan.md",
+      "hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation/tasks.md",
+      "hello-scholar/memory/",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Plan request and semantic stop condition are delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the accepted contract and callers, identify the first material unresolved public decision, and stop with zero writes while routing it back to design ownership."
+}
