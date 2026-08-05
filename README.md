@@ -307,11 +307,14 @@ hello-scholar install claude --mode copy
 
 当前版本没有 `docs migrate` 命令。已有项目中的旧文档，包括历史 `hello-scholar/memory/...` 路径下的材料，必须先只读盘点并提出 Mapping Proposal；在你批准具体映射前，Agent 不应自动移动、删除、双写或创建迁移脚本。
 
-可以将下面这段发送给已安装 hello-scholar 的 Claude Code 或 Codex：
+可以将下面这段发送给 Claude Code 或 Codex：
 
 ```text
-请按 hello-scholar 的 Document Model v2 流程迁移本项目既有文档：先只读盘点旧材料并输出逐项 Mapping Proposal，等待我批准后仅执行获批行；不要自动移动、删除、双写或创建迁移脚本。当前版本没有 docs migrate。
+请先运行 `npm root -g`，并读取其输出目录下的 `hello-scholar/docs/migration/document-model-v2.md`。如果文件不存在，请停止并报告，不要猜测其他路径。
+读取后，严格按该文件的 Document Model v2 流程迁移当前项目文档：先只读盘点并输出逐项 Mapping Proposal，等待我批准后仅执行获批行；不要自动移动、删除、双写或创建迁移脚本。当前版本没有 `docs migrate` 命令。对于文件夹数量过多的情况，询问用户是否使用subagent加速处理。
 ```
+
+该指令会从全局 npm 安装目录读取迁移说明，不会将 hello-scholar 源文件复制到项目文件夹。
 
 完整迁移边界见：[Document Model v2 迁移说明](docs/migration/document-model-v2.md)。
 
