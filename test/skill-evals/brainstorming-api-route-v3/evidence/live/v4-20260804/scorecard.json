@@ -1,0 +1,333 @@
+{
+  "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
+  "liveApprovalId": "live-brainstorming-api-route-v3-haiku-v4",
+  "liveApprovalSha256": "fb141ef4e68fa016ba4a985c13c514ee13c2cddbbf32fbd1094fd11d5642bdf5",
+  "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
+  "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "brainstorming": {
+      "status": "current-explicit-file",
+      "sha256": "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"
+    },
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "8a61252673b48af9241aaaf1bea0b8568110f0394b809326cfcb6e0e81794bdd"
+    },
+    "writing-plans": {
+      "status": "current-explicit-file",
+      "sha256": "b2d467994de3690321a9a2951137bd029b0eb6e6ee063253e6f1ea0b6d544e05"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "ab4f4b61426631c79",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a6c04ae7af3aa80f3",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "dialogue-and-alternatives",
+      "passed": true,
+      "reason": "Project and caller facts preceded one material question and all three directions were compared.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+        }
+      ]
+    },
+    {
+      "id": "whole-spec-review",
+      "passed": false,
+      "reason": "The identity mismatch stopped the run before one complete Spec review unit was presented.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+        }
+      ]
+    },
+    {
+      "id": "api-spec-identity",
+      "passed": false,
+      "reason": "The proposed Topic and design path did not match the Protocol expected identity or later Topic approval.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+        }
+      ]
+    },
+    {
+      "id": "planning-handoff",
+      "passed": false,
+      "reason": "No approved saved draft existed, so the writing-plans transition was not reached.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Every approved Protocol command exited successfully in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "6863b43f0254c5fe553a11579d69dfe1170c97c053f7a5a569aed2967826eae9"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/tree.raw.log",
+          "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "6863b43f0254c5fe553a11579d69dfe1170c97c053f7a5a569aed2967826eae9"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "6863b43f0254c5fe553a11579d69dfe1170c97c053f7a5a569aed2967826eae9"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa",
+        "promptSha256": "2ad37d88f0d028b8aa1d878c17ae0a02552fa364982356fab72b05c13f916719",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-0.md",
+            "sha256": "2ad37d88f0d028b8aa1d878c17ae0a02552fa364982356fab72b05c13f916719"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "d1fb89a153f9045e62fabd84d7a18ac27a1dec5bd1bea2f80a3c3058d7697b62"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-clarification-answer",
+        "messageSha256": "2b0ffe0d67ce7ba22c56c50096fee2acbb9ac6a55ed12f48389aae91ddae588f",
+        "promptSha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-1.md",
+            "sha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "d1fb89a153f9045e62fabd84d7a18ac27a1dec5bd1bea2f80a3c3058d7697b62"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-approach-selection",
+        "messageSha256": "0b9891221a348a27617aca1dd2092f5052fbc1d66df7ea6b4e1b3018c2f01429",
+        "promptSha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-2.md",
+            "sha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "d1fb89a153f9045e62fabd84d7a18ac27a1dec5bd1bea2f80a3c3058d7697b62"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-spec-identity-decision",
+        "messageSha256": "11837edab2e0cea0ce56a07954985c8d14926b38561d5531c00e0bb31a731732",
+        "promptSha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-3.md",
+            "sha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "d1fb89a153f9045e62fabd84d7a18ac27a1dec5bd1bea2f80a3c3058d7697b62"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/prompt-round-0.md",
+          "sha256": "2ad37d88f0d028b8aa1d878c17ae0a02552fa364982356fab72b05c13f916719"
+        },
+        {
+          "path": "evidence/live/v4-20260804/interaction.md",
+          "sha256": "d1fb89a153f9045e62fabd84d7a18ac27a1dec5bd1bea2f80a3c3058d7697b62"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "dialogue-and-alternatives": 100,
+        "whole-spec-review": 0,
+        "api-spec-identity": 0,
+        "planning-handoff": 0
+      },
+      "reasons": {
+        "dialogue-and-alternatives": "Repository evidence, one material question, three alternatives, and the synchronous recommendation all passed.",
+        "whole-spec-review": "No complete seven-section Spec was presented after identity approval.",
+        "api-spec-identity": "The Topic and slug remained unresolved and no expected SPEC-014 artifact was created.",
+        "planning-handoff": "The run stopped before whole-Spec approval, saved draft, and planning transition."
+      },
+      "evidence": {
+        "dialogue-and-alternatives": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "whole-spec-review": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "api-spec-identity": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "planning-handoff": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ]
+      },
+      "totalScore": 25.0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 90,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 90,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The design recommendation and blocking identity mismatch are visible, though no final artifact exists.",
+        "audience-fit": "The Chinese response uses exact project and API language.",
+        "information-design": "The comparison and stop condition are highly scannable.",
+        "actionability": "The required complete-path confirmation is explicit, but the planned handoff remains unavailable.",
+        "signal-to-noise": "Every section supports comparison, review, or the safe stop."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "c30929ad94d066e1c6cc8d69d9a0daae2ee36b858036be298136073734f86b54"
+          }
+        ]
+      },
+      "totalScore": 96.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "55b83981b1362b29578739afa9f386ad19214782462730844eccf979c55519cf"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "batch-query-service-fixture",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  }
+}

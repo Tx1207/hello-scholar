@@ -1,0 +1,19 @@
+{
+  "liveApprovalId": "live-manage-specs-successor-v3-haiku-v4-rerun-3",
+  "liveAuthorizationBatchId": "haiku-v4-spec-live-authorization-batch-v3",
+  "liveAuthorizationBatchSha256": "7c698bcdb9d4f0b3074b7cf2e34a719dc45b10714136696c08b4674b3030bfd7",
+  "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
+  "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
+  "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
+  "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "7c547ee19d21f182d291808b00ce756adebe0fc593bd9a76a0ba8ebff5ea4550",
+  "skillSnapshots": {
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "c9315636edf613017422b28f40d2dbe41f534f693ef1234021a3b82186516b46"
+    }
+  },
+  "replyEvidence": "用户明确要求开启 Formal Eval 正式运行，不需要停下来等待逐批审核，并授权最多 3 个 Haiku Agent 并行。本记录将该 blanket execution authorization 应用于随后生成并完整 Hash 绑定的 haiku-v4-spec-live-authorization-batch-v3；不声称用户逐字引用过该后生成 Hash，也不代表接受 Live 输出。"
+}

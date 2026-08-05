@@ -1,0 +1,16 @@
+{
+  "queries": [
+    ["cache", "paged"],
+    ["agent", "evaluation"],
+    ["model", "quantization"],
+    ["document", "index"]
+  ],
+  "candidates": [
+    {"id": "doc-01", "terms": ["cache", "paged", "memory"]},
+    {"id": "doc-02", "terms": ["agent", "evaluation", "rubric"]},
+    {"id": "doc-03", "terms": ["model", "quantization", "latency"]},
+    {"id": "doc-04", "terms": ["document", "index", "spec"]},
+    {"id": "doc-05", "terms": ["cache", "agent", "model"]},
+    {"id": "doc-06", "terms": ["paged", "evaluation", "index"]}
+  ]
+}

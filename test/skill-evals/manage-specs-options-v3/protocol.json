@@ -1,0 +1,141 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "manage-specs-options-v3",
+  "projectId": "node-cache-strategy-service",
+  "primarySkill": "manage-specs",
+  "caseId": "manage-specs-options-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "manage-specs"
+  ],
+  "skillSources": {
+    "manage-specs": "skills/hello-scholar/manage-specs"
+  },
+  "skillExpectations": {
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync and npm test, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "identity-classification",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Index, Specs, code and tests show all three candidate eviction strategies belong to the existing cache-eviction policy identity rather than warming or separate option Specs."
+      },
+      {
+        "id": "option-integrity",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the revised Spec preserves A LRU-plus-TTL, B segmented LRU and C TinyLFU-admission-plus-LRU as peer candidates, defines comparison metrics, and leaves selection explicitly pending the benchmark."
+      },
+      {
+        "id": "docs-evidence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the existing Spec has a meaningful Revision-history transaction, absolute docs sync produces current indexes, docs check passes and npm tests preserve runtime behavior."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 20,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only the one policy Spec and generated indexes change, with no selected winner, per-option Spec, source, package, Plan, Tasks, Run, Architecture or legacy document."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates separate Specs for candidate A, B, or C",
+      "records an option as selected despite the user's explicit pending decision",
+      "changes source, tests, package files, Architecture, Plan, Tasks, or Runs",
+      "fails to preserve the existing Spec identity and meaningful Revision history",
+      "manually edits generated Index content or writes under hello-scholar/memory",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/cache-policy/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/cache-policy/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/cache-policy/SPEC-009-lru-ttl/spec.md",
+      "hello-scholar/specs/cache-policy/SPEC-010-segmented-lru/spec.md",
+      "hello-scholar/specs/cache-policy/SPEC-011-tiny-lfu/spec.md",
+      "hello-scholar/memory/",
+      "decision-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the option-documentation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the current policy Spec and implementation evidence, preserve all candidate options, and revise the single owner without selecting a winner."
+}

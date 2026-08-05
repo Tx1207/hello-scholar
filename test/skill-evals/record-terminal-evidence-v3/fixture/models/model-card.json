@@ -1,0 +1,6 @@
+{
+  "model_id": "scholar-reranker-1.3b",
+  "revision": "sha256:6f51b4c8e4d84c1e",
+  "baseline_accuracy": 0.842,
+  "parameter_count": 1300000000
+}

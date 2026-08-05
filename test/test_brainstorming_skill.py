@@ -89,6 +89,12 @@ class BrainstormingSkillTests(unittest.TestCase):
             for classification in CLASSIFICATIONS:
                 self.assertIn(classification, text)
 
+        self.assertIn("linked old `spec.md` for a successor", SKILL_FILES[0].read_text(encoding="utf-8"))
+        self.assertIn("关联旧 `spec.md`", SKILL_FILES[1].read_text(encoding="utf-8"))
+        self.assertIn("owner transition is a hard stop", SKILL_FILES[0].read_text(encoding="utf-8"))
+        self.assertIn("owner 转交是硬停止点", SKILL_FILES[1].read_text(encoding="utf-8"))
+        self.assertIn("ID- or Topic-only reply is not path approval", SKILL_FILES[0].read_text(encoding="utf-8"))
+        self.assertIn("只批准 ID 或 Topic 不属于路径批准", SKILL_FILES[1].read_text(encoding="utf-8"))
         for section in ENGLISH_CORE_SECTIONS:
             self.assertIn(section, SKILL_FILES[0].read_text(encoding="utf-8"))
         for section in CHINESE_CORE_SECTIONS:

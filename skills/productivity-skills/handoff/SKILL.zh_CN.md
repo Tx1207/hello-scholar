@@ -18,3 +18,5 @@ argument-hint: "下一次会话将用于什么？"
 删去任何敏感信息，例如 API keys、passwords 或 personally identifiable information。
 
 如果用户传入了参数，把它们视为下一次会话将关注内容的描述，并据此调整文档。
+
+成功保存后，向用户给出准确的 Handoff 路径，并用一句话说明下一次会话可以接续什么。引用该文档，不复述其内容。

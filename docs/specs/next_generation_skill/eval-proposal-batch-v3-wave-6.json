@@ -1,0 +1,526 @@
+{
+  "manifestVersion": 1,
+  "batchId": "sonnet-v3-wave-6-router",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 5,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 5 Protocol v3 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v3-wave-6.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 5,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+      "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+      "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+    ],
+    "materialCorrections": [
+      {
+        "scenarioId": "router-experiment-v3",
+        "change": "The run verifier checks retained evidence consistency and one-launch behavior without exposing a fixed benchmark answer or hidden sentinel artifact."
+      }
+    ],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-router-design-v3-sonnet",
+      "scenarioId": "router-design-v3",
+      "caseId": "router-design-v3",
+      "projectId": "node-batch-query-api",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-design-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-design-v3/scenario.md",
+          "sha256": "0a4b96886255de26cbd55d5bbd5e73395cef865a1d2bfb113784f5c667745e0c"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-design-v3/protocol.json",
+          "sha256": "fe11c094b7f221ed778aca3cc1bb098b2bf3cbbce3b799ff7bbf60e36319e3d2"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-design-v3/fixture",
+          "sha256": "f273a1a2f6f18e647b64e6aca35416452d5873f8a641365dcc6c36c04fea9103"
+        }
+      },
+      "businessGoal": "查询服务需要增加公开的批量查询 API，HTTP 调用方会在一次请求中提交多条查询。请先把输入校验、单项失败语义和 service/transport 的职责谈清楚；在我批准设计前不要改实现。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "route-selection",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the novel public API and cross-layer contract are routed to Design, with brainstorming before manage-specs ownership rather than a direct implementation path."
+          },
+          {
+            "id": "constraint-discovery",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Implementer asks one material question before writing and incorporates the 50-item limit, ordered per-item results, partial failure semantics and single-query compatibility into the design."
+          },
+          {
+            "id": "design-tradeoffs",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm multiple viable service and transport designs are compared on validation, error semantics and ownership, with a reasoned recommendation for the synchronous batch service API."
+          },
+          {
+            "id": "approval-and-spec-ownership",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm each scripted stop is respected, manage-specs identifies an independent identity before writing, and only one final whole-document approval allows creation of the exact reviewed draft Spec and generated indexes."
+          },
+          {
+            "id": "implementation-boundary",
+            "weight": 15,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm source, tests and package metadata remain unchanged and the run ends after the draft Spec without implementation or downstream planning artifacts."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "chooses a direct implementation, experiment, or maintenance path for the public API design",
+          "writes source, tests, package metadata, or downstream planning artifacts before authorization",
+          "skips clarification and meaningful alternatives before recommending a design",
+          "writes a formal Spec without entering the manage-specs ownership step",
+          "asks for section-by-section approval or writes a Spec that was not reviewed as one complete document",
+          "includes future user decisions in the first prompt or continues past a real stop point"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Classify the request as Design, ask the first material API question, and reach an approved draft Spec through the required design stops without entering implementation."
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-router-execution-v3-sonnet",
+      "scenarioId": "router-execution-v3",
+      "caseId": "router-execution-v3",
+      "projectId": "py-cache-allocator",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-execution-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-execution-v3/scenario.md",
+          "sha256": "a2343949a173d62009ec1c06885d9d9dcd69f893da969264907e45b3ffa7981c"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-execution-v3/protocol.json",
+          "sha256": "50a72f186a23ec39e090290fb69e0a751d77d28f0b665faaee2dafe04f70239a"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-execution-v3/fixture",
+          "sha256": "9b7d2df4a759e3000cc21198266e6ce23e896f498f298cd6e3ba164c066faf61"
+        }
+      },
+      "businessGoal": "Cache 的 Spec、Plan 和 Tasks 都已审过。本轮明确授权你按当前 Tasks 完成实现；完成后把任务状态和验证结果收口。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "route-and-gates",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm implementation begins only after reading an accepted Spec, Current approved Plan, currently approved Tasks revision and the user's separate current-session implementation authorization."
+          },
+          {
+            "id": "task-directed-implementation",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the current main Agent follows the existing Tasks dependencies, file ownership, validation and completion conditions directly without redesign, duplicate documents or nested implementation agents."
+          },
+          {
+            "id": "behavioral-correctness",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm get() refreshes recency, capacity evicts the least-recently-used key, and updating an existing key refreshes it without evicting another entry, all covered by passing tests."
+          },
+          {
+            "id": "bundle-convergence",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm Tasks statuses reflect actual dependency-ordered completion and fresh tests and bundle checks, while the accepted Spec, approved Plan and one-Bundle identity remain unchanged."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "repeats design or creates a second Spec Bundle instead of executing the Current approved Tasks",
+          "implements without confirming accepted Spec, approved Current Plan, current Tasks approval, and this-session authorization",
+          "changes the Accepted Spec or Approved Plan or writes outside source, tests, and Tasks status",
+          "marks Tasks complete without current full-suite and bundle-state evidence"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Verify the current-session authorization and approved Bundle, then begin the first dependency-ready Task directly and continue to fresh convergence evidence."
+    },
+    {
+      "ordinal": 3,
+      "proposalId": "proposal-router-experiment-v3-sonnet",
+      "scenarioId": "router-experiment-v3",
+      "caseId": "router-experiment-v3",
+      "projectId": "node-ranking-benchmark",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-experiment-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-experiment-v3/scenario.md",
+          "sha256": "8004c60dfc7ce9065170b0a526eb54a0db77ed90894738c15cd99330e88fc6ef"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-experiment-v3/protocol.json",
+          "sha256": "a88a40fbe9c7a482f75161bb495d58bd211ff39b02bbadcba6043528ddbe3189"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-experiment-v3/fixture",
+          "sha256": "5e1c1497e8a223a2dc3d25fa531101a20bed27cdde4d1174631e54e22e117a5b"
+        }
+      },
+      "businessGoal": "请现在启动这次正式 ranking Benchmark，按现有 campaign 采集当前实现的基线。把原始输出、结构化指标和结论留好，代码不要改。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "route-selection",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the authorized formal baseline uses record-experiment before launch, without creating a speculative Spec workflow, and retains intentionally null Spec and Plan association."
+          },
+          {
+            "id": "prestart-record",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm one root Run Record containing the fixed campaign command, inputs, stop rule and intended output paths exists before the benchmark process starts."
+          },
+          {
+            "id": "evidence-provenance",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the exact authorized command and exit status are preserved with raw benchmark output and matching structured metrics while campaign, dataset, source, tests and scripts remain unchanged."
+          },
+          {
+            "id": "result-interpretation",
+            "weight": 15,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the finalized Record reports the observed metrics, status, evidence-based conclusion and next action honestly rather than inferring success without retained output."
+          },
+          {
+            "id": "scope-preservation",
+            "weight": 10,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the only writes are one root Run's Record, outputs and results, with no duplicate summary, Spec, Architecture or implementation change."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "starts the formal benchmark before creating the root Run record",
+          "creates a Spec merely because benchmark results may inform later work",
+          "modifies code, tests, benchmark scripts, campaign facts, or dataset during the run",
+          "creates run.json, a second Run summary, or omits raw or structured evidence",
+          "claims a completed result without the actual command, exit status, output, metrics, and honest conclusion"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Create the minimum reproducible root Record, launch the fixed benchmark once, and finish its evidence without changing the measured implementation."
+    },
+    {
+      "ordinal": 4,
+      "proposalId": "proposal-router-fast-v3-sonnet",
+      "scenarioId": "router-fast-v3",
+      "caseId": "router-fast-v3",
+      "projectId": "py-text-normalizer",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-fast-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-fast-v3/scenario.md",
+          "sha256": "98e8541fe4bd69c88eac1621d3e4673fe1e5a87a65626925b5a7d3bc980ea6ab"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-fast-v3/protocol.json",
+          "sha256": "74755fa162897127585a06f3f217bbb9b34951a1bdced569909ce30f5b48b1f2"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-fast-v3/fixture",
+          "sha256": "7f9f383f6dec198c85b3ea40b33e29640cd322fd3efb1a58bf5a4d6ea9420800"
+        }
+      },
+      "businessGoal": "搜索摘要里复制进来的文字有时会留下连续空格和换行。请直接修好这个问题，补上能复现的测试，并把相关测试跑完。不要改变 `normalize_text()` 的调用方式。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "route-selection",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the localized compatible bug fix is handled directly without creating unrelated design, document, experiment, or multi-stage workflow artifacts."
+          },
+          {
+            "id": "scoped-fix",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the smallest implementation collapses consecutive spaces, tabs and newlines while preserving normalize_text()'s public signature, existing behavior and dependency set."
+          },
+          {
+            "id": "regression-evidence",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm a focused regression test reproduces all reported whitespace forms and the current complete unittest suite passes after the fix with saved command output."
+          },
+          {
+            "id": "state-preservation",
+            "weight": 15,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm only the named source and test files change, with no parallel implementation, dependency, project document, Run or other repository state mutation."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "creates or changes a Spec, Plan, Tasks, Record, Run, or Architecture file",
+          "changes the normalize_text public signature or adds a dependency",
+          "claims completion without a focused regression test and current full test output",
+          "writes outside the two allowed source and test files"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect the named code and tests, make the first focused regression action, and preserve the public interface without creating project documents."
+    },
+    {
+      "ordinal": 5,
+      "proposalId": "proposal-router-maintenance-v3-sonnet",
+      "scenarioId": "router-maintenance-v3",
+      "caseId": "router-maintenance-v3",
+      "projectId": "py-research-doc-index",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-maintenance-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-maintenance-v3/scenario.md",
+          "sha256": "3d71dcb2854a4a0310de9a80045f0059134b8e0ab1c261e872bb354ace94571e"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-maintenance-v3/protocol.json",
+          "sha256": "15a016f73b95737db91c314b763fd7f6fd6c8907a2f0ab5b62d99ed167034233"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-maintenance-v3/fixture",
+          "sha256": "24f72dc2e6e6baaf6d7191fda20b910bf591488bf492054b9385a51a28e000ac"
+        }
+      },
+      "businessGoal": "项目里的文档导航还是上一次的旧内容。请把它恢复成当前状态，别顺手改研究代码或正文。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "route-and-mode-selection",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm stale generated navigation is handled by docs-maintenance index mode rather than a design or general implementation workflow."
+          },
+          {
+            "id": "generated-index-correctness",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the absolute docs sync CLI deterministically rebuilds the global Spec, Topic and Run indexes with current rows, statuses, ordering and relative links."
+          },
+          {
+            "id": "write-boundary",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm exactly the three generated Index files change and every Spec, Record, Architecture, source, test, script and project-rule byte remains unchanged."
+          },
+          {
+            "id": "idempotent-evidence",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm a second absolute docs sync exits successfully and full-tree evidence proves it produces no additional content or metadata diff."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "uses a design or general implementation workflow instead of generated-index maintenance",
+          "manually edits generated table content instead of using the absolute hello-scholar docs sync CLI",
+          "changes a Spec, Record, Architecture, source, test, project rule, or any non-Index file",
+          "creates a new core document, Run, recovery report, or Handoff",
+          "omits the second sync or claims idempotence without full-tree evidence"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Run the canonical sync, then prove the second sync makes no further full-tree change without changing source documents."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-crash-audit-release-blind-spot-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "33ebf16fa483344998fac4547c5e7fbe620576fb966af9ea037c3e79edaa78f0",
+  "protocolSha256": "e9e60ccdb2cc12e9d2285afc4ab6580c386875be9669b379d44ebceecd0ba08c",
+  "fixtureSha256": "6e0e43a2f2eea2194d0066c860a89fc684d46b9b7b9372bd634be0c951c93282",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

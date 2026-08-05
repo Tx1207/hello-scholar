@@ -1,0 +1,13 @@
+{
+  "captured_workload": "twelve-tenant-afternoon-window",
+  "tenants": 12,
+  "vectors": 800000,
+  "host_ram_gib": 8.0,
+  "peak_process_ram_gib": 6.4,
+  "query_p95_ms": 38,
+  "query_p95_during_ingest_ms": 146,
+  "sync_ingest_p95_ms": 2300,
+  "largest_observed_ingest_batch": 25000,
+  "dedicated_ops_engineers": 0,
+  "monthly_host_budget_usd": 250
+}

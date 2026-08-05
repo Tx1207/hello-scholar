@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-manage-specs-existing-v3-sonnet",
+  "decision": "approved",
+  "scenarioSha256": "d36cce246487593fd9cb475dae71081de6ef44ef94e489f78629d33c3e2481b9",
+  "protocolSha256": "1d1ca62329eee1ee10ed1652d657e0447492e20304809c06bc42fb86eec3e3f2",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "replyEvidence": "用户批准 Wave 1：sonnet-v3-wave-1-spec-design / ac728efa6d813d4ef4fc8b0d2263223a5995f1ed4ea15847b7e83c3c10b3a436"
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-record-exploration-backfill-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "3295b31c79305b033d9f5abbc0834575a3abb9ffff673e5fedbacea675033d67",
+  "protocolSha256": "e5af5257f675fa8358b53dd8d6183858f518fa65f281aa00343175b0114beb6d",
+  "fixtureSha256": "07985278a72b14c503fbad1952d38269c91a896a7f152323aee32f5e7e7a115f",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-3-records-docs / c394a011acdf1cb29783cf207dfc57f7c6ffce65964dc84335ccc23d6ef87b31"
+}

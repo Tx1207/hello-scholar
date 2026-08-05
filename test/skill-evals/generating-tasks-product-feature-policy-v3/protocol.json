@@ -1,0 +1,144 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "generating-tasks-product-feature-policy-v3",
+  "projectId": "py-feature-policy-engine",
+  "primarySkill": "generating-tasks",
+  "caseId": "generating-tasks-product-feature-policy-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "generating-tasks"
+  ],
+  "skillSources": {
+    "generating-tasks": "skills/superpowers-skills/generating-tasks"
+  },
+  "skillExpectations": {
+    "generating-tasks": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "task-document-contract",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm tasks.md binds SPEC-003 revision 2 and Plan revision 1, initializes revision 1 with pending-review, null approved revision, and pending status, and gives every Task independently readable sections."
+      },
+      {
+        "id": "coverage-and-dependencies",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm unique Tasks cover every Spec acceptance criterion and Plan migration, cleanup, regression, and rollback obligation with exact files and an acyclic graph whose parallel writers do not overlap or depend on one another."
+      },
+      {
+        "id": "validation-and-tdd-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every Task has executable validation, observable expected signals, and checkable completion, and Red-Green-Refactor appears only on the precedence behavior explicitly selected by the approved Plan."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only same-Bundle tasks.md and CLI-generated indexes are written, Tasks remain unapproved and unimplemented, and the Spec, Plan, Architecture, runtime, tests, packages, Runs, and legacy paths remain unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "creates Tasks without kind tasks, SPEC-003/spec revision 2/plan revision 1 bindings, or the exact revision 1 pending-review approval state",
+      "omits a unique Task ID, plain-language goal, Spec Coverage, Depends On, Parallel, Files, Work, Validation, or Completion from any top-level Task",
+      "modifies the Spec, Plan, Architecture, source, tests, or package files",
+      "omits an acceptance criterion or Plan migration, cleanup, regression, or rollback obligation",
+      "marks Tasks approved or begins implementation",
+      "applies TDD to Tasks whose approved Plan does not select it or drops Red-Green-Refactor from the selected behavior",
+      "uses cyclic dependencies, dependent or same-file parallel Tasks, placeholders, non-observable validation, or context-dependent shorthand",
+      "reopens decisions fixed by the accepted Spec and approved Plan",
+      "writes a global tasks directory or hello-scholar/memory path",
+      "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the accepted Spec and approved Plan, then produce the first independently executable Task coverage result without implementing it.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "forbidden": [
+      "tasks/",
+      "hello-scholar/memory/",
+      "implementation-report.md",
+      "src/policy-v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Tasks generation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  }
+}

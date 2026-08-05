@@ -91,6 +91,26 @@ class GeneratingTasksSkillTests(unittest.TestCase):
             self.assertIn("frontier", text.lower())
             self.assertIn("2–5 minute", text.lower())
             self.assertIn("PYTHONDONTWRITEBYTECODE=1 python3 -B", text)
+            self.assertIn("approval: pending-review", text)
+            self.assertIn("status: pending", text)
+            self.assertIn("Spec Coverage", text)
+            self.assertIn("Depends On", text)
+            self.assertIn("Parallel", text)
+            self.assertIn("Files", text)
+            self.assertIn("Work", text)
+            self.assertIn("Validation", text)
+            self.assertIn("Completion", text)
+
+        self.assertIn("Copy the chosen template as the starting skeleton", english)
+        self.assertIn("`approval: pending-review` is the review state", english)
+        self.assertIn("every top-level `TNNN` has", english)
+        self.assertIn("column-zero canonical checkbox block", english)
+        self.assertIn("A Task Map or titled section is not a Task substitute", english)
+        self.assertIn("先把选定模板作为起始骨架复制", chinese)
+        self.assertIn("`approval: pending-review` 是审核状态", chinese)
+        self.assertIn("每个顶层 `TNNN` 都把", chinese)
+        self.assertIn("列零的规范复选框块", chinese)
+        self.assertIn("Task Map 或带标题的章节不能替代 Task", chinese)
 
     def test_templates_match_their_language(self) -> None:
         """Purpose: keep each language template aligned with its filename; Input: English and Chinese Tasks templates; Output: none; Errors: assertion failure for swapped or mixed template content."""

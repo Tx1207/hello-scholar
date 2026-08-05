@@ -66,8 +66,7 @@ git worktree list --porcelain
 1. 用户、当前 Task 或项目指令明确要求的目录。
 2. 已有 `.worktrees/`（两个本地目录都存在时优先）。
 3. 已有 `worktrees/`。
-4. 已有 legacy 全局目录 `~/.config/superpowers/worktrees/<project>/`。
-5. 其他情况，项目根目录下的 `.worktrees/`。
+4. 其他情况，项目根目录下的 `.worktrees/`。
 
 对于项目本地目录，创建前验证所选目录本身已被 ignored：
 

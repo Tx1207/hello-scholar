@@ -1,0 +1,415 @@
+{
+  "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
+  "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
+  "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "result": "fail",
+  "summary": "The general Haiku workflow produced a useful reviewed batch API Spec, but failed the required manage-specs identity transition and exact SPEC-014 artifact path.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "brainstorming": {
+      "status": "pre-change-explicit-file",
+      "sha256": "f0ebde1e40f181566f111be0a8ba133718d8b1161391ff23a48a76c0a371f5b5"
+    },
+    "manage-specs": {
+      "status": "absent",
+      "sha256": null
+    },
+    "writing-plans": {
+      "status": "pre-change-explicit-file",
+      "sha256": "71c5ee69fc394323f8afca188d97d7e838911d84da456f985ef6120d41995cdf"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "d2c4cbf3b67e071be020c2ce2516641b08f66295",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "Approved Scenario, Protocol, Fixture, shared rubric, and Proposal bindings were current.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "0ca983d739fd78c19ce645b1c5a7f295dd599e7994ac1ce99ad30f9764876a84"
+          }
+        ]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was committed at a clean Base before round zero.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "0ca983d739fd78c19ce645b1c5a7f295dd599e7994ac1ce99ad30f9764876a84"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "Initial npm tests passed.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "0ca983d739fd78c19ce645b1c5a7f295dd599e7994ac1ce99ad30f9764876a84"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "Initial docs check passed after CLI sync.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "0ca983d739fd78c19ce645b1c5a7f295dd599e7994ac1ce99ad30f9764876a84"
+          }
+        ]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present before or after the run.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "0ca983d739fd78c19ce645b1c5a7f295dd599e7994ac1ce99ad30f9764876a84"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/tree.raw.log",
+            "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "aaf50f1c2f77efd87",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a7b394daef13c0b1b",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "dialogue-and-alternatives",
+      "passed": true,
+      "reason": "Project and caller facts preceded one material question; all three requested directions were compared before the synchronous recommendation.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+        }
+      ]
+    },
+    {
+      "id": "whole-spec-review",
+      "passed": true,
+      "reason": "One complete seven-core-section Spec plus a material risk section was reviewed as a single unit before any write.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+        }
+      ]
+    },
+    {
+      "id": "api-spec-identity",
+      "passed": false,
+      "reason": "The required manage-specs owner was absent and the actual SPEC-014 design slug differs from the Protocol expected artifact path.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+        }
+      ]
+    },
+    {
+      "id": "planning-handoff",
+      "passed": true,
+      "reason": "The draft was verified and handed to writing-plans by owner and input without creating Plan, Tasks, or code.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved commands exited 0 in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "f2fea4ed111535cc5d04bf66e162154e7ee1f76700e7c1b038c9468d7a33c9af"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "All Base-to-final Git states, hashes, and runtime artifacts are recorded.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/tree.raw.log",
+          "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "f2fea4ed111535cc5d04bf66e162154e7ee1f76700e7c1b038c9468d7a33c9af"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "f2fea4ed111535cc5d04bf66e162154e7ee1f76700e7c1b038c9468d7a33c9af"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa",
+        "promptSha256": "edf85652408c55983872e883e2a07d176c4c36f850605dc1852c99d87785b29d",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-0.md",
+            "sha256": "edf85652408c55983872e883e2a07d176c4c36f850605dc1852c99d87785b29d"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-clarification-answer",
+        "messageSha256": "2b0ffe0d67ce7ba22c56c50096fee2acbb9ac6a55ed12f48389aae91ddae588f",
+        "promptSha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-1.md",
+            "sha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-approach-selection",
+        "messageSha256": "0b9891221a348a27617aca1dd2092f5052fbc1d66df7ea6b4e1b3018c2f01429",
+        "promptSha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-2.md",
+            "sha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-spec-identity-decision",
+        "messageSha256": "11837edab2e0cea0ce56a07954985c8d14926b38561d5531c00e0bb31a731732",
+        "promptSha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-3.md",
+            "sha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-whole-spec-approval",
+        "messageSha256": "9758799ef19678741a628ec8bf594874cf6b1201efbd315a3cd1331f431b9204",
+        "promptSha256": "407b36ebfc1247bafcb3afe3afc570241e5453adae08371e940aa4af1af56642",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-4.md",
+            "sha256": "407b36ebfc1247bafcb3afe3afc570241e5453adae08371e940aa4af1af56642"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/prompt-round-0.md",
+          "sha256": "edf85652408c55983872e883e2a07d176c4c36f850605dc1852c99d87785b29d"
+        },
+        {
+          "path": "evidence/baseline/v4-20260804/interaction.md",
+          "sha256": "c6d584486f0c04848191b3a33d225954dbfa2648a558105a9ad8669a8da58ffb"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "dialogue-and-alternatives": 100,
+        "whole-spec-review": 100,
+        "api-spec-identity": 0,
+        "planning-handoff": 100
+      },
+      "reasons": {
+        "dialogue-and-alternatives": "The dialogue used repository evidence, one material question, three alternatives, and one recommendation.",
+        "whole-spec-review": "The full document was presented and approved as one complete review unit before writing.",
+        "api-spec-identity": "The owner transition was unavailable and the saved path is not the approved expected artifact.",
+        "planning-handoff": "The verified draft was handed to writing-plans without downstream artifacts."
+      },
+      "evidence": {
+        "dialogue-and-alternatives": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "whole-spec-review": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "api-spec-identity": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "planning-handoff": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ]
+      },
+      "totalScore": 70
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The recommended design, tradeoffs, and saved artifact are immediately visible.",
+        "audience-fit": "Chinese prose retains exact project and API terms.",
+        "information-design": "The complete Spec is structured and independently usable.",
+        "actionability": "The design, validations, unresolved acceptance state, next owner, and input are explicit.",
+        "signal-to-noise": "All retained sections support review or implementation planning."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "3e5c1207dabe1a83cadb5b8959633b2ed57defba1daba4b868e6573196b7c274"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+    },
+    "index": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+    },
+    "untracked": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "587cb3eaf04017fd2069dfe6360885a85773f271ed45583e001043cf258bf238"
+    }
+  }
+}

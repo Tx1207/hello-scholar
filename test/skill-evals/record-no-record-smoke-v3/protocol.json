@@ -1,0 +1,128 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "record-no-record-smoke-v3",
+  "projectId": "node-local-policy-smoke",
+  "primarySkill": "record-experiment",
+  "caseId": "record-no-record-smoke-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "no-record-classification",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the stdout-only fixed local parser check is classified as ordinary engineering verification with no durable experiment identity, result artifact, or research-evidence boundary, and the user receives an explicit concise No record decision and reason."
+      },
+      {
+        "id": "bounded-local-check",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm exactly the supplied local parser check and focused tests are run against the fixed input, their actual outcomes are reported, and no source, test, fixture input, package, Run, Index, report, or other project file is written."
+      },
+      {
+        "id": "scope-and-stop-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response does not promote the transient stdout check into an experiment conclusion, configuration, Spec, Plan, Task, or dependent work, and clearly stops after reporting the check outcome and no-write boundary."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates or updates a Run Record, Run Index, report, result file, or other durable experiment artifact",
+      "modifies source, tests, fixed input, package metadata, or any project file",
+      "treats the stdout-only parser check as a research experiment, product configuration, design decision, or dependent work input",
+      "omits the actual check outcome or an explicit No record reason"
+    ],
+    "scoreAnchors": {
+      "0": "A material evidence-boundary, no-write, or user-facing reporting requirement is missing or contradicted.",
+      "90": "All material requirements pass; only a minor presentation issue remains.",
+      "100": "The check outcome, explicit No record classification, and zero-write boundary are all directly supported and concise."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node scripts/check-policy.mjs",
+    "node scripts/verify-local-check.mjs"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "AGENTS.md",
+      "fixtures/",
+      "package.json",
+      "runs/",
+      "scripts/",
+      "src/",
+      "test/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "runs/",
+      "run.json",
+      "report.md",
+      "summary.md",
+      "results/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the fixed local parser smoke check is reported with an explicit No record decision and no project writes",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run the fixed local parser smoke check, preserve the clean project state, report its actual stdout outcome and explicit No record reason, then stop without creating durable experiment work."
+}

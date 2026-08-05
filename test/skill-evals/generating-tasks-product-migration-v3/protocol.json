@@ -1,0 +1,151 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "generating-tasks-product-migration-v3",
+  "projectId": "node-config-format-cli",
+  "primarySkill": "generating-tasks",
+  "caseId": "generating-tasks-product-migration-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "generating-tasks"
+  ],
+  "skillSources": {
+    "generating-tasks": "skills/superpowers-skills/generating-tasks"
+  },
+  "skillExpectations": {
+    "generating-tasks": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial npm tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "task-document-contract",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm tasks.md binds SPEC-014 revision 3 and Plan revision 2, starts at revision 1 pending-review with null approved revision and pending status, and every unique Task contains all required standalone sections."
+      },
+      {
+        "id": "migration-and-cutover-sequence",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm distinct dependency-ordered Tasks preserve migration preparation, dual-read proof, persisted-profile conversion, and an evidence-gated format cutover with explicit recovery when the gate fails."
+      },
+      {
+        "id": "cleanup-regression-and-rollback",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm later Tasks name exact legacy profile, writer, flag, and codec-dependency removals, require prerequisite evidence, cover the complete regression matrix, and include an executable rollback drill with expected signals."
+      },
+      {
+        "id": "scope-and-parallel-discipline",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm dependent or same-file migration Tasks are not parallel and only tasks.md plus generated indexes change, with no migration execution, data, state, source, tests, vendor, package, lockfile, backup, or approval mutation."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "creates Tasks without kind tasks, SPEC-014/spec revision 3/plan revision 2 bindings, or the exact revision 1 pending-review approval state",
+      "omits a unique Task ID, plain-language goal, Spec Coverage, Depends On, Parallel, Files, Work, Validation, or Completion from any top-level Task",
+      "collapses migration preparation, compatibility reading, conversion, cutover, cleanup, regression, or rollback into an implementation-new-format happy path",
+      "deletes a legacy profile, writeLegacyConfig, --legacy-output, or the local codec dependency without the approved Plan's prerequisite evidence and recovery action",
+      "uses cyclic dependencies or marks dependent or same-file writers as parallel",
+      "uses placeholders, context-dependent shorthand, generic cleanup, or validation without an executable command and observable expected signal",
+      "modifies or approves upstream documents, data, migration state, source, tests, vendor, package metadata, or lockfile, runs migration, or begins implementation",
+      "reopens persistence-format or migration decisions fixed by the accepted Spec and approved Plan",
+      "writes a global tasks directory, hello-scholar/memory, backup, or migration report",
+      "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the approved migration contract, then produce dependency-ordered cutover, cleanup, regression, rollback, and recovery Tasks without running them.",
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/config-format/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "config/",
+      "vendor/",
+      "package.json",
+      "package-lock.json",
+      "hello-scholar/architecture.md",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/config-format/INDEX.md"
+    ],
+    "forbidden": [
+      "tasks/",
+      "hello-scholar/memory/",
+      ".migration-backup/",
+      "migration-report.md",
+      "node_modules/",
+      "src/config-store-v2.js"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Tasks generation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  }
+}

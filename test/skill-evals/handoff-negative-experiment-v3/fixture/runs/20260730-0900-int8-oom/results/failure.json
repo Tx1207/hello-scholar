@@ -1,0 +1,7 @@
+{
+  "batch_size": 16,
+  "exit_code": 137,
+  "failure_kind": "out-of-memory",
+  "metrics_produced": false,
+  "quantization_bits": 8
+}

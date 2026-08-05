@@ -42,8 +42,9 @@ class NoSubagentDrivenDevelopmentSkillTests(unittest.TestCase):
         for phrase in (
             "全新 Implementer subagent",
             "独立 Reviewer subagent",
-            "Implementer 与 Reviewer 都必须是全新 Sonnet subagent",
+            "Implementer 与 Reviewer 都必须是全新 Haiku subagent",
             "两个角色的 Agent ID 必须不同",
+            "同一 case 必须等待 Implementer 的真实最终回复",
         ):
             self.assertIn(phrase, workflow)
 

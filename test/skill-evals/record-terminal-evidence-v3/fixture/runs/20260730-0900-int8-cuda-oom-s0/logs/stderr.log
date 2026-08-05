@@ -1,0 +1,9 @@
+2026-07-30T09:00:02Z INFO loaded scholar-reranker-1.3b revision sha256:6f51b4c8e4d84c1e
+2026-07-30T09:00:04Z INFO calibration batch=1 samples=128 allocated_gib=13.12
+2026-07-30T09:00:06Z INFO calibration batch=2 samples=256 allocated_gib=14.86
+2026-07-30T09:00:08Z ERROR CUDA out of memory while allocating 2.50 GiB; 0.64 GiB free
+Traceback (most recent call last):
+  File "tools/quantize.py", line 118, in calibrate
+    activations = model(batch)
+CUDAOutOfMemoryError: CUDA out of memory while allocating 2.50 GiB
+2026-07-30T09:00:08Z INFO process_exit_code=137 checkpoint_written=false

@@ -1,0 +1,269 @@
+# Existing Ranking Sonnet v3 Baseline full tree evidence
+fixtureBaseCommit: 5d70d1707a8e9e9c166effa25b26e7fc2ee9514c
+## fixtureBaseCommit..HEAD committed diff
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index 3bfc1bf..6397f8f 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | Missing | - | Rank exact terms and semantic matches through one stable scoring contract |
++| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 3 | Missing | Missing | - | Rank exact phrases, terms, and semantic matches through one stable scoring contract |
+ | search-ranking | [SPEC-004](search-ranking/SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | Missing | - | Limit repeated sources after relevance ranking |
+diff --git a/hello-scholar/specs/search-ranking/INDEX.md b/hello-scholar/specs/search-ranking/INDEX.md
+index 3a6131a..327bc29 100644
+--- a/hello-scholar/specs/search-ranking/INDEX.md
++++ b/hello-scholar/specs/search-ranking/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | Missing | - | Rank exact terms and semantic matches through one stable scoring contract | - |
++| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 3 | Missing | Missing | - | Rank exact phrases, terms, and semantic matches through one stable scoring contract | - |
+ | [SPEC-004](SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | Missing | - | Limit repeated sources after relevance ranking | - |
+diff --git a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+index 1831146..214a525 100644
+--- a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
++++ b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+@@ -6,10 +6,10 @@ title: Intent-aware search ranking
+ topic: search-ranking
+ type: capability
+ status: accepted
+-revision: 2
+-summary: Rank exact terms and semantic matches through one stable scoring contract
++revision: 3
++summary: Rank exact phrases, terms, and semantic matches through one stable scoring contract
+ created: 2026-06-10
+-updated: 2026-07-18
++updated: 2026-08-04
+ supersedes: []
+ superseded_by: null
+ ---
+@@ -17,61 +17,69 @@ superseded_by: null
+ 
+ ## 1. Problem
+ 
+-Keyword-only ranking misses semantically relevant documents, while unconstrained semantic matches can outrank exact query terms.
++Keyword-only ranking misses semantically relevant documents, while unconstrained semantic matches can outrank exact query terms. Treating a complete exact phrase the same as ordinary individual-term matches also weakens strong evidence of query intent.
+ 
+ ## 2. Goals
+ 
+-Own relevance weights for lexical, intent, and freshness signals behind `rank_documents`.
++Own relevance weights for exact-phrase, ordinary-term, semantic-intent, and freshness signals behind `rank_documents`.
++
++Give a complete exact phrase match a strictly greater weight than ordinary term matching, and require semantic intent fallback to meet a minimum score of 0.68.
+ 
+ ## 3. Non-goals
+ 
+-Result diversity and pagination are owned elsewhere.
++Result diversity and pagination are owned elsewhere. This revision does not change the public ranking entry or its returned result structure.
+ 
+ ## 4. Current State
+ 
+-Revision 2 adds an `intent_score` fallback when lexical score is below the configured threshold.
++Revision 2 uses a bounded semantic intent fallback with a threshold of 0.62 and represents lexical relevance as one component.
+ 
+ ## 5. Target Design
+ 
+-The ranking score is the sum of exact-term, semantic intent, and freshness components. Exact terms remain the strongest signal.
++The ranking score is the sum of exact-phrase, ordinary-term, semantic-intent, and freshness components. The configured exact-phrase weight MUST be strictly greater than the configured ordinary-term weight.
++
++Semantic intent contributes only when `intent_score >= 0.68`; an intent score below 0.68 contributes no semantic fallback score. Exact-phrase matching remains the strongest lexical evidence without changing the public ranking contract.
+ 
+ ## 6. Implementation Boundary
+ 
+-Only relevance scoring and its configuration belong to this Spec.
++Only relevance scoring and its configuration, including the distinction between exact phrases and ordinary terms, belong to this Spec. The post-ranking source-diversity strategy remains owned by `SPEC-004` and is unchanged.
+ 
+ ## 7. Interfaces And Data
+ 
+-`rank_documents(query, documents, policy)` returns document IDs ordered by descending score and stable input order for ties.
++`rank_documents` remains the stable public ranking entry. Its existing input contract and `list[str]` result structure remain unchanged: it returns document IDs ordered by descending score and preserves stable input order for ties.
+ 
+ ## 8. Invariants And Constraints
+ 
+-The public function and return type remain stable. Scores are deterministic for the same inputs.
++Scores are deterministic for the same inputs. The exact-phrase weight is strictly greater than the ordinary-term weight. Semantic fallback is unavailable below 0.68. The public function, return structure, and `SPEC-004` diversity policy remain unchanged.
+ 
+ ## 9. Options And Decision
+ 
+-Adopt a bounded semantic fallback instead of a semantic-only ranker.
++Adopt a bounded semantic fallback with a minimum score of 0.68 and a distinct, higher-weight exact-phrase lexical tier. Reject equal phrase and ordinary-term weights because they fail to preserve the stronger relevance signal of a complete query phrase.
+ 
+ ## 10. Acceptance Criteria
+ 
+-Exact lexical hits outrank semantic-only hits; intent fallback activates only above its threshold.
++- A complete exact phrase match receives a strictly greater relevance weight than ordinary term matching.
++- Semantic fallback activates only when `intent_score >= 0.68`; scores from 0.62 up to, but not including, 0.68 are ignored for semantic fallback.
++- The public `rank_documents` entry and its existing `list[str]` result structure remain unchanged.
++- The post-ranking source-diversity strategy remains unchanged under `SPEC-004`.
+ 
+ ## 11. Verification
+ 
+-Unit tests cover exact, semantic, freshness, and stable tie behavior.
++Unit tests cover the phrase-versus-term weighting relationship, semantic threshold boundaries below and at 0.68, exact, semantic, freshness, and stable tie behavior. Existing diversity verification remains governed independently by `SPEC-004`.
+ 
+ ## 12. Migration And Cleanup
+ 
+-Configuration changes are deployed with the ranking service; no stored data migration exists.
++Configuration changes are deployed with the ranking service; no stored data migration exists. No public-interface or diversity-policy migration is required.
+ 
+ ## 13. Rollback
+ 
+-Restore the previous weight values and service build.
++Restore the prior ordinary lexical weighting and the semantic fallback threshold of 0.62 without changing the public interface, result structure, or diversity policy.
+ 
+ ## 14. Evidence
+ 
+-`tests/test_ranking.py` and production ranking configuration.
++`tests/test_ranking.py` and production ranking configuration verify the scoring contract; `SPEC-004` records the independent diversity contract.
+ 
+ ## 15. Revision History
+ 
+ - Revision 1: lexical and freshness scoring.
+ - Revision 2: bounded semantic intent fallback at threshold 0.62.
++- Revision 3: exact-phrase weighting is strictly greater than ordinary-term weighting; the semantic fallback minimum increases from 0.62 to 0.68; the public ranking entry, result structure, and diversity strategy remain unchanged.
+## HEAD index diff
+## HEAD working tree diff
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index 3bfc1bf..6397f8f 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | Missing | - | Rank exact terms and semantic matches through one stable scoring contract |
++| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 3 | Missing | Missing | - | Rank exact phrases, terms, and semantic matches through one stable scoring contract |
+ | search-ranking | [SPEC-004](search-ranking/SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | Missing | - | Limit repeated sources after relevance ranking |
+diff --git a/hello-scholar/specs/search-ranking/INDEX.md b/hello-scholar/specs/search-ranking/INDEX.md
+index 3a6131a..327bc29 100644
+--- a/hello-scholar/specs/search-ranking/INDEX.md
++++ b/hello-scholar/specs/search-ranking/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | Missing | - | Rank exact terms and semantic matches through one stable scoring contract | - |
++| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 3 | Missing | Missing | - | Rank exact phrases, terms, and semantic matches through one stable scoring contract | - |
+ | [SPEC-004](SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | Missing | - | Limit repeated sources after relevance ranking | - |
+diff --git a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+index 1831146..214a525 100644
+--- a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
++++ b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+@@ -6,10 +6,10 @@ title: Intent-aware search ranking
+ topic: search-ranking
+ type: capability
+ status: accepted
+-revision: 2
+-summary: Rank exact terms and semantic matches through one stable scoring contract
++revision: 3
++summary: Rank exact phrases, terms, and semantic matches through one stable scoring contract
+ created: 2026-06-10
+-updated: 2026-07-18
++updated: 2026-08-04
+ supersedes: []
+ superseded_by: null
+ ---
+@@ -17,61 +17,69 @@ superseded_by: null
+ 
+ ## 1. Problem
+ 
+-Keyword-only ranking misses semantically relevant documents, while unconstrained semantic matches can outrank exact query terms.
++Keyword-only ranking misses semantically relevant documents, while unconstrained semantic matches can outrank exact query terms. Treating a complete exact phrase the same as ordinary individual-term matches also weakens strong evidence of query intent.
+ 
+ ## 2. Goals
+ 
+-Own relevance weights for lexical, intent, and freshness signals behind `rank_documents`.
++Own relevance weights for exact-phrase, ordinary-term, semantic-intent, and freshness signals behind `rank_documents`.
++
++Give a complete exact phrase match a strictly greater weight than ordinary term matching, and require semantic intent fallback to meet a minimum score of 0.68.
+ 
+ ## 3. Non-goals
+ 
+-Result diversity and pagination are owned elsewhere.
++Result diversity and pagination are owned elsewhere. This revision does not change the public ranking entry or its returned result structure.
+ 
+ ## 4. Current State
+ 
+-Revision 2 adds an `intent_score` fallback when lexical score is below the configured threshold.
++Revision 2 uses a bounded semantic intent fallback with a threshold of 0.62 and represents lexical relevance as one component.
+ 
+ ## 5. Target Design
+ 
+-The ranking score is the sum of exact-term, semantic intent, and freshness components. Exact terms remain the strongest signal.
++The ranking score is the sum of exact-phrase, ordinary-term, semantic-intent, and freshness components. The configured exact-phrase weight MUST be strictly greater than the configured ordinary-term weight.
++
++Semantic intent contributes only when `intent_score >= 0.68`; an intent score below 0.68 contributes no semantic fallback score. Exact-phrase matching remains the strongest lexical evidence without changing the public ranking contract.
+ 
+ ## 6. Implementation Boundary
+ 
+-Only relevance scoring and its configuration belong to this Spec.
++Only relevance scoring and its configuration, including the distinction between exact phrases and ordinary terms, belong to this Spec. The post-ranking source-diversity strategy remains owned by `SPEC-004` and is unchanged.
+ 
+ ## 7. Interfaces And Data
+ 
+-`rank_documents(query, documents, policy)` returns document IDs ordered by descending score and stable input order for ties.
++`rank_documents` remains the stable public ranking entry. Its existing input contract and `list[str]` result structure remain unchanged: it returns document IDs ordered by descending score and preserves stable input order for ties.
+ 
+ ## 8. Invariants And Constraints
+ 
+-The public function and return type remain stable. Scores are deterministic for the same inputs.
++Scores are deterministic for the same inputs. The exact-phrase weight is strictly greater than the ordinary-term weight. Semantic fallback is unavailable below 0.68. The public function, return structure, and `SPEC-004` diversity policy remain unchanged.
+ 
+ ## 9. Options And Decision
+ 
+-Adopt a bounded semantic fallback instead of a semantic-only ranker.
++Adopt a bounded semantic fallback with a minimum score of 0.68 and a distinct, higher-weight exact-phrase lexical tier. Reject equal phrase and ordinary-term weights because they fail to preserve the stronger relevance signal of a complete query phrase.
+ 
+ ## 10. Acceptance Criteria
+ 
+-Exact lexical hits outrank semantic-only hits; intent fallback activates only above its threshold.
++- A complete exact phrase match receives a strictly greater relevance weight than ordinary term matching.
++- Semantic fallback activates only when `intent_score >= 0.68`; scores from 0.62 up to, but not including, 0.68 are ignored for semantic fallback.
++- The public `rank_documents` entry and its existing `list[str]` result structure remain unchanged.
++- The post-ranking source-diversity strategy remains unchanged under `SPEC-004`.
+ 
+ ## 11. Verification
+ 
+-Unit tests cover exact, semantic, freshness, and stable tie behavior.
++Unit tests cover the phrase-versus-term weighting relationship, semantic threshold boundaries below and at 0.68, exact, semantic, freshness, and stable tie behavior. Existing diversity verification remains governed independently by `SPEC-004`.
+ 
+ ## 12. Migration And Cleanup
+ 
+-Configuration changes are deployed with the ranking service; no stored data migration exists.
++Configuration changes are deployed with the ranking service; no stored data migration exists. No public-interface or diversity-policy migration is required.
+ 
+ ## 13. Rollback
+ 
+-Restore the previous weight values and service build.
++Restore the prior ordinary lexical weighting and the semantic fallback threshold of 0.62 without changing the public interface, result structure, or diversity policy.
+ 
+ ## 14. Evidence
+ 
+-`tests/test_ranking.py` and production ranking configuration.
++`tests/test_ranking.py` and production ranking configuration verify the scoring contract; `SPEC-004` records the independent diversity contract.
+ 
+ ## 15. Revision History
+ 
+ - Revision 1: lexical and freshness scoring.
+ - Revision 2: bounded semantic intent fallback at threshold 0.62.
++- Revision 3: exact-phrase weighting is strictly greater than ordinary-term weighting; the semantic fallback minimum increases from 0.62 to 0.68; the public ranking entry, result structure, and diversity strategy remain unchanged.
+## untracked files
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/search-ranking/INDEX.md
+ M hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+## final regular file hashes outside .git
+57c440ce751bb51f9e4016fd40f510d02e4bac8145d560b149cf73c89890b5c8  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/AGENTS.md
+0c585ed829d1d7013c3fe8ed803be9a064a69509f827964d71a889110f62386c  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/hello-scholar/architecture.md
+45abd4b3cfdf8272b4089da76e951bdcddc3007736034e4c96cb23dc621d456c  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/hello-scholar/specs/INDEX.md
+3034440c385c828b66f8a17b46722125a9a2ac9235d16883e95b6d94ab7b4edd  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/hello-scholar/specs/search-ranking/INDEX.md
+ea510b90c52f1d4d75a1ae730caf97a8dccab520919270015330b30fa942efeb  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+1d9e6fe916f13ee39b32763572ec3a40bbd3aec46cd87c6c972eb181646686ec  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md
+d91409a8c9f70bdd822bb2b68ccee9393dfaa4d56b7b8b981d90e3c3296aac60  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/src/ranking.py
+17fa99aae4dc00b93c7f6e790d38557590c8eb5e4e9ad591a90f5f19e7af08d5  /tmp/hello-scholar-eval-manage-specs-existing-v3-baseline-20260804-1146/tests/test_ranking.py
+## final runtime artifacts outside .git
+## diff whitespace check

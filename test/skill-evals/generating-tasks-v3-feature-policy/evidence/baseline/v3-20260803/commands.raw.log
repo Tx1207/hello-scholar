@@ -1,0 +1,13 @@
+# Feature Policy Sonnet v3 Baseline protocol commands
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+exitCode: 0
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 0, errors 1, notices 0
+error invalid-enum hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: approval has unsupported value pending
+docs check failed with 1 error
+exitCode: 1

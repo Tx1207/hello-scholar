@@ -9,7 +9,7 @@ Audit a Bundle; do not execute its repair. Enter only on an explicit user reques
 
 ## 1. Establish the evidence boundary
 
-1. Record the initial Git state and the allowed write set. Default to an empty write set.
+1. Record the initial Git status and Git diff baseline plus the allowed write set. Default to an empty write set. Use that baseline to identify the transaction delta; pre-existing changes remain out of scope.
 2. Read only target-Bundle facts in this order: relevant Architecture, `spec.md`, `plan.md`, `tasks.md`, Git diff/status, related code/tests/configuration, then the Spec-referenced `runs/<run-id>/record.md` files.
 3. Run the absolute `hello-scholar docs check` command.
 
@@ -59,7 +59,7 @@ Use this branch only after the user explicitly asks to preserve directly impleme
 1. Classify the finding first: return new design to the Spec; return an invalid technical approach to the Plan; ask the relevant owner to synchronize a Stale contract. Append only work already directly implementable within the current Spec and Plan.
 2. Append a `Convergence` Phase to the existing `tasks.md`; continue its `TNNN` sequence. Every new unchecked Task contains a goal, `Spec Coverage`, `Depends On`, `Parallel`, `Files`, `Work`, `Validation`, and `Completion`. Include Red-Green-Refactor only when the approved contract explicitly requires TDD.
 3. Increment `revision`; set `approval: pending-review`, `approved_revision: null`, `status: pending`; update `updated`.
-4. Run `docs sync` then `docs check` through the absolute CLI. Verify the final diff contains only `tasks.md` and CLI-generated Indexes.
+4. Run `docs sync` then `docs check` through the absolute CLI. Against the recorded baseline, verify the transaction delta contains only `tasks.md` and CLI-generated Indexes.
 5. Present the new revision and coverage change, then stop for user review. Approval of this revision and authorization to implement are separate future decisions.
 
 **Complete when:** only the allowed Tasks transaction and generated Indexes changed, all appended Tasks are reviewable and unchecked, and the response stops at the review gate.

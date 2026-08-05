@@ -1,0 +1,162 @@
+{
+  "manifestVersion": 1,
+  "batchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
+  "statusAtCreation": "pending-user-review",
+  "authorizationCount": 2,
+  "authorizationSemantics": {
+    "approvedAction": "Authorize Live Implementer and Reviewer execution for exactly the bound 2 Protocol v3 authorizations after the pending authorization records record the user's approval; do not accept Skill output.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "Every valid Red baseline.json byte sequence bound by baseline SHA-256.",
+      "Every current target Skill explicit-file tree bound by its live snapshot SHA-256.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-live-authorization-review-v3-generating-tasks-v1.md."
+    ],
+    "excludedMutableBytes": [
+      "live-approval.json decision and replyEvidence, which change only after the user approves this Batch ID and Batch SHA-256 while all bound inputs must remain current.",
+      "Live Scorecard and evidence bytes created only by later authorized Live execution.",
+      "Production Skill bytes beyond the explicit current snapshot hashes, which invalidate this authorization when changed."
+    ],
+    "invalidationRule": "Any change to a bound Scenario, Protocol, Fixture, Red Baseline, shared rubric, or current target Skill snapshot requires a new Live authorization Batch SHA-256 and user review before any affected Live run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "authorizations": [
+    {
+      "ordinal": 1,
+      "liveApprovalId": "live-generating-tasks-v3-feature-policy-sonnet-v1",
+      "scenarioId": "generating-tasks-v3-feature-policy",
+      "caseId": "generating-tasks-v3-feature-policy",
+      "projectId": "py-feature-policy-engine",
+      "proposalId": "proposal-generating-tasks-v3-feature-policy-sonnet",
+      "primarySkill": "generating-tasks",
+      "agentModel": "claude-sonnet-5",
+      "authorizationRecordPath": "test/skill-evals/generating-tasks-v3-feature-policy/live-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/generating-tasks-v3-feature-policy/scenario.md",
+          "sha256": "b0d3541a632f212fa545ffe56cc1b9059f2c7ed48f6cb8b9536582d4ac31f816"
+        },
+        "protocol": {
+          "path": "test/skill-evals/generating-tasks-v3-feature-policy/protocol.json",
+          "sha256": "932c163d7ce551f30b08a4b027bed96fb4edbab8884f04f16a7f1621447f02f1"
+        },
+        "fixture": {
+          "path": "test/skill-evals/generating-tasks-v3-feature-policy/fixture",
+          "sha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315"
+        },
+        "baseline": {
+          "path": "test/skill-evals/generating-tasks-v3-feature-policy/baseline.json",
+          "sha256": "3ff2b9f4e59b9880eb64616cac0213caaa665074c7029a4cb64973127a781323",
+          "result": "fail",
+          "failureKind": "skill-behavior"
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+      },
+      "skillSnapshots": {
+        "generating-tasks": {
+          "status": "current-explicit-file",
+          "sha256": "f28c3d018d6b8f5b6da981ac84db04774d3ced0eca87f29d8c7f2b0e62a7f5fa"
+        }
+      },
+      "criticalPath": "Read the Accepted Spec and Approved Plan, then produce the first independently executable Task coverage result without implementing it."
+    },
+    {
+      "ordinal": 2,
+      "liveApprovalId": "live-generating-tasks-v3-migration-sonnet-v1",
+      "scenarioId": "generating-tasks-v3-migration",
+      "caseId": "generating-tasks-v3-migration",
+      "projectId": "node-config-format-cli",
+      "proposalId": "proposal-generating-tasks-v3-migration-sonnet",
+      "primarySkill": "generating-tasks",
+      "agentModel": "claude-sonnet-5",
+      "authorizationRecordPath": "test/skill-evals/generating-tasks-v3-migration/live-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/generating-tasks-v3-migration/scenario.md",
+          "sha256": "0a2f24b5e5a77a25aa5749831dd4707b6eaded6c0e4fe857e63f8135d6bec016"
+        },
+        "protocol": {
+          "path": "test/skill-evals/generating-tasks-v3-migration/protocol.json",
+          "sha256": "1f2fd5fe7bd548fc6d33d16531f4cf892fdabcd4981781b037472eac554337a1"
+        },
+        "fixture": {
+          "path": "test/skill-evals/generating-tasks-v3-migration/fixture",
+          "sha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e"
+        },
+        "baseline": {
+          "path": "test/skill-evals/generating-tasks-v3-migration/baseline.json",
+          "sha256": "0152fefae609b841e7dc73fb1ed9b16d8f84eb3a6b3b99b6e73807b7149e1131",
+          "result": "fail",
+          "failureKind": "skill-behavior"
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+      },
+      "skillSnapshots": {
+        "generating-tasks": {
+          "status": "current-explicit-file",
+          "sha256": "f28c3d018d6b8f5b6da981ac84db04774d3ced0eca87f29d8c7f2b0e62a7f5fa"
+        }
+      },
+      "criticalPath": "Read the approved migration contract, then produce dependency-ordered cutover, cleanup, regression, rollback, and recovery Tasks without running them."
+    }
+  ]
+}

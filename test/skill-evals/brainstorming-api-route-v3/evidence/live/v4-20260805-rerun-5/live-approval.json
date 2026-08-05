@@ -1,0 +1,27 @@
+{
+  "liveApprovalId": "live-brainstorming-api-route-v3-haiku-v4-rerun-3",
+  "liveAuthorizationBatchId": "haiku-v4-spec-live-authorization-batch-v4",
+  "liveAuthorizationBatchSha256": "7b98814052572680aeaed1f5e1199e190d3862e34d9cca903566ca546465fedd",
+  "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
+  "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
+  "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "4303d4d12e9272d448423afb23876ec78f6ed663b0f4d2011e1305ee6f157bea",
+  "skillSnapshots": {
+    "brainstorming": {
+      "status": "current-explicit-file",
+      "sha256": "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"
+    },
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"
+    },
+    "writing-plans": {
+      "status": "current-explicit-file",
+      "sha256": "b2d467994de3690321a9a2951137bd029b0eb6e6ee063253e6f1ea0b6d544e05"
+    }
+  },
+  "replyEvidence": "用户已明确授权持续执行 Formal Eval，不需为逐批生成的 Hash 停下来等待审核，并授权最多三个 Haiku Eval Agent 并行。本记录将该 blanket execution authorization 应用于随后生成且完整 Hash 绑定的 haiku-v4-spec-live-authorization-batch-v4；不声称用户逐字引用过该后生成 Hash，也不代表接受 Live 输出。"
+}

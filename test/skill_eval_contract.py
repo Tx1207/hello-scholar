@@ -51,48 +51,19 @@ USER_VALUE_RUBRIC_ID = "hello-scholar-user-value-v1"
 FORMAL_PROTOCOL_MODELS = {
     2: "gpt-5.6-terra",
     3: "claude-sonnet-5",
+    4: "claude-haiku-4-5-20251001",
 }
 TERRA_EVAL_AGENT_MODEL = FORMAL_PROTOCOL_MODELS[2]
 SONNET_EVAL_AGENT_MODEL = FORMAL_PROTOCOL_MODELS[3]
-FROZEN_V2_BASELINES = {
-    "test/skill-evals/brainstorming-api-route": {
-        "protocolSha256": "b356dc19f13a13675a38a34c243fc4359ead2aea011add3d7ba4dc7c403d5165",
-        "baselineSha256": "ef76d5b585646dd4505a5358534fd4706e4c15400a4a8e00733b48265025fd87",
-    },
-    "test/skill-evals/brainstorming-spec-bundle": {
-        "protocolSha256": "6a7771c79998b7e0129fccf7512f191fc01a82feb2d432eea2966e38f7a92fa6",
-        "baselineSha256": "22f7d0b1fda60ed13c3a61fda407d61da92b773f8f9139ac301ee43ea7eb038b",
-    },
-    "test/skill-evals/crash-audit-calibrated-none": {
-        "protocolSha256": "f88f363c13b4fe61c2c78a1da222abd43bfdfe7bd00b257e371d808c01fb691b",
-        "baselineSha256": "c5b9a16f1388839c3461a232268e068b85bc9d334c404d1c3b8cf399570eafba",
-    },
-    "test/skill-evals/crash-audit-release-blind-spot": {
-        "protocolSha256": "478ef137dd39e26d40c8c90fe7023302e92d875621101e12c8dcd5fd0f996c94",
-        "baselineSha256": "eb96f902f40fa3500870adecd6235ea10f39596efc1cbf30441644dd5649fd34",
-    },
-    "test/skill-evals/generating-tasks": {
-        "protocolSha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021",
-        "baselineSha256": "90d8a8b328ccd06e339607bd7b441d8baf7220fbc2d04bfde291f25a68428da6",
-    },
-    "test/skill-evals/generating-tasks-migration": {
-        "protocolSha256": "6295c1715525f0af9533b3bfeef41a187f716a1625c0a203b2453fba19a1a252",
-        "baselineSha256": "a2f5424780bdc5933b3b25cf38ac44d0dcd9815d20941b702929cd41f016e48e",
-    },
-    "test/skill-evals/manage-specs-existing": {
-        "protocolSha256": "5c64ae8286e11aa4645635c0fd77bdcd6699bf9348844667df6dede669251164",
-        "baselineSha256": "a9db0547303ea10090f18080a1ea1777045818fa88d8098229a9c3787f97dbcd",
-    },
-    "test/skill-evals/manage-specs-successor": {
-        "protocolSha256": "39bf6e840b141d9770846c5d5b88de32f55346ef3023d9424cd08daf819b0a27",
-        "baselineSha256": "fcc3cb6f98f5db1d584e42f449a96ce496e339d142ca5ce2016a2672fb623e69",
-    },
-}
-FROZEN_V2_SCORECARDS = {
-    "test/skill-evals/generating-tasks": {
-        "protocolSha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021",
-        "scorecardSha256": "86156f77cf90a2375c35e075bf0b9ef3622fc4bd87d8e7b6c155c80acaa8fa6d",
-    },
+HAIKU_EVAL_AGENT_MODEL = FORMAL_PROTOCOL_MODELS[4]
+FROZEN_PROTOCOL_VERSIONS = {1, 2}
+FROZEN_HISTORY_ROOT_COUNTS = {1: 1, 2: 37}
+FROZEN_HISTORY_MANIFEST_PATH = "test/skill-evals/frozen-history-v1-v2.json"
+FROZEN_HISTORY_MANIFEST_SHA256 = "714ec7c0af7a030e8f2d33af856d7db0c59de63782822a72afd5c02781448c12"
+PERSISTED_SELECTOR_KEYS = {
+    "dispatchSelector",
+    "modelSelector",
+    "providerModel",
 }
 USER_VALUE_DIMENSION_IDS = {
     "value-visibility",
@@ -128,6 +99,22 @@ class ScenarioResult:
     evaluation_passed: bool
     user_accepted: bool
     errors: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class FrozenHistoryReport:
+    """Static integrity outcomes for the archived v1/v2 Eval cohort."""
+
+    errors: tuple[str, ...]
+    root_errors: dict[str, tuple[str, ...]]
+    registered_roots: frozenset[str]
+
+    @property
+    def valid(self) -> bool:
+        """Purpose: report whether every frozen-history check passed; Input: saved report fields; Output: true only without global or root errors."""
+        return not self.errors and all(
+            not errors for errors in self.root_errors.values()
+        )
 
 
 def _is_link(path: Path, node_stat: os.stat_result | None = None) -> bool:
@@ -210,6 +197,252 @@ def sha256_tree(path: str | Path) -> str:
     return digest.hexdigest()
 
 
+def _strict_tree_snapshot(root: Path) -> tuple[list[dict[str, str]], str]:
+    """Purpose: capture every directory and regular file in an immutable archive; Input: historical root path; Output: sorted typed entries and strict tree SHA-256; Errors: ContractError for missing, linked, or special nodes."""
+    try:
+        root_stat = root.lstat()
+    except FileNotFoundError as error:
+        raise ContractError(f"missing directory: {root}") from error
+    if _is_link(root, root_stat):
+        raise ContractError(f"symlink or junction is not allowed: {root}")
+    if not stat.S_ISDIR(root_stat.st_mode):
+        raise ContractError(f"expected directory: {root}")
+
+    entries: list[dict[str, str]] = [{"path": ".", "kind": "directory"}]
+    pending = [root]
+    while pending:
+        directory = pending.pop()
+        with os.scandir(directory) as scanned:
+            for entry in scanned:
+                path = Path(entry.path)
+                node_stat = path.lstat()
+                relative = path.relative_to(root).as_posix()
+                if _is_link(path, node_stat):
+                    raise ContractError(f"symlink or junction is not allowed: {path}")
+                if stat.S_ISDIR(node_stat.st_mode):
+                    entries.append({"path": relative, "kind": "directory"})
+                    pending.append(path)
+                elif stat.S_ISREG(node_stat.st_mode):
+                    entries.append(
+                        {
+                            "path": relative,
+                            "kind": "file",
+                            "sha256": sha256_file(path),
+                        }
+                    )
+                else:
+                    raise ContractError(f"special filesystem node is not allowed: {path}")
+
+    ordered = sorted(entries, key=lambda entry: (entry["path"], entry["kind"]))
+    digest = hashlib.sha256()
+    for entry in ordered:
+        prefix = b"D" if entry["kind"] == "directory" else b"F"
+        digest.update(prefix)
+        digest.update(b"\0")
+        digest.update(entry["path"].encode("utf-8"))
+        digest.update(b"\0")
+        if entry["kind"] == "file":
+            digest.update(entry["sha256"].encode("ascii"))
+            digest.update(b"\0")
+    return ordered, digest.hexdigest()
+
+
+def _frozen_history_manifest(
+    repo_root: Path,
+    errors: list[str],
+) -> dict[str, Any] | None:
+    """Purpose: load the pinned v1/v2 archive manifest; Input: repository root and error sink; Output: parsed manifest or none; Side effects: reads and hashes static manifest bytes."""
+    path = repo_root / FROZEN_HISTORY_MANIFEST_PATH
+    manifest = _load_json(path, errors, "frozenHistory.manifest")
+    if manifest is None:
+        return None
+    try:
+        manifest_hash = sha256_file(path)
+    except ContractError as error:
+        errors.append(f"frozenHistory.manifest: {error}")
+        return None
+    if manifest_hash != FROZEN_HISTORY_MANIFEST_SHA256:
+        errors.append("frozenHistory.manifest.sha256: does not match pinned archive manifest")
+    return manifest
+
+
+def validate_frozen_history(repo_root: str | Path) -> FrozenHistoryReport:
+    """Purpose: validate the complete immutable v1/v2 Eval archive; Input: repository root containing the static manifest and Eval tree; Output: global and per-root diagnostics; Side effects: reads every registered archive entry."""
+    repository = Path(repo_root).resolve()
+    errors: list[str] = []
+    manifest = _frozen_history_manifest(repository, errors)
+    root_errors: dict[str, list[str]] = {}
+    registered_roots: set[str] = set()
+    if manifest is None:
+        return FrozenHistoryReport(tuple(errors), {}, frozenset())
+
+    if manifest.get("manifestVersion") != 1:
+        errors.append("frozenHistory.manifest.manifestVersion: expected 1")
+    roots = manifest.get("scenarioRoots")
+    if not isinstance(roots, list) or not roots:
+        errors.append("frozenHistory.manifest.scenarioRoots: expected non-empty list")
+        roots = []
+    root_version_counts = {version: 0 for version in FROZEN_PROTOCOL_VERSIONS}
+    for index, record in enumerate(roots):
+        label = f"frozenHistory.manifest.scenarioRoots[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{label}: expected object")
+            continue
+        relative = record.get("path")
+        if not _relative_contract_path(relative):
+            errors.append(f"{label}.path: expected safe repository-relative path")
+            continue
+        if relative in registered_roots:
+            errors.append(f"{label}.path: duplicate registered root")
+            continue
+        registered_roots.add(relative)
+        root_errors[relative] = []
+        expected_version = record.get("protocolVersion")
+        if type(expected_version) is not int or expected_version not in FROZEN_PROTOCOL_VERSIONS:
+            root_errors[relative].append("frozenHistory.protocolVersion: expected integer 1 or 2")
+        else:
+            root_version_counts[expected_version] += 1
+        expected_entries = record.get("entries")
+        expected_digest = record.get("strictTreeSha256")
+        if not isinstance(expected_entries, list) or not expected_entries:
+            root_errors[relative].append("frozenHistory.entries: expected non-empty list")
+            continue
+        if not isinstance(expected_digest, str) or not HEX_SHA256.fullmatch(expected_digest):
+            root_errors[relative].append("frozenHistory.strictTreeSha256: expected SHA-256")
+            continue
+        try:
+            actual_entries, actual_digest = _strict_tree_snapshot(repository / relative)
+        except ContractError as error:
+            root_errors[relative].append(f"frozenHistory.entries: {error}")
+            continue
+        if actual_entries != expected_entries:
+            root_errors[relative].append("frozenHistory.entries: do not match archived tree")
+        if actual_digest != expected_digest:
+            root_errors[relative].append("frozenHistory.strictTreeSha256: does not match archived tree")
+        protocol = _load_json(
+            repository / relative / "protocol.json",
+            root_errors[relative],
+            "frozenHistory.protocol",
+        )
+        if protocol is not None and (
+            type(protocol.get("protocolVersion")) is not int
+            or protocol.get("protocolVersion") != expected_version
+        ):
+            root_errors[relative].append(
+                "frozenHistory.protocolVersion: does not match registered archive version"
+            )
+
+    for version, expected_count in FROZEN_HISTORY_ROOT_COUNTS.items():
+        if root_version_counts[version] != expected_count:
+            errors.append(
+                f"frozenHistory.manifest.scenarioRoots: expected {expected_count} v{version} roots"
+            )
+
+    expected_root_set = set(registered_roots)
+    actual_root_set: set[str] = set()
+    eval_root = repository / "test" / "skill-evals"
+    try:
+        with os.scandir(eval_root) as scanned:
+            for entry in scanned:
+                path = Path(entry.path)
+                if not entry.is_dir(follow_symlinks=False):
+                    continue
+                protocol_path = path / "protocol.json"
+                protocol_errors: list[str] = []
+                protocol = _load_json(protocol_path, protocol_errors, "frozenHistory.protocol")
+                if protocol is not None and _is_frozen_protocol_version(
+                    protocol.get("protocolVersion")
+                ):
+                    actual_root_set.add(path.relative_to(repository).as_posix())
+    except OSError as error:
+        errors.append(f"frozenHistory.discovery: cannot read Eval root: {error}")
+    for relative in sorted(actual_root_set - expected_root_set):
+        errors.append(f"frozenHistory.registration: unregistered historical root {relative}")
+    for relative in sorted(expected_root_set - actual_root_set):
+        root_errors.setdefault(relative, []).append(
+            "frozenHistory.registration: registered historical root is missing or no longer v1/v2"
+        )
+
+    dependencies = manifest.get("sharedDependencies")
+    if not isinstance(dependencies, dict):
+        errors.append("frozenHistory.manifest.sharedDependencies: expected object")
+    else:
+        rubric = dependencies.get("userValueRubric")
+        if not isinstance(rubric, dict):
+            errors.append("frozenHistory.manifest.sharedDependencies.userValueRubric: expected object")
+        else:
+            path = rubric.get("path")
+            expected_hash = rubric.get("sha256")
+            if path != USER_VALUE_RUBRIC_PATH:
+                errors.append("frozenHistory.manifest.userValueRubric.path: expected shared rubric path")
+            elif not isinstance(expected_hash, str) or not HEX_SHA256.fullmatch(expected_hash):
+                errors.append("frozenHistory.manifest.userValueRubric.sha256: expected SHA-256")
+            else:
+                try:
+                    actual_hash = sha256_file(repository / path)
+                except ContractError as error:
+                    errors.append(f"frozenHistory.userValueRubric: {error}")
+                else:
+                    if actual_hash != expected_hash:
+                        errors.append("frozenHistory.userValueRubric.sha256: does not match archived dependency")
+
+    return FrozenHistoryReport(
+        tuple(errors),
+        {path: tuple(messages) for path, messages in sorted(root_errors.items())},
+        frozenset(registered_roots),
+    )
+
+
+def _validate_frozen_history_membership(
+    scenario_dir: Path,
+    repo_root: Path,
+    protocol: dict[str, Any] | None,
+    errors: list[str],
+    report: FrozenHistoryReport | None = None,
+) -> FrozenHistoryReport | None:
+    """Purpose: bind legacy Scenario paths to the immutable archive; Input: scenario path, repository root, parsed Protocol, error sink, and optional shared report; Output: the inspected archive report or none; Side effects: reads frozen history when required and appends diagnostics."""
+    protocol_version = protocol.get("protocolVersion") if protocol else None
+    manifest_path = repo_root / FROZEN_HISTORY_MANIFEST_PATH
+    if report is None and (
+        _is_frozen_protocol_version(protocol_version) or manifest_path.exists()
+    ):
+        report = validate_frozen_history(repo_root)
+    if report is None:
+        return None
+    try:
+        relative_dir = scenario_dir.relative_to(repo_root).as_posix()
+    except ValueError:
+        relative_dir = None
+    if relative_dir in report.registered_roots:
+        errors.extend(report.errors)
+        errors.extend(report.root_errors.get(relative_dir, ()))
+    elif _is_frozen_protocol_version(protocol_version):
+        errors.append(
+            "frozenHistory.registration: Protocol v1/v2 scenario is not a registered historical root"
+        )
+        errors.extend(report.errors)
+    return report
+
+
+def _reject_persisted_selector_keys(
+    value: Any,
+    field: str,
+    errors: list[str],
+) -> None:
+    """Purpose: keep launcher selectors out of persisted v3 evidence; Input: JSON value, field label, and error sink; Output: none; Side effects: recursively appends selector-key diagnostics."""
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            nested_field = f"{field}.{key}"
+            if key in PERSISTED_SELECTOR_KEYS:
+                errors.append(
+                    f"{nested_field}: launcher selector must stay outside persisted v3 evidence"
+                )
+            _reject_persisted_selector_keys(nested, nested_field, errors)
+    elif isinstance(value, list):
+        for index, nested in enumerate(value):
+            _reject_persisted_selector_keys(nested, f"{field}[{index}]", errors)
+
+
 def _load_json(path: Path, errors: list[str], label: str) -> dict[str, Any] | None:
     """Purpose: load one required JSON object; Input: path, error sink, and label; Output: object or None; Side effects: appends diagnostics."""
     try:
@@ -229,6 +462,16 @@ def _nonempty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def _is_frozen_protocol_version(value: Any) -> bool:
+    """Purpose: distinguish archived integer Protocol versions from JSON booleans; Input: arbitrary Protocol version; Output: true only for integer v1 or v2."""
+    return type(value) is int and value in FROZEN_PROTOCOL_VERSIONS
+
+
+def _is_formal_protocol_version(value: Any) -> bool:
+    """Purpose: distinguish formal integer Protocol versions from JSON booleans; Input: arbitrary Protocol version; Output: true only for integer v2 or v3."""
+    return type(value) is int and value in FORMAL_PROTOCOL_MODELS
+
+
 def _number(value: Any) -> bool:
     """Purpose: test finite JSON numbers without booleans; Input: arbitrary value; Output: true for a finite int or float."""
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
@@ -240,6 +483,63 @@ def _relative_contract_path(value: Any) -> bool:
         return False
     path = PurePosixPath(value)
     return not path.is_absolute() and ".." not in path.parts
+
+
+def _validate_evaluator_setup(
+    value: Any,
+    fixture_root: Path,
+    errors: list[str],
+) -> None:
+    """Purpose: validate evaluator-only Fixture setup declared in a formal Protocol; Input: setup object, Fixture root, and error sink; Output: none; Side effects: reads protected Fixture files and appends diagnostics."""
+    field = "protocol.fixture.evaluatorSetup"
+    if not isinstance(value, dict):
+        errors.append(f"{field}: expected object")
+        return
+    if set(value) != {"kind", "timing", "replacements"}:
+        errors.append(f"{field}: expected kind, timing, and replacements only")
+    if value.get("kind") != "protected-text-replacements":
+        errors.append(f"{field}.kind: expected protected-text-replacements")
+    if value.get("timing") != "after-base-commit-before-first-prompt":
+        errors.append(
+            f"{field}.timing: expected after-base-commit-before-first-prompt"
+        )
+    replacements = value.get("replacements")
+    if not isinstance(replacements, list) or not replacements:
+        errors.append(f"{field}.replacements: expected non-empty list")
+        return
+    for index, replacement in enumerate(replacements):
+        replacement_field = f"{field}.replacements[{index}]"
+        if not isinstance(replacement, dict):
+            errors.append(f"{replacement_field}: expected object")
+            continue
+        if set(replacement) != {"path", "before", "after"}:
+            errors.append(
+                f"{replacement_field}: expected path, before, and after only"
+            )
+        path = replacement.get("path")
+        safe_path = _relative_contract_path(path)
+        if not safe_path:
+            errors.append(f"{replacement_field}.path: expected safe Fixture path")
+        before = replacement.get("before")
+        after = replacement.get("after")
+        if not _nonempty_string(before):
+            errors.append(f"{replacement_field}.before: expected non-empty string")
+        if not _nonempty_string(after):
+            errors.append(f"{replacement_field}.after: expected non-empty string")
+        if _nonempty_string(before) and before == after:
+            errors.append(f"{replacement_field}: before and after must differ")
+        if safe_path and _nonempty_string(before):
+            target = fixture_root / PurePosixPath(path)
+            try:
+                _require_regular_file(target)
+                source = target.read_text(encoding="utf-8")
+            except (ContractError, OSError, UnicodeError) as error:
+                errors.append(f"{replacement_field}.path: cannot read protected Fixture file: {error}")
+            else:
+                if before not in source:
+                    errors.append(
+                        f"{replacement_field}.before: is not present in protected Fixture file"
+                    )
 
 
 def _validate_string_list(
@@ -399,13 +699,17 @@ def _validate_legacy_speed_protocol(
 def _validate_protocol(
     protocol: dict[str, Any],
     repo_root: Path,
+    scenario_dir: Path,
     errors: list[str],
 ) -> dict[str, Any] | None:
     """Purpose: validate one Eval Protocol object; Input: protocol, repository root, and error sink; Output: shared user-value rubric for a formal cohort or None; Side effects: reads shared rubric and appends diagnostics."""
     protocol_version = protocol.get("protocolVersion")
-    if protocol_version != 1 and protocol_version not in FORMAL_PROTOCOL_MODELS:
-        errors.append("protocol.protocolVersion: expected 1, 2, or 3")
-    is_formal = protocol_version in FORMAL_PROTOCOL_MODELS
+    if type(protocol_version) is not int or protocol_version not in {
+        1,
+        *FORMAL_PROTOCOL_MODELS,
+    }:
+        errors.append("protocol.protocolVersion: expected integer 1, 2, 3, or 4")
+    is_formal = _is_formal_protocol_version(protocol_version)
 
     for field in ("scenarioId", "projectId", "primarySkill", "caseId"):
         value = protocol.get(field)
@@ -522,6 +826,17 @@ def _validate_protocol(
     else:
         if not _nonempty_string(fixture.get("baseCommitRule")):
             errors.append("protocol.fixture.baseCommitRule: expected non-empty string")
+        if "evaluatorSetup" in fixture:
+            if not is_formal:
+                errors.append(
+                    "protocol.fixture.evaluatorSetup: only formal Protocols may declare protected setup"
+                )
+            else:
+                _validate_evaluator_setup(
+                    fixture["evaluatorSetup"],
+                    scenario_dir / "fixture",
+                    errors,
+                )
         states = fixture.get("evidenceStates")
         if not isinstance(states, list) or set(states) != FIXTURE_EVIDENCE_STATES:
             errors.append(
@@ -817,7 +1132,12 @@ def _validate_checks(
 
 
 def _command_resolution_matches(protocol_command: str, executed_command: str) -> bool:
-    """Purpose: compare an executed command with its approved template; Input: Protocol command and resolved command; Output: true when only angle-bracket placeholders were replaced."""
+    """Purpose: compare an executed command with its approved template; Input: Protocol command and resolved command; Output: true when only approved placeholders and an explicit Fixture cwd wrapper differ."""
+    wrapper = re.fullmatch(r"env -C (/[^\s]+) (.+)", executed_command)
+    if wrapper is not None:
+        fixture_path, executed_command = wrapper.groups()
+        if not fixture_path or fixture_path.endswith("/"):
+            return False
     parts = re.split(r"(<[^<>\r\n]+>)", protocol_command)
     if len(parts) == 1:
         return executed_command == protocol_command
@@ -1142,26 +1462,12 @@ def _validate_baseline(
     protocol: dict[str, Any],
     approval: dict[str, Any],
     current_hashes: dict[str, str],
-    repo_root: Path,
     user_value_rubric: dict[str, Any] | None,
     original_request: str | None,
     errors: list[str],
 ) -> bool:
     """Purpose: validate a saved Baseline run; Input: scenario, Baseline, Protocol, approval, current hashes, shared rubric, original request, and error sink; Output: true only for a valid red-result claim; Side effects: reads evidence and appends diagnostics."""
     _validate_hash_bindings(baseline, current_hashes, "baseline", errors)
-    protocol_version = protocol.get("protocolVersion")
-    frozen_v2 = _is_frozen_v2_run(
-        scenario_dir,
-        protocol,
-        repo_root,
-        "baseline",
-        FROZEN_V2_BASELINES,
-        errors,
-    )
-    if protocol_version == 2 and not frozen_v2:
-        errors.append(
-            "baseline: Protocol v2 permits only registered frozen historical evidence"
-        )
     if baseline.get("proposalId") != approval.get("proposalId"):
         errors.append("baseline.proposalId: does not match approval")
 
@@ -1182,7 +1488,7 @@ def _validate_baseline(
             expectation = expectations.get(skill, {})
             expected_status = (
                 expectation.get("baselineLoad")
-                if protocol.get("protocolVersion") in FORMAL_PROTOCOL_MODELS
+                if _is_formal_protocol_version(protocol.get("protocolVersion"))
                 else expectation.get("load")
             )
             status_value = snapshot.get("status")
@@ -1221,7 +1527,7 @@ def _validate_baseline(
         scenario_dir,
         baseline.get("commands"),
         protocol.get("commands"),
-        protocol.get("protocolVersion") in FORMAL_PROTOCOL_MODELS,
+        _is_formal_protocol_version(protocol.get("protocolVersion")),
         "baseline.commands",
         errors,
     )
@@ -1229,7 +1535,7 @@ def _validate_baseline(
         scenario_dir, baseline.get("diffEvidence"), "baseline.diffEvidence", errors
     )
 
-    is_formal = protocol.get("protocolVersion") in FORMAL_PROTOCOL_MODELS
+    is_formal = _is_formal_protocol_version(protocol.get("protocolVersion"))
     behavior_quality_passed = True
     user_value_passed = True
     interaction_complete = True
@@ -1301,39 +1607,118 @@ def _validate_baseline(
             errors.append("baseline.failureKind: control-pass must use null")
     return result == "fail"
 
-
-def _is_frozen_v2_run(
+def _validate_live_approval(
     scenario_dir: Path,
+    live_approval: dict[str, Any],
     protocol: dict[str, Any],
+    approval: dict[str, Any],
+    current_hashes: dict[str, str],
+    baseline_path: Path,
+    baseline_is_valid_red: bool,
     repo_root: Path,
-    run_name: str,
-    frozen_records: dict[str, dict[str, str]],
+    scorecard: dict[str, Any] | None,
     errors: list[str],
+    *,
+    require_approved: bool,
 ) -> bool:
-    """Purpose: identify one immutable v2 run record; Input: scenario, Protocol, repository root, run name, frozen registry, and error sink; Output: true only for registered bytes; Side effects: hashes saved evidence and appends tamper diagnostics."""
+    """Purpose: validate a v3 Live authorization against the current Red Baseline and Skill snapshots; Input: Scenario contracts, Live approval, optional Scorecard, and error sink; Output: true when an approved authorization is current; Side effects: reads the Baseline and current Skill trees."""
+    if not _nonempty_string(live_approval.get("liveApprovalId")):
+        errors.append("liveApproval.liveApprovalId: expected non-empty string")
+    batch_id = live_approval.get("liveAuthorizationBatchId")
+    if not isinstance(batch_id, str) or not KEBAB_CASE.fullmatch(batch_id):
+        errors.append(
+            "liveApproval.liveAuthorizationBatchId: expected kebab-case batch ID"
+        )
+    batch_hash = live_approval.get("liveAuthorizationBatchSha256")
+    if not isinstance(batch_hash, str) or not HEX_SHA256.fullmatch(batch_hash):
+        errors.append(
+            "liveApproval.liveAuthorizationBatchSha256: expected SHA-256"
+        )
+    if live_approval.get("proposalId") != approval.get("proposalId"):
+        errors.append("liveApproval.proposalId: does not match approval")
+    _validate_hash_bindings(live_approval, current_hashes, "liveApproval", errors)
+    if scorecard is not None:
+        if scorecard.get("liveApprovalId") != live_approval.get("liveApprovalId"):
+            errors.append("scorecard.liveApprovalId: does not match Live authorization")
+        try:
+            current_live_approval_hash = sha256_file(
+                scenario_dir / "live-approval.json"
+            )
+        except ContractError as error:
+            errors.append(
+                f"scorecard.liveApprovalSha256: cannot hash Live authorization: {error}"
+            )
+        else:
+            if scorecard.get("liveApprovalSha256") != current_live_approval_hash:
+                errors.append(
+                    "scorecard.liveApprovalSha256: does not match current Live authorization"
+                )
+
+    decision = live_approval.get("decision")
+    if decision not in {"pending", "approved"}:
+        errors.append("liveApproval.decision: expected pending or approved")
+    elif decision == "approved" and not _nonempty_string(
+        live_approval.get("replyEvidence")
+    ):
+        errors.append("liveApproval.replyEvidence: required for approved authorization")
+    elif decision == "pending":
+        if require_approved:
+            errors.append("liveApproval.decision: Scorecard requires approved authorization")
+        if live_approval.get("replyEvidence") is not None:
+            errors.append("liveApproval.replyEvidence: pending authorization must use null")
+
+    expected_rubric_hash = protocol.get("userValueRubric", {}).get("sha256")
+    rubric_hash = live_approval.get("userValueRubricSha256")
+    if not isinstance(rubric_hash, str) or not HEX_SHA256.fullmatch(rubric_hash):
+        errors.append("liveApproval.userValueRubricSha256: expected SHA-256")
+    elif rubric_hash != expected_rubric_hash:
+        errors.append(
+            "liveApproval.userValueRubricSha256: does not match protocol shared rubric"
+        )
+
     try:
-        relative_dir = scenario_dir.relative_to(repo_root).as_posix()
-    except ValueError:
-        return False
-    frozen = frozen_records.get(relative_dir)
-    if frozen is None:
-        return False
-    if protocol.get("protocolVersion") != 2:
-        errors.append(f"{run_name}: frozen v2 registry requires protocolVersion 2")
-        return False
-    try:
-        protocol_hash = sha256_file(scenario_dir / "protocol.json")
-        run_hash = sha256_file(scenario_dir / f"{run_name}.json")
+        baseline_hash = sha256_file(baseline_path)
     except ContractError as error:
-        errors.append(f"{run_name}: cannot hash frozen v2 evidence: {error}")
-        return False
-    if protocol_hash != frozen["protocolSha256"]:
-        errors.append(f"{run_name}: frozen v2 protocol hash mismatch")
-        return False
-    if run_hash != frozen[f"{run_name}Sha256"]:
-        errors.append(f"{run_name}: frozen v2 {run_name} hash mismatch")
-        return False
-    return True
+        errors.append(f"liveApproval.baselineSha256: cannot hash Baseline: {error}")
+    else:
+        if live_approval.get("baselineSha256") != baseline_hash:
+            errors.append("liveApproval.baselineSha256: does not match current Baseline")
+    if not baseline_is_valid_red:
+        errors.append("liveApproval.baselineSha256: requires a valid Red Baseline")
+
+    target_skills = protocol.get("targetSkills", [])
+    sources = protocol.get("skillSources", {})
+    expectations = protocol.get("skillExpectations", {})
+    snapshots = live_approval.get("skillSnapshots")
+    if not isinstance(snapshots, dict) or set(snapshots) != set(target_skills):
+        errors.append("liveApproval.skillSnapshots: keys must exactly match targetSkills")
+    else:
+        scorecard_snapshots = (
+            scorecard.get("skillSnapshots") if isinstance(scorecard, dict) else None
+        )
+        for skill in target_skills:
+            snapshot = snapshots.get(skill)
+            field = f"liveApproval.skillSnapshots.{skill}"
+            if not isinstance(snapshot, dict):
+                errors.append(f"{field}: expected object")
+                continue
+            expected_status = expectations.get(skill, {}).get("liveLoad")
+            if snapshot.get("status") != expected_status:
+                errors.append(f"{field}.status: does not match protocol liveLoad")
+            source = sources.get(skill)
+            try:
+                expected_hash = sha256_tree(repo_root / source)
+            except (ContractError, TypeError) as error:
+                errors.append(f"{field}.sha256: cannot hash current skill: {error}")
+            else:
+                if snapshot.get("sha256") != expected_hash:
+                    errors.append(f"{field}.sha256: does not match current skill")
+            if isinstance(scorecard_snapshots, dict) and snapshot != scorecard_snapshots.get(
+                skill
+            ):
+                errors.append(f"{field}: does not match scorecard skill snapshot")
+
+    return decision == "approved"
 
 
 def _validate_scorecard(
@@ -1355,18 +1740,7 @@ def _validate_scorecard(
     target_skills = protocol.get("targetSkills", [])
     sources = protocol.get("skillSources", {})
     protocol_version = protocol.get("protocolVersion")
-    frozen_v2 = _is_frozen_v2_run(
-        scenario_dir,
-        protocol,
-        repo_root,
-        "scorecard",
-        FROZEN_V2_SCORECARDS,
-        errors,
-    )
-    if protocol_version == 2 and not frozen_v2:
-        errors.append(
-            "scorecard: Protocol v2 permits only registered frozen historical evidence"
-        )
+    frozen_history = _is_frozen_protocol_version(protocol_version)
     snapshots = scorecard.get("skillSnapshots")
     if not isinstance(snapshots, dict) or set(snapshots) != set(target_skills):
         errors.append("scorecard.skillSnapshots: keys must exactly match targetSkills")
@@ -1382,13 +1756,13 @@ def _validate_scorecard(
             )
             if snapshot.get("status") != expected_status:
                 errors.append(f"{field}.status: does not match protocol liveLoad")
-            if frozen_v2:
+            if frozen_history:
                 snapshot_hash = snapshot.get("sha256")
                 if not isinstance(snapshot_hash, str) or not HEX_SHA256.fullmatch(
                     snapshot_hash
                 ):
                     errors.append(
-                        f"{field}.sha256: frozen v2 snapshot requires SHA-256"
+                        f"{field}.sha256: frozen historical snapshot requires SHA-256"
                     )
             else:
                 source = sources.get(skill)
@@ -1411,7 +1785,7 @@ def _validate_scorecard(
         scenario_dir,
         scorecard.get("commands"),
         protocol.get("commands"),
-        protocol.get("protocolVersion") in FORMAL_PROTOCOL_MODELS,
+        _is_formal_protocol_version(protocol.get("protocolVersion")),
         "scorecard.commands",
         errors,
     )
@@ -1467,11 +1841,13 @@ def _validate_scorecard(
     return result == "pass" and observed_pass, user_decision == "accepted"
 
 
-def validate_scenario_dir(
+def _validate_scenario_dir(
     scenario_dir: str | Path,
     repo_root: str | Path | None = None,
+    *,
+    frozen_history: FrozenHistoryReport | None = None,
 ) -> ScenarioResult:
-    """Purpose: validate one saved Eval scenario without running agents; Input: scenario directory and optional repository root; Output: independent ScenarioResult stage facts; Side effects: reads Proposal and evidence files."""
+    """Purpose: validate one saved Eval scenario with an internal optional archive report; Input: scenario directory, optional repository root, and trusted shared report; Output: independent ScenarioResult stage facts; Side effects: reads Proposal and evidence files."""
 
     directory = Path(scenario_dir).resolve()
     repository = Path(repo_root).resolve() if repo_root is not None else directory.parents[2]
@@ -1479,6 +1855,7 @@ def validate_scenario_dir(
     protocol_errors: list[str] = []
     approval_errors: list[str] = []
     baseline_errors: list[str] = []
+    live_approval_errors: list[str] = []
     scorecard_errors: list[str] = []
 
     protocol = _load_json(directory / "protocol.json", protocol_errors, "protocol")
@@ -1490,8 +1867,18 @@ def validate_scenario_dir(
         user_value_rubric = _validate_protocol(
             protocol,
             repository,
+            directory,
             protocol_errors,
         )
+        frozen_history = _validate_frozen_history_membership(
+            directory,
+            repository,
+            protocol,
+            protocol_errors,
+            frozen_history,
+        )
+        if protocol.get("protocolVersion") in {3, 4}:
+            _reject_persisted_selector_keys(protocol, "protocol", protocol_errors)
         if protocol.get("scenarioId") != directory.name:
             protocol_errors.append(
                 "protocol.scenarioId: must match scenario directory name"
@@ -1516,6 +1903,10 @@ def validate_scenario_dir(
     )
     if approval is not None:
         _validate_approval(approval, current_hashes, approval_errors)
+        if protocol is not None and _is_formal_protocol_version(
+            protocol.get("protocolVersion")
+        ):
+            _reject_persisted_selector_keys(approval, "approval", approval_errors)
 
     baseline_path = directory / "baseline.json"
     scorecard_path = directory / "scorecard.json"
@@ -1535,16 +1926,47 @@ def validate_scenario_dir(
         if approval is None or approval.get("decision") != "approved":
             baseline_errors.append("baseline: requires an approved Proposal")
         if baseline is not None and protocol is not None and approval is not None:
+            if protocol.get("protocolVersion") in {3, 4}:
+                _reject_persisted_selector_keys(baseline, "baseline", baseline_errors)
             baseline_result_is_red = _validate_baseline(
                 directory,
                 baseline,
                 protocol,
                 approval,
                 current_hashes,
-                repository,
                 user_value_rubric,
                 original_request,
                 baseline_errors,
+            )
+
+    live_approval_path = directory / "live-approval.json"
+    live_approval: dict[str, Any] | None = None
+    if live_approval_path.exists():
+        live_approval = _load_json(
+            live_approval_path, live_approval_errors, "liveApproval"
+        )
+        if protocol is None or protocol.get("protocolVersion") not in {3, 4}:
+            live_approval_errors.append(
+                "liveApproval: only Protocol v3 or v4 may add authorization"
+            )
+        elif baseline is None:
+            live_approval_errors.append("liveApproval: requires Baseline")
+        elif live_approval is not None and approval is not None:
+            _reject_persisted_selector_keys(
+                live_approval, "liveApproval", live_approval_errors
+            )
+            _validate_live_approval(
+                directory,
+                live_approval,
+                protocol,
+                approval,
+                current_hashes,
+                baseline_path,
+                baseline_result_is_red,
+                repository,
+                None,
+                live_approval_errors,
+                require_approved=False,
             )
 
     scorecard: dict[str, Any] | None = None
@@ -1557,6 +1979,26 @@ def validate_scenario_dir(
         elif baseline.get("result") == "control-pass":
             scorecard_errors.append("scorecard: control-pass must stop before Live Eval")
         if scorecard is not None and protocol is not None and approval is not None:
+            if protocol.get("protocolVersion") in {3, 4}:
+                _reject_persisted_selector_keys(scorecard, "scorecard", scorecard_errors)
+                if live_approval is None:
+                    scorecard_errors.append(
+                        "liveApproval: Scorecard requires approved authorization"
+                    )
+                else:
+                    _validate_live_approval(
+                        directory,
+                        live_approval,
+                        protocol,
+                        approval,
+                        current_hashes,
+                        baseline_path,
+                        baseline_result_is_red,
+                        repository,
+                        scorecard,
+                        scorecard_errors,
+                        require_approved=True,
+                    )
             scorecard_result_passed, scorecard_user_accepted = _validate_scorecard(
                 directory,
                 scorecard,
@@ -1572,6 +2014,7 @@ def validate_scenario_dir(
     errors.extend(protocol_errors)
     errors.extend(approval_errors)
     errors.extend(baseline_errors)
+    errors.extend(live_approval_errors)
     errors.extend(scorecard_errors)
     base_valid = not (protocol_errors or approval_errors or baseline_errors)
     baseline_red = bool(baseline) and base_valid and baseline_result_is_red
@@ -1597,6 +2040,14 @@ def validate_scenario_dir(
     )
 
 
+def validate_scenario_dir(
+    scenario_dir: str | Path,
+    repo_root: str | Path | None = None,
+) -> ScenarioResult:
+    """Purpose: validate one saved Eval scenario without accepting caller-supplied archive authority; Input: scenario directory and optional repository root; Output: independent ScenarioResult stage facts; Side effects: reads Proposal and evidence files."""
+    return _validate_scenario_dir(scenario_dir, repo_root)
+
+
 def validate_all_scenarios(
     eval_root: str | Path,
     repo_root: str | Path | None = None,
@@ -1615,7 +2066,12 @@ def validate_all_scenarios(
         ),
         key=lambda path: path.name,
     )
-    results = [validate_scenario_dir(path, repo_root) for path in directories]
+    repository = Path(repo_root).resolve() if repo_root is not None else root.parents[1]
+    frozen_history = validate_frozen_history(repository)
+    results = [
+        _validate_scenario_dir(path, repository, frozen_history=frozen_history)
+        for path in directories
+    ]
     scenario_owners: dict[str, list[int]] = {}
     case_owners: dict[str, list[int]] = {}
     for index, result in enumerate(results):

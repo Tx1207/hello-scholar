@@ -1,0 +1,149 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "writing-plans-bundle-v3",
+  "projectId": "py-event-export-service",
+  "primarySkill": "writing-plans",
+  "caseId": "writing-plans-bundle-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "writing-plans"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "source-and-gate-reading",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Plan reads Architecture, accepted SPEC-017 revision 3, source, tests, replay caller, and project rules as fixed inputs, and retains revision 1 as draft before the separate approval decision."
+      },
+      {
+        "id": "high-level-plan-contract",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm plan.md is independently reviewable as a high-level implementation strategy with goal, scope, approach, module and file boundaries, interfaces, phases, and testing, without a Task checklist, source-level procedure, or executor selection."
+      },
+      {
+        "id": "coverage-and-migration",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every accepted interface, compatibility, migration, cleanup, error, rollback, and must-not-touch constraint is mapped, including the rule that later Tasks generation follows Plan approval."
+      },
+      {
+        "id": "scope-and-routing",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the Bundle Plan and generated indexes change, approval changes only after the separate review message, and the response stops with generating-tasks as the next owner without Tasks, code, Runs, or upstream edits."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "writes outside the current Bundle Plan and generated indexes",
+      "creates tasks.md, implementation code, tests, Runs, an implementation report, or a memory artifact",
+      "uses Task checkboxes, complete implementation code, executor micro-steps, per-step commits, or execution-agent options in the Plan",
+      "omits an accepted criterion, public interface, migration, cleanup, rollback, or must-not-touch boundary",
+      "marks the Plan approved before the separate review message or begins implementation after approval",
+      "changes the accepted Spec or makes an unaccepted architecture or public-contract decision",
+      "routes somewhere other than generating-tasks after Plan approval",
+      "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the accepted archive contract and real implementation boundaries, create a reviewable high-level draft Plan, then stop before Tasks or code.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/event-export/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "clients/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/event-export/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/tasks.md",
+      "implementation-report.md",
+      "src/gzip_exporter_v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Plan request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the draft Plan is complete and summarized while Tasks, implementation, Runs, and Architecture remain unchanged",
+        "contentRole": "future-plan-decision",
+        "message": "批准当前 plan.md revision 1。只把 Plan 状态更新为 approved，保持 Spec、代码和其他文档不变；说明下一步 owner 是 generating-tasks 后停止，不创建 tasks.md。"
+      }
+    ]
+  }
+}

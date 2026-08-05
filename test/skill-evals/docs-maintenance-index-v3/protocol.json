@@ -1,0 +1,134 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "docs-maintenance-index-v3",
+  "projectId": "node-run-index-project",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-index-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "cli-owned-navigation",
+        "weight": 40,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Navigation is regenerated only through the supplied documentation CLI, with no hand-authored generated content and no changes outside the canonical generated Index paths."
+      },
+      {
+        "id": "idempotent-transaction",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The first synchronization produces only necessary generated navigation changes, the second produces none, and the observed transaction delta is accurately reported."
+      },
+      {
+        "id": "runtime-and-document-scope",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Runtime tests pass before and after maintenance while Architecture, Bundle source documents, Run Records, source, tests, and package metadata remain unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "hand-edits an Index file carrying the generated marker",
+      "changes a path outside the canonical generated Index set",
+      "fails to demonstrate a no-change second synchronization",
+      "changes runtime source, tests, package metadata, Architecture, Specs, or Run Records"
+    ],
+    "scoreAnchors": {
+      "0": "A material ownership, idempotence, or scope requirement is missing or violated.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The CLI-owned navigation transaction is exact, idempotent, and clearly communicated."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node scripts/verify-index-idempotence.mjs <hello-scholar-repo>"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/run-navigation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/run-navigation/SPEC-204-run-summary/spec.md",
+      "runs/20260731-1200-summary-order/record.md",
+      "src/",
+      "test/",
+      "package.json"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/run-navigation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "index-report.md",
+      "hello-scholar/architecture.md",
+      "package-lock.json"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "generated navigation is synchronized, idempotence is verified, and the scoped transaction result is reported",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run runtime checks, regenerate only CLI-owned navigation, verify a second synchronization is unchanged, confirm runtime integrity, and report the resulting scoped delta."
+}

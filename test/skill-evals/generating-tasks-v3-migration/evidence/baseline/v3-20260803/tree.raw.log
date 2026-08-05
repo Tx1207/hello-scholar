@@ -1,0 +1,53 @@
+# Config Format Migration Sonnet v3 Baseline full tree evidence
+fixtureBaseCommit: d735c7c51b2828ada271e686ecdc8e9dd4d8a1fc
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index a9d42d1..01ca6e4 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| config-format | [SPEC-014](config-format/SPEC-014-json-config-migration/spec.md) | capability | accepted | 3 | [Current](config-format/SPEC-014-json-config-migration/plan.md) | Missing | - | Migrate active profiles to JSON v2 then remove legacy write and read paths behind evidence gates |
++| config-format | [SPEC-014](config-format/SPEC-014-json-config-migration/spec.md) | capability | accepted | 3 | [Current](config-format/SPEC-014-json-config-migration/plan.md) | [Current](config-format/SPEC-014-json-config-migration/tasks.md) | 0/0 (0%) | Migrate active profiles to JSON v2 then remove legacy write and read paths behind evidence gates |
+diff --git a/hello-scholar/specs/config-format/INDEX.md b/hello-scholar/specs/config-format/INDEX.md
+index 14f1a35..0e35bc2 100644
+--- a/hello-scholar/specs/config-format/INDEX.md
++++ b/hello-scholar/specs/config-format/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-014](SPEC-014-json-config-migration/spec.md) | capability | accepted | 3 | [Current](SPEC-014-json-config-migration/plan.md) | Missing | - | Migrate active profiles to JSON v2 then remove legacy write and read paths behind evidence gates | - |
++| [SPEC-014](SPEC-014-json-config-migration/spec.md) | capability | accepted | 3 | [Current](SPEC-014-json-config-migration/plan.md) | [Current](SPEC-014-json-config-migration/tasks.md) | 0/0 (0%) | Migrate active profiles to JSON v2 then remove legacy write and read paths behind evidence gates | - |
+## untracked files
+hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/config-format/INDEX.md
+?? hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md
+## final regular file hashes outside .git
+c66aa648f592f6bf3620a3880b90908cfc8c762bfef34317e606f8283db74e28  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/AGENTS.md
+cf7cd99d48aa4de4b5a27e50e1bbfa2568902c286177694b3840bf9f5705b4ed  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/config/migration-state.json
+881cd051056376750394b5ef33c31986084712628aff188f95eeb57b4f2b4b23  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/config/profiles/east.properties
+274ece4160d3ea657c110441a0011d4b70f63fa52d67354008802a1cbcf6188c  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/config/profiles/west.json
+dbbab707ce0aa137926d4a52d6ab54e847bedc86a09863adc2f74917b2450245  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/architecture.md
+5e1388ea71809977c668525ea4a2581f55b2e75502061c69463d3829da230d51  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/specs/INDEX.md
+a9d5521594466f667b664341afe10746e19de79185ba0f3636f904089087c0c2  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/specs/config-format/INDEX.md
+254588a45436f4621b110e0f4e3e7b772b4be9fab98ad9f275cf1acc80f90367  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/specs/config-format/SPEC-014-json-config-migration/plan.md
+cf259f88053b48f644ee02ee47014745cf9bb095bd89d29888a358c43456a0e5  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/specs/config-format/SPEC-014-json-config-migration/spec.md
+230ab2a5ee1b5ba99fc3d4671150cc5abc31d6778d744bd8c5ea5c605c6c18eb  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md
+d9ed0ee3d4bb822e7375060103760dfee0edc759c7a81af8541638d643861462  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/package-lock.json
+b5e6257be3ca0c47ed5c704e54747687bdec3f39fea26bc58c11c6e8dc8a0ff4  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/package.json
+0d2e5df9d2a47ff61a81ddce5006a4eaf355c24b5b6f22c1cc6b73c04cb1fa8a  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/src/cli.js
+25f018fe6829cd4d4da56ec4dca4f3b877fe7170b288612f7e162c54561c6d64  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/src/config-store.js
+f28f8b67bef419359b322f51d21b14962415ec4ade77eb5c18e68761218c4f0f  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/src/legacy-writer.js
+2c424a9d8c7a3acf44ef98c445ee4a0ede1a4568f7c36bf208d0170941cea6be  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/test/cli.test.js
+54f0d2cd0934ca7c1e52419b96f720d9e92ca628db99dc8dc2da71e08cd9b6e9  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/test/config-store.test.js
+3337433e15a162454e55bbeabb97b69893728c44a9179a2d145304e90a951aff  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/vendor/legacy-properties-codec/index.js
+17b4c5c538e81e3a6ab1c8a7a77fed675ac59e9b0b04007610167ffbbdd7c65c  /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3/vendor/legacy-properties-codec/package.json
+## final runtime artifacts outside .git
+## diff whitespace check

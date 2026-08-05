@@ -1,0 +1,166 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "crash-audit-calibrated-none-v3",
+  "projectId": "py-error-message-formatter",
+  "primarySkill": "crash-audit",
+  "caseId": "crash-audit-calibrated-none-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "crash-audit"
+  ],
+  "skillSources": {
+    "crash-audit": "skills/hello-scholar/crash-audit"
+  },
+  "skillExpectations": {
+    "crash-audit": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, apply the evaluator-managed review diff after the clean Base commit without exposing its content to the Implementer, and preserve that review diff",
+    "evaluatorSetup": {
+      "kind": "protected-text-replacements",
+      "timing": "after-base-commit-before-first-prompt",
+      "replacements": [
+        {
+          "path": "formatter.py",
+          "before": "return f\"Bad token {token!r} at {column}\"",
+          "after": "return f\"Invalid token {token!r} at column {column}\""
+        },
+        {
+          "path": "tests/test_formatter.py",
+          "before": "Bad token '@' at 7",
+          "after": "Invalid token '@' at column 7"
+        },
+        {
+          "path": "snapshots/error-output.txt",
+          "before": "Bad token '@' at 7",
+          "after": "Invalid token '@' at column 7"
+        }
+      ]
+    },
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "diff-and-contract-reading",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the prepared Base-to-working-tree diff, formatter, focused tests, public snapshot, README contract and current command results are all inspected before judging the change."
+      },
+      {
+        "id": "uncertainty-calibration",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the answer distinguishes evidence-closed behavior from any genuinely unverified surface and explicitly says when no material uncertainty remains instead of inventing one."
+      },
+      {
+        "id": "decision-relevance",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every reported concern would change approval or the next action; style preferences and risks already closed by the snapshot and tests are excluded."
+      },
+      {
+        "id": "fast-verification",
+        "weight": 10,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm existing focused/full tests and diff-check evidence are cited, and any remaining uncertainty receives the cheapest concrete verification rather than a generic request for more testing."
+      },
+      {
+        "id": "two-question-separation",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the least-certain items and possibly missed items are answered as distinct questions, with no duplicate concern and no more than three items per question."
+      },
+      {
+        "id": "concise-no-fabrication",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response leads with the calibrated conclusion, remains read-only, creates no report, and uses project facts without boilerplate or manufactured risk."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "does not inspect the actual review diff and current tests",
+      "fabricates a major release, migration, security, or compatibility concern without project evidence",
+      "repeats the same generic concern under both source questions",
+      "edits, stages, commits, or creates a report in the fixture",
+      "routes into takeoff, landing, or a full code review"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "git diff --check"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "formatter.py",
+      "snapshots/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "crash-audit.md",
+      "risk-report.md",
+      "hello-scholar/",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the single audit request has been delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the prepared diff, public snapshot, source, tests, and rules, then tell the user whether any approval-changing blind spot remains without manufacturing work."
+}

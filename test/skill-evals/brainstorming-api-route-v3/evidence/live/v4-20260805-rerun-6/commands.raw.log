@@ -1,0 +1,29 @@
+$ env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 npm test
+
+> test
+> node --test test/*.test.js
+
+✔ single lookup returns a copy or null (1.795816ms)
+✔ export client currently preserves one result per input id (0.302858ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 103.910072
+exit=0
+$ env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 3, records 0, indexes 4, errors 0, notices 6
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/batch-retrieval/INDEX.md
+index Current hello-scholar/specs/request-control/INDEX.md
+index Current hello-scholar/specs/storage-consistency/INDEX.md
+notice plan-missing hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/plan.md: Spec SPEC-014 has no Plan
+notice tasks-missing hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/tasks.md: Spec SPEC-014 has no Tasks
+notice plan-missing hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits/plan.md: Spec SPEC-013 has no Plan
+notice tasks-missing hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits/tasks.md: Spec SPEC-013 has no Tasks
+notice plan-missing hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency/plan.md: Spec SPEC-007 has no Plan
+notice tasks-missing hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency/tasks.md: Spec SPEC-007 has no Tasks
+exit=0

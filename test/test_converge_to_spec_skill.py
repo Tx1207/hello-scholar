@@ -69,6 +69,19 @@ class ConvergeToSpecSkillTests(unittest.TestCase):
         self.assertIn("Ordinary local work", english)
         self.assertIn("普通局部工作", chinese)
 
+    def test_transaction_delta_excludes_preexisting_worktree_changes(self) -> None:
+        """Purpose: require convergence writes to compare against a recorded baseline; Input: bilingual Skill texts; Output: none; Errors: assertion failure for a whole-worktree-only write check."""
+
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+        self.assertIn("Git diff baseline", english)
+        self.assertIn("Git diff 基线", chinese)
+        self.assertIn("transaction delta", english)
+        self.assertIn("本次事务增量", chinese)
+        self.assertIn("pre-existing changes remain out of scope", english)
+        self.assertIn("既有变更不在范围内", chinese)
+        self.assertIn("Against the recorded baseline", english)
+        self.assertIn("相对已记录基线", chinese)
+
     def test_read_order_stale_stop_and_deviation_audit_are_explicit(self) -> None:
         """Purpose: bind both languages to Bundle evidence order, stale stop, four deviations, and cleanup audit; Input: production Skill texts; Output: none; Errors: assertion failure for omitted convergence evidence."""
 

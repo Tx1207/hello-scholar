@@ -6,20 +6,24 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 from skill_eval_contract import (
     ContractError,
+    FrozenHistoryReport,
     FORMAL_PROTOCOL_MODELS,
-    FROZEN_V2_BASELINES,
-    FROZEN_V2_SCORECARDS,
+    FROZEN_HISTORY_MANIFEST_PATH,
+    HAIKU_EVAL_AGENT_MODEL,
     SONNET_EVAL_AGENT_MODEL,
     TERRA_EVAL_AGENT_MODEL,
     accepted_case_coverage,
     sha256_file,
     sha256_tree,
     validate_all_scenarios,
+    validate_frozen_history,
     validate_scenario_dir,
 )
 
@@ -392,17 +396,76 @@ class ScenarioFixture:
             },
         }
 
+    def add_live_approval(
+        self,
+        decision: str = "approved",
+        reply: str | None = None,
+    ) -> dict:
+        """Purpose: save a current formal Live authorization bound to the Red Baseline and Skill snapshot; Input: decision and optional user reply evidence; Output: Live approval JSON object; Side effects: writes live-approval.json."""
+        if self.protocol_version not in {3, 4}:
+            raise ValueError("Live approval is only defined for Protocol v3/v4 fixtures")
+        baseline_path = self.scenario_dir / "baseline.json"
+        if not baseline_path.exists():
+            raise ValueError("Live approval requires a saved Baseline")
+        approval = {
+            "liveApprovalId": f"live-{self.scenario_id}",
+            "liveAuthorizationBatchId": f"live-authorization-{self.scenario_id}",
+            "liveAuthorizationBatchSha256": "c" * 64,
+            **self.common_hashes(),
+            "proposalId": f"proposal-{self.scenario_id}",
+            "decision": decision,
+            "userValueRubricSha256": self.protocol["userValueRubric"]["sha256"],
+            "baselineSha256": sha256_file(baseline_path),
+            "skillSnapshots": {
+                self.primary_skill: {
+                    "status": "current-explicit-file",
+                    "sha256": sha256_tree(self.skill_dir),
+                }
+            },
+            "replyEvidence": reply if reply is not None else (
+                "User approved this Live authorization."
+                if decision == "approved"
+                else None
+            ),
+        }
+        self._write_json(self.scenario_dir / "live-approval.json", approval)
+        return approval
+
+    def mutate_live_approval(self, field: str, value: object) -> None:
+        """Purpose: replace one nested Live authorization value; Input: dotted field path and JSON value; Output: none; Side effects: rewrites live-approval.json."""
+        path = self.scenario_dir / "live-approval.json"
+        approval = json.loads(path.read_text(encoding="utf-8"))
+        current = approval
+        parts = field.split(".")
+        for part in parts[:-1]:
+            current = current[part]
+        current[parts[-1]] = value
+        self._write_json(path, approval)
+
     def add_scorecard(
         self,
         result: str = "pass",
         user_decision: str = "accepted",
         score: int = 100,
     ) -> dict:
-        """Purpose: save one formal Live Eval scorecard; Input: result, user decision, and behavior score; Output: Scorecard JSON object; Side effects: writes scorecard.json."""
+        """Purpose: save one formal Live Eval scorecard; Input: result, user decision, and behavior score; Output: Scorecard JSON object; Side effects: writes live-approval.json for v3 and scorecard.json."""
+        live_approval = (
+            self.add_live_approval() if self.protocol_version in {3, 4} else None
+        )
         ref = self.evidence_ref()
         passed = result == "pass"
         scorecard = {
             **self.common_hashes(),
+            **(
+                {
+                    "liveApprovalId": live_approval["liveApprovalId"],
+                    "liveApprovalSha256": sha256_file(
+                        self.scenario_dir / "live-approval.json"
+                    ),
+                }
+                if live_approval is not None
+                else {}
+            ),
             "result": result,
             "userDecision": user_decision,
             "skillSnapshots": {
@@ -470,31 +533,159 @@ class SkillEvalContractTests(unittest.TestCase):
             f"Expected {fragment!r} in {result.errors!r}",
         )
 
-    def test_frozen_v2_run_registries_match_saved_evidence(self) -> None:
-        """Purpose: preserve historical v2 runs without allowing new Terra evidence; Input: frozen registries and repository files; Output: none; Errors: assertion failure identifies changed historical bytes."""
-        for run_name, registry in (
-            ("baseline", FROZEN_V2_BASELINES),
-            ("scorecard", FROZEN_V2_SCORECARDS),
-        ):
-            for relative_dir, fingerprints in registry.items():
-                with self.subTest(run_name=run_name, scenario=relative_dir):
-                    scenario_dir = REPO_ROOT / relative_dir
-                    self.assertEqual(
-                        fingerprints["protocolSha256"],
-                        sha256_file(scenario_dir / "protocol.json"),
-                    )
-                    self.assertEqual(
-                        fingerprints[f"{run_name}Sha256"],
-                        sha256_file(scenario_dir / f"{run_name}.json"),
-                    )
+    def frozen_history_copy(self) -> tuple[tempfile.TemporaryDirectory, Path]:
+        """Purpose: copy immutable Eval history into an isolated repository; Input: none; Output: temporary repository root; Side effects: copies the static Eval tree for mutation tests."""
+        temp = tempfile.TemporaryDirectory()
+        root = Path(temp.name)
+        shutil.copytree(REPO_ROOT / "test" / "skill-evals", root / "test" / "skill-evals")
+        return temp, root
 
-    def test_new_v2_runs_are_rejected_outside_the_frozen_registry(self) -> None:
-        """Purpose: reserve Protocol v2 for historical evidence; Input: fresh v2 fixture and saved run objects; Output: none; Errors: assertion failure if a new Terra run validates."""
-        temp, fixture = self.make_fixture(protocol_version=2)
+    def test_frozen_history_matches_saved_repository_bytes(self) -> None:
+        """Purpose: preserve every archived v1/v2 source byte and tree entry; Input: repository history manifest and Eval tree; Output: none; Errors: assertion failure identifies frozen-history drift."""
+        report = validate_frozen_history(REPO_ROOT)
+        self.assertTrue(report.valid, report.errors)
+        self.assertEqual(38, len(report.root_errors))
+        self.assertTrue(all(not errors for errors in report.root_errors.values()))
+
+    def test_public_validator_does_not_accept_caller_supplied_archive_report(self) -> None:
+        """Purpose: prevent callers from authorizing synthetic legacy evidence; Input: v2 fixture and fabricated archive report; Output: none; Errors: assertion failure if public validation accepts injected archive authority."""
+        temp, fixture = self.make_fixture(
+            scenario_id="injected-v2", protocol_version=2
+        )
         self.addCleanup(temp.cleanup)
-        fixture.approve()
-        fixture.add_baseline()
-        self.assert_error(fixture, "Protocol v2 permits only registered frozen historical evidence")
+        fabricated = FrozenHistoryReport(
+            errors=(),
+            root_errors={},
+            registered_roots=frozenset(
+                {fixture.scenario_dir.relative_to(fixture.root).as_posix()}
+            ),
+        )
+        with self.assertRaises(TypeError):
+            validate_scenario_dir(
+                fixture.scenario_dir,
+                fixture.root,
+                frozen_history=fabricated,
+            )
+        self.assert_error(fixture, "frozenHistory.registration")
+
+    def test_frozen_manifest_requires_exact_legacy_cohort_counts(self) -> None:
+        """Purpose: retain exactly one v1 and thirty-seven v2 archive roots; Input: temporary manifests with a missing or extra v2 root; Output: none; Errors: assertion failure if count drift validates."""
+        for label in ("missing-v2", "extra-v2"):
+            with self.subTest(label=label):
+                temp, root = self.frozen_history_copy()
+                self.addCleanup(temp.cleanup)
+                manifest_path = root / FROZEN_HISTORY_MANIFEST_PATH
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                v2_record = next(
+                    record
+                    for record in manifest["scenarioRoots"]
+                    if record["protocolVersion"] == 2
+                )
+                if label == "missing-v2":
+                    shutil.rmtree(root / v2_record["path"])
+                    manifest["scenarioRoots"].remove(v2_record)
+                else:
+                    extra_path = "test/skill-evals/extra-frozen-v2"
+                    shutil.copytree(
+                        root / v2_record["path"], root / extra_path
+                    )
+                    extra_record = json.loads(json.dumps(v2_record))
+                    extra_record["path"] = extra_path
+                    manifest["scenarioRoots"].append(extra_record)
+                manifest_path.write_text(
+                    json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8",
+                )
+                with mock.patch(
+                    "skill_eval_contract.FROZEN_HISTORY_MANIFEST_SHA256",
+                    sha256_file(manifest_path),
+                ):
+                    report = validate_frozen_history(root)
+                self.assertFalse(report.valid)
+                self.assertIn(
+                    "frozenHistory.manifest.scenarioRoots: expected 37 v2 roots",
+                    report.errors,
+                )
+
+    def test_frozen_manifest_rejects_boolean_protocol_version(self) -> None:
+        """Purpose: keep JSON booleans from impersonating archived version integers; Input: temporary manifest with true as a v1 version; Output: none; Errors: assertion failure if boolean version validates."""
+        temp, root = self.frozen_history_copy()
+        self.addCleanup(temp.cleanup)
+        manifest_path = root / FROZEN_HISTORY_MANIFEST_PATH
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        record = next(
+            item for item in manifest["scenarioRoots"] if item["protocolVersion"] == 1
+        )
+        record["protocolVersion"] = True
+        manifest_path.write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        with mock.patch(
+            "skill_eval_contract.FROZEN_HISTORY_MANIFEST_SHA256",
+            sha256_file(manifest_path),
+        ):
+            report = validate_frozen_history(root)
+        self.assertFalse(report.valid)
+        self.assertIn(
+            "frozenHistory.protocolVersion: expected integer 1 or 2",
+            report.root_errors[record["path"]],
+        )
+
+    def test_unregistered_v1_and_pending_v2_scenarios_are_rejected(self) -> None:
+        """Purpose: reserve v1/v2 for registered historical cohorts; Input: synthetic legacy fixtures; Output: none; Errors: assertion failure if a new legacy scenario validates."""
+        temp, v1_fixture = self.make_fixture(scenario_id="synthetic-v1")
+        self.addCleanup(temp.cleanup)
+        v1_fixture.protocol["protocolVersion"] = 1
+        expectation = v1_fixture.protocol["skillExpectations"][v1_fixture.primary_skill]
+        expectation["load"] = expectation.pop("baselineLoad")
+        expectation.pop("liveLoad")
+        del v1_fixture.protocol["promptProjection"]
+        del v1_fixture.protocol["rubric"]["scoreAnchors"]
+        for dimension in v1_fixture.protocol["rubric"]["dimensions"]:
+            dimension["minimum"] = 85
+            del dimension["criterion"]
+        v1_fixture.protocol["speed"] = {"absoluteTimeoutSeconds": 300}
+        del v1_fixture.protocol["interaction"]["rounds"][0]["messageSource"]
+        v1_fixture.write_protocol()
+        v1_fixture.approve()
+        v1_fixture.add_baseline()
+        self.assert_error(v1_fixture, "frozenHistory.registration")
+
+        temp, v2_fixture = self.make_fixture(
+            scenario_id="synthetic-v2", protocol_version=2
+        )
+        self.addCleanup(temp.cleanup)
+        pending = validate_scenario_dir(v2_fixture.scenario_dir, v2_fixture.root)
+        self.assertFalse(pending.contract_valid)
+        self.assertTrue(
+            any("frozenHistory.registration" in error for error in pending.errors),
+            pending.errors,
+        )
+
+    def test_frozen_history_rejects_tree_mutations(self) -> None:
+        """Purpose: reject altered archived inputs and tree shape; Input: temporary copy with one frozen-root mutation; Output: none; Errors: assertion failure if immutable history remains valid."""
+        mutations = {
+            "scenario": lambda root: (root / "test/skill-evals/generating-tasks/scenario.md").write_text("changed\n", encoding="utf-8"),
+            "approval": lambda root: (root / "test/skill-evals/generating-tasks/proposal-approval.json").write_text("{}\n", encoding="utf-8"),
+            "fixture": lambda root: (root / "test/skill-evals/generating-tasks/fixture/src/policy.py").write_text("changed\n", encoding="utf-8"),
+            "evidence": lambda root: (root / "test/skill-evals/brainstorming-api-route/evidence/baseline/commands.md").write_text("changed\n", encoding="utf-8"),
+            "extra-file": lambda root: (root / "test/skill-evals/generating-tasks/extra.txt").write_text("extra\n", encoding="utf-8"),
+            "empty-directory": lambda root: (root / "test/skill-evals/generating-tasks/extra").mkdir(),
+            "runtime-cache-directory": lambda root: (root / "test/skill-evals/generating-tasks/__pycache__").mkdir(),
+            "symlink": lambda root: (root / "test/skill-evals/generating-tasks/link").symlink_to("scenario.md"),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(label=label):
+                temp, root = self.frozen_history_copy()
+                self.addCleanup(temp.cleanup)
+                mutate(root)
+                report = validate_frozen_history(root)
+                self.assertFalse(report.valid)
+                self.assertTrue(
+                    any(report.root_errors.values()) or report.errors,
+                    (report.errors, report.root_errors),
+                )
 
     def test_repository_scenarios_satisfy_their_saved_stage_contract(self) -> None:
         results = validate_all_scenarios(
@@ -579,6 +770,107 @@ class SkillEvalContractTests(unittest.TestCase):
         self.assertTrue(result.contract_valid, result.errors)
         self.assertFalse(result.evaluation_passed)
 
+    def test_v4_haiku_supports_the_full_formal_lifecycle(self) -> None:
+        """Purpose: prove the Haiku cohort can save Proposal, Red Baseline, Live authorization, and pending Scorecard evidence; Input: complete v4 fixture; Output: none; Errors: assertion failure if v4 is not a first-class formal cohort."""
+        temp, fixture = self.make_fixture(
+            scenario_id="haiku-v4-lifecycle",
+            protocol_version=4,
+        )
+        self.addCleanup(temp.cleanup)
+        fixture.approve()
+        fixture.add_baseline()
+        fixture.add_scorecard(user_decision="pending")
+        result = validate_scenario_dir(fixture.scenario_dir, fixture.root)
+        self.assertTrue(result.contract_valid, result.errors)
+        self.assertTrue(result.baseline_red)
+        self.assertTrue(result.evaluation_passed)
+        self.assertFalse(result.user_accepted)
+
+    def test_v3_scorecard_requires_current_approved_live_authorization(self) -> None:
+        """Purpose: prevent Baseline approval from authorizing Live evidence; Input: v3 Red Baseline and Live approval mutations; Output: none; Errors: assertion failure if an unauthorized Scorecard validates."""
+        cases = (
+            ("missing", lambda fixture: (fixture.scenario_dir / "live-approval.json").unlink(), "liveApproval"),
+            ("pending", lambda fixture: fixture.add_live_approval("pending"), "liveApproval.decision"),
+            ("baseline", lambda fixture: fixture.mutate_live_approval("baselineSha256", "0" * 64), "liveApproval.baselineSha256"),
+            ("snapshot", lambda fixture: fixture.mutate_live_approval("skillSnapshots.sample-skill.sha256", "0" * 64), "liveApproval.skillSnapshots.sample-skill.sha256"),
+            ("shared-rubric", lambda fixture: fixture.mutate_live_approval("userValueRubricSha256", "0" * 64), "liveApproval.userValueRubricSha256"),
+        )
+        for label, mutate, fragment in cases:
+            with self.subTest(label=label):
+                temp, fixture = self.make_fixture(scenario_id=f"live-approval-{label}")
+                self.addCleanup(temp.cleanup)
+                fixture.approve()
+                fixture.add_baseline()
+                fixture.add_scorecard()
+                mutate(fixture)
+                self.assert_error(fixture, fragment)
+
+    def test_pending_v3_live_authorization_is_a_valid_pre_scorecard_state(self) -> None:
+        """Purpose: allow a reviewed-but-unapproved v3 Live authorization without creating Live evidence; Input: valid Red Baseline and pending authorization; Output: none; Errors: assertion failure if the intermediate state is rejected."""
+        temp, fixture = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        fixture.approve()
+        fixture.add_baseline()
+        fixture.add_live_approval("pending")
+        result = validate_scenario_dir(fixture.scenario_dir, fixture.root)
+        self.assertTrue(result.contract_valid, result.errors)
+        self.assertTrue(result.baseline_red)
+        self.assertFalse(result.evaluation_passed)
+        self.assertFalse((fixture.scenario_dir / "scorecard.json").exists())
+
+    def test_v3_live_authorization_rejects_malformed_pre_scorecard_records(self) -> None:
+        """Purpose: reject malformed standalone v3 authorizations before Live evidence exists; Input: Red Baseline and malformed Live approval mutations; Output: none; Errors: assertion failure if an invalid authorization is accepted."""
+        cases = (
+            ("id", lambda fixture: fixture.mutate_live_approval("liveApprovalId", ""), "liveApproval.liveApprovalId"),
+            ("batch-id", lambda fixture: fixture.mutate_live_approval("liveAuthorizationBatchId", "Live Authorization"), "liveApproval.liveAuthorizationBatchId"),
+            ("batch-hash", lambda fixture: fixture.mutate_live_approval("liveAuthorizationBatchSha256", "invalid"), "liveApproval.liveAuthorizationBatchSha256"),
+            ("proposal", lambda fixture: fixture.mutate_live_approval("proposalId", "another-proposal"), "liveApproval.proposalId"),
+            ("decision", lambda fixture: fixture.mutate_live_approval("decision", "accepted"), "liveApproval.decision"),
+            ("approved-reply", lambda fixture: fixture.mutate_live_approval("replyEvidence", None), "liveApproval.replyEvidence"),
+            ("pending-reply", lambda fixture: fixture.add_live_approval("pending", "premature approval"), "liveApproval.replyEvidence"),
+            ("rubric-shape", lambda fixture: fixture.mutate_live_approval("userValueRubricSha256", None), "liveApproval.userValueRubricSha256"),
+            ("snapshot-keys", lambda fixture: fixture.mutate_live_approval("skillSnapshots", {}), "liveApproval.skillSnapshots"),
+            ("snapshot-object", lambda fixture: fixture.mutate_live_approval("skillSnapshots.sample-skill", "invalid"), "liveApproval.skillSnapshots.sample-skill"),
+            ("snapshot-status", lambda fixture: fixture.mutate_live_approval("skillSnapshots.sample-skill.status", "absent"), "liveApproval.skillSnapshots.sample-skill.status"),
+        )
+        for label, mutate, fragment in cases:
+            with self.subTest(label=label):
+                temp, fixture = self.make_fixture(scenario_id=f"malformed-live-{label}")
+                self.addCleanup(temp.cleanup)
+                fixture.approve()
+                fixture.add_baseline()
+                fixture.add_live_approval()
+                mutate(fixture)
+                self.assert_error(fixture, fragment)
+
+    def test_v3_live_authorization_requires_a_valid_red_baseline(self) -> None:
+        """Purpose: stop a control-pass Baseline from opening a Live path; Input: v3 control-pass and Live authorization; Output: none; Errors: assertion failure if the authorization validates."""
+        temp, fixture = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        fixture.approve()
+        fixture.add_baseline("control-pass")
+        fixture.add_live_approval()
+        self.assert_error(fixture, "liveApproval.baselineSha256: requires a valid Red Baseline")
+
+    def test_v3_scorecard_binds_the_approved_live_authorization_bytes(self) -> None:
+        """Purpose: prevent a Scorecard from drifting to another Live authorization; Input: v3 Scorecard with tampered authorization fields; Output: none; Errors: assertion failure if stale authorization binding validates."""
+        cases = (
+            ("id", "liveApprovalId", "other-live-authorization"),
+            ("hash", "liveApprovalSha256", "0" * 64),
+        )
+        for label, field, value in cases:
+            with self.subTest(label=label):
+                temp, fixture = self.make_fixture(scenario_id=f"live-binding-{label}")
+                self.addCleanup(temp.cleanup)
+                fixture.approve()
+                fixture.add_baseline()
+                scorecard = fixture.add_scorecard()
+                scorecard[field] = value
+                ScenarioFixture._write_json(
+                    fixture.scenario_dir / "scorecard.json", scorecard
+                )
+                self.assert_error(fixture, f"scorecard.{field}")
+
     def test_control_pass_is_valid_but_never_red_or_accepted(self) -> None:
         temp, fixture = self.make_fixture()
         self.addCleanup(temp.cleanup)
@@ -653,10 +945,23 @@ class SkillEvalContractTests(unittest.TestCase):
         self.assert_error(fixture, "replyEvidence")
 
     def test_protocol_requires_its_version_bound_model(self) -> None:
-        """Purpose: reject missing, launcher-selector, or cross-cohort models; Input: v2/v3 Protocol mutations; Output: none; Errors: assertion failure if an invalid formal model validates."""
+        """Purpose: reject missing, launcher-selector, or cross-cohort models; Input: v2/v3/v4 Protocol mutations; Output: none; Errors: assertion failure if an invalid formal model validates."""
         for protocol_version, expected_model, rejected_models in (
-            (2, TERRA_EVAL_AGENT_MODEL, (None, "sonnet", SONNET_EVAL_AGENT_MODEL)),
-            (3, SONNET_EVAL_AGENT_MODEL, (None, "sonnet", TERRA_EVAL_AGENT_MODEL)),
+            (
+                2,
+                TERRA_EVAL_AGENT_MODEL,
+                (None, "sonnet", "haiku", SONNET_EVAL_AGENT_MODEL, HAIKU_EVAL_AGENT_MODEL),
+            ),
+            (
+                3,
+                SONNET_EVAL_AGENT_MODEL,
+                (None, "sonnet", "haiku", TERRA_EVAL_AGENT_MODEL, HAIKU_EVAL_AGENT_MODEL),
+            ),
+            (
+                4,
+                HAIKU_EVAL_AGENT_MODEL,
+                (None, "haiku", "claude-haiku-4-5", TERRA_EVAL_AGENT_MODEL, SONNET_EVAL_AGENT_MODEL),
+            ),
         ):
             for index, rejected_model in enumerate(rejected_models):
                 with self.subTest(
@@ -712,6 +1017,56 @@ class SkillEvalContractTests(unittest.TestCase):
                 )
                 self.assert_error(fixture, fragment)
 
+    def test_v3_persisted_launcher_selectors_are_rejected(self) -> None:
+        """Purpose: keep launcher selectors outside v3 hash-bound evidence; Input: Protocol, approval, Baseline, and Scorecard selector mutations; Output: none; Errors: assertion failure if persisted selector aliases validate."""
+        selector_keys = ("dispatchSelector", "modelSelector", "providerModel")
+        for artifact in ("protocol", "approval", "baseline", "live-approval", "scorecard"):
+            for selector_key in selector_keys:
+                with self.subTest(artifact=artifact, selector_key=selector_key):
+                    temp, fixture = self.make_fixture(
+                        scenario_id=f"selector-{artifact}-{selector_key}"
+                    )
+                    self.addCleanup(temp.cleanup)
+                    selector = {"audit": {"selectors": [{selector_key: "sonnet"}]}}
+                    if artifact == "protocol":
+                        fixture.protocol.update(selector)
+                        fixture.write_protocol()
+                        fixture.approve()
+                    elif artifact == "approval":
+                        approval = json.loads(
+                            (fixture.scenario_dir / "proposal-approval.json").read_text(
+                                encoding="utf-8"
+                            )
+                        )
+                        approval.update(selector)
+                        ScenarioFixture._write_json(
+                            fixture.scenario_dir / "proposal-approval.json", approval
+                        )
+                    elif artifact == "baseline":
+                        fixture.approve()
+                        baseline = fixture.add_baseline()
+                        baseline.update(selector)
+                        ScenarioFixture._write_json(
+                            fixture.scenario_dir / "baseline.json", baseline
+                        )
+                    elif artifact == "live-approval":
+                        fixture.approve()
+                        fixture.add_baseline()
+                        live_approval = fixture.add_live_approval()
+                        live_approval.update(selector)
+                        ScenarioFixture._write_json(
+                            fixture.scenario_dir / "live-approval.json", live_approval
+                        )
+                    else:
+                        fixture.approve()
+                        fixture.add_baseline()
+                        scorecard = fixture.add_scorecard()
+                        scorecard.update(selector)
+                        ScenarioFixture._write_json(
+                            fixture.scenario_dir / "scorecard.json", scorecard
+                        )
+                    self.assert_error(fixture, selector_key)
+
     def test_protocol_rejects_invalid_enum_weight_combo_and_command(self) -> None:
         """Purpose: reject malformed Protocol enums, rubrics, identities, and commands; Input: generated invalid Protocol variants; Output: none; Errors: assertion failure if any variant validates."""
         mutations = {
@@ -724,11 +1079,15 @@ class SkillEvalContractTests(unittest.TestCase):
             "minimum": lambda p: p["rubric"]["dimensions"][0].update(minimum=85),
             "anchors": lambda p: p["rubric"]["scoreAnchors"].pop("90"),
             "projectId": lambda p: p.update(projectId="Not Stable"),
+            "protocol-version-boolean": lambda p: p.update(protocolVersion=True),
             "command": lambda p: p.update(commands=[42]),
             "critical-path": lambda p: p.update(criticalPath=""),
             "retired-speed": lambda p: p.update(speed={}),
             "retired-speed-limits": lambda p: p.update(speedLimits={}),
             "agent-model": lambda p: p["agents"].update(model="gpt-5.6-sol"),
+            "evaluator-setup-shape": lambda p: p["fixture"].update(
+                evaluatorSetup={"kind": "unknown"}
+            ),
         }
         for label, mutate in mutations.items():
             with self.subTest(label=label):
@@ -738,6 +1097,33 @@ class SkillEvalContractTests(unittest.TestCase):
                 fixture.write_protocol()
                 fixture.approve()
                 self.assertFalse(validate_scenario_dir(fixture.scenario_dir, fixture.root).contract_valid)
+
+    def test_v3_protocol_accepts_only_well_formed_protected_evaluator_setup(self) -> None:
+        """Purpose: keep hidden review setup hash-bound and structurally bounded; Input: v3 Protocol setup variants; Output: none; Errors: assertion failure if malformed setup validates."""
+        temp, fixture = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        fixture.protocol["fixture"]["evaluatorSetup"] = {
+            "kind": "protected-text-replacements",
+            "timing": "after-base-commit-before-first-prompt",
+            "replacements": [
+                {"path": "app.py", "before": "VALUE = 1", "after": "VALUE = 2"}
+            ],
+        }
+        fixture.write_protocol()
+        fixture.approve()
+        result = validate_scenario_dir(fixture.scenario_dir, fixture.root)
+        self.assertTrue(result.contract_valid, result.errors)
+
+        fixture.protocol["fixture"]["evaluatorSetup"]["replacements"][0]["path"] = "../app.py"
+        fixture.write_protocol()
+        fixture.approve()
+        self.assert_error(fixture, "evaluatorSetup.replacements[0].path")
+
+        fixture.protocol["fixture"]["evaluatorSetup"]["replacements"][0]["path"] = "app.py"
+        fixture.protocol["fixture"]["evaluatorSetup"]["replacements"][0]["before"] = "missing source text"
+        fixture.write_protocol()
+        fixture.approve()
+        self.assert_error(fixture, "evaluatorSetup.replacements[0].before")
 
     def test_future_user_replies_cannot_be_in_first_prompt(self) -> None:
         temp, fixture = self.make_fixture()
@@ -788,6 +1174,16 @@ class SkillEvalContractTests(unittest.TestCase):
         ]
         ScenarioFixture._write_json(fixture.scenario_dir / "baseline.json", baseline)
         self.assert_error(fixture, "must resolve protocol placeholders")
+
+        baseline = fixture.add_baseline()
+        baseline["commands"][0]["executedCommand"] = (
+            "env -C /tmp/formal-eval-fixture "
+            + baseline["commands"][0]["executedCommand"]
+        )
+        ScenarioFixture._write_json(fixture.scenario_dir / "baseline.json", baseline)
+        self.assertTrue(
+            validate_scenario_dir(fixture.scenario_dir, fixture.root).contract_valid
+        )
 
         baseline = fixture.add_baseline()
         baseline["commands"].append(dict(baseline["commands"][0]))
@@ -846,30 +1242,13 @@ class SkillEvalContractTests(unittest.TestCase):
         fixture.approve()
         self.assert_error(fixture, "Fixture runtime artifact")
 
-    def test_protocol_v1_is_read_only_historical_baseline(self) -> None:
-        temp, fixture = self.make_fixture()
-        self.addCleanup(temp.cleanup)
-        fixture.protocol["protocolVersion"] = 1
-        expectation = fixture.protocol["skillExpectations"][fixture.primary_skill]
-        expectation["load"] = expectation.pop("baselineLoad")
-        expectation.pop("liveLoad")
-        del fixture.protocol["promptProjection"]
-        del fixture.protocol["rubric"]["scoreAnchors"]
-        for dimension in fixture.protocol["rubric"]["dimensions"]:
-            dimension["minimum"] = 85
-            del dimension["criterion"]
-        fixture.protocol["speed"] = {"absoluteTimeoutSeconds": 300}
-        del fixture.protocol["interaction"]["rounds"][0]["messageSource"]
-        fixture.write_protocol()
-        fixture.approve()
-
-        self.assert_error(fixture, "v1 is allowed only for a saved historical Baseline")
-        fixture.add_baseline()
-        result = validate_scenario_dir(fixture.scenario_dir, fixture.root)
+    def test_registered_v1_is_read_only_historical_baseline(self) -> None:
+        """Purpose: preserve the registered v1 Baseline-only archive shape; Input: saved framework scenario; Output: none; Errors: assertion failure identifies incompatible v1 history behavior."""
+        scenario_dir = REPO_ROOT / "test" / "skill-evals" / "framework-e2e-paged-cache"
+        result = validate_scenario_dir(scenario_dir, REPO_ROOT)
         self.assertTrue(result.contract_valid, result.errors)
-
-        fixture.add_scorecard()
-        self.assert_error(fixture, "v1 historical records cannot add a Scorecard")
+        self.assertTrue((scenario_dir / "baseline.json").is_file())
+        self.assertFalse((scenario_dir / "scorecard.json").exists())
 
     def test_scenario_has_one_nonempty_original_request_projection(self) -> None:
         temp, fixture = self.make_fixture()

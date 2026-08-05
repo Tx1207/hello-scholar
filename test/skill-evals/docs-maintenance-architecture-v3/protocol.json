@@ -1,0 +1,128 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "docs-maintenance-architecture-v3",
+  "projectId": "py-retrieval-architecture",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-architecture-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "source-backed-proposal",
+        "weight": 45,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The proposal binds the current Architecture hash and identifies source-backed Add, Change, Keep, removal, and unresolved items using implemented code, tests, completed Bundle facts, valid Run evidence, and metrics."
+      },
+      {
+        "id": "implemented-reality-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The proposal distinguishes implemented current behavior from draft or unimplemented directions and does not present future designs as Architecture facts."
+      },
+      {
+        "id": "approval-and-scope-discipline",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The first round makes no repository write, states the required approval gate, and confines any later approved transaction to the Architecture document."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "edits Architecture before explicit approval of the current file hash",
+      "treats a draft or unimplemented direction as current Architecture evidence",
+      "changes Bundle documents, Runs, code, tests, metrics, or generated Indexes",
+      "omits the current Architecture hash or source-backed semantic proposal"
+    ],
+    "scoreAnchors": {
+      "0": "A material evidence, scope, or approval requirement is missing or contradicted.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The proposal is complete, auditable, and accurately separates implemented facts from future intent."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/architecture.md"
+    ],
+    "deny": [
+      "hello-scholar/specs/",
+      "runs/",
+      "results/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/architecture.md"
+    ],
+    "forbidden": [
+      "architecture-proposal.md",
+      "recovery-report.md",
+      "runs/",
+      "results/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "a source-backed Architecture proposal with the current hash is returned without repository writes",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the current Architecture and reliable implementation evidence, distinguish current facts from draft intent, return a hash-bound semantic proposal, and stop for explicit approval."
+}

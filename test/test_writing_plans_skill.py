@@ -95,6 +95,12 @@ class WritingPlansSkillTests(unittest.TestCase):
                 self.assertNotIn(forbidden, lowered, f"{path}: legacy contract {forbidden}")
             self.assertNotIn("- [ ]", text)
 
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+        self.assertIn("increments `revision`, sets `status: draft`", english)
+        self.assertIn("递增 `revision`、将 `status` 设为 `draft`", chinese)
+        self.assertIn("Plan's `spec` and `spec_revision` still match", english)
+        self.assertIn("Plan 的 `spec` 与 `spec_revision` 仍匹配", chinese)
+
     def test_retired_reviewer_prompt_is_absent(self) -> None:
         """Purpose: remove the uncalled Plan reviewer workflow; Input: retired prompt path; Output: none; Errors: assertion failure identifies retained dead workflow."""
         self.assertFalse(RETIRED_REVIEWER_PROMPT.exists())

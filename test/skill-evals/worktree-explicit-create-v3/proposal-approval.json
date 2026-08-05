@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-worktree-explicit-create-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "baa3ec7b9840b1b5a0981941678cb5b082f727d47101e56b4b5aace8dca9c35e",
+  "protocolSha256": "c29644d6c901b952af6fc0f680e34326a83acb221ce415960474f8a714f9a1be",
+  "fixtureSha256": "e68d3f5c8c49db86aa14c19a4247dae067c890634752dabdba5dfe0e505741d9",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

@@ -1,0 +1,151 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "router-maintenance-v3",
+  "projectId": "py-research-doc-index",
+  "primarySkill": "using-helloscholar",
+  "caseId": "router-maintenance-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-helloscholar",
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/superpowers-skills/using-helloscholar",
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "using-helloscholar": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, verify tests and the intentionally stale generated indexes, and commit that unchanged state before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "route-and-mode-selection",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm stale generated navigation is handled by docs-maintenance index mode rather than a design or general implementation workflow."
+      },
+      {
+        "id": "generated-index-correctness",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the absolute docs sync CLI deterministically rebuilds the global Spec, Topic and Run indexes with current rows, statuses, ordering and relative links."
+      },
+      {
+        "id": "write-boundary",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm exactly the three generated Index files change and every Spec, Record, Architecture, source, test, script and project-rule byte remains unchanged."
+      },
+      {
+        "id": "idempotent-evidence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a second absolute docs sync exits successfully and full-tree evidence proves it produces no additional content or metadata diff."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "uses a design or general implementation workflow instead of generated-index maintenance",
+      "manually edits generated table content instead of using the absolute hello-scholar docs sync CLI",
+      "changes a Spec, Record, Architecture, source, test, project rule, or any non-Index file",
+      "creates a new core document, Run, recovery report, or Handoff",
+      "omits the second sync or claims idempotence without full-tree evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/retrieval-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/retrieval-evaluation/SPEC-012-query-fixtures/spec.md",
+      "runs/20260731-1600-query-fixtures/record.md",
+      "src/",
+      "tests/",
+      "scripts/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/retrieval-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/retrieval-evaluation/SPEC-012-query-fixtures/plan.md",
+      "hello-scholar/specs/retrieval-evaluation/SPEC-012-query-fixtures/tasks.md",
+      "runs/20260801-index-recovery/",
+      "hello-scholar/recovery.md",
+      "hello-scholar/handoffs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the generated navigation repair request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run the canonical sync, then prove the second sync makes no further full-tree change without changing source documents."
+}

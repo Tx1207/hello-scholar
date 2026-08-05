@@ -1,0 +1,289 @@
+{
+  "proposalId": "proposal-manage-specs-independent-v3-haiku-v4",
+  "liveApprovalId": "live-manage-specs-independent-v3-haiku-v4",
+  "liveApprovalSha256": "1aadee8d15b0e425b4cfaaa8cefbeb156b4db01300e2b149b1cc74c03b7f9e19",
+  "scenarioSha256": "5d8bdcdaf8da15bf01fc6a868f24bb3a1fb630a734fdf5c2386cc8fd43e60485",
+  "protocolSha256": "29ef3d9318946bf900d5bebc603cfb1c77f8f40b8cdf338e09ad113f30318408",
+  "fixtureSha256": "f15f63621db5e9ca31c9e31285956d31d4e32939c0f9ce5541708b2f8eb71c1c",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "e7d7edf1a939d8ba66849d4c257428bfbcf8e8e4751e1cdc00d7371e94e7bcc8"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "ac2c10c36611347f6",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a364b7a2c652d17c5",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "identity-classification",
+      "passed": true,
+      "reason": "The request was correctly classified as an independently deployable batch capability.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+        }
+      ]
+    },
+    {
+      "id": "approval-gate",
+      "passed": false,
+      "reason": "The approval named the ID and Topic but did not approve the complete final design slug before creation.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+        }
+      ]
+    },
+    {
+      "id": "id-and-document-contract",
+      "passed": false,
+      "reason": "The final SPEC-010-batch-get-documents path differs from the Protocol-required SPEC-010-batch-retrieval-api path.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": false,
+      "reason": "The created Spec path is outside the Protocol allowlist even though unrelated runtime and document paths remained unchanged.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/reviewer.md",
+          "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Every approved Protocol command exited successfully in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "11ee695973ce99d3cf0cf74902bb2e62dbfa564859c39cd2bc06c4c29fa7caf3"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/tree.raw.log",
+          "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -B -m unittest discover -s tests",
+      "executedCommand": "python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "11ee695973ce99d3cf0cf74902bb2e62dbfa564859c39cd2bc06c4c29fa7caf3"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/commands.raw.log",
+          "sha256": "11ee695973ce99d3cf0cf74902bb2e62dbfa564859c39cd2bc06c4c29fa7caf3"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "b7c1a8e6f30159d5b922526a3692a56fc4197a8a07143842404d2b7d07b64643",
+        "promptSha256": "36329a7ccb6dcdb56a61da6b84327d71efbb5ed5a636367f411ca80e19fedb45",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-0.md",
+            "sha256": "36329a7ccb6dcdb56a61da6b84327d71efbb5ed5a636367f411ca80e19fedb45"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "1f17920f58b931b2289898f10d5b891edcf3a2de1fbd3c98fb90cee5fc8b5538"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-classification-decision",
+        "messageSha256": "18f77fbe9327f776e8964bb083945bb35b7ea2fb3e94bfd95ba48dcd4f401b70",
+        "promptSha256": "be7678ebd12d00d06d447517a2b3f95b2b6b86db80079777e94d090727f9dcfe",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804/prompt-round-1.md",
+            "sha256": "be7678ebd12d00d06d447517a2b3f95b2b6b86db80079777e94d090727f9dcfe"
+          },
+          {
+            "path": "evidence/live/v4-20260804/interaction.md",
+            "sha256": "1f17920f58b931b2289898f10d5b891edcf3a2de1fbd3c98fb90cee5fc8b5538"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804/prompt-round-0.md",
+          "sha256": "36329a7ccb6dcdb56a61da6b84327d71efbb5ed5a636367f411ca80e19fedb45"
+        },
+        {
+          "path": "evidence/live/v4-20260804/interaction.md",
+          "sha256": "1f17920f58b931b2289898f10d5b891edcf3a2de1fbd3c98fb90cee5fc8b5538"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "identity-classification": 100,
+        "approval-gate": 0,
+        "id-and-document-contract": 0,
+        "scope-discipline": 0
+      },
+      "reasons": {
+        "identity-classification": "Repository evidence correctly established an independent lifecycle.",
+        "approval-gate": "The complete final path was not repeated and approved before creation.",
+        "id-and-document-contract": "The actual design slug does not match the required artifact path.",
+        "scope-discipline": "The actual Spec is outside the approved path allowlist."
+      },
+      "evidence": {
+        "identity-classification": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "approval-gate": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "id-and-document-contract": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ]
+      },
+      "totalScore": 30.0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 90,
+        "audience-fit": 90,
+        "information-design": 90,
+        "actionability": 0,
+        "signal-to-noise": 90
+      },
+      "reasons": {
+        "value-visibility": "The classification and created design are visible, with a path defect.",
+        "audience-fit": "The response is concise Chinese with exact API terms.",
+        "information-design": "The response and Spec are scannable and structured.",
+        "actionability": "The path mismatch prevents safe continuation without another repair and authorization.",
+        "signal-to-noise": "The response is focused, with minor evaluator-process phrasing."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260804/reviewer.md",
+            "sha256": "a18ab8d9f513343dab7eb167d0e7b021dda47775f388f1de619a122ed55c5946"
+          }
+        ]
+      },
+      "totalScore": 72.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260804/tree.raw.log",
+      "sha256": "4909323538aa3720aa0b721a8368fbba67c56ae976b351e6554856f47424c5d5"
+    }
+  }
+}

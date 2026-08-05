@@ -53,11 +53,11 @@ Invoke `$manage-specs` with the design context before writing. It returns exactl
 - `Create Successor Spec`
 - `Need Human Classification`
 
-Use its classification, confirmation gate, selected Bundle path, and current identity. Do not duplicate its ID allocation, revision, successor, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get that confirmation before writing.
+Use its classification, confirmation gate, selected Bundle path, and current identity. This owner transition is a hard stop: if `$manage-specs` is unavailable, cannot be read, or does not return a complete classification and canonical path, do not classify or write the Spec yourself. Do not duplicate its ID allocation, revision, successor, slug, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get confirmation of the complete path before writing; an ID- or Topic-only reply is not path approval.
 
 Read the selected template from `skills/hello-scholar/manage-specs/assets/`: use `spec-template.zh_CN.md` for a Chinese repository language preference; otherwise use `spec-template.md`. user-readable Spec prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written.
 
-Write or revise only the selected Bundle file:
+Write or revise the selected Bundle file. For `Create Successor Spec`, also make only the linked old `spec.md` update required by `$manage-specs`:
 
 ```text
 hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
@@ -83,7 +83,7 @@ node <hello-scholar-repo>/bin/hello-scholar.js docs sync
 node <hello-scholar-repo>/bin/hello-scholar.js docs check
 ```
 
-**Completion:** exactly one selected `spec.md` transaction and CLI-generated Indexes reflect the approved design decision.
+**Completion:** the selected `spec.md` transaction—plus only the linked old `spec.md` for a successor—and CLI-generated Indexes reflect the approved design decision.
 
 ## 5. Self-review and whole-file review
 

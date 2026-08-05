@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-docs-maintenance-recover-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "1051b04251f43b024da680e04548e409657cab4b1f2edee92cb603fb6b829db2",
+  "protocolSha256": "1f3d946a1711172b8daae445f6c26e15cf25274c71027c87cf7c5c70a7e10eda",
+  "fixtureSha256": "eaee892c7b5b46002c2ac40a8f264e600b2753de3a6131b3a41f15de6e1413b0",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-3-records-docs / c394a011acdf1cb29783cf207dfc57f7c6ffce65964dc84335ccc23d6ef87b31"
+}

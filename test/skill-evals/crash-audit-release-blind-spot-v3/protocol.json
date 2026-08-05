@@ -1,0 +1,148 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "crash-audit-release-blind-spot-v3",
+  "projectId": "node-config-migration-cli",
+  "primarySkill": "crash-audit",
+  "caseId": "crash-audit-release-blind-spot-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "crash-audit"
+  ],
+  "skillSources": {
+    "crash-audit": "skills/hello-scholar/crash-audit"
+  },
+  "skillExpectations": {
+    "crash-audit": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the unchanged tree, and keep the audit read-only",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "fact-grounding",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the public compatibility promise, cleanup plan, v1/v2 reader code, persisted v1 fixture, tests and read-only smoke output are inspected and cited accurately."
+      },
+      {
+        "id": "uncertainty-calibration",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm uncertainty is tied to the unobserved population of persisted v1 configurations and release rollout evidence, with confidence and missing facts stated plainly."
+      },
+      {
+        "id": "decision-impact",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the audit explains how removing the v1 reader could change release approval, ordering or rollback safety rather than listing low-impact possibilities."
+      },
+      {
+        "id": "fast-verification",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm the answer proposes the cheapest concrete inventory or representative v1 smoke check that would resolve each material unknown before cleanup approval."
+      },
+      {
+        "id": "two-question-separation",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm least-confidence judgments and user blind spots are separated without repetition and limited to the decision-relevant maximum requested."
+      },
+      {
+        "id": "concise-no-fabrication",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response is direct, evidence-backed and read-only, with no rewritten plan, generic risk matrix, third summary or invented repository fact."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "does not inspect the repository facts before judging uncertainty",
+      "misses a high-impact conflict between the proposed cleanup and an observable user contract",
+      "rewrites the plan, edits the fixture, or starts migration work",
+      "duplicates one concern under both source questions or invents generic risks",
+      "routes into takeoff, landing, or a full code review"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node src/cli.js fixtures/persisted-v1.json",
+    "git diff --exit-code"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "README.md",
+      "docs/",
+      "fixtures/",
+      "src/",
+      "test/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "crash-audit.md",
+      "risk-report.md",
+      "hello-scholar/",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the single audit request has been delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the compatibility promise, release plan, persisted v1 sample, reader, and tests, then surface the first approval-changing unknown and its cheapest verification."
+}

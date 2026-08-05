@@ -1,0 +1,21 @@
+$ PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+exit=0
+
+$ node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 3, records 0, indexes 4, errors 0, notices 6
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/batch-retrieval/INDEX.md
+index Current hello-scholar/specs/observability/INDEX.md
+index Current hello-scholar/specs/search-ranking/INDEX.md
+notice plan-missing hello-scholar/specs/batch-retrieval/SPEC-010-batch-get-documents/plan.md: Spec SPEC-010 has no Plan
+notice tasks-missing hello-scholar/specs/batch-retrieval/SPEC-010-batch-get-documents/tasks.md: Spec SPEC-010 has no Tasks
+notice plan-missing hello-scholar/specs/observability/SPEC-009-request-tracing/plan.md: Spec SPEC-009 has no Plan
+notice tasks-missing hello-scholar/specs/observability/SPEC-009-request-tracing/tasks.md: Spec SPEC-009 has no Tasks
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/plan.md: Spec SPEC-002 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/tasks.md: Spec SPEC-002 has no Tasks
+exit=0

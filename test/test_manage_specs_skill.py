@@ -15,6 +15,10 @@ TEMPLATE_FILES = (
     SKILL_DIR / "assets" / "spec-template.md",
     SKILL_DIR / "assets" / "spec-template.zh_CN.md",
 )
+IDENTITY_FILES = (
+    SKILL_DIR / "assets" / "spec-identity.md",
+    SKILL_DIR / "assets" / "spec-identity.zh_CN.md",
+)
 CLASSIFICATIONS = (
     "Update Existing Spec",
     "Create Independent Spec",
@@ -71,9 +75,11 @@ class ManageSpecsSkillTests(unittest.TestCase):
                 self.assertIn(classification, text)
             self.assertIn("docs sync", text)
             self.assertIn("docs check", text)
-            self.assertIn("SPEC-", text)
             self.assertIn("draft", text)
-            self.assertIn("accepted", text)
+            self.assertTrue(
+                "accept" in text.lower() or "批准" in text,
+                "missing Spec acceptance boundary",
+            )
             self.assertIn("supersedes", text)
             self.assertIn("superseded_by", text)
             self.assertIn("Revision History", text)
@@ -82,12 +88,36 @@ class ManageSpecsSkillTests(unittest.TestCase):
             self.assertNotIn("hello-scholar/memory/", text)
             self.assertNotIn("TODO", text)
 
-        self.assertIn("explicitly confirms", texts[0])
-        self.assertIn("maximum", texts[0].lower())
-        self.assertIn("用户明确确认", texts[1])
-        self.assertIn("全局最大", texts[1])
+        self.assertIn("Proceed only when the reply unambiguously confirms", texts[0])
+        self.assertIn("只有回复明确绑定", texts[1])
         self.assertIn("acyclic", texts[0])
         self.assertIn("无环", texts[1])
+        self.assertIn("increment `revision`, set `status: draft`", texts[0])
+        self.assertIn("递增 `revision`，设为 `status: draft`", texts[1])
+        self.assertIn("semantic update remain `draft`", texts[0])
+        self.assertIn("语义更新保持 `draft`", texts[1])
+        self.assertIn("assets/spec-identity.md", texts[0])
+        self.assertIn("assets/spec-identity.zh_CN.md", texts[1])
+        self.assertIn("Need Human Classification", texts[0])
+        self.assertIn("Need Human Classification", texts[1])
+        self.assertIn("removes a required store", texts[0])
+        self.assertIn("移除既有设计要求的存储", texts[1])
+
+        identities = []
+        for path in IDENTITY_FILES:
+            self.assertTrue(path.is_file(), f"missing identity reference: {path}")
+            identities.append(path.read_text(encoding="utf-8"))
+        for text in identities:
+            self.assertIn("Stable Identity Test", text)
+            self.assertIn("public-batch-retrieval-api", text)
+            self.assertIn("signed-stateless-session-tokens", text)
+            self.assertIn("Need Human Classification", text)
+        self.assertIn("global maximum", identities[0].lower())
+        self.assertIn("全局最大", identities[1])
+        self.assertIn("cross-approach invariant", identities[0])
+        self.assertIn("synchronous entry selected", identities[0])
+        self.assertIn("跨方案不变量", identities[1])
+        self.assertIn("选择同步入口", identities[1])
 
     def test_templates_have_parseable_spec_front_matter_and_core_sections(self) -> None:
         """Purpose: require canonical Spec metadata and all seven core sections; Input: bilingual template files; Output: none; Errors: assertion failure identifies an invalid or incomplete template."""

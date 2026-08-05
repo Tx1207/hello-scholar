@@ -1,6 +1,6 @@
 ---
 name: manage-specs
-description: 对设计请求进行稳定 Spec 身份分类。创建、修订、替代 Spec，或多个 Spec 边界无法判定时使用；其他设计 Skill 可在写入 Spec Bundle 前调用。
+description: 将设计请求归入一个稳定 Spec 身份。创建、修订或替代 Spec 前使用；其他设计 Skill 需要 canonical Spec owner 时也使用。
 ---
 
 # Manage Specs
@@ -12,7 +12,7 @@ description: 对设计请求进行稳定 Spec 身份分类。创建、修订、�
 - `Create Successor Spec`
 - `Need Human Classification`
 
-结果必须列出候选 Spec、依据和下一道确认门。本 Skill 负责 Spec 身份与 Revision 维护；不负责方案设计、批准 Spec、生成 Plan/Tasks 或实施。
+结果必须列出候选 Spec、依据和下一道确认门。本 Skill 负责 Spec 身份与 Revision 维护；方案设计、Spec acceptance、Plan、Tasks 和实施由各自 owner 负责。
 
 ## 1. 建立文档事实
 
@@ -21,60 +21,57 @@ description: 对设计请求进行稳定 Spec 身份分类。创建、修订、�
    node <hello-scholar-repo>/bin/hello-scholar.js docs sync
    node <hello-scholar-repo>/bin/hello-scholar.js docs check
    ```
-2. 任一命令报告结构错误时，报告 diagnostics 后停止，不在无效文档图上直接写入。
-3. 读取全局 Spec Index、存在时的目标 Topic Index，以及标题、问题、目标或 owner 边界可能匹配的候选 `spec.md`。再读取区分候选所需的项目事实。
+2. 遇到结构错误时停止并报告 diagnostics。
+3. 读取全局 Spec Index、存在时的目标 Topic Index，以及问题、目标或 owner 边界可能匹配的候选 `spec.md`。只读取区分候选所需的项目事实。
 
-**完成条件：** 请求已有基于当前事实的有限候选集，而不是默认阅读全部历史文档。
+**完成条件：** 请求已有基于当前项目事实的有限候选集。
 
-## 2. 做出唯一分类
+## 2. 确定一个身份
 
-依据如下表选择，不能合并分类：
-
-| 分类 | 适用情况 | 写入前的结果 |
+| 分类 | 依据 | 写入前的结果 |
 | --- | --- | --- |
-| `Update Existing Spec` | 请求改变的是同一问题、能力和生命周期，且已有一个 Spec 拥有它。 | 指出该 Spec 并说明共享边界。 |
-| `Create Independent Spec` | 请求是不同问题或真正独立的能力，且能够独立批准、实施、验证并停止或回滚。 | 写明两项独立生命周期事实，并请求创建确认。 |
-| `Create Successor Spec` | 已审阅的新设计从根本上替代既有设计，而不是扩展它。 | 指出被替代 Spec、说明替代边界，并请求关联两份 Spec 的事务确认。 |
-| `Need Human Classification` | 多个候选同样合理，或本地事实无法建立独立生命周期。 | 列出竞争边界和需要用户决定的唯一问题。 |
+| `Update Existing Spec` | 一个 Spec 已拥有相同的问题、能力和生命周期。 | 指出该 Spec 及共享边界。 |
+| `Create Independent Spec` | 该能力具有独立价值，并能独立批准、实施、验证和回滚。 | 写明独立生命周期事实并提出一条 canonical 路径。 |
+| `Create Successor Spec` | 新设计替换活跃实现模型，或移除既有设计要求的存储、协议或生命周期边界。 | 指出被替代 Spec、历史边界和 successor canonical 路径。 |
+| `Need Human Classification` | 读取本地事实后仍有多个同样合理的 owner。 | 展示竞争边界和一个身份决定。 |
 
-同一问题的多个方案写入候选 Spec 的 `候选方案与权衡` / `Alternatives and Tradeoffs`，不创建并行 Spec。
+同一问题的候选方案保留在同一 Spec 的 `候选方案与权衡`，不成为不同身份。
 
-**完成条件：** 回复含一个分类、具体证据，以及所需确认或明确停止点。
+返回 `Create Independent Spec` 或 `Create Successor Spec` 前，读取 [`assets/spec-identity.zh_CN.md`](assets/spec-identity.zh_CN.md)；使用英文回复时读取 [`assets/spec-identity.md`](assets/spec-identity.md)。完成其中的 **Stable Identity Test**，再在确认请求中重复完整拟定路径。
+
+**完成条件：** 回复含一个分类、具体依据、创建身份时的一条完整路径，以及一道确认门或明确停止点。
 
 ## 3. 应用已确认分类
 
-创建新 Spec 前，先读取 `assets/` 的对应模板。项目默认语言为中文时使用 `spec-template.zh_CN.md`，否则使用 `spec-template.md`。ID、路径、枚举值和命令保持原样。
+只有回复明确绑定第 2 步提出的分类和精确身份后才继续。
 
 ### Update Existing Spec
 
-- 保持既有 ID、Topic 和 Bundle 路径。
-- 语义变化时递增 `revision`，将 `updated` 设为当前日期，并追加简洁 `Revision History` 说明改变的决定。
-- 只修正格式或错别字而不改变语义时，保持 Revision。
-- 只修改该 `spec.md`；Spec 变化后现有 Plan/Tasks 可能变为 Stale，无需同步。
+- 保持 ID、Topic 和 Bundle 路径。
+- 语义变化时递增 `revision`，设为 `status: draft`，更新 `updated`，并追加一条 `Revision History`。
+- 只修正格式时保持 Revision。
+- 只修改该 `spec.md`；现有 Plan 和 Tasks 可以变为 stale。
 
 ### Create Independent Spec
 
-- 只有用户明确确认此分类后才能继续。
-- 新 ID 是全局最大 Spec 数字加一，至少三位；不复用空洞，并将 rejected 或 superseded ID 计入最大值。
-- Topic 与设计 slug 使用小写 kebab-case。用选定模板创建 `hello-scholar/specs/<topic-id>/SPEC-<number>-<design-name>/spec.md`。
-- 初始字段为 `status: draft`、`revision: 1`、`supersedes: []`、`superseded_by: null`。
+- 读取 `assets/` 的对应模板：中文项目使用 `spec-template.zh_CN.md`，否则使用 `spec-template.md`。
+- 在已确认路径创建 `status: draft`、`revision: 1`、`supersedes: []`、`superseded_by: null` 的 Spec。
 
 ### Create Successor Spec
 
-- 只有用户明确确认替代关系和两份受影响 Spec 后才能继续。
-- 与独立 Spec 相同方式分配新 ID 和路径；新 Spec 的 `supersedes` 写入旧 ID。
-- 同一事务更新旧 `spec.md`：将 `superseded_by` 设为新 ID，进行语义 Revision 与 `updated` 变更，并在 `Revision History` 记录关系。新设计替代活跃 owner 时，将旧 status 设为 `superseded`。
-- 验证关系互惠且无环。这是唯一允许同时维护新旧 Spec 的例外；不能顺带修改 Plan、Tasks、Architecture、源码或 Run。
+- 按上述方式创建已确认 draft，并在 `supersedes` 写入旧 ID。
+- 同一事务更新旧 `spec.md`：让 `superseded_by` 指向新 ID，记录语义 Revision，并将活跃 owner 设为 `superseded`。
+- 验证关系互惠、非自指且无环。这是唯一允许写入多份 Spec 的分支。
 
 ### Need Human Classification
 
-不写 Spec。展示候选边界，等待用户决定。
+返回未解决的身份决定，项目保持零写入。
 
-**完成条件：** 只有所需确认后才发生写入，且变更路径恰好匹配所选分类。
+**完成条件：** 每份变更的 `spec.md` 都匹配已确认分支和身份；Plan、Tasks、Architecture、源码和 Run 保持不变。
 
 ## 4. 验证与交接
 
-写入后运行：
+运行：
 
 ```sh
 node <hello-scholar-repo>/bin/hello-scholar.js docs check
@@ -82,6 +79,8 @@ node <hello-scholar-repo>/bin/hello-scholar.js docs sync
 node <hello-scholar-repo>/bin/hello-scholar.js docs check
 ```
 
-只有 CLI 可以重建生成的 Index。确认 diff 只包含所选 `spec.md` 事务和生成的 Index。
+只有 CLI 重建生成的 Index。确认最终 diff 仅包含所选 Spec 事务和生成的 Index。
 
-新 Spec 初始为 `draft`。只有用户明确批准完整 Spec 后才改为 `accepted`。随后停在用户请求的下一阶段；讨论或分类确认不是 Spec 批准。
+新建 Spec 和语义更新保持 `draft`，直到用户批准完整 Spec。然后停在下一位被请求的 owner。
+
+**完成条件：** 两次检查通过，生成 Index 为 current，且每条变更路径都属于已确认事务。

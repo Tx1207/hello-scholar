@@ -1,0 +1,26 @@
+# Config Format Migration Sonnet v3 Baseline protocol commands
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3 npm test
+
+> config-format-cli-fixture@1.4.0 test
+> node --test test/*.test.js
+
+✔ show exposes one canonical shape for a legacy profile (66.24975ms)
+✔ legacy output flag still invokes the old writer (51.54515ms)
+✔ compatibility reader normalizes legacy and JSON profiles (2.099062ms)
+✔ writer emits JSON v2 by default (0.538664ms)
+✔ legacy writer remains available during the dual-read window (0.492071ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 220.09888
+exitCode: 0
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 0
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/config-format/INDEX.md
+exitCode: 0
+protocol_command_status=0

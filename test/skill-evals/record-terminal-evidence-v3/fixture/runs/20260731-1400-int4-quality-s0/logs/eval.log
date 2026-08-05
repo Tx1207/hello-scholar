@@ -1,0 +1,6 @@
+2026-07-31T14:00:01Z INFO loaded scholar-reranker-1.3b revision sha256:6f51b4c8e4d84c1e
+2026-07-31T14:00:02Z INFO evaluation_samples=1200 seed=0
+2026-07-31T14:00:05Z INFO baseline_accuracy=0.842 int4_accuracy=0.801
+2026-07-31T14:00:05Z INFO accuracy_drop=0.041 maximum_accuracy_drop=0.020
+2026-07-31T14:00:05Z INFO size_reduction_ratio=0.742 valid_result=true
+2026-07-31T14:00:06Z INFO process_exit_code=0

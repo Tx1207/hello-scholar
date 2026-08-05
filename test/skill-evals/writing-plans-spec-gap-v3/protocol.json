@@ -1,0 +1,134 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "writing-plans-spec-gap-v3",
+  "projectId": "node-webhook-signing-service",
+  "primarySkill": "writing-plans",
+  "caseId": "writing-plans-spec-gap-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "writing-plans"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "exit",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Node tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "fact-reading-and-gap-detection",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the accepted Spec, handler, verifier, caller, and tests are read and the unresolved key identity, HTTP response, and legacy-signature window are identified as real contract gaps."
+      },
+      {
+        "id": "contract-impact-and-questions",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm each gap is connected to its Spec section and affected project files, explains its public, security, or migration impact, and asks only the minimum decision questions without an invented default."
+      },
+      {
+        "id": "zero-write-stop-gate",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the complete Git tree remains byte-identical and no Plan, Tasks, index, report, source, test, Spec, or Architecture file is created or modified."
+      },
+      {
+        "id": "terminal-routing",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response stops and routes unresolved design work to brainstorming and manage-specs rather than proceeding to Tasks or implementation."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "creates or modifies plan.md, tasks.md, an index, a report, source, tests, the Spec, or Architecture",
+      "chooses a key identity, HTTP failure contract, or compatibility window not accepted by the Spec",
+      "treats accepted status as sufficient while ignoring explicit unresolved design decisions",
+      "asks generic implementation questions without connecting them to affected Spec sections and real project files",
+      "routes directly to Tasks or implementation instead of brainstorming and manage-specs",
+      "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the accepted webhook contract and callers, identify the first material unresolved public decision, then stop with zero writes and route it to design ownership.",
+  "commands": [
+    "node --test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "hello-scholar/",
+      "src/",
+      "server/",
+      "clients/",
+      "test/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation/plan.md",
+      "hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation/tasks.md",
+      "hello-scholar/memory/",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Plan request and semantic stop condition are delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  }
+}

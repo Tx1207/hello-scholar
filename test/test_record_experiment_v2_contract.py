@@ -184,6 +184,32 @@ class RecordExperimentV2ContractTests(unittest.TestCase):
         self.assertIn("does not create a Worktree automatically", english)
         self.assertIn("不因进入探索路径自动创建 Worktree", chinese)
 
+    def test_user_outcome_reports_durable_record_state(self) -> None:
+        """Purpose: require a concise user-facing result after each evidence decision; Input: bilingual Skill texts; Output: none; Errors: assertion failure identifies a missing decision, path, validation, or launch outcome."""
+
+        english = SKILL_FILES[0].read_text(encoding="utf-8")
+        chinese = SKILL_FILES[1].read_text(encoding="utf-8")
+        for term in (
+            "Report the durable outcome",
+            "decision and brief reason",
+            "canonical Record path",
+            "docs check",
+            "docs sync",
+            "documented command is unblocked",
+            "no Run or Index changed",
+        ):
+            self.assertIn(term, english)
+        for term in (
+            "向用户说明持久结果",
+            "判断和简要原因",
+            "标准 Record 路径",
+            "docs check",
+            "docs sync",
+            "解除启动阻塞",
+            "没有更改 Run 或 Index",
+        ):
+            self.assertIn(term, chinese)
+
     def test_identity_collisions_and_sparse_updates_preserve_evidence(self) -> None:
         """Purpose: prevent Run overwrite and monitoring churn; Input: Skill and example text; Output: none; Errors: assertion failure identifies unsafe identity reuse or lost terminal evidence."""
 

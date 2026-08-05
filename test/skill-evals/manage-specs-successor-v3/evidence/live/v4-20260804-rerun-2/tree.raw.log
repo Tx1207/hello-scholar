@@ -1,0 +1,23 @@
+## committed
+M	hello-scholar/specs/INDEX.md
+M	hello-scholar/specs/session-auth/INDEX.md
+M	hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+## index
+## working-tree
+M	hello-scholar/specs/INDEX.md
+M	hello-scholar/specs/session-auth/INDEX.md
+M	hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+## untracked
+hello-scholar/specs/session-auth/SPEC-012-signed-session-tokens/spec.md
+## final-hashes
+29d93a34fbd5d2cbd805a9eb750d23280b382c817ca7f4da70eb06f02cde4f6b  ./AGENTS.md
+f6209979f14131ed52869c25f3e8f05b0211a03ebe574f38193484f9485acc36  ./hello-scholar/architecture.md
+1ab7ab9480d065cbe643323c0e4ce2a1a140e01e259bfcc29b1afc1aef796dc3  ./hello-scholar/specs/INDEX.md
+f7fee3444a4dbdb22f575f3743de73e84b346a2d1483a60d69894014c812e465  ./hello-scholar/specs/session-auth/INDEX.md
+0889c92426a47c14d121263936624c95f8a834d45984cce7690c2c49c2f125a6  ./hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+2274c2a4fa4d9e58b1fb1c085a8e64d8a2aee1cedfd8d6cbd6a9d7764c7b7aa0  ./hello-scholar/specs/session-auth/SPEC-011-session-audit-events/spec.md
+bd2efa1397a4fd51db5335e31697f8f511474d8adfaaf338af9829b93eaad4e8  ./hello-scholar/specs/session-auth/SPEC-012-signed-session-tokens/spec.md
+66e61cf69df3fec5c68f771bab45e0857ecbf05e1eb0d88633ecf74ecb8e991a  ./package.json
+b2e2a7ccacfec0d342466e9a83e72601f8ab9735b0af5a983b01bad52f368334  ./src/token-store.js
+0a2dd1986501af1f2a586e258b4d7834d7b78f9040ce2ca57526bf6531a92933  ./test/token-store.test.js
+## runtime-artifacts

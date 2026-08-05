@@ -1,0 +1,150 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "manage-specs-successor-v3",
+  "projectId": "node-session-token-service",
+  "primarySkill": "manage-specs",
+  "caseId": "manage-specs-successor-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "manage-specs"
+  ],
+  "skillSources": {
+    "manage-specs": "skills/hello-scholar/manage-specs"
+  },
+  "skillExpectations": {
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync and npm test, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "identity-classification",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm repository facts classify removal of store-backed verification and staged replacement by signed tokens as a successor design, while the audit-event Spec remains a separate unchanged owner."
+      },
+      {
+        "id": "approval-gate",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm round one compares modify, independent and successor choices with evidence and stops read-only, and no document write occurs before the exact later successor approval."
+      },
+      {
+        "id": "supersession-integrity",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm draft SPEC-012 receives a distinct identity and the old SPEC-005 and new Spec contain reciprocal, non-self, acyclic supersession links without treating creation approval as acceptance."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only both relationship-bearing session-auth Specs and CLI-generated indexes change, with audit ownership, runtime, package, Architecture, Plan, Tasks, Runs and legacy paths untouched."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes any project file before the later classification approval",
+      "updates only the old Spec instead of preserving a distinct successor identity",
+      "creates a missing, one-way, self, or cyclic supersession relation",
+      "reuses an existing Spec ID or marks the new Spec accepted without a separate acceptance decision",
+      "changes audit ownership, source, tests, package files, Architecture, Plan, Tasks, or Runs",
+      "manually edits generated Index content or writes under hello-scholar/memory",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md",
+      "hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/session-auth/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md",
+      "hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/session-auth/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/2026-08-01-signed-token.md",
+      "hello-scholar/specs/session-auth/SPEC-005-signed-token-v2/spec.md",
+      "hello-scholar/memory/",
+      "src/signed-token.js",
+      "migration-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original request is delivered and no project bytes have changed",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has reported one evidence-backed classification and stopped without writes",
+        "contentRole": "future-classification-decision",
+        "message": "同意把它归类为替代设计。创建 draft SPEC-012 signed stateless session tokens，并与 SPEC-005 建立双向、无环 supersession；审计事件 Spec 保持不变。只更新必要 Spec 和 CLI 生成的 Index，不实现代码。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read authentication and audit ownership evidence, present the successor classification, and stop before creating reciprocal supersession links until approval."
+}

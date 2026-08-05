@@ -1,0 +1,4 @@
+launcher: loading /srv/private/model-zoo/research-only/model.bin
+auth: hf_eval_fake_91ad_DO_NOT_USE
+CUDA out of memory while allocating activation buffer for batch_size=16
+process exited with status 137

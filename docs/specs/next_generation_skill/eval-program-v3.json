@@ -1,0 +1,409 @@
+{
+  "programVersion": 1,
+  "activeProductSkillCount": 14,
+  "productProposalCaseCount": 37,
+  "pendingProductProposalCaseCount": 36,
+  "activeProductSkills": [
+    {
+      "name": "using-helloscholar",
+      "source": "skills/superpowers-skills/using-helloscholar"
+    },
+    {
+      "name": "brainstorming",
+      "source": "skills/superpowers-skills/brainstorming"
+    },
+    {
+      "name": "manage-specs",
+      "source": "skills/hello-scholar/manage-specs"
+    },
+    {
+      "name": "writing-plans",
+      "source": "skills/superpowers-skills/writing-plans"
+    },
+    {
+      "name": "generating-tasks",
+      "source": "skills/superpowers-skills/generating-tasks"
+    },
+    {
+      "name": "record-experiment",
+      "source": "skills/hello-scholar/record-experiment"
+    },
+    {
+      "name": "converge-to-spec",
+      "source": "skills/hello-scholar/converge-to-spec"
+    },
+    {
+      "name": "docs-maintenance",
+      "source": "skills/hello-scholar/docs-maintenance"
+    },
+    {
+      "name": "handoff",
+      "source": "skills/productivity-skills/handoff"
+    },
+    {
+      "name": "test-driven-development",
+      "source": "skills/superpowers-skills/test-driven-development"
+    },
+    {
+      "name": "using-git-worktrees",
+      "source": "skills/superpowers-skills/using-git-worktrees"
+    },
+    {
+      "name": "crash-audit",
+      "source": "skills/hello-scholar/crash-audit"
+    },
+    {
+      "name": "takeoff",
+      "source": "skills/hai-skills/takeoff"
+    },
+    {
+      "name": "landing",
+      "source": "skills/hai-skills/landing"
+    }
+  ],
+  "minimumDistinctProjectsPerAcceptedSkill": 2,
+  "batches": [
+    {
+      "batchId": "generating-tasks-sonnet-v3-proposals-batch-v1",
+      "protocolVersion": 3,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-observed",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v3.md",
+      "scenarioIds": [
+        "generating-tasks-v3-feature-policy",
+        "generating-tasks-v3-migration"
+      ]
+    },
+    {
+      "batchId": "sonnet-v3-wave-1-control-pass-history",
+      "protocolVersion": 3,
+      "kind": "historical-baseline",
+      "status": "control-pass-observed",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v3-wave-1.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v3-wave-1.md",
+      "scenarioIds": [
+        "manage-specs-existing-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-1-spec-design",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-1.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-1.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 5,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "manage-specs-independent-v3",
+        "manage-specs-options-v3",
+        "manage-specs-successor-v3",
+        "brainstorming-api-route-v3",
+        "brainstorming-spec-bundle-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-2-plan-tasks",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-2.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-2.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 4,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "writing-plans-bundle-v3",
+        "writing-plans-spec-gap-v3",
+        "generating-tasks-product-feature-policy-v3",
+        "generating-tasks-product-migration-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-3-records-docs",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-3.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 8,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "record-no-record-smoke-v3",
+            "change": "The Fixture exposes only a stdout-only local check and a public zero-write project boundary; the No record classification remains evaluator-only."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "record-exploration-backfill-v3",
+        "record-no-record-smoke-v3",
+        "record-formal-prelaunch-v3",
+        "record-terminal-evidence-v3",
+        "docs-maintenance-architecture-v3",
+        "docs-maintenance-check-v3",
+        "docs-maintenance-index-v3",
+        "docs-maintenance-recover-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-4-convergence-handoff",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-4.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-4.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 4,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "handoff-dirty-implementation-v3",
+            "change": "Fixture verifiers now enforce only public scope and redaction boundaries; hidden Handoff path and answer details remain evaluator-only."
+          },
+          {
+            "scenarioId": "handoff-negative-experiment-v3",
+            "change": "Fixture verifiers now expose only project-state existence and redaction boundaries; classification and Handoff answer details remain evaluator-only."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "converge-completion-gate-v3",
+        "converge-to-spec-v3",
+        "handoff-dirty-implementation-v3",
+        "handoff-negative-experiment-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-5-explicit-workflows",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-5.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-5.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 10,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "crash-audit-calibrated-none-v3",
+            "change": "The specific review diff is now a hash-bound evaluator setup rather than Fixture-visible scripted answer material."
+          },
+          {
+            "scenarioId": "crash-audit-release-blind-spot-v3",
+            "change": "The Fixture keeps the cleanup proposal facts without stating the evaluator's missing-evidence conclusion."
+          },
+          {
+            "scenarioId": "takeoff-delete-internal-compat-v3",
+            "change": "Project rules require evidence-based classification without preclassifying public contracts."
+          },
+          {
+            "scenarioId": "takeoff-protect-real-contract-v3",
+            "change": "Project rules require evidence-based classification without preclassifying external contracts."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "tdd-approved-task-trigger-v3",
+        "tdd-user-trigger-v3",
+        "worktree-explicit-bundle-isolation-v3",
+        "worktree-explicit-create-v3",
+        "crash-audit-calibrated-none-v3",
+        "crash-audit-release-blind-spot-v3",
+        "takeoff-delete-internal-compat-v3",
+        "takeoff-protect-real-contract-v3",
+        "landing-explicit-durable-queue-v3",
+        "landing-explicit-feasibility-v3"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-6-router",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-6.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-6.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 5,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "router-experiment-v3",
+            "change": "The run verifier checks retained evidence consistency and one-launch behavior without exposing a fixed benchmark answer or hidden sentinel artifact."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "router-design-v3",
+        "router-execution-v3",
+        "router-experiment-v3",
+        "router-fast-v3",
+        "router-maintenance-v3"
+      ]
+    },
+    {
+      "batchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
+      "protocolVersion": 3,
+      "kind": "live-authorization",
+      "status": "pending-user-review",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v3-generating-tasks-v1.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v3-generating-tasks-v1.md",
+      "scenarioIds": [
+        "generating-tasks-v3-feature-policy",
+        "generating-tasks-v3-migration"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-manage-specs-live-authorization-batch-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-manage-specs-v1.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-manage-specs-v1.md",
+      "scenarioIds": [
+        "manage-specs-independent-v3",
+        "manage-specs-successor-v3"
+      ],
+      "authorizationRecordPaths": {
+        "manage-specs-independent-v3": "test/skill-evals/manage-specs-independent-v3/evidence/live/v4-20260804/live-approval.json",
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/evidence/live/v4-20260804/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-spec-live-authorization-batch-v2",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-spec-v2.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-spec-v2.md",
+      "scenarioIds": [
+        "manage-specs-independent-v3",
+        "manage-specs-successor-v3",
+        "brainstorming-api-route-v3"
+      ],
+      "authorizationRecordPaths": {
+        "manage-specs-independent-v3": "test/skill-evals/manage-specs-independent-v3/evidence/live/v4-20260804-rerun-2/live-approval.json",
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/evidence/live/v4-20260804-rerun-2/live-approval.json",
+        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/evidence/live/v4-20260804/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-spec-live-authorization-batch-v3",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-spec-v3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-spec-v3.md",
+      "scenarioIds": [
+        "manage-specs-independent-v3",
+        "manage-specs-successor-v3",
+        "brainstorming-api-route-v3"
+      ],
+      "authorizationRecordPaths": {
+        "manage-specs-independent-v3": "test/skill-evals/manage-specs-independent-v3/evidence/live/v4-20260804-rerun-3/live-approval.json",
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/evidence/live/v4-20260804-rerun-3/live-approval.json",
+        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/evidence/live/v4-20260804-rerun-2/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-spec-live-authorization-batch-v4",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "completed-pending-user-review",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-spec-v4.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-spec-v4.md",
+      "scenarioIds": [
+        "manage-specs-successor-v3",
+        "brainstorming-api-route-v3"
+      ],
+      "authorizationRecordPaths": {
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/live-approval.json",
+        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-framework-e2e",
+      "protocolVersion": 4,
+      "kind": "framework-e2e",
+      "status": "deferred",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-framework-e2e.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-framework-e2e.md",
+      "scenarioIds": [
+        "framework-e2e-paged-cache-v3"
+      ],
+      "requires": [
+        "accepted-product-live-coverage",
+        "retired-skill-guard"
+      ]
+    }
+  ]
+}

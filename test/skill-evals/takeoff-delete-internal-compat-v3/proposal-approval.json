@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-takeoff-delete-internal-compat-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "5e58658f99027de083e9b8ab4e402d3ddb1dbdbad9666705299b137ed210f4ab",
+  "protocolSha256": "28ab51c162fcab4f30bbd5f47f4a71b177d28b1def8bb7e9a241d876824f5ad2",
+  "fixtureSha256": "962cfb24329a462aa1f5c2c759181063717e2e507944ff5c50dd02d5815d8a20",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

@@ -1,0 +1,160 @@
+{
+  "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
+  "liveApprovalId": "live-manage-specs-successor-v3-haiku-v4-rerun-4",
+  "liveApprovalSha256": "c1b55bf3e665de3c8904fee145e8c36e96e09d2acb1729241428ed772e5b87a8",
+  "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
+  "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
+  "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
+  "result": "pass",
+  "userDecision": "accepted",
+  "skillSnapshots": {
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "aa05c5436084361ea",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "aec3b4e994c2f7a86",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "identity-classification",
+      "passed": true,
+      "reason": "Store-backed verification replacement was correctly classified as a successor while audit ownership stayed separate.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+    },
+    {
+      "id": "approval-gate",
+      "passed": true,
+      "reason": "Round zero stopped read-only and all writes followed the exact successor approval.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+    },
+    {
+      "id": "supersession-integrity",
+      "passed": true,
+      "reason": "SPEC-012 has the exact signed-stateless-session-tokens identity and reciprocal, non-self, acyclic links with SPEC-005.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": true,
+      "reason": "Only both relationship-bearing Specs and CLI-generated Indexes changed; audit ownership and runtime remained unchanged.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Every approved Protocol command exited successfully with explicit Fixture working directories.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-successor-v3-live-20260805-050000 npm test",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-successor-v3-live-20260805-050000 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "27391cdf035ce3e443a07302315182c57ec52fe8ed768c7d357e0bceba6f9bb7",
+        "promptSha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-0.md", "sha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24"},
+          {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-classification-decision",
+        "messageSha256": "d3cb8e7d6bd7887e1d203ed94cf3fb3b0ad84797fe031a7d8a391e471d130dc5",
+        "promptSha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-1.md", "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"},
+          {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-0.md", "sha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24"},
+        {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"identity-classification": 100, "approval-gate": 100, "supersession-integrity": 100, "scope-discipline": 100},
+      "reasons": {
+        "identity-classification": "The replacement lifecycle and unchanged audit owner were correctly identified.",
+        "approval-gate": "No project write preceded the exact successor approval.",
+        "supersession-integrity": "The exact successor identity and reciprocal acyclic relationship are complete.",
+        "scope-discipline": "Only the two required Specs and two generated Indexes changed."
+      },
+      "evidence": {
+        "identity-classification": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "approval-gate": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "supersession-integrity": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "scope-discipline": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      },
+      "totalScore": 100.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {
+        "value-visibility": "The successor result and all affected paths are immediately visible.",
+        "audience-fit": "Chinese prose retains exact token fields and document terms.",
+        "information-design": "Changes, checks, and exclusions are clearly organized.",
+        "actionability": "The created relationship and verification state are explicit.",
+        "signal-to-noise": "The response stays focused on the authorized transaction."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "information-design": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "actionability": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
+    "index": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
+    "workingTree": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
+    "untracked": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
+    "finalHashes": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"}
+  }
+}

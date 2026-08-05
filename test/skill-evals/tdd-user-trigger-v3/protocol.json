@@ -1,0 +1,134 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "tdd-user-trigger-v3",
+  "projectId": "node-rate-window",
+  "primarySkill": "test-driven-development",
+  "caseId": "tdd-user-trigger-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "test-driven-development"
+  ],
+  "skillSources": {
+    "test-driven-development": "skills/superpowers-skills/test-driven-development"
+  },
+  "skillExpectations": {
+    "test-driven-development": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit every fixture file, and verify initial node tests before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "red-proof",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm an isolated test for an accepted call at 0 followed by a call at 1000 is added first and observed failing by the intended boundary assertion before any production byte changes."
+      },
+      {
+        "id": "minimal-green",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the smallest production correction makes the focused test green, with any refactor occurring only after Green and without clocks, persistence, packages or unrelated behavior."
+      },
+      {
+        "id": "boundary-correctness",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm timestamps whose age equals windowMs expire while younger timestamps still count, the public constructor and allow(nowMs) signatures stay fixed, and the final full suite passes."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 20,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only the named source and test files change and saved command chronology proves valid Red then focused and full Green without report or dependency artifacts."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "changes production code before a focused failing boundary test is observed",
+      "uses a syntax, import, or setup error as Red",
+      "adds a test that passes before implementation",
+      "changes the public API or adds dependencies",
+      "finishes without a green focused test and green full suite"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test"
+  ],
+  "paths": {
+    "allow": [
+      "src/rate-window.js",
+      "test/rate-window.test.js"
+    ],
+    "deny": [
+      ".git/",
+      "node_modules/",
+      "hello-scholar/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "src/rate-window.js",
+      "test/rate-window.test.js"
+    ],
+    "forbidden": [
+      "package-lock.json",
+      "node_modules/",
+      "tdd-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit TDD request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Honor the user TDD request, create and observe the boundary Red before any production byte changes, then reach focused and full Green."
+}

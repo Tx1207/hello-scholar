@@ -95,4 +95,8 @@ node <hello-scholar-repo>/bin/hello-scholar.js docs sync
 
 **Completion:** `docs check` succeeds before `docs sync`, and only the Record plus CLI-generated Index changes represent durable documentation.
 
+## 7. Report the durable outcome
+
+After each decision, tell the user the decision and brief reason. If a Record was created or updated, give its canonical Record path and `docs check`/`docs sync` status; for a formal prelaunch Record, say whether the documented command is unblocked. For No record, state its reason and that no Run or Index changed. Report durable facts, not transient monitoring.
+
 See `references/status-and-fields.md` for exact fields and lifecycle rules. See `references/examples.md` for timing, collision, terminal-evidence, and provenance examples.

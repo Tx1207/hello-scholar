@@ -4,16 +4,17 @@
 
 禁止为这套流程新增 `testing-skills` 产品 Skill、`codex exec` Runner、external API Client 或默认联网脚本。
 
-## 四阶段
+## 五阶段
 
 | 阶段 | 允许产物 | 完成条件 |
 |---|---|---|
 | `proposal` | Scenario、Protocol、Fixture、待审核 Approval | 用户批准当前 Proposal ID 和 Hash |
 | `baseline-observation` | Baseline 与最小脱敏证据 | 得到诚实的 `fail` 或 `control-pass` |
-| `implementation-eval` | Scorecard 与 Live 证据 | 当前 Skill 的运行合同自洽 |
+| `live-authorization` | 待审核或已批准的 `live-approval.json` 与 Live batch review | 真实 Red、当前 Skill snapshot 与用户精确 Live authorization 全部绑定 |
+| `implementation-eval` | Scorecard 与 Live 证据 | 获批 Live authorization 下的当前 Skill 运行合同自洽 |
 | `user-accepted` | 更新 Scorecard 的用户决定 | 用户审阅当前证据并明确接受 |
 
-Proposal 阶段没有 Baseline 或 Scorecard 是合法中间态。不得用占位 JSON 伪造尚未运行的阶段。
+Proposal 阶段没有 Baseline 或 Scorecard 是合法中间态；有真实 Red 的场景可以有待审核 `live-approval.json`，但没有获批 Live authorization 时不得生成 Scorecard。不得用占位 JSON 伪造尚未运行的阶段。
 
 ## 场景目录
 
@@ -26,7 +27,8 @@ test/skill-evals/<scenario-id>/
 ├── proposal-approval.json
 ├── fixture/
 ├── baseline.json                 # Baseline 运行后才出现
-├── scorecard.json                # Live Eval 后才出现
+├── live-approval.json            # 有真实 Red 后的单独 Live authorization 记录
+├── scorecard.json                # 获批 Live authorization 后才出现
 └── evidence/
     ├── baseline/
     └── live/
@@ -72,13 +74,13 @@ Fixture tree hash 可以忽略跨平台运行缓存以保持稳定，但 Proposa
 - 每个目标 Skill 的仓库相对 `skillSources`；
 - 与 `targetSkills` 精确同键、同时声明 Baseline 与 Live 加载状态的 `skillExpectations`；
 - activation probe 的可观察性和 instruction eval 的声明边界；
-- Implementer/Reviewer 数量、持久化 `model: "claude-sonnet-5"` 与 `forkTurns: "none"`；实际 Claude Code dispatch 使用 selector `model: "sonnet"`，不得把 selector 写入 Hash-bound evidence；
+- Implementer/Reviewer 数量、当前 v4 持久化 `model: "claude-haiku-4-5-20251001"` 与 `forkTurns: "none"`；实际 Claude Code dispatch 使用 selector `model: "haiku"`，不得把 selector 写入 Hash-bound evidence；历史 v3 继续保存真实 `claude-sonnet-5` provenance；
 - Fixture Base 规则和 Base-to-final 全状态证据要求；
 - 场景业务 rubric、共享用户价值 rubric 路径/Hash、硬否决项、命令、允许/禁止路径和产物；
 - 一句具体、可观察且不包含时间上限的 `criticalPath`，说明从请求到有效结果所需的最短合理流程；
 - 多轮发送者、逐字消息、停止条件和首轮未来回复泄漏门。
 
-所有新 Proposal、Baseline 和 Live Eval 使用 `protocolVersion: 3`，并在 Protocol、Baseline、Scorecard、manifest 和 review 中保存 canonical `claude-sonnet-5`。`protocolVersion: 1` 只保存历史 Baseline；`protocolVersion: 2` 是冻结的 Terra 历史 cohort：两者的原 Scenario、Protocol、Approval、Fixture、Baseline、Scorecard（如有）和 evidence 保持原位、原字节，不得新增、改写或回填。若同一业务场景需要继续评测，另建 v3 后继 case 并重新走 Proposal 审核，不能改 Hash 把旧运行伪装成新协议结果。
+所有新 Proposal、Baseline 和 Live Eval 使用 `protocolVersion: 4`，并在 Protocol、Baseline、Scorecard、manifest 和 review 中保存 canonical `claude-haiku-4-5-20251001`。`protocolVersion: 1` 只保存历史 Baseline；`protocolVersion: 2` 是冻结的 Terra 历史 cohort；`protocolVersion: 3` 保存已完成或已观察的 Sonnet 历史 evidence。三类历史的原 Scenario、Protocol、Approval、Fixture、Baseline、Scorecard（如有）和 evidence 保持真实 provenance，不得改写、回填或重标。未运行的原 v3 Proposal 必须重铸为 v4 并重新绑定 Hash/批准后才能用 Haiku 运行。多个正式 Batch 必须在当前 Program registry 中逐个显式登记；每个 Scenario 只属于一个当前 baseline-proposal 或明确历史 Batch。
 
 完整 Protocol 同样是 evaluator-only。它的 rubric、hard rejects、Expected artifacts 和未来消息不能出现在 Implementer Prompt。Eval 主 Agent按固定投影只发送：临时工作目录、当前轮消息、项目内规则、这一轮允许的 Skill snapshot 路径/Hash、仓库外读取禁区和由 runner 单独管理的安全停止条件。该停止条件只保护运行资源，不属于 Proposal、Skill 质量或 Scorecard。原始 `scenario.md`、`protocol.json` 路径也在读取禁区内；不要靠“请忽略后面的答案”代替隔离。
 
@@ -92,7 +94,7 @@ Rubric 使用离散评分，不使用看似精确但无法复现的任意分数�
 
 每个维度要有一句独立可读的 `criterion`，说明 Reviewer 实际检查什么；只写缩写式 ID 不够。所有维度最低分和总分门固定为 `90`，Reviewer 还必须逐维引用输出、文件或命令证据。
 
-Protocol v3 还必须绑定唯一共享事实源：
+Protocol v3/v4 还必须绑定唯一共享事实源：
 
 ```json
 "userValueRubric": {
@@ -103,7 +105,7 @@ Protocol v3 还必须绑定唯一共享事实源：
 
 共享五维分别检查价值是否先被看见、语言是否匹配用户、信息是否容易扫描且文档可独立使用、决定/未知项/owner/下一步或停点是否明确、以及信噪比。场景业务 rubric 与用户价值 rubric 是两组独立硬门，不能平均；Protocol v1 历史记录不回填此字段。
 
-Protocol v3 必须写一句场景专属 `criticalPath`，但不保存 `speed`、`speedLimits` 或其他墙钟质量字段。`criticalPath` 不是计时 KPI，而是 Reviewer 阅读业务 rubric、hard rejects、逐轮 stop condition、获批命令、产物和完整树证据时使用的流程索引。例如正式实验必须由证据证明最小 Record 先存在、启动命令只执行一次、非关键文档未被放到启动前；这些是可观察的顺序和边界，不是耗时评分。runner 可以设置 watchdog 防止任务无限占用资源，但 watchdog 触发只表示本次运行未完成，不能自动判定 Skill 质量失败。
+Protocol v3/v4 必须写一句场景专属 `criticalPath`，但不保存 `speed`、`speedLimits` 或其他墙钟质量字段。`criticalPath` 不是计时 KPI，而是 Reviewer 阅读业务 rubric、hard rejects、逐轮 stop condition、获批命令、产物和完整树证据时使用的流程索引。例如正式实验必须由证据证明最小 Record 先存在、启动命令只执行一次、非关键文档未被放到启动前；这些是可观察的顺序和边界，不是耗时评分。runner 可以设置 watchdog 防止任务无限占用资源，但 watchdog 触发只表示本次运行未完成，不能自动判定 Skill 质量失败。
 
 每个 `skillExpectations` 项把运行阶段和业务分支分开：
 
@@ -117,7 +119,7 @@ Protocol v3 必须写一句场景专属 `criticalPath`，但不保存 `speed`、
 
 `baselineLoad` 表示对照 Agent 收到修改前副本还是有意不收到目标 Skill；`liveLoad` 固定为 `current-explicit-file`，表示实现后 Agent 收到当前仓库副本；`branch` 表示两阶段业务上是否应进入该流程。显式读取后退出可以是正确行为。`instruction-eval` 只证明给定指令下的行为，不声称平台自动激活；只有平台能观察 Skill catalog 时，才另存 `activation-probe`。
 
-Protocol v3 的 `commands` 是获批命令模板。Baseline/Scorecard 必须按相同数量和顺序逐项保存原模板 `command`、只替换 `<...>` 占位符后的真实 `executedCommand`、整数 `exitCode` 和证据；重复出现的同名占位符解析为同一值。不能用另一条成功命令替代获批命令。Protocol v1 继续读取旧命令记录，不回写新字段。
+Protocol v3/v4 的 `commands` 是获批命令模板。Baseline/Scorecard 必须按相同数量和顺序逐项保存原模板 `command`、只替换 `<...>` 占位符后的真实 `executedCommand`、整数 `exitCode` 和证据；重复出现的同名占位符解析为同一值。不能用另一条成功命令替代获批命令。Protocol v1 继续读取旧命令记录，不回写新字段。
 
 ## Proposal 与用户批准
 
@@ -143,13 +145,13 @@ Eval 主 Agent先把 Scenario、Protocol、场景业务 rubric 和共享用户�
 5. Live 的 Skill copy 匹配 `liveLoad: current-explicit-file` 和 `skillSources` 的当前目录 Hash；
 6. Scenario、Protocol、Fixture 和 Approval Hash 当前。
 
-Loader、PATH、权限、Fixture 语法、依赖、初始测试或 Sonnet 不可用属于环境阻塞，不是 Skill Red。Sonnet 不可用时停止并报告，不得静默改用 Terra、Opus 或其他模型、写入替代模型的 Baseline/Scorecard，或把环境问题包装成质量结论。
+Loader、PATH、权限、Fixture 语法、依赖、初始测试或当前 Protocol 绑定模型不可用属于环境阻塞，不是 Skill Red。v4 的 Haiku 不可用时停止并报告，不得静默改用 Sonnet、Terra、Opus 或其他模型、写入替代模型的 Baseline/Scorecard，或把环境问题包装成质量结论。
 
 ## Agent 隔离
 
-Implementer 与 Reviewer 都必须是全新 Sonnet subagent，实际 dispatch 使用 `model: "sonnet"` 和 `fork_turns: "none"`。Protocol、Baseline 和 Scorecard 分别记录 canonical `model: "claude-sonnet-5"`；两个角色的 Agent ID 必须不同。每次最多启动一个正式 Eval Agent，必须等待其真实最终回复并在 Agent registry 确认为 `completed` 后才能启动下一位。Implementer Prompt 只包含：
+Implementer 与 Reviewer 都必须是全新 Haiku subagent，实际 dispatch 使用 `model: "haiku"` 和 `fork_turns: "none"`。v4 Protocol、Baseline 和 Scorecard 分别记录 canonical `model: "claude-haiku-4-5-20251001"`；两个角色的 Agent ID 必须不同。当前用户授权最多三个正式 Eval Agent 并行；同一 case 必须等待 Implementer 的真实最终回复并确认 `completed` 后，才能启动该 case 的 Reviewer，且不得让同一 Agent 兼任两个角色。多轮 case 的同一 Implementer 必须保留连续会话；若 Agent harness 在停点后结束该任务，Eval main 应通过相同 Agent ID 恢复会话，而不是创建新 Implementer。恢复消息只能包含当前获批 round 的逐字消息、继续遵守首轮边界的指令和该 round 的停止条件，并说明它是获批冻结 Protocol 在隔离评测中的 `eval-main` 合成用户回合，不代表真实用户在当前聊天新增授权；不得把首轮任务描述成永久唯一轮次。并发 case 必须在每次发送前从持久化 case→Agent ID 映射读取目标，并把 case ID 写入恢复消息；只凭并发 tool-result 的返回顺序判断 Agent 归属会使运行无效。历史 v3 Sonnet Agent 记录保持不变。Implementer Prompt 只包含：
 
-- 临时工作目录；
+- 临时工作目录，以及每条 shell 命令必须使用 `env -C <临时工作目录> ...` 或等价显式工作目录参数的要求；Claude Code 的独立 Bash 调用不继承先前 `cd`，只写“先 change into”不足以建立隔离；
 - 当前轮逐字消息；首轮消息取 Scenario 的原始用户请求，后续消息取 Protocol 当前 round 的 `message`；
 - 本轮明确允许读取的 Skill copy 绝对路径与 Hash；
 - 项目内规则、源仓库/其他 Eval 的读取禁区和 runner 安全停止条件。
@@ -173,9 +175,9 @@ Baseline 严格按每个目标 Skill 的 `baselineLoad` 使用 `absent` 状态�
 
 ## Implementation Eval
 
-只有真实 `fail` Baseline 才打开对应 Implementation 和 Live Eval。Live Eval 严格按每个目标 Skill 的 `liveLoad: current-explicit-file` 使用 `skillSources` 指向的当前副本并记录当前目录 Hash，重新创建临时项目和全新 Agent，不复用 Baseline 工作区。
+只有真实 `fail` Baseline 才打开对应 Implementation 和 Live Eval。最小修复及其静态/行为验证完成后，先创建 `live-approval.json` 和单独 Live authorization batch：它绑定 Proposal ID、当前 Scenario/Protocol/Fixture Hash、共享 rubric Hash、当前有效 Red `baseline.json` SHA-256，以及每个目标 Skill 的 `current-explicit-file` snapshot/hash。用户必须明确批准当前 Live authorization Batch ID 与 Hash；Baseline Proposal 的批准不能替代这一步。
 
-Live Eval 失败时保存真实 `result: fail`、证据和定位信息，重开对应 Scenario 或 Implementation Task。Eval Task 不能顺手修改 Skill、rubric 或考试题。合法 fail 可以留在仓库，普通静态测试只验证其合同自洽。
+只有获批且仍当前的 `live-approval.json` 才允许写入 `scorecard.json` 或启动 Live Implementer/Reviewer。Live Eval 严格按每个目标 Skill 的 `liveLoad: current-explicit-file` 使用该授权 snapshot，重新创建临时项目和全新 Agent，不复用 Baseline 工作区。Live Eval 失败时保存真实 `result: fail`、证据和定位信息，重开对应 Scenario 或 Implementation Task；任一 Skill、Baseline 或绑定输入变化都使旧 Live authorization 过期。Eval Task 不能顺手修改 Skill、rubric 或考试题。合法 fail 可以留在仓库，普通静态测试只验证其合同自洽。
 
 ## 完整树证据
 
@@ -204,15 +206,15 @@ AND user_accepted
 AND all_hashes_current
 ```
 
-每次记录 Implementer/Reviewer 的 Agent ID、canonical `claude-sonnet-5` 模型、Proposal/Scenario/Protocol/Fixture/Skill/共享 rubric Hash、命令、退出码、逐轮消息与停点、完整树和脱敏证据。Protocol、Baseline 和 Scorecard 都拒绝 `speed`、`speedLimits`、`timing` 以及 `skill-efficiency`；不得把 runner 资源保护数据重新包装成 Skill 质量分。
+每次记录 Implementer/Reviewer 的 Agent ID、当前 Protocol 绑定的 canonical 模型（v4 为 `claude-haiku-4-5-20251001`）、Proposal/Scenario/Protocol/Fixture/Skill/共享 rubric Hash、命令、退出码、逐轮消息与停点、完整树和脱敏证据。Protocol、Baseline 和 Scorecard 都拒绝 `speed`、`speedLimits`、`timing` 以及 `skill-efficiency`；不得把 runner 资源保护数据重新包装成 Skill 质量分。
 
-Framework E2E v1 历史目录和所有冻结 v2/Terra evidence 均保持只读；新的后继场景使用 v3 Proposal、自己的 Baseline、Live Eval 和用户接受流程，不复用历史结论。
+Framework E2E v1 历史目录、所有冻结 v2/Terra evidence 和已完成 v3/Sonnet evidence 均保持只读；新的后继场景使用 v4/Haiku Proposal、自己的 Baseline、Live Eval 和用户接受流程，不复用历史结论。
 
 ## 每次运行检查表
 
 1. Proposal ID、批准决定与所有输入 Hash 当前。
 2. 环境预检全绿，Fixture Base 已提交。
-3. Implementer/Reviewer 均为全新 Sonnet、`fork_turns: "none"` Agent，实际 dispatch 使用 `model: "sonnet"`，ID 不同且运行证据的 canonical `model: "claude-sonnet-5"` 与 Protocol 一致；本次 Skill snapshot 与当前阶段的 `baselineLoad` 或 `liveLoad` 一致。
+3. Implementer/Reviewer 均为全新 Haiku、`fork_turns: "none"` Agent，实际 dispatch 使用 `model: "haiku"`，ID 不同且运行证据的 canonical `model: "claude-haiku-4-5-20251001"` 与 v4 Protocol 一致；本次 Skill snapshot 与当前阶段的 `baselineLoad` 或 `liveLoad` 一致。
 4. Prompt 是 evaluator-only Scenario/Protocol 的安全投影；当前消息准确，rubric、预期答案和未来回复均未泄漏。
 5. Baseline 或 Live 运行未越界读取。
 6. 完整树、命令、Hash 和 Agent ID 证据已保存并脱敏。

@@ -1,0 +1,9 @@
+{
+  "name": "background-job-scheduler-fixture",
+  "version": "1.8.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  }
+}

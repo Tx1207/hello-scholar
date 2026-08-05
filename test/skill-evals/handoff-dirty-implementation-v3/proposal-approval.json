@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-handoff-dirty-implementation-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "c5a682065bba4529ed5b76f1db82c13f004dae29a6b2b91fc30159e697202153",
+  "protocolSha256": "df03d83e984fb70cf460ced1879f3a65f0f6ab3ce9fbf69240a6c28e9768db36",
+  "fixtureSha256": "dfa3ae794b79fe257ce9f25b6c38bd50e8259ae91232d5c5fb27b1ff40f4592a",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-4-convergence-handoff / 7a82e5208d8471904127187ea069e2dc101270adc1f395e4c9f5b1eb0f1d50a7"
+}

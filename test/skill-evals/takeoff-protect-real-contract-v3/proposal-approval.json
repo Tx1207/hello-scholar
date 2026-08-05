@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-takeoff-protect-real-contract-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "e29644d14e39ee0551f1e5c60c5d9cdf9f3d2ef9dc7d3c211303768caa5634bf",
+  "protocolSha256": "f5e7a0377b6c816ad19cd8a1ca0a5f6fd84e0b8a79415785974b1578892e5065",
+  "fixtureSha256": "d7b3bdda2ee53a8e45e0b418c11f73d53d88447fdc94bc9749dbfd019028bdad",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

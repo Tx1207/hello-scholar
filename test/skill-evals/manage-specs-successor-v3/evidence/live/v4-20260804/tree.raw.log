@@ -1,0 +1,81 @@
+BASE=e22ca1fc3d144d704946d0142538e82f1b0118ca
+
+## committed
+
+## index
+
+## working-tree
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index 73f1e8c..a9ea3c0 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,6 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| session-auth | [SPEC-005](session-auth/SPEC-005-opaque-session-tokens/spec.md) | system-design | accepted | 2 | Missing | Missing | - | Issue random opaque tokens resolved through a revocable server-side store |
++| session-auth | [SPEC-005](session-auth/SPEC-005-opaque-session-tokens/spec.md) | system-design | superseded | 3 | Missing | Missing | - | Issue random opaque tokens resolved through a revocable server-side store |
+ | session-auth | [SPEC-011](session-auth/SPEC-011-session-audit-events/spec.md) | capability | accepted | 1 | Missing | Missing | - | Emit stable security events for session issue verify revoke and expiry outcomes |
++| session-auth | [SPEC-012](session-auth/SPEC-012-signed-stateless-session-tokens/spec.md) | system-design | draft | 1 | Missing | Missing | - | Use signed stateless session tokens with key identification and time claims while preserving legacy-token migration |
+diff --git a/hello-scholar/specs/session-auth/INDEX.md b/hello-scholar/specs/session-auth/INDEX.md
+index dd0d26d..d9a05bd 100644
+--- a/hello-scholar/specs/session-auth/INDEX.md
++++ b/hello-scholar/specs/session-auth/INDEX.md
+@@ -3,5 +3,6 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-005](SPEC-005-opaque-session-tokens/spec.md) | system-design | accepted | 2 | Missing | Missing | - | Issue random opaque tokens resolved through a revocable server-side store | - |
++| [SPEC-005](SPEC-005-opaque-session-tokens/spec.md) | system-design | superseded | 3 | Missing | Missing | - | Issue random opaque tokens resolved through a revocable server-side store | superseded by [SPEC-012](SPEC-012-signed-stateless-session-tokens/spec.md) |
+ | [SPEC-011](SPEC-011-session-audit-events/spec.md) | capability | accepted | 1 | Missing | Missing | - | Emit stable security events for session issue verify revoke and expiry outcomes | - |
++| [SPEC-012](SPEC-012-signed-stateless-session-tokens/spec.md) | system-design | draft | 1 | Missing | Missing | - | Use signed stateless session tokens with key identification and time claims while preserving legacy-token migration | supersedes [SPEC-005](SPEC-005-opaque-session-tokens/spec.md) |
+diff --git a/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md b/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+index 1e17d7a..5b1a140 100644
+--- a/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
++++ b/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+@@ -5,13 +5,13 @@ id: SPEC-005
+ title: Opaque server-side session tokens
+ topic: session-auth
+ type: system-design
+-status: accepted
+-revision: 2
++status: superseded
++revision: 3
+ summary: Issue random opaque tokens resolved through a revocable server-side store
+ created: 2026-05-08
+-updated: 2026-07-10
++updated: 2026-08-04
+ supersedes: []
+-superseded_by: null
++superseded_by: SPEC-012
+ ---
+ # Opaque Server-side Session Tokens
+ 
+@@ -75,3 +75,4 @@ Deploy the previous token-store build while preserving stored sessions.
+ 
+ - Revision 1: opaque issuance and verification.
+ - Revision 2: explicit expiry and immediate deletion semantics.
++- Revision 3: superseded by `SPEC-012` Signed Stateless Session Tokens.
+
+## untracked
+hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md
+
+## status
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/session-auth/INDEX.md
+ M hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+?? hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/
+
+## final-hashes
+29d93a34fbd5d2cbd805a9eb750d23280b382c817ca7f4da70eb06f02cde4f6b  ./AGENTS.md
+f6209979f14131ed52869c25f3e8f05b0211a03ebe574f38193484f9485acc36  ./hello-scholar/architecture.md
+72bf516f201eef4ddc99959912f2867c3ede38eb194ad07d94f823069fea1195  ./hello-scholar/specs/INDEX.md
+906011358a1a9d827b9797a935313ee1548903cb7bcc820f145d1d7f039ac91d  ./hello-scholar/specs/session-auth/INDEX.md
+6ae18fec7a06a02fde2a20aa15e177c65892fb0910d80e8dff50012e1088a777  ./hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+2274c2a4fa4d9e58b1fb1c085a8e64d8a2aee1cedfd8d6cbd6a9d7764c7b7aa0  ./hello-scholar/specs/session-auth/SPEC-011-session-audit-events/spec.md
+3bdecff2cc5007a7b1934f5c787b13050a2ea9741baba79fafc5af44a9736af2  ./hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md
+66e61cf69df3fec5c68f771bab45e0857ecbf05e1eb0d88633ecf74ecb8e991a  ./package.json
+b2e2a7ccacfec0d342466e9a83e72601f8ab9735b0af5a983b01bad52f368334  ./src/token-store.js
+0a2dd1986501af1f2a586e258b4d7834d7b78f9040ce2ca57526bf6531a92933  ./test/token-store.test.js
+
+## runtime-artifacts

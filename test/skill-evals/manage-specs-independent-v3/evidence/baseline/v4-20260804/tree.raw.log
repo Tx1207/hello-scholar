@@ -1,0 +1,37 @@
+# manage-specs-independent-v3 Haiku v4 Baseline full tree evidence
+fixtureBaseCommit: b2744b23b93b87d61c94083a2e61167fab74d9cd
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index bac28ce..688e5a8 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,6 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
++| batch-retrieval | [SPEC-010](batch-retrieval/SPEC-010-batch-document-retrieval/spec.md) | capability | draft | 1 | Missing | Missing | - | Retrieve up to 100 documents by ID in input order with per-item misses and independent rollout control |
+ | observability | [SPEC-009](observability/SPEC-009-request-tracing/spec.md) | capability | accepted | 1 | Missing | Missing | - | Correlate retrieval requests across HTTP and storage calls |
+ | search-ranking | [SPEC-002](search-ranking/SPEC-002-retrieval-ranking/spec.md) | capability | accepted | 2 | Missing | Missing | - | Rank candidate documents returned by text retrieval |
+## untracked files
+hello-scholar/specs/batch-retrieval/INDEX.md
+hello-scholar/specs/batch-retrieval/SPEC-010-batch-document-retrieval/spec.md
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+?? hello-scholar/specs/batch-retrieval/
+## final regular file hashes outside .git
+aefa8d51f81f31188ef500392feffdaaa1b4db8cbc09628301799752ccf0acb5  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/AGENTS.md
+2d737b0135a537df1563a7dc8109d80358da53636b3bebf601c18c128e2d3195  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/architecture.md
+7e84c149a1216585ec7b647d1d685e3325a5cbb567c8267491698a46d464bf1e  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/INDEX.md
+358aeae131597a4f3ef78b6f2252b8a61ac30d5c2a75b9705806a08010472cf9  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/batch-retrieval/INDEX.md
+5d94a358864d97133228cd984065801372b1ed2093015cba8ec88d58f84b5e0a  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/batch-retrieval/SPEC-010-batch-document-retrieval/spec.md
+3ba92d714cef1a2141174066f25d754d0b21ed6b3040fb3bcb45c59460d5e399  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/observability/INDEX.md
+e7f7120332bec6215e1ed58e8544ac907874957ce54cb0921a5fb1f3c550bfef  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/observability/SPEC-009-request-tracing/spec.md
+5c1adab40199101553c9fe9f9e4051e08063275f7879726a69a601d287f0e968  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/search-ranking/INDEX.md
+34ae4b2aae12ef8c483edf198b02623996c77fd9ce964a24eeafac504a3a4791  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/spec.md
+8425b8c2cb283d3b18e75c03053f4d1342ee7ada434ef2ab56a41b3b811a4a67  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/src/retrieval_api.py
+88571ec3dce510791a03e0db5fdfc415f6f7292fe58699869e7fcad588b9595b  /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/tests/test_retrieval_api.py
+## final runtime artifacts outside .git
+
+## diff whitespace check

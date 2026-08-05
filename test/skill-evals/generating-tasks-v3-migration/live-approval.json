@@ -1,0 +1,19 @@
+{
+  "liveApprovalId": "live-generating-tasks-v3-migration-sonnet-v1",
+  "liveAuthorizationBatchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
+  "liveAuthorizationBatchSha256": "142dc3d25dd9c9e95d2e1573a1a7ef823518a99508570ffd6f0cac5d1ff0d712",
+  "proposalId": "proposal-generating-tasks-v3-migration-sonnet",
+  "scenarioSha256": "0a2f24b5e5a77a25aa5749831dd4707b6eaded6c0e4fe857e63f8135d6bec016",
+  "protocolSha256": "1f2fd5fe7bd548fc6d33d16531f4cf892fdabcd4981781b037472eac554337a1",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "decision": "pending",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "0152fefae609b841e7dc73fb1ed9b16d8f84eb3a6b3b99b6e73807b7149e1131",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "f28c3d018d6b8f5b6da981ac84db04774d3ced0eca87f29d8c7f2b0e62a7f5fa"
+    }
+  },
+  "replyEvidence": null
+}

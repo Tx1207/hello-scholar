@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-tdd-approved-task-trigger-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "3ced7804e87679825fb04dadfe3231e948b06012f0a4d1aaaa4094644bd47d82",
+  "protocolSha256": "19e7e4cdd32cfa106d25fcc4f721636363df579ae3befad460443bf2df5ca9af",
+  "fixtureSha256": "f83528cdab2f7da625630675acd56696a6268698ea8e3b929c70a526ff8b9f55",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

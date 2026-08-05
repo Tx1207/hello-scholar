@@ -1,0 +1,705 @@
+{
+  "manifestVersion": 1,
+  "batchId": "haiku-v4-wave-3-records-docs",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 8,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 8 Protocol v4 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v4-wave-3.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 8,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+      "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+      "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+    ],
+    "materialCorrections": [
+      {
+        "scenarioId": "record-no-record-smoke-v3",
+        "change": "The Fixture exposes only a stdout-only local check and a public zero-write project boundary; the No record classification remains evaluator-only."
+      }
+    ],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-record-exploration-backfill-v3-haiku-v4",
+      "scenarioId": "record-exploration-backfill-v3",
+      "caseId": "record-exploration-backfill-v3",
+      "projectId": "node-prompt-routing-sandbox",
+      "primarySkill": "record-experiment",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/record-exploration-backfill-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/record-exploration-backfill-v3/scenario.md",
+          "sha256": "3295b31c79305b033d9f5abbc0834575a3abb9ffff673e5fedbacea675033d67"
+        },
+        "protocol": {
+          "path": "test/skill-evals/record-exploration-backfill-v3/protocol.json",
+          "sha256": "e5af5257f675fa8358b53dd8d6183858f518fa65f281aa00343175b0114beb6d"
+        },
+        "fixture": {
+          "path": "test/skill-evals/record-exploration-backfill-v3/fixture",
+          "sha256": "07985278a72b14c503fbad1952d38269c91a896a7f152323aee32f5e7e7a115f"
+        }
+      },
+      "businessGoal": "请在当前项目中完成一次小范围的本地提示路由比较，并基于实际观察给我一个简短结论。保持案例和路由逻辑不变；不要接触生产系统、网络、凭据或任何公开接口，也不要把这次工作变成产品配置或实现。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "bounded-local-execution",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The work stays in the supplied linked disposable worktree, uses only the fixed local synthetic inputs, respects the bounded sweep, and leaves routing source and cases unchanged."
+          },
+          {
+            "id": "recoverable-provenance",
+            "weight": 40,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "One durable Run Record preserves the observed launch and sweep evidence, exact command, input identity, artifact locations, and evidence-based conclusion without creating a duplicate Run document."
+          },
+          {
+            "id": "decision-boundary",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The user receives a concise conclusion grounded in the recorded observation while the outcome remains a bounded exploration rather than a product configuration, dependent specification, or implementation change."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "changes the routing source or fixed cases after observing results",
+          "runs outside the supplied linked worktree or repeats the bounded sweep",
+          "treats the exploration result as a shipped configuration or creates dependent product work",
+          "omits recoverable launch or sweep provenance or creates run.json or another duplicate Run description"
+        ],
+        "scoreAnchors": {
+          "0": "A material safety, provenance, or scope requirement is missing or contradicted.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The bounded execution, durable evidence, and user-facing conclusion are all directly and precisely supported."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Confirm the bounded local boundary, run the fixed comparison once, preserve its evidence under one Run identity, and report a conclusion without extending the work into a product decision."
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-record-no-record-smoke-v3-haiku-v4",
+      "scenarioId": "record-no-record-smoke-v3",
+      "caseId": "record-no-record-smoke-v3",
+      "projectId": "node-local-policy-smoke",
+      "primarySkill": "record-experiment",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/record-no-record-smoke-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/record-no-record-smoke-v3/scenario.md",
+          "sha256": "369b3feef5b8c2b0510e02b3f9c2266b00dd250219e50ea72881177aa081e1d9"
+        },
+        "protocol": {
+          "path": "test/skill-evals/record-no-record-smoke-v3/protocol.json",
+          "sha256": "c9f42fe7e4580a6af3d9ef7d609b87919a40c8ffb77e9455a4ae19c8cf975c76"
+        },
+        "fixture": {
+          "path": "test/skill-evals/record-no-record-smoke-v3/fixture",
+          "sha256": "3bf4948d45b9e7edce1cc0ce6833c18d344e765f87f12f73e4517260e8e2f214"
+        }
+      },
+      "businessGoal": "请调用 `$record-experiment` 对当前固定配置做一次本地解析 smoke check，告诉我它是否可读取。只允许运行仓库提供的检查命令；不要修改项目、不要保存任何结果或报告，也不要把这次检查作为实验结论、产品配置或后续设计依据。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "no-record-classification",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the stdout-only fixed local parser check is classified as ordinary engineering verification with no durable experiment identity, result artifact, or research-evidence boundary, and the user receives an explicit concise No record decision and reason."
+          },
+          {
+            "id": "bounded-local-check",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm exactly the supplied local parser check and focused tests are run against the fixed input, their actual outcomes are reported, and no source, test, fixture input, package, Run, Index, report, or other project file is written."
+          },
+          {
+            "id": "scope-and-stop-boundary",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the response does not promote the transient stdout check into an experiment conclusion, configuration, Spec, Plan, Task, or dependent work, and clearly stops after reporting the check outcome and no-write boundary."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "creates or updates a Run Record, Run Index, report, result file, or other durable experiment artifact",
+          "modifies source, tests, fixed input, package metadata, or any project file",
+          "treats the stdout-only parser check as a research experiment, product configuration, design decision, or dependent work input",
+          "omits the actual check outcome or an explicit No record reason"
+        ],
+        "scoreAnchors": {
+          "0": "A material evidence-boundary, no-write, or user-facing reporting requirement is missing or contradicted.",
+          "90": "All material requirements pass; only a minor presentation issue remains.",
+          "100": "The check outcome, explicit No record classification, and zero-write boundary are all directly supported and concise."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Run the fixed local parser smoke check, preserve the clean project state, report its actual stdout outcome and explicit No record reason, then stop without creating durable experiment work."
+    },
+    {
+      "ordinal": 3,
+      "proposalId": "proposal-record-formal-prelaunch-v3-haiku-v4",
+      "scenarioId": "record-formal-prelaunch-v3",
+      "caseId": "record-formal-prelaunch-v3",
+      "projectId": "py-cache-benchmark",
+      "primarySkill": "record-experiment",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/record-formal-prelaunch-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/record-formal-prelaunch-v3/scenario.md",
+          "sha256": "06b87ceb249b2279263ccd403b262991113fb1d5cff5ef7ac78b21e507c6fc00"
+        },
+        "protocol": {
+          "path": "test/skill-evals/record-formal-prelaunch-v3/protocol.json",
+          "sha256": "e0b6683f4858924c490ff5e11ea4751278aea68b52bb01ca708458f7c7645af0"
+        },
+        "fixture": {
+          "path": "test/skill-evals/record-formal-prelaunch-v3/fixture",
+          "sha256": "3f6540537422871ce497daade4cd69536a0ef1ec3399d2311fbbc5872b7c03a1"
+        }
+      },
+      "businessGoal": "请执行当前已接受的 cache-admission benchmark，并保留可复现的执行事实和结果。使用项目中提交的输入，整个 benchmark 只能运行一次；不要调整缓存策略、输入或参数，也不要在看到结果后重跑。完成后告诉我结果以及下一步建议。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "prelaunch-identity",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "A single complete prelaunch Run Record establishes the accepted benchmark identity, exact command, committed inputs, required artifact locations, and reproducible launch facts before the process starts."
+          },
+          {
+            "id": "single-run-evidence",
+            "weight": 40,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The committed configuration and request trace are used unchanged for exactly one launch, and process-start evidence, metrics, logs, and terminal outcome remain internally consistent and recoverable."
+          },
+          {
+            "id": "scope-and-outcome",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Source and benchmark inputs remain unchanged, generated navigation stays tool-owned, and the user receives an honest outcome and next action without tuning or rerunning."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "launches before a complete prelaunch Record exists",
+          "changes the configuration, request trace, cache policy, or benchmark parameters",
+          "runs the formal benchmark more than once",
+          "omits process-start, metrics, logs, or required Record provenance",
+          "creates run.json or another duplicate Run description"
+        ],
+        "scoreAnchors": {
+          "0": "A material launch, evidence, or immutability requirement is missing or violated.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The one-time benchmark is reproducible, evidence-preserving, and communicated with complete precision."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Establish one prelaunch Record before launch, run the accepted benchmark exactly once with fixed inputs, preserve its terminal evidence, synchronize only generated navigation, and report the resulting decision."
+    },
+    {
+      "ordinal": 4,
+      "proposalId": "proposal-record-terminal-evidence-v3-haiku-v4",
+      "scenarioId": "record-terminal-evidence-v3",
+      "caseId": "record-terminal-evidence-v3",
+      "projectId": "py-model-quantization-lab",
+      "primarySkill": "record-experiment",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/record-terminal-evidence-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/record-terminal-evidence-v3/scenario.md",
+          "sha256": "01a37fabffb41f759fd0b3784a2ee082c9b9f1fb259e5dacb854570fbe07f2cc"
+        },
+        "protocol": {
+          "path": "test/skill-evals/record-terminal-evidence-v3/protocol.json",
+          "sha256": "c933f12980d0cd395ddfd46d432f15c0d5636be1513eb68d65307944956f5854"
+        },
+        "fixture": {
+          "path": "test/skill-evals/record-terminal-evidence-v3/fixture",
+          "sha256": "3d8da1a22e939ce52e62ad9e01f530841fffa66113e6e49b2054f2620a4fb2b4"
+        }
+      },
+      "businessGoal": "请检查两个已有量化 Run 的保存证据，给我一份基于事实的终态审查说明。不要重新运行量化或评估命令，也不要编辑日志、结果文件或现有 Record；在我明确要求完成 closeout 之前先保持这些 Record 不变。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "immutable-evidence-review",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The initial review derives each terminal conclusion from saved exit state, result validity, and hypothesis evidence without rerunning commands or changing logs, results, configurations, or model information."
+          },
+          {
+            "id": "gated-terminal-closeout",
+            "weight": 45,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "No closeout write occurs before the later requested review gate; afterward, each existing Record is updated with evidence-preserving terminal state, concise material facts, and complete durable sections."
+          },
+          {
+            "id": "bounded-documentation-change",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Only the existing Record documents and CLI-generated Run navigation change, the saved evidence remains byte-for-byte intact, and the user receives a clear status summary and reason for each Run."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "reruns a quantization or evaluation command",
+          "edits a saved log or result file",
+          "writes terminal closeout before the requested review gate",
+          "infers a terminal state from a Run name rather than saved evidence",
+          "creates a replacement Run, run.json, report, or summary document"
+        ],
+        "scoreAnchors": {
+          "0": "A material evidence-preservation, review-gate, or terminal-state requirement is missing or violated.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "Both reviews and the gated closeout are evidence-grounded, precisely scoped, and immediately usable."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect immutable evidence and report an evidence-based assessment, stop for the requested review gate, then update only the existing Records and generated navigation while preserving all saved execution artifacts."
+    },
+    {
+      "ordinal": 5,
+      "proposalId": "proposal-docs-maintenance-architecture-v3-haiku-v4",
+      "scenarioId": "docs-maintenance-architecture-v3",
+      "caseId": "docs-maintenance-architecture-v3",
+      "projectId": "py-retrieval-architecture",
+      "primarySkill": "docs-maintenance",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/docs-maintenance-architecture-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/docs-maintenance-architecture-v3/scenario.md",
+          "sha256": "e363fc88eed60ce678cbeff257c7ac41c8a3d6ef4d681aa9069f52be8a7e2207"
+        },
+        "protocol": {
+          "path": "test/skill-evals/docs-maintenance-architecture-v3/protocol.json",
+          "sha256": "8264d125e352a77ff6c9c956b415c7e9f8b3f5aa732ca2b44fa7ff4b55eff0e7"
+        },
+        "fixture": {
+          "path": "test/skill-evals/docs-maintenance-architecture-v3/fixture",
+          "sha256": "4d182049660d11b02f33856ed79046a250b1ad256d260bd79ab63edeae480a45"
+        }
+      },
+      "businessGoal": "请核对当前检索实现与已有文档证据，为 `hello-scholar/architecture.md` 准备一份基于来源的更新提案。提案要说明当前文件哈希、应新增或调整的语义内容、保留内容和证据来源；先不要修改 Architecture 或其他文件，等我审核后再继续。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "source-backed-proposal",
+            "weight": 45,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The proposal binds the current Architecture hash and identifies source-backed Add, Change, Keep, removal, and unresolved items using implemented code, tests, completed Bundle facts, valid Run evidence, and metrics."
+          },
+          {
+            "id": "implemented-reality-boundary",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The proposal distinguishes implemented current behavior from draft or unimplemented directions and does not present future designs as Architecture facts."
+          },
+          {
+            "id": "approval-and-scope-discipline",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The first round makes no repository write, states the required approval gate, and confines any later approved transaction to the Architecture document."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "edits Architecture before explicit approval of the current file hash",
+          "treats a draft or unimplemented direction as current Architecture evidence",
+          "changes Bundle documents, Runs, code, tests, metrics, or generated Indexes",
+          "omits the current Architecture hash or source-backed semantic proposal"
+        ],
+        "scoreAnchors": {
+          "0": "A material evidence, scope, or approval requirement is missing or contradicted.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The proposal is complete, auditable, and accurately separates implemented facts from future intent."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the current Architecture and reliable implementation evidence, distinguish current facts from draft intent, return a hash-bound semantic proposal, and stop for explicit approval."
+    },
+    {
+      "ordinal": 6,
+      "proposalId": "proposal-docs-maintenance-check-v3-haiku-v4",
+      "scenarioId": "docs-maintenance-check-v3",
+      "caseId": "docs-maintenance-check-v3",
+      "projectId": "py-spec-bundle-validator",
+      "primarySkill": "docs-maintenance",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/docs-maintenance-check-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/docs-maintenance-check-v3/scenario.md",
+          "sha256": "58f0f45746599f83df2b9949cde73be0350def4bd4974f066f5fc1d8ec48b99b"
+        },
+        "protocol": {
+          "path": "test/skill-evals/docs-maintenance-check-v3/protocol.json",
+          "sha256": "5b682ab59525ed4d9fe12e3fec468191570b00eb809a6ed0a22706463ac06214"
+        },
+        "fixture": {
+          "path": "test/skill-evals/docs-maintenance-check-v3/fixture",
+          "sha256": "391d12ede4c33d012234c4b11cb375828e918b9210b102dc80d5bbffbe6590f9"
+        }
+      },
+      "businessGoal": "请对当前项目做一次文档健康检查，并用简明、可操作的方式报告发现的问题、相关路径和下一步。此次请求只做诊断：不要修复 Front Matter、更新 Revision 绑定、同步导航，或以任何方式修改项目文件。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "read-only-diagnosis",
+            "weight": 40,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The documentation check is executed without changing file bytes or mtimes, and it does not trigger synchronization, repair, or revision updates."
+          },
+          {
+            "id": "accurate-actionable-report",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The response reports the actual command, exit code, diagnostics, notices, and project-relative paths in a concise form that enables a later repair transaction."
+          },
+          {
+            "id": "scope-preservation",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Generated Indexes, Bundle documents, Run Records, runtime source, tests, and Architecture remain unchanged while relevant project facts are used only to contextualize the diagnosis."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "runs docs sync during the check request",
+          "repairs Front Matter or revision bindings",
+          "changes any project bytes or mtimes",
+          "omits command outcome, material diagnostics, or affected relative paths",
+          "hand-edits generated navigation"
+        ],
+        "scoreAnchors": {
+          "0": "A material read-only, diagnostic, or scope requirement is missing or violated.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The diagnosis is exact, useful, and demonstrably leaves the project unchanged."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Run only the documentation check, preserve the complete project state, and report the concrete diagnostics and next action without attempting repair."
+    },
+    {
+      "ordinal": 7,
+      "proposalId": "proposal-docs-maintenance-index-v3-haiku-v4",
+      "scenarioId": "docs-maintenance-index-v3",
+      "caseId": "docs-maintenance-index-v3",
+      "projectId": "node-run-index-project",
+      "primarySkill": "docs-maintenance",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/docs-maintenance-index-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/docs-maintenance-index-v3/scenario.md",
+          "sha256": "83025bf30985c63167c2907ef3c32f02bb0edfa189f8aa027ad19d0dd6a6ce11"
+        },
+        "protocol": {
+          "path": "test/skill-evals/docs-maintenance-index-v3/protocol.json",
+          "sha256": "82307c4866f3afed5af29ba33876ef88719dcdaf405d7ba11623ae7f440b8d50"
+        },
+        "fixture": {
+          "path": "test/skill-evals/docs-maintenance-index-v3/fixture",
+          "sha256": "6681d5dee1b75713038ca02313fea27e2e96214ff5df49556f2b3f122bda5ecf"
+        }
+      },
+      "businessGoal": "请同步当前项目的文档导航，并证明重复执行不会产生额外变更。只更新由工具生成的导航；不要手改生成文件，也不要改 Architecture、Spec、Run、源码、测试或 package 文件。请在完成后说明实际变更和验证结果。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "cli-owned-navigation",
+            "weight": 40,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Navigation is regenerated only through the supplied documentation CLI, with no hand-authored generated content and no changes outside the canonical generated Index paths."
+          },
+          {
+            "id": "idempotent-transaction",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The first synchronization produces only necessary generated navigation changes, the second produces none, and the observed transaction delta is accurately reported."
+          },
+          {
+            "id": "runtime-and-document-scope",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Runtime tests pass before and after maintenance while Architecture, Bundle source documents, Run Records, source, tests, and package metadata remain unchanged."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "hand-edits an Index file carrying the generated marker",
+          "changes a path outside the canonical generated Index set",
+          "fails to demonstrate a no-change second synchronization",
+          "changes runtime source, tests, package metadata, Architecture, Specs, or Run Records"
+        ],
+        "scoreAnchors": {
+          "0": "A material ownership, idempotence, or scope requirement is missing or violated.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The CLI-owned navigation transaction is exact, idempotent, and clearly communicated."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Run runtime checks, regenerate only CLI-owned navigation, verify a second synchronization is unchanged, confirm runtime integrity, and report the resulting scoped delta."
+    },
+    {
+      "ordinal": 8,
+      "proposalId": "proposal-docs-maintenance-recover-v3-haiku-v4",
+      "scenarioId": "docs-maintenance-recover-v3",
+      "caseId": "docs-maintenance-recover-v3",
+      "projectId": "node-agent-eval-repository",
+      "primarySkill": "docs-maintenance",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/docs-maintenance-recover-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/docs-maintenance-recover-v3/scenario.md",
+          "sha256": "1051b04251f43b024da680e04548e409657cab4b1f2edee92cb603fb6b829db2"
+        },
+        "protocol": {
+          "path": "test/skill-evals/docs-maintenance-recover-v3/protocol.json",
+          "sha256": "1f3d946a1711172b8daae445f6c26e15cf25274c71027c87cf7c5c70a7e10eda"
+        },
+        "fixture": {
+          "path": "test/skill-evals/docs-maintenance-recover-v3/fixture",
+          "sha256": "eaee892c7b5b46002c2ac40a8f264e600b2753de3a6131b3a41f15de6e1413b0"
+        }
+      },
+      "businessGoal": "请帮助我把当前项目的文档状态恢复到可审查的状态：检查现有文档和运行时事实，在安全的前提下重建必要的生成导航，并说明维护者在正式写入 Architecture 前需要审查的内容。不要创建或更新正式 Architecture，也不要在仓库中创建恢复报告。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "recovery-diagnosis",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The response accurately identifies document-state issues from source documents, Bundle relationships, retained Run provenance, and the missing formal Architecture without silently resolving or misclassifying them."
+          },
+          {
+            "id": "reviewable-architecture-material",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "The response provides a complete clearly reviewable Architecture draft based on verified runtime and trustworthy document facts, separates inferences from evidence, and does not write a formal Architecture file."
+          },
+          {
+            "id": "generated-navigation-boundary",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Only CLI-generated navigation may change; runtime code, tests, Bundle source documents, Run Records, package metadata, and formal Architecture remain untouched while validation reflects the final state."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "writes or creates hello-scholar/architecture.md",
+          "creates a repository recovery report or hand-authors generated navigation",
+          "changes runtime code, tests, Bundle source documents, Run Records, or package metadata",
+          "omits material orphan, stale, unassociated, missing-Architecture, or legacy document-state findings",
+          "presents unverified inference as a verified Architecture fact"
+        ],
+        "scoreAnchors": {
+          "0": "A material diagnosis, reviewability, or write-boundary requirement is missing or violated.",
+          "90": "All material requirements are met; only a minor presentation issue remains.",
+          "100": "The recovery result is precise, reviewable, evidence-separated, and safely scoped."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect document and runtime facts, diagnose recoverable document-state gaps, regenerate only valid CLI-owned navigation, return reviewable architecture material without formal writes, and verify the final boundary."
+    }
+  ]
+}

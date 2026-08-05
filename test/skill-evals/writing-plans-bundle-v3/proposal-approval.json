@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-writing-plans-bundle-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "bf56bce58c5e905e0abbda0ac05d17188c655fbdf3c2ac0e696712aaa5d706a9",
+  "protocolSha256": "34854e45a76fd8472cd361dfc08e67175428f68bbb95da718def1a467d3b12ad",
+  "fixtureSha256": "41215692930d1d9619c9b633cc4ad937b985961d6e3c1d3c416ed40cfd1560c2",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-2-plan-tasks / 095127bc045576f905a778344b15f06a51629552dc1e9884b42315ff29c195ba"
+}

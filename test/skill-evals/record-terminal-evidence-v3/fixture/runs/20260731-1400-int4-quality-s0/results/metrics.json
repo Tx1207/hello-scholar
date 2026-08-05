@@ -1,0 +1,11 @@
+{
+  "accuracy_drop": 0.041,
+  "baseline_accuracy": 0.842,
+  "candidate_accuracy": 0.801,
+  "completed_at": "2026-07-31T14:00:06Z",
+  "exit_code": 0,
+  "hypothesis_supported": false,
+  "maximum_accuracy_drop": 0.02,
+  "size_reduction_ratio": 0.742,
+  "valid_result": true
+}
