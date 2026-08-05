@@ -46,10 +46,10 @@ class NoSystematicDebuggingSkillTests(unittest.TestCase):
     def test_agents_keeps_root_cause_debugging_contract(self) -> None:
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
         for phrase in (
-            "Read the full error, stack trace, logs, and relevant inputs.",
-            "Reproduce the problem when possible before changing anything",
-            "Find out why the unexpected state exists",
-            "then verify the fix",
+            "Read the complete error, stack trace, logs, relevant inputs, and current runtime environment",
+            "When reproduction is possible, obtain a stable failure signal before changing code.",
+            "Find the source of the abnormal state",
+            "then validate the repaired behavior.",
         ):
             self.assertIn(phrase, agents)
 

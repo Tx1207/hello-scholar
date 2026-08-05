@@ -1,66 +1,57 @@
 # hello-scholar Guide
 
-Make AI write code you will not rewrite!!!
+Write code that will not need to be rewritten.
 
 ## 1. Read Before You Write
 
-**Read local facts first, then generate changes.**
+**Read the relevant context fully and ground implementation choices in project facts.**
 
-- Read the files you are about to modify; read, do not skim.
-- Follow existing patterns, and check imports, configuration, and callers to understand what the project actually depends on.
-- Do not reach for `axios` where the project consistently uses `fetch`; explain why when you depart from existing practice.
-- When you cannot find a pattern, ask instead of guessing.
+- Before making changes, read each file that will be modified in full and use its complete context to determine the change boundary.
+- Start from the current implementation: inspect relevant imports, configuration, callers, and tests to establish actual dependencies, established patterns, and behavioral constraints.
+- Reuse confirmed project choices. When changing an existing pattern, library, or interface, explain the reason and impact with local facts.
+- When available evidence cannot determine the implementation, identify the unresolved facts and ask the user for a decision or more information.
 
 ## 2. Think Before Coding
 
-**Do not assume. Do not hide confusion. Surface tradeoffs.**
+**Turn assumptions, tradeoffs, and open questions that affect implementation into explicit decisions.**
 
 Before implementing:
-- State concrete assumptions when they affect behavior, files, records, or risk.
-- If multiple interpretations materially affect behavior, present the ambiguity. If not, choose a reasonable assumption and proceed.
-- If a simpler approach solves the request, use it and say why.
-- If missing information would make a change risky or irreversible, ask before editing. Otherwise document the assumption and keep moving.
+
+- State an assumption and its impact when it affects behavior, files, records, or risk.
+- When different interpretations would materially change behavior, describe the ambiguity and available decisions. When the impact is small, state the reasonable interpretation you adopt and proceed.
+- Among approaches that meet the current request, choose the simpler one and explain why it is sufficient.
+- Ask for a decision before editing when missing information makes a change high-risk or irreversible. For other unresolved facts, record the adopted assumption and how it will be verified.
 
 ## 3. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
+**Bound work by current facts and confirmed requirements, and deliver the smallest implementation that can be verified and evolved.**
 
-- Do not add features beyond the request.
-- Do not introduce abstractions for one-off code.
-- Do not add config knobs, plugins, or extension points unless the request needs them.
-- Do not write defensive branches for impossible states unless existing code already requires that style.
-- Do not keep old names, old paths, aliases, shims, or dual-track flows unless a named external contract requires them.
-- When the user explicitly asks for a breaking or cross-version upgrade, prefer one clean fact source and remove parallel writes.
-- If a change grows large, pause and check whether the design can be split or simplified.
-
-Ask yourself: "Would a senior maintainer say this is overcomplicated?" If yes, simplify.
+- Every new behavior, abstraction, configuration option, extension point, or defensive branch must trace to a current requirement, known runtime condition, or established project pattern.
+- Begin with the smallest implementation that can be verified end to end. Expand it only when the current implementation works and the additional capability is truly needed.
+- Retain old names, paths, aliases, shims, or dual-track flows only when a named external contract requires compatibility. For breaking or cross-version upgrades, use one clean source of truth and eliminate parallel writes.
+- When the change scope grows, reconsider whether it can be split into independent, verifiable deliveries. When scope or facts remain unclear, return to design to resolve them.
+- Choose a structure that can sustain the current need over time. Design only for confirmed current requirements; when a new need becomes concrete, extend through an independent, verifiable change.
 
 ## 4. Surgical Changes
 
-**Touch only what you must. Clean up only your own mess.**
+**Limit every modification to the smallest scope needed to achieve the current goal.**
 
-When editing existing code:
-- Match the surrounding style.
-- Do not refactor adjacent code unless it is necessary for the requested change.
-- Do not reformat unrelated files.
-- Do not delete unrelated dead code; mention it instead.
-- Preserve user or previous-agent changes unless explicitly asked to revert them.
-- Update internal callers directly when there is no public API, persisted data, documented integration, deployment, compliance, or explicit user promise forcing compatibility.
-
-When your changes create orphans:
-- Remove imports, variables, tests, docs, or CLI help that your change made stale.
-- Do not remove pre-existing unrelated artifacts.
-
-The test: every changed line should trace directly to the user's request.
+- Every code, configuration, test, or documentation change must trace directly to the current request or necessary follow-up created by this change.
+- Reuse valid neighboring patterns. Adjust adjacent implementation, module boundaries, or formatting only when the current goal requires it.
+- Preserve existing user and previous-agent changes. Remove imports, variables, callers, tests, documentation, or CLI help made stale by this change in the same change.
+- First establish whether a change affects only this repository. When every caller is in the repository and can be updated in this change, replace the implementation directly and remove the old interface, path, and compatibility layer.
+- Compatibility work is required only when existing code or data is used outside the repository. Examples include public APIs, persisted data formats, documented third-party integrations, deployment or compliance requirements, and behavior explicitly promised to users. Confirm the external impact before choosing a migration or compatibility strategy.
+- When adding or adjusting module boundaries, give each component a clear responsibility. Keep unrelated domain rules, I/O, state management, persistence, and orchestration out of the same component.
 
 ## 5. Verification
 
-**Do not treat "looks like it works" as done.**
+**Use fresh, relevant evidence that covers the current conclusion.**
 
-- When fixing a bug, prefer writing the failing test first, watch it fail, then fix it; that proves you fixed the root cause of the bug rather than the symptom.
-- Test behavior that can actually break, not meaningless implementation details.
-- If the user explicitly asks not to write tests for now, use static checks, dry runs, read-back review, or focused diff review instead, and state the risks not covered.
-- If something is hard to test, treat that as design information and a risk signal, not permission to skip verification.
+- Tests and checks must cover behavior, boundaries, and regression risks that can actually fail, rather than meaningless implementation details.
+- When fixing a bug, first construct a failing test or observable signal that reproduces it when possible, then validate the repaired behavior.
+- When the user explicitly does not need tests yet, use static checks, dry runs, read-back verification, or focused diff review appropriate to the risk, and state the risks those methods do not cover.
+- Behavior that is difficult to verify is a design and risk signal. Add an observable signal, narrow the change scope, or explicitly state the remaining uncovered risk.
+- Before claiming “complete,” “fixed,” or “passed,” run and read verification that directly proves that conclusion. Old logs, cached results, or another person's conclusion do not replace evidence from the current worktree.
 
 ## 6. Goal-Driven Execution
 
@@ -84,83 +75,42 @@ Strong success criteria let you loop independently. Weak success criteria requir
 
 ## 7. Debugging
 
-**When something breaks, investigate; do not guess.**
+**Use reproducible facts to locate the cause of an abnormal state and repair its root cause.**
 
-- Read the full error, stack trace, logs, and relevant inputs.
-- Reproduce the problem when possible before changing anything, and change one thing at a time.
-- Do not paper over unexpected states with `null` checks, retries, swallowed exceptions, or default values.
-- Find out why the unexpected state exists, or the bug just moves somewhere quieter.
+- Read the complete error, stack trace, logs, relevant inputs, and current runtime environment to establish the actual conditions when the abnormal state occurs.
+- When reproduction is possible, obtain a stable failure signal before changing code. Each iteration should validate one explicit hypothesis so multiple changes do not obscure causality.
+- Find the source of the abnormal state, then make repaired behavior, error handling, and the failure semantics callers rely on consistent.
+- Adding a `null` check, retry, swallowed exception, or default value alone does not repair the root cause. Include such measures only when they serve a confirmed boundary or recovery strategy.
 
 ## 8. Dependencies
 
-**Every dependency is permanent code you do not control.**
+**Each dependency is an external behavior and risk boundary that requires ongoing maintenance.**
 
-- Before adding a dependency, ask whether the project, existing tools, or standard library can already do it. For example: prefer standard capabilities like `crypto.randomUUID()` over adding a `uuid` package for a narrow need.
-- When you do add a dependency, say why, so the choice is visible rather than smuggled into the manifest.
-- When a dependency change affects the manifest, lockfile, docs, or deployment configuration, update them together and state the impact.
+- Before adding a dependency or implementing a common capability yourself, inspect existing project code, dependencies, the standard library, and mature well-maintained libraries. Prefer an option that reduces overall complexity or improves reliability.
+- Verify existing capability through project callers, official documentation, type definitions, and current version constraints. Add a dependency or implement the capability only when evidence shows the existing options cannot meet the need.
+- When adding a dependency, explain the concrete need it solves, why existing options were not chosen, and its maintenance or runtime impact.
+- When a dependency change affects the manifest, lockfile, documentation, or deployment configuration, update them in the same change and state the impact.
 
-## 9. Function Contract Comments
+## 9. Code Review Comments
 
-**A function should state its contract where a maintainer reads its body.**
+**Comments give reviewers the semantic basis for an implementation: its constraints, boundaries, failure conditions, and design rationale.**
 
-- Every named function or method added or behaviorally modified in production code or a reusable script/helper must have a concise contract comment immediately inside its body.
-- State `Purpose`, `Input`, and `Output`. Add `Errors` or `Side effects` when the function can throw, mutate external state, write files, spawn work, or otherwise affects more than its return value.
-- In Python, use the first-statement docstring. In JavaScript/TypeScript, use the first body comment. Keep the contract concrete and update it in the same change when behavior changes.
-- Immutable Eval Fixtures and saved Baseline/Live evidence describe external or historical projects; do not rewrite them only to satisfy repository style. Anonymous callbacks are exempt unless they contain reusable behavior.
+- Use comments to supply semantic constraints, business boundaries, failure conditions, and non-obvious design rationale that function names, signatures, types, and local control flow cannot express.
+- When a function's result, key invariant, failure semantics, or external side effect is not obvious, add a short explanation at its declaration. Keep simple pure calculation functions concise; they do not require comments.
+- When the reason for a critical decision is not obvious, explain immediately before it which constraint it protects, which error it prevents, or why this implementation was chosen. Organize comments around invariants, boundaries, and design rationale, rather than `Purpose`, `Input`, or `Output` templates or narrative execution steps such as “first,” “then,” and “finally.”
+- When function behavior, constraints, failure semantics, or critical correctness conditions change, update the related comments. Treat disagreement among comments, code, and tests as a defect.
 
-Examples:
+## 10. Communication
 
-```python
-def parse_record(path):
-    """Purpose: parse one Record; Input: Markdown path; Output: validated metadata; Errors: malformed input."""
-```
+**Report completed work, evidence, scope of impact, and facts that still need confirmation.**
 
-```javascript
-function parseRecord(path) {
-  // Purpose: parse one Record; Input: Markdown path; Output: validated metadata; Errors: malformed input.
-}
-```
-
-## 10. Sonnet Eval Subagent Recovery
-
-**A broken handoff is invalid evidence, not a reason to weaken the Eval contract.**
-
-- Create Eval Implementers and Reviewers with a fresh Agent ID, dispatch selector `model: sonnet`, and `fork_turns: none`; the two roles must use different IDs. Persist only canonical `model: claude-sonnet-5` in Protocol, Baseline, Scorecard, manifest, review, and run evidence.
-- Send the task directly through the collaboration tool as a short plaintext message. For a completed run's Reviewer, prefer one absolute `reviewer-task.md` path and no copied rubric, answer, or transcript in the handoff message.
-- Never copy, forward, decode, or treat a `gAAAA...` payload as an Agent task. If an Agent only receives such a payload or cannot parse its task, discard that attempt and do not use its interaction, output, or Reviewer conclusion as Eval evidence.
-- Verify delivery from the Agent's actual response and saved run evidence, not from an encrypted or masked tool-trace display.
-- Keep no more than one active formal Eval subagent. Do not use `codex exec`, external runners, API fallbacks, `codex doctor`, or a main-Agent self-review to replace the required independent Sonnet run.
-- If Sonnet is unavailable, stop and report an environment block. Do not fall back to Terra, Opus, another model, or a selector string in persisted evidence.
-- For an Implementer, keep the plaintext projection limited to its isolated Fixture directory, current user message, project `AGENTS.md`, authorized Skill snapshot path and hash when applicable, absolute CLI entry, read boundary, and safety stop. Do not reveal Scenario, Protocol, rubric, hard rejects, expected answer, or future reply.
-- Before starting an Eval subagent, inspect the live Agent registry and run at most one at a time for this project. Treat `completed` as closed; do not start the next role until the prior Agent is completed, and retain distinct fresh IDs for Implementer and Reviewer.
-- Assign work only through the direct collaboration `spawn_agent` call. A shell command, local `exec`, masked trace, or prose statement is not task delivery and cannot be evidence.
-- If one direct dispatch fails or does not return a new Agent handle, make one read-only registry check, preserve prepared evidence, and report the exact tool error. Do not issue repeated no-op, local `exec`, or fake dispatch retries in the same turn; do not blame quota without current registry evidence.
-- Dispatch from the current conversation through the direct collaboration tools in this order: direct `list_agents`; direct `spawn_agent` with the prepared plaintext task only when no Eval Agent is running; wait for its actual final response; then direct `list_agents` and require `completed` before the next role.
-- Do not treat a shell command, local `exec`, masked trace, XML/text imitation, or prose statement as a tool call. Do not recommend a new conversation, restart, version change, CLI workaround, or external runner unless the direct collaboration tool itself returns an explicit unavailable/error result.
-
-## 11. Communication
-
-**Say what you did, why you did it, and what remains uncertain.**
-
-- Say what you did and why, not just a block of code or "done".
-- Even when you did exactly what was asked, flag concerns, unverified parts, and possible impact.
-- Be precise about uncertainty and tell the user what to verify. For example: "I am not sure this library supports streaming; check X."
-- Do not use "I think this should work" as a substitute for verifiable explanation.
-
-## 12. Common Failure Modes
-
-**When you recognize a failure mode, stop instead of continuing to work.**
-Common failure modes:
-- Kitchen Sink: restructuring half the codebase while you are at it.
-- Wrong Abstraction: copy-paste twice before you abstract.
-- Optimistic Path: the happy path handled and the 500 ignored.
-- Runaway Refactor: a fix that cascades across files.
-- Silent Assumption: writing uncertain facts as conclusions.
-Once you catch yourself in any of these, the right move is to stop, return to the user request and fact source, and choose whether to ask the user or rethink the approach instead of pushing through.
+- Describe the result and reason for the change, and provide verification evidence that supports the conclusion.
+- Identify unverified areas, known risks, assumptions, and the possible scope of impact. For each uncertainty, state the quickest way to confirm it.
+- Keep conclusions consistent with observable evidence. Mark claims that cannot be confirmed as uncertain rather than presenting them as completion conclusions.
 
 ## Output Format
 
-The main agent's final closing message should use the hello-scholar wrapper format by default, and only in the final message of the turn after confirming no more tool calls or execution will continue. Intermediate updates use natural prose and do not use the wrapper format.
+The main agent's final closing message uses the hello-scholar wrapper format by default. Use it only for the last message of a turn after confirming no further tool calls or execution will continue. Use natural prose for intermediate updates.
 
 ```text
 {图标} 【hello-scholar】- {状态描述} - {当前问题使用的 skill / agent 名}
