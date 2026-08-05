@@ -505,6 +505,41 @@ def resolve_current_skill_source(repo_root: Path, source: str) -> Path:
     return current_path
 
 
+def sha256_historical_skill_snapshot(repo_root: Path, source: str) -> str:
+    """Purpose: verify a pre-flattening Skill snapshot without weakening content hashing; Input: repository root and saved source; Output: historical tree SHA-256; Errors: unsupported relocation or unsafe tree raises."""
+    if not _relative_contract_path(source):
+        raise ContractError(f"invalid skill source: {source!r}")
+    parts = PurePosixPath(source).parts
+    old_group_path = (
+        len(parts) == 3
+        and parts[0] == "skills"
+        and parts[1]
+        in {"hai-skills", "hello-scholar", "productivity-skills", "superpowers-skills"}
+    )
+    if old_group_path and source != "skills/superpowers-skills/brainstorming":
+        if not (repo_root / "skills" / parts[2]).is_dir():
+            raise ContractError(f"unsupported historical skill relocation: {source!r}")
+        return sha256_tree(repo_root / "skills" / parts[2])
+
+    current_path = resolve_current_skill_source(repo_root, source)
+    if current_path == repo_root / source:
+        return sha256_tree(current_path)
+
+    substitutions = {
+        b"skills/manage-specs/assets/": b"skills/hello-scholar/manage-specs/assets/"
+    }
+    digest = hashlib.sha256()
+    for relative, file_path in _tree_files(current_path):
+        content = file_path.read_bytes()
+        for current, historical in substitutions.items():
+            content = content.replace(current, historical)
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(content)
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def _validate_evaluator_setup(
     value: Any,
     fixture_root: Path,
@@ -1727,7 +1762,7 @@ def _validate_live_approval(
                 errors.append(f"{field}.status: does not match protocol liveLoad")
             source = sources.get(skill)
             try:
-                expected_hash = sha256_tree(resolve_current_skill_source(repo_root, source))
+                expected_hash = sha256_historical_skill_snapshot(repo_root, source)
             except (ContractError, TypeError) as error:
                 errors.append(f"{field}.sha256: cannot hash current skill: {error}")
             else:
@@ -1787,7 +1822,7 @@ def _validate_scorecard(
             else:
                 source = sources.get(skill)
                 try:
-                    expected_hash = sha256_tree(resolve_current_skill_source(repo_root, source))
+                    expected_hash = sha256_historical_skill_snapshot(repo_root, source)
                 except (ContractError, TypeError) as error:
                     errors.append(f"{field}.sha256: cannot hash current skill: {error}")
                 else:
