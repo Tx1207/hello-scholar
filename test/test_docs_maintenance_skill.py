@@ -87,6 +87,19 @@ class DocsMaintenanceSkillTests(unittest.TestCase):
         self.assertIn("Do not combine modes", english)
         self.assertIn("不得组合", chinese)
 
+    def test_transaction_delta_excludes_preexisting_worktree_changes(self) -> None:
+        """Purpose: require each maintenance mode to validate only its own transaction; Input: bilingual Skill texts; Output: none; Errors: assertion failure for whole-worktree diff checks."""
+
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+        self.assertIn("Git diff baseline", english)
+        self.assertIn("Git diff 基线", chinese)
+        self.assertIn("transaction delta", english)
+        self.assertIn("本次事务增量", chinese)
+        self.assertIn("newly changed path", english)
+        self.assertIn("新变更位于范围外路径", chinese)
+        self.assertIn("pre-existing changes remain out of scope", english)
+        self.assertIn("既有变更不在范围内", chinese)
+
     def test_check_and_index_modes_bind_cli_and_write_boundaries(self) -> None:
         """Purpose: require separate read-only checking and CLI-owned Index synchronization; Input: bilingual Skill texts; Output: none; Errors: assertion failure for mixed modes or unsupported writes."""
 
@@ -140,8 +153,8 @@ class DocsMaintenanceSkillTests(unittest.TestCase):
             self.assertIn(required, english)
         for required in ("Completed Spec/Plan/Tasks", "有效 Record", "未合并", "当前日期"):
             self.assertIn(required, chinese)
-        self.assertIn("Keep the Git diff at zero", english)
-        self.assertIn("Git diff 必须为零", chinese)
+        self.assertIn("Keep the transaction delta at zero", english)
+        self.assertIn("本次事务增量必须为零", chinese)
         self.assertIn('"continue" without approval', english)
         self.assertIn("没有批准的“继续”", chinese)
         self.assertIn("important technical choice", english)

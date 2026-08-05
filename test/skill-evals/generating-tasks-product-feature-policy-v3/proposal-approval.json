@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-generating-tasks-product-feature-policy-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "77763b042c411626fc34cd1994f0cb8cde594567d2b92c3b76ee92b963ce04fd",
+  "protocolSha256": "56d6b1652732bdde6be9f81efe78bd88ee4dcff8d7dbb0c7392e41d01c5caf7d",
+  "fixtureSha256": "caefa42d07d2ff450a391a46f37fd0cb32d7e43bde5e10197934095734b886a6",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-2-plan-tasks / 095127bc045576f905a778344b15f06a51629552dc1e9884b42315ff29c195ba"
+}

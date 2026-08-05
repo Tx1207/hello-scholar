@@ -1,0 +1,25 @@
+$ npm test
+
+> test
+> node --test test/*.test.js
+
+✔ evicts the least recently used key (1.049071ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.74956
+exit=0
+
+$ node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 2, records 0, indexes 2, errors 0, notices 4
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/cache-policy/INDEX.md
+notice plan-missing hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/plan.md: Spec SPEC-003 has no Plan
+notice tasks-missing hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/tasks.md: Spec SPEC-003 has no Tasks
+notice plan-missing hello-scholar/specs/cache-policy/SPEC-008-background-warming/plan.md: Spec SPEC-008 has no Plan
+notice tasks-missing hello-scholar/specs/cache-policy/SPEC-008-background-warming/tasks.md: Spec SPEC-008 has no Tasks
+exit=0

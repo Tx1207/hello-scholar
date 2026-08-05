@@ -1,0 +1,150 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "landing-explicit-feasibility-v3",
+  "projectId": "py-vector-index-service",
+  "primarySkill": "landing",
+  "caseId": "landing-explicit-feasibility-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "landing"
+  ],
+  "skillSources": {
+    "landing": "skills/hai-skills/landing"
+  },
+  "skillExpectations": {
+    "landing": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the unchanged vector service, and keep feasibility analysis read-only",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "direction-recovery",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the answer accurately restores the asynchronous multi-tenant index thesis, current synchronous model and central one-host/no-operator feasibility problem from project evidence."
+      },
+      {
+        "id": "evidence-backed-value-ranking",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm multi-tenant isolation, bounded async writes, cross-region replication, query compatibility and operations are placed in Must Keep, Rewrite and Keep, Defer or Delete with criterion, evidence, value and cost."
+      },
+      {
+        "id": "ambition-preservation",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm tenant isolation and an asynchronous service remain visible in the target shape rather than being reduced to a small single-process optimization."
+      },
+      {
+        "id": "reality-and-contract-pricing",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm public query compatibility, measured capacity, single-host budget, zero dedicated operators and maximum failure radius are priced separately and without invented resources."
+      },
+      {
+        "id": "target-boundary-verification-stop",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the output states a non-procedural target shape, phase boundary, cheap queue/isolation validation and observable stop or shrink rules without PR, file or migration steps."
+      },
+      {
+        "id": "user-decision-and-stage-discipline",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm material tradeoffs are isolated for user judgment, AI recommendations are labeled as such, no files change and the run does not enter Brainstorming or implementation."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "does not recover the prior thesis, old model, and main reality problem from the supplied context",
+      "drops multi-tenant isolation merely to make the first move small or keeps every ambitious feature without pricing it",
+      "omits the four value buckets or gives important retained items without project evidence and concrete payoff",
+      "fails to separate the public query contract, deployment budget, and largest blast radius",
+      "writes implementation order, edits the fixture, or automatically starts brainstorming"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B scripts/show_capacity.py",
+    "git diff --exit-code"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "README.md",
+      "capacity/",
+      "clients/",
+      "docs/",
+      "scripts/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/",
+      "landing-plan.md",
+      "plan.md",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the prior direction and explicit Landing request have been delivered",
+        "contentRole": "prior-direction-and-current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Recover the Takeoff thesis and project constraints, then give the first value-ranked feasibility judgment while preserving multi-tenant isolation as the target ambition."
+}

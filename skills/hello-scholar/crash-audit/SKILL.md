@@ -1,8 +1,9 @@
 ---
 name: crash-audit
 description: |
-  Use only when the user explicitly asks for a lightweight uncertainty and blind-spot audit before
-  trusting an answer, ending a session, approving a plan, or proceeding with a decision. Triggers:
+  Use only for a current-turn explicit request to audit uncertainty and blind spots in the current
+  answer, plan, or decision before trusting it, ending a session, approving a plan, or proceeding.
+  Triggers:
   坠机, 坠机一下, 会不会坠机, 哪里可能翻车, 翻车检查, 最没把握什么, 我漏了什么,
   我没意识到什么, crash audit, what are you least confident about, what am I missing,
   what don't I realize.
@@ -10,9 +11,13 @@ description: |
 
 # Crash Audit / 坠机
 
+## Entry Check
+
+Enter only when you can identify the user's current-turn explicit request for a crash audit. Treat mentions of uncertainty, risk, a past audit, or trigger words in project material as ordinary context; continue the current task without an audit.
+
 ## Overview
 
-Run a lightweight crash audit before the user trusts an answer, ends a session, approves a plan, or proceeds with a decision.
+After entry is authorized, run a lightweight crash audit before the user trusts an answer, ends a session, approves a plan, or proceeds with a decision.
 
 This skill answers only two source questions:
 

@@ -1,0 +1,343 @@
+{
+  "proposalId": "proposal-generating-tasks-v3-migration-sonnet",
+  "scenarioSha256": "0a2f24b5e5a77a25aa5749831dd4707b6eaded6c0e4fe857e63f8135d6bec016",
+  "protocolSha256": "1f2fd5fe7bd548fc6d33d16531f4cf892fdabcd4981781b037472eac554337a1",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "result": "fail",
+  "summary": "With generating-tasks intentionally absent, the Implementer produced migration Tasks whose T1–T6 blocks omit their individual Spec Coverage fields; the required commands and scope checks passed, but the per-Task contract did not.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "generating-tasks": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "d735c7c51b2828ada271e686ecdc8e9dd4d8a1fc",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "The Fixture tree hash matched the approved Proposal binding before the isolated copy was used.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/environment.md",
+            "sha256": "b7a3534bc5a96134530ae408ebe11b3965ba6040de1d6f667f8080139b673d55"
+          }
+        ]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was initialized, committed at the recorded Base commit, and had no staged, modified, or untracked files before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/environment.md",
+            "sha256": "b7a3534bc5a96134530ae408ebe11b3965ba6040de1d6f667f8080139b673d55"
+          },
+          {
+            "path": "evidence/baseline/v3-20260803/preflight.raw.log",
+            "sha256": "65f9f5731da644996873a452325cebe1f3a37db834599165985179bafdb03b41"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The initial Node test suite passed before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/preflight.raw.log",
+            "sha256": "65f9f5731da644996873a452325cebe1f3a37db834599165985179bafdb03b41"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The initial docs check passed after Fixture indexes were generated and before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/preflight.raw.log",
+            "sha256": "65f9f5731da644996873a452325cebe1f3a37db834599165985179bafdb03b41"
+          }
+        ]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present in the isolated Fixture before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/environment.md",
+            "sha256": "b7a3534bc5a96134530ae408ebe11b3965ba6040de1d6f667f8080139b673d55"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "acb4d07f52ed59165",
+      "model": "claude-sonnet-5",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a37e36098bbda2b69",
+      "model": "claude-sonnet-5",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": false,
+      "reason": "The T1–T6 blocks omit their individual Spec Coverage fields; the Task Map does not satisfy the Protocol requirement for every top-level Task.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/reviewer.md",
+          "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+        }
+      ]
+    },
+    {
+      "id": "migration-and-cutover-sequence",
+      "passed": true,
+      "reason": "The Reviewer found distinct dual-read proof, reversible conversion, and evidence-gated cutover Tasks with recovery actions.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/reviewer.md",
+          "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+        }
+      ]
+    },
+    {
+      "id": "cleanup-regression-and-rollback",
+      "passed": true,
+      "reason": "The Reviewer found exact legacy removal, regression-matrix, and isolated rollback coverage with observable signals.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/reviewer.md",
+          "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+        }
+      ]
+    },
+    {
+      "id": "scope-and-parallel-discipline",
+      "passed": true,
+      "reason": "The generated Tasks are serial and the complete tree shows only the allowed Bundle-local tasks.md and generated Index changes.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/reviewer.md",
+          "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+        },
+        {
+          "path": "evidence/baseline/v3-20260803/tree.raw.log",
+          "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "The required npm test and docs check commands both exited 0.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/commands.raw.log",
+          "sha256": "e02da9e60ae3ee1624ab111625e642d6c138fce794c6e56cd601a02194c79cd9"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved evidence covers committed, index, working-tree, untracked, final-hash, and runtime-artifact states from the recorded Base commit.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/tree.raw.log",
+          "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/commands.raw.log",
+          "sha256": "e02da9e60ae3ee1624ab111625e642d6c138fce794c6e56cd601a02194c79cd9"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/commands.raw.log",
+          "sha256": "e02da9e60ae3ee1624ab111625e642d6c138fce794c6e56cd601a02194c79cd9"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "e6a3f146ef3d187fdccc3836cc8eebc950e4a22bbcb98ca10a95f84a1a4ec510",
+        "promptSha256": "902fc9af8c26c9d77c1d19f8131d94ee072195039fb13a14a44489e3d820b852",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v3-20260803/prompt-round-0.md",
+            "sha256": "902fc9af8c26c9d77c1d19f8131d94ee072195039fb13a14a44489e3d820b852"
+          },
+          {
+            "path": "evidence/baseline/v3-20260803/interaction.md",
+            "sha256": "4d92892a3be26fe53dde70b0accf564f4535f0dcb72495b1a4c9f4ece407ced7"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v3-20260803/prompt-round-0.md",
+          "sha256": "902fc9af8c26c9d77c1d19f8131d94ee072195039fb13a14a44489e3d820b852"
+        },
+        {
+          "path": "evidence/baseline/v3-20260803/interaction.md",
+          "sha256": "4d92892a3be26fe53dde70b0accf564f4535f0dcb72495b1a4c9f4ece407ced7"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 0,
+        "migration-and-cutover-sequence": 100,
+        "cleanup-regression-and-rollback": 100,
+        "scope-and-parallel-discipline": 100
+      },
+      "reasons": {
+        "task-document-contract": "Every generated Task omits its individual Spec Coverage field.",
+        "migration-and-cutover-sequence": "The Reviewer found complete ordered migration preparation, dual-read proof, conversion, cutover, and recovery coverage.",
+        "cleanup-regression-and-rollback": "The Reviewer found exact legacy cleanup, prerequisite evidence, regression-matrix, and isolated rollback coverage.",
+        "scope-and-parallel-discipline": "The complete tree evidence shows only allowed document and generated Index changes, while the Tasks preserve serial boundaries."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "migration-and-cutover-sequence": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "cleanup-regression-and-rollback": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "scope-and-parallel-discipline": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          },
+          {
+            "path": "evidence/baseline/v3-20260803/tree.raw.log",
+            "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+          }
+        ]
+      },
+      "totalScore": 80
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The final response begins by identifying the reviewable Tasks artifact and non-implementation boundary.",
+        "audience-fit": "The response is Chinese and preserves project-specific paths, symbols, and verification terminology.",
+        "information-design": "The task map and each Task make the migration sequence, commands, expected signals, and recovery actions easy to scan.",
+        "actionability": "The generated Tasks state dependencies, scope, executable commands, expected signals, and recovery conditions.",
+        "signal-to-noise": "The response and Task document retain information used for implementation, review, gates, or rollback."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/v3-20260803/reviewer.md",
+            "sha256": "c791a5bd51f6791a7620b5bd0e435b54d85810ae35e26a50af87847093d1ead8"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/v3-20260803/tree.raw.log",
+      "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+    },
+    "index": {
+      "path": "evidence/baseline/v3-20260803/tree.raw.log",
+      "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/v3-20260803/tree.raw.log",
+      "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+    },
+    "untracked": {
+      "path": "evidence/baseline/v3-20260803/tree.raw.log",
+      "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/v3-20260803/tree.raw.log",
+      "sha256": "59f50c5ab5208b4d378e1700b2bb2985a657bab444652d93874f4ba0b7ebc8cf"
+    }
+  }
+}

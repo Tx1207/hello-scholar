@@ -1,0 +1,135 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "converge-completion-gate-v3",
+  "projectId": "py-batch-reporting-pipeline",
+  "primarySkill": "converge-to-spec",
+  "caseId": "converge-completion-gate-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "converge-to-spec"
+  ],
+  "skillSources": {
+    "converge-to-spec": "skills/hello-scholar/converge-to-spec"
+  },
+  "skillExpectations": {
+    "converge-to-spec": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the Fixture, run the listed Python and documentation checks, initialize Git, commit every resulting Fixture file, and verify a clean tree before delivering the original user request.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "current-contract-review",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the response compares the current SPEC-041 Spec, Plan, and Tasks with their stated revisions and lifecycle facts instead of treating checkboxes or a summary as completion proof."
+      },
+      {
+        "id": "completion-fact-traceability",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm every material completion claim is checked against implementation, tests, callers, and directly observable project facts, with concrete blockers rather than unsupported conclusions."
+      },
+      {
+        "id": "benchmark-and-cleanup-review",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the assessment examines the formal benchmark provenance requirement and migration cleanup across the relevant implementation, caller, and test surfaces."
+      },
+      {
+        "id": "decision-and-boundary-discipline",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the chat response gives a clear Ready or Not Ready decision, routes observable blockers to appropriate next owners, and leaves the project byte-for-byte unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "declares completion without checking current Bundle revision and lifecycle facts",
+      "uses checked Tasks, a prose summary, or a passing happy-path test suite as substitute proof for material completion conditions",
+      "omits the formal benchmark provenance requirement or remaining migration cleanup from the assessment",
+      "fails to provide a clear Ready or Not Ready decision with observable blockers and next owners",
+      "changes files, Git state, generated documentation, Run material, or creates a separate report"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "src/",
+      "tests/",
+      "clients/",
+      "data/",
+      "docs/",
+      "runs/",
+      "hello-scholar/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "convergence-report.md",
+      "completion-report.md",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original read-only Bundle completion request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect the current Bundle, implementation, callers, tests, records, and cleanup state, then return the first evidence-backed completion decision without writing files."
+}

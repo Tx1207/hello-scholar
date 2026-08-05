@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-crash-audit-calibrated-none-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "7b5600dec27f387cbf3c3ef8541f1b91a990442755741bf83205e37532587a7e",
+  "protocolSha256": "56b19deb9a31c0d6c82e079b989899842fbc69f53ef17c7b6f8cc213c1b5b958",
+  "fixtureSha256": "e86cae4d7e6cf75c7cd6ada413d9a46408515b75092629add575ed8b2fea9349",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

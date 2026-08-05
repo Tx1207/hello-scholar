@@ -1,0 +1,156 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "router-experiment-v3",
+  "projectId": "node-ranking-benchmark",
+  "primarySkill": "using-helloscholar",
+  "caseId": "router-experiment-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-helloscholar",
+    "record-experiment"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/superpowers-skills/using-helloscholar",
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "using-helloscholar": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, run unit tests without launching the formal benchmark, and commit the unchanged project before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "route-selection",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the authorized formal baseline uses record-experiment before launch, without creating a speculative Spec workflow, and retains intentionally null Spec and Plan association."
+      },
+      {
+        "id": "prestart-record",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one root Run Record containing the fixed campaign command, inputs, stop rule and intended output paths exists before the benchmark process starts."
+      },
+      {
+        "id": "evidence-provenance",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the exact authorized command and exit status are preserved with raw benchmark output and matching structured metrics while campaign, dataset, source, tests and scripts remain unchanged."
+      },
+      {
+        "id": "result-interpretation",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the finalized Record reports the observed metrics, status, evidence-based conclusion and next action honestly rather than inferring success without retained output."
+      },
+      {
+        "id": "scope-preservation",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the only writes are one root Run's Record, outputs and results, with no duplicate summary, Spec, Architecture or implementation change."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "starts the formal benchmark before creating the root Run record",
+      "creates a Spec merely because benchmark results may inform later work",
+      "modifies code, tests, benchmark scripts, campaign facts, or dataset during the run",
+      "creates run.json, a second Run summary, or omits raw or structured evidence",
+      "claims a completed result without the actual command, exit status, output, metrics, and honest conclusion"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "node --test",
+    "node scripts/benchmark.mjs --run-dir runs/<run-id> > runs/<run-id>/outputs/benchmark.json",
+    "node scripts/verify-run.mjs runs/<run-id>"
+  ],
+  "paths": {
+    "allow": [
+      "runs/"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "scripts/",
+      "data/",
+      "docs/",
+      "hello-scholar/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/RUN-ID/record.md",
+      "runs/RUN-ID/outputs/benchmark.json",
+      "runs/RUN-ID/results/metrics.json"
+    ],
+    "forbidden": [
+      "hello-scholar/runs/",
+      "runs/RUN-ID/run.json",
+      "runs/RUN-ID/README.md",
+      "hello-scholar/specs/",
+      "hello-scholar/architecture.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicitly authorized formal benchmark request is delivered",
+        "contentRole": "current-request-and-run-authorization",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Create the minimum reproducible root Record, launch the fixed benchmark once, and finish its evidence without changing the measured implementation."
+}

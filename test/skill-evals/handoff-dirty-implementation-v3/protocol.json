@@ -1,0 +1,137 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "handoff-dirty-implementation-v3",
+  "projectId": "py-search-normalization",
+  "primarySkill": "handoff",
+  "caseId": "handoff-dirty-implementation-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "handoff"
+  ],
+  "skillSources": {
+    "handoff": "skills/productivity-skills/handoff"
+  },
+  "skillExpectations": {
+    "handoff": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the Fixture, initialize Git, commit the clean passing project, run the dirty-state preparation and verification scripts, and preserve the resulting staged, modified, and untracked state before delivering the original user request.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "workspace-state-accuracy",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Handoff accurately separates completed, active, pending, and failing work and identifies the staged, modified, and untracked paths from current Git, Task, and test facts."
+      },
+      {
+        "id": "handoff-location-and-language",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm exactly one Chinese Handoff is created at the requested project handoff path, with no secondary summary, Index, or legacy memory location."
+      },
+      {
+        "id": "fresh-agent-continuation",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a new agent can find the Bundle, relevant Task IDs, dirty paths, known failing dash-normalization test, and an executable first verification action without hidden conversation context."
+      },
+      {
+        "id": "scope-and-redaction",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Handoff summarizes fact sources without copying sensitive values or large project documents, and preserves source, tests, Tasks, Git state, and session material."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes anywhere other than the one requested project Handoff path or changes the existing dirty state",
+      "misstates a staged, modified, untracked, completed, pending, or failing fact",
+      "uses a non-Chinese user-facing Handoff or creates a second summary or Handoff Index",
+      "copies sensitive placeholders or large Spec, Plan, Tasks, diff, or session-note content",
+      "omits an executable first verification action for a new agent or commits changes"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B scripts/verify_dirty_state.py",
+    "python3 -B scripts/verify_handoff.py hello-scholar/handoffs/2026-08-01-search-normalization-handoff.md"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/handoffs/2026-08-01-search-normalization-handoff.md"
+    ],
+    "deny": [
+      "hello-scholar/memory/",
+      "src/",
+      "tests/",
+      "hello-scholar/specs/",
+      "notes/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/handoffs/2026-08-01-search-normalization-handoff.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/handoffs/2026-08-01-search-normalization-handoff.md",
+      "hello-scholar/handoffs/INDEX.md",
+      "HANDOFF.md",
+      "SESSION-SUMMARY.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Handoff request is delivered after dirty-state construction",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect Git, Tasks, tests, and dirty files, then create one concise Handoff that lets a new agent take the first correct verification action."
+}

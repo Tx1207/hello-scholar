@@ -18,3 +18,5 @@ Do not duplicate content already captured in other artifacts (PRDs, plans, ADRs,
 Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
 If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
+
+After a successful save, tell the user the exact Handoff path and, in one sentence, what the next session can continue. Reference the document rather than reproducing its contents.

@@ -1,0 +1,133 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "record-exploration-backfill-v3",
+  "projectId": "node-prompt-routing-sandbox",
+  "primarySkill": "record-experiment",
+  "caseId": "record-exploration-backfill-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture into a base Git repository, commit every fixture file, create and enter a linked disposable worktree from that commit, and verify that worktree is clean with no Run Record before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "bounded-local-execution",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The work stays in the supplied linked disposable worktree, uses only the fixed local synthetic inputs, respects the bounded sweep, and leaves routing source and cases unchanged."
+      },
+      {
+        "id": "recoverable-provenance",
+        "weight": 40,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "One durable Run Record preserves the observed launch and sweep evidence, exact command, input identity, artifact locations, and evidence-based conclusion without creating a duplicate Run document."
+      },
+      {
+        "id": "decision-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The user receives a concise conclusion grounded in the recorded observation while the outcome remains a bounded exploration rather than a product configuration, dependent specification, or implementation change."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "changes the routing source or fixed cases after observing results",
+      "runs outside the supplied linked worktree or repeats the bounded sweep",
+      "treats the exploration result as a shipped configuration or creates dependent product work",
+      "omits recoverable launch or sweep provenance or creates run.json or another duplicate Run description"
+    ],
+    "scoreAnchors": {
+      "0": "A material safety, provenance, or scope requirement is missing or contradicted.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The bounded execution, durable evidence, and user-facing conclusion are all directly and precisely supported."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node scripts/prompt-sweep.mjs --dry-run",
+    "node scripts/prompt-sweep.mjs --output-dir .experiment-output",
+    "node scripts/verify-backfill.mjs"
+  ],
+  "paths": {
+    "allow": [
+      "runs/",
+      ".experiment-output/"
+    ],
+    "deny": [
+      "cases/",
+      "docs/",
+      "src/",
+      "test/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/<run-id>/record.md",
+      "runs/<run-id>/outputs/launch.json",
+      "runs/<run-id>/outputs/sweep.json",
+      "runs/<run-id>/results/metrics.json"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/",
+      "run.json",
+      "report.md",
+      "summary.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the bounded local comparison is concluded with durable provenance",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Confirm the bounded local boundary, run the fixed comparison once, preserve its evidence under one Run identity, and report a conclusion without extending the work into a product decision."
+}

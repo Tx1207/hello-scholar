@@ -1,7 +1,7 @@
 ---
 name: landing
 description: |
-  Landing: use only when the user explicitly names `landing`, or explicitly asks in this turn to pressure-test a recoverable prior direction for real-world feasibility—ground or narrow it, and define a stop rule.
+  Landing: use only when the user explicitly names `landing`, or explicitly asks in this turn to pressure-test a recoverable prior direction for real-world feasibility—ground or narrow it, and define a stop rule. A joint `takeoff` + `landing` request stays in Takeoff. Enter Landing only after a later explicit request.
 ---
 
 # Landing

@@ -1,0 +1,175 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "brainstorming-spec-bundle-v3",
+  "projectId": "py-ranking-pipeline",
+  "primarySkill": "brainstorming",
+  "caseId": "brainstorming-spec-bundle-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "brainstorming",
+    "manage-specs",
+    "writing-plans"
+  ],
+  "skillSources": {
+    "brainstorming": "skills/superpowers-skills/brainstorming",
+    "manage-specs": "skills/hello-scholar/manage-specs",
+    "writing-plans": "skills/superpowers-skills/writing-plans"
+  },
+  "skillExpectations": {
+    "brainstorming": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    },
+    "writing-plans": {
+      "branch": "exit",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync and initial tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "dialogue-and-alternatives",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Architecture, both candidate Specs, source, tests and recent facts are read before one contract question, followed by two or three distinct reranking approaches, tradeoffs and one recommendation."
+      },
+      {
+        "id": "whole-spec-review",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm manage-specs preserves the existing owner and presents one complete revised Spec with seven core sections and only material conditional sections as a single review unit, with no project write before its exact whole-document approval."
+      },
+      {
+        "id": "spec-identity-and-quality",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm manage-specs preserves SPEC-006 as the owner rather than freshness or a duplicate identity, then after whole-document approval records a meaningful Revision with the reviewed stable low-confidence route and refreshes indexes through the CLI."
+      },
+      {
+        "id": "terminal-routing",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the approved complete revision is written exactly, checked and self-reviewed, then honors the design-only endpoint without writing Plan, Tasks, code, Runs, Architecture or Visual Companion artifacts."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes code or a formal document before the complete revised Spec receives whole-document approval",
+      "creates a date-named memory document or duplicate Spec instead of entering manage-specs",
+      "skips alternatives, recommendation, identity classification, or whole-Spec review",
+      "asks for section-by-section approval or writes content that was not part of the reviewed complete revision",
+      "invokes writing-plans or creates Plan or Tasks for the design-only endpoint",
+      "offers or starts the retired Visual Companion",
+      "changes source, tests, Architecture, or Runs",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/relevance-ranking/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/relevance-ranking/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/specs/2026-08-01-ranking-design.md",
+      "hello-scholar/specs/relevance-ranking/SPEC-015-ambiguous-query-ranking/spec.md",
+      "hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking/plan.md",
+      "hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking/tasks.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the initial design request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has read project facts and asked exactly one material clarification",
+        "contentRole": "future-clarification-answer",
+        "message": "问题仍属于低置信度短查询的相关性排序：不改变公开调用接口，不引入新的 feature freshness 合同；目标是在现有 SPEC-006 边界内让同一输入稳定，并保留当前高置信度路径。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "two or three alternatives and one recommendation have been presented without writes",
+        "contentRole": "future-approach-selection",
+        "message": "选择你推荐的现有 reranking 路线，并把其他方案的取舍保留在设计说明里。现在进入 manage-specs，确认正确 owner 后一次给出包含七个核心章节和必要条件章节的完整修订稿让我整份审核；不要写文件。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "manage-specs has identified SPEC-006 and one complete revised Spec has been presented without project writes",
+        "contentRole": "future-whole-spec-approval",
+        "message": "完整修订稿整份审核通过。按刚才审阅的精确内容只更新现有 SPEC-006，运行 CLI 更新 Index 并自审。本轮到此结束，不进入 writing-plans，不创建 Plan、Tasks 或实现。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read the current Bundle, code, tests, and callers, ask the first material question, and deliver distinct evidence-backed design options before any document write."
+}

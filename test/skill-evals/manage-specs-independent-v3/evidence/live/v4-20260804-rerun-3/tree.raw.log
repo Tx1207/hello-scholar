@@ -1,0 +1,21 @@
+## committed
+M	hello-scholar/specs/INDEX.md
+## index
+## working-tree
+M	hello-scholar/specs/INDEX.md
+## untracked
+hello-scholar/specs/batch-retrieval/INDEX.md
+hello-scholar/specs/batch-retrieval/SPEC-010-public-batch-retrieval-api/spec.md
+## final-hashes
+aefa8d51f81f31188ef500392feffdaaa1b4db8cbc09628301799752ccf0acb5  ./AGENTS.md
+2d737b0135a537df1563a7dc8109d80358da53636b3bebf601c18c128e2d3195  ./hello-scholar/architecture.md
+d1636f98380d1b2ca18e987f8cf417b76da2edb929027632ad5951aff4397cd4  ./hello-scholar/specs/INDEX.md
+fe3c70cb5a4f0471c3df6b689feb3490854707c0fdf2a02d87c6ca9004ad5b09  ./hello-scholar/specs/batch-retrieval/INDEX.md
+20aee32af30ebfb2801431a234e35fa353ed0118d23835a634cbd450fc019176  ./hello-scholar/specs/batch-retrieval/SPEC-010-public-batch-retrieval-api/spec.md
+3ba92d714cef1a2141174066f25d754d0b21ed6b3040fb3bcb45c59460d5e399  ./hello-scholar/specs/observability/INDEX.md
+e7f7120332bec6215e1ed58e8544ac907874957ce54cb0921a5fb1f3c550bfef  ./hello-scholar/specs/observability/SPEC-009-request-tracing/spec.md
+5c1adab40199101553c9fe9f9e4051e08063275f7879726a69a601d287f0e968  ./hello-scholar/specs/search-ranking/INDEX.md
+34ae4b2aae12ef8c483edf198b02623996c77fd9ce964a24eeafac504a3a4791  ./hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/spec.md
+8425b8c2cb283d3b18e75c03053f4d1342ee7ada434ef2ab56a41b3b811a4a67  ./src/retrieval_api.py
+88571ec3dce510791a03e0db5fdfc415f6f7292fe58699869e7fcad588b9595b  ./tests/test_retrieval_api.py
+## runtime-artifacts

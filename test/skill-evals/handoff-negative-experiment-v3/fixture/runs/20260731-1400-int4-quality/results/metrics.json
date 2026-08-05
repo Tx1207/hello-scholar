@@ -1,0 +1,10 @@
+{
+  "batch_size": 8,
+  "control_exact_match": 0.812,
+  "exit_code": 0,
+  "int4_exact_match": 0.761,
+  "minimum_quality_delta": -0.02,
+  "quality_delta": -0.051,
+  "quantization_bits": 4,
+  "sample_count": 1200
+}

@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-manage-specs-options-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "aa8e78d6bdf4c4fe9e4918dd409800cd3f423de131236c259d76f2c2ff6000cb",
+  "protocolSha256": "2f13abd2406e1a168a1a7ccc7a04f76812c6714cb58ca2819350615ade717937",
+  "fixtureSha256": "c226a4325cb8a95fd11f3b816cf294cd490d2b1c4a948a6ee14593bae14cf878",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-1-spec-design / f19ae44911caaa7580fda459ba620f1cb6eb82847e06bcd57b0ed605f6fbbc0e"
+}

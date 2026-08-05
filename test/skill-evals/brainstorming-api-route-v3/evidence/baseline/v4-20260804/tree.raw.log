@@ -1,0 +1,43 @@
+BASE=d2c4cbf3b67e071be020c2ce2516641b08f66295
+
+## committed
+
+## index
+
+## working-tree
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index fce54c1..b6d6066 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,6 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
++| batch-retrieval | [SPEC-014](batch-retrieval/SPEC-014-synchronous-batch-document-retrieval/spec.md) | capability | draft | 1 | Missing | Missing | - | Provide a synchronous batch retrieval endpoint with per-item outcomes for up to 100 document IDs |
+ | request-control | [SPEC-013](request-control/SPEC-013-retrieval-rate-limits/spec.md) | capability | accepted | 1 | Missing | Missing | - | Enforce tenant request budgets before retrieval work begins |
+ | storage-consistency | [SPEC-007](storage-consistency/SPEC-007-replica-read-consistency/spec.md) | system-design | accepted | 1 | Missing | Missing | - | Route document reads to replicas with bounded staleness |
+
+## untracked
+hello-scholar/specs/batch-retrieval/INDEX.md
+hello-scholar/specs/batch-retrieval/SPEC-014-synchronous-batch-document-retrieval/spec.md
+
+## status
+ M hello-scholar/specs/INDEX.md
+?? hello-scholar/specs/batch-retrieval/
+
+## final-hashes
+6606ca664a6ead172208582c391951f8a789dbb654e4612c97469b7f166fa30d  ./AGENTS.md
+28c3f4b7952a181334595f7291009805468c093350ba8d699ba27b8dfa1a6199  ./clients/export-client.js
+61c2a1474288ea53a7f3ed088f7b451b2794cd343659e8a48c836a9ca63db939  ./hello-scholar/architecture.md
+357f87244a5746d361fe69710f772fd5b2a3a3a4e525b91769c74f52b8ebee4e  ./hello-scholar/specs/INDEX.md
+cb1704ef2533ec06a8766884d44e2316e3314f127cae1dc09ced5272733c497c  ./hello-scholar/specs/batch-retrieval/INDEX.md
+fd17a7f3657b5cec136dbaa09a96cb13d3064486f868c7076f8608cd8b5f0636  ./hello-scholar/specs/batch-retrieval/SPEC-014-synchronous-batch-document-retrieval/spec.md
+64d88a35e8771f510e255ff15eee103cd5ebe99c94dd85bbee501c220d90d32e  ./hello-scholar/specs/request-control/INDEX.md
+dcc0e795b8f763ea5486da3b6f43dc192f434be76892e858d18c9889265a52ad  ./hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits/spec.md
+939d6485f7a0a8744e729aa755f7942408484f533d519849dfcb292a9e4ab8c2  ./hello-scholar/specs/storage-consistency/INDEX.md
+c8088db2c1efe4037c95e224bc3fb92912a1afe9644841a9e8e50565358d93b3  ./hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency/spec.md
+5fcba8a66ed3f2e1a38838eb68c816abe27b73e799e542f39b9add24b6be8824  ./package.json
+dfff6a6b8660e8f30fbabc38d8f26256eee7ddedf827ac39a0ffc0a624611cff  ./src/retrieval-service.js
+8e5d75cbaaef23854737f2e4f8c2e60948163c5fa0cd9da3b1023cd6c4d7cbd3  ./test/retrieval-service.test.js
+
+## runtime-artifacts

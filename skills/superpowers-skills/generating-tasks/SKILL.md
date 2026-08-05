@@ -28,6 +28,7 @@ A **horizontal slice** such as “write all tests,” “change the data layer,�
 For each Task:
 
 - Use a unique `TNNN` ID and a plain-language outcome.
+- Write every Task as a column-zero canonical checkbox block: `- [ ] TNNN: <plain-language goal>` (or checked equivalent). A Task Map or titled section is not a Task substitute.
 - Map exact AC IDs or Spec sections in `Spec Coverage`.
 - Name every created, modified, moved, and deleted path in `Files`.
 - Put ordered 2–5 minute actions in `Work`. Each action names the exact symbol, interface, data shape, or file region and the concrete edit. Include code or configuration snippets when the approved Plan or current project facts fix their content; return a new design choice upstream.
@@ -73,6 +74,8 @@ approved_revision: null
 status: pending
 ```
 
+Copy the chosen template as the starting skeleton before replacing placeholders. `approval: pending-review` is the review state and `status: pending` is the execution state; keep both exact and separate. A Tasks metadata error means repair that pending-review header in `tasks.md`, not approve Tasks or change an upstream document.
+
 When the user or the approved Plan explicitly requires TDD for a specific outcome, add only to that Task:
 
 ```markdown
@@ -93,11 +96,12 @@ Use exactly `PYTHONDONTWRITEBYTECODE=1 python3 -B ...` for every Python command 
 ## 5. Prove the review candidate
 
 1. Audit every ledger entry against at least one Task and every Task against the approved Plan. Include ACs, regressions, migration, deletion, cleanup, rollback, and final gates.
-2. Check unique IDs, DAG acyclicity, frontier conflicts, exact paths, interface consistency, command executability, expected signals, and forbidden scope.
-3. Run `docs sync`, then `docs check`, through the absolute hello-scholar CLI.
-4. Run the Plan's project checks. Apply the artifact-free Python form above to each Python command.
-5. Compare final Git state with the initial state. The write set must be `tasks.md` plus CLI-generated Indexes, and the transaction must add no `__pycache__` directory or `.pyc` file.
-6. Lead the response with the `tasks.md` path and pending-review result. Summarize AC coverage, blocking edges/frontier, and validation evidence, then stop for user review.
+2. Before the CLI, verify the exact pending-review header and that every top-level `TNNN` has `Spec Coverage`, `Depends On`, `Parallel`, `Files`, `Work`, `Validation`, and `Completion` as its own fields. Repair `tasks.md` until this literal contract is complete.
+3. Check unique IDs, DAG acyclicity, frontier conflicts, exact paths, interface consistency, command executability, expected signals, and forbidden scope.
+4. Run `docs sync`, then `docs check`, through the absolute hello-scholar CLI.
+5. Run the Plan's project checks. Apply the artifact-free Python form above to each Python command.
+6. Compare final Git state with the initial state. The write set must be `tasks.md` plus CLI-generated Indexes, and the transaction must add no `__pycache__` directory or `.pyc` file.
+7. Lead the response with the `tasks.md` path and pending-review result. Summarize AC coverage, blocking edges/frontier, and validation evidence, then stop for user review.
 
 <REVIEW-GATE>
 The terminal state is a complete `tasks.md` awaiting user review. Creating or approving Tasks does not start implementation; implementation requires a separate explicit request.

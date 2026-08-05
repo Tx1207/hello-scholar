@@ -66,8 +66,7 @@ Use this fallback only when no native worktree tool is available. Choose the dir
 1. A directory explicitly required by the user, current Task, or project instructions.
 2. Existing `.worktrees/` (preferred when both local directories exist).
 3. Existing `worktrees/`.
-4. Existing legacy global directory `~/.config/superpowers/worktrees/<project>/`.
-5. Otherwise, `.worktrees/` at the project root.
+4. Otherwise, `.worktrees/` at the project root.
 
 For a project-local directory, verify the selected directory itself is ignored before creation:
 

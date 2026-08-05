@@ -1,0 +1,137 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "docs-maintenance-recover-v3",
+  "projectId": "node-agent-eval-repository",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-recover-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "recovery-diagnosis",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The response accurately identifies document-state issues from source documents, Bundle relationships, retained Run provenance, and the missing formal Architecture without silently resolving or misclassifying them."
+      },
+      {
+        "id": "reviewable-architecture-material",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The response provides a complete clearly reviewable Architecture draft based on verified runtime and trustworthy document facts, separates inferences from evidence, and does not write a formal Architecture file."
+      },
+      {
+        "id": "generated-navigation-boundary",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Only CLI-generated navigation may change; runtime code, tests, Bundle source documents, Run Records, package metadata, and formal Architecture remain untouched while validation reflects the final state."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "writes or creates hello-scholar/architecture.md",
+      "creates a repository recovery report or hand-authors generated navigation",
+      "changes runtime code, tests, Bundle source documents, Run Records, or package metadata",
+      "omits material orphan, stale, unassociated, missing-Architecture, or legacy document-state findings",
+      "presents unverified inference as a verified Architecture fact"
+    ],
+    "scoreAnchors": {
+      "0": "A material diagnosis, reviewability, or write-boundary requirement is missing or violated.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The recovery result is precise, reviewable, evidence-separated, and safely scoped."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/agent-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "hello-scholar/architecture.md",
+      "hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization/",
+      "hello-scholar/specs/agent-evaluation/SPEC-421-evaluator-provenance/",
+      "runs/20260727-1800-provider-sample/",
+      "src/",
+      "test/",
+      "package.json"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/agent-evaluation/INDEX.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/architecture.md",
+      "architecture-recovery.md",
+      "recovery-report.md",
+      "run.json"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "recovery findings and reviewable Architecture material are reported with only permitted generated navigation changes",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect document and runtime facts, diagnose recoverable document-state gaps, regenerate only valid CLI-owned navigation, return reviewable architecture material without formal writes, and verify the final boundary."
+}

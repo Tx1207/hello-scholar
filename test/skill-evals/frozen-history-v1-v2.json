@@ -1,0 +1,4420 @@
+{
+  "manifestVersion": 1,
+  "scenarioRoots": [
+    {
+      "path": "test/skill-evals/brainstorming-api-route",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "ef76d5b585646dd4505a5358534fd4706e4c15400a4a8e00733b48265025fd87"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/commands.md",
+          "kind": "file",
+          "sha256": "f279aebfdff17e0cc0a6fa64ef76c3483036ae38f15efbf5621ef5549476772a"
+        },
+        {
+          "path": "evidence/baseline/environment.md",
+          "kind": "file",
+          "sha256": "506ef19a92f561a34b75b9a22aba50f20c9a0843cb8d037968e1b85aab38d990"
+        },
+        {
+          "path": "evidence/baseline/interaction.md",
+          "kind": "file",
+          "sha256": "ba41755ee726aa89853672d0d719d32830fa48372a1b3e64350e85490dec7550"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "ead89c8f86e47abb79ea525e5b2c165439dcd862810c6a8bc6dac2d5ea42d4d2"
+        },
+        {
+          "path": "evidence/baseline/reviewer-task.md",
+          "kind": "file",
+          "sha256": "666405f4795d4c1084f503ac277ca9d4dfd1404f021eed90297068663c4a69a2"
+        },
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "kind": "file",
+          "sha256": "4528f55cdb512a78da7a75aeabc58f7ded359ec5657cb94c2a743f1065baa3bb"
+        },
+        {
+          "path": "evidence/baseline/tree.md",
+          "kind": "file",
+          "sha256": "e3a04c1332849bb9fe7c49b68192fc86a1e742290228d3a5b64de269271f6f30"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "6606ca664a6ead172208582c391951f8a789dbb654e4612c97469b7f166fa30d"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/export-client.js",
+          "kind": "file",
+          "sha256": "28c3f4b7952a181334595f7291009805468c093350ba8d699ba27b8dfa1a6199"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "61c2a1474288ea53a7f3ed088f7b451b2794cd343659e8a48c836a9ca63db939"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/request-control",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits/spec.md",
+          "kind": "file",
+          "sha256": "dcc0e795b8f763ea5486da3b6f43dc192f434be76892e858d18c9889265a52ad"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/storage-consistency",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency/spec.md",
+          "kind": "file",
+          "sha256": "c8088db2c1efe4037c95e224bc3fb92912a1afe9644841a9e8e50565358d93b3"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "5fcba8a66ed3f2e1a38838eb68c816abe27b73e799e542f39b9add24b6be8824"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/retrieval-service.js",
+          "kind": "file",
+          "sha256": "dfff6a6b8660e8f30fbabc38d8f26256eee7ddedf827ac39a0ffc0a624611cff"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/retrieval-service.test.js",
+          "kind": "file",
+          "sha256": "8e5d75cbaaef23854737f2e4f8c2e60948163c5fa0cd9da3b1023cd6c4d7cbd3"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "ad8a2c06cefbd0b3b299fc1adfab9ea442865a6d5b6052270c6c218e25f6cf2c"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "b356dc19f13a13675a38a34c243fc4359ead2aea011add3d7ba4dc7c403d5165"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "9019bde78938e2aa3daeec18fafb20f8e5265099f2ee3544dbb866c870f7a7cf"
+        }
+      ],
+      "strictTreeSha256": "5c1ba78f796d34125bd7173fb4dfa4309bcd1ec19442ca0b6cf0d53c9f0fd52b"
+    },
+    {
+      "path": "test/skill-evals/brainstorming-spec-bundle",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "22f7d0b1fda60ed13c3a61fda407d61da92b773f8f9139ac301ee43ea7eb038b"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/commands.md",
+          "kind": "file",
+          "sha256": "51e6f6aae177acbaf6ece9e85b9327fe0c31e3d0c7ff972fc98b8b92a159aaa0"
+        },
+        {
+          "path": "evidence/baseline/environment.md",
+          "kind": "file",
+          "sha256": "60d1993c34ff8ab8f5fd8cef83b434c217dd0cb9e9cefe73c49449bd4e961091"
+        },
+        {
+          "path": "evidence/baseline/interaction.md",
+          "kind": "file",
+          "sha256": "b002da0d776a0d2e4839552b0c7f964249aa561827369200f85308b0428574fa"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "bbc6993e40ba97ba39c9b164c68b0ebd9dfbf4d2bc2c58a44b568e655b1de9e4"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-1.md",
+          "kind": "file",
+          "sha256": "f40038603fd3b01364ef3a8dfbfbfccb5d168c9ad2a5c92411c5d3607f72e066"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-2.md",
+          "kind": "file",
+          "sha256": "1bd57b11317beab074b7e88715dc6f1a9f71acf57574c6d6eb7ddbbd2328d3d5"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-3.md",
+          "kind": "file",
+          "sha256": "5ca0f5fab61c7f8f7e07eaa7a762ba25838078671d71f02403e9f88746ac939f"
+        },
+        {
+          "path": "evidence/baseline/reviewer-task.md",
+          "kind": "file",
+          "sha256": "d4a9ef1402a1a23bd9ad24dfa8105f2fed5fc367b6175eaf15f7e65f72b64e3d"
+        },
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "kind": "file",
+          "sha256": "6a9b33f2132b33eb67cef4d5b4e747cc2bfbef254e00d2ea10b8d09ef6d35e9a"
+        },
+        {
+          "path": "evidence/baseline/tree.md",
+          "kind": "file",
+          "sha256": "9a8e5c3e5dadcffd9dd03f6d19af6033d70a3def88a7077bc397e45ed46acb88"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "625300ec41571789cbe805881bf30671e08c5b7c34179c09ad5dc4a7ee3ef202"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "4484cf32de9fe1500f01862a845fa11559d707799adce24df4ee766024cce2f1"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/relevance-ranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/relevance-ranking/SPEC-006-confidence-aware-reranking/spec.md",
+          "kind": "file",
+          "sha256": "e907fed2452f6795c0d5d33999118c21321e3fe6a0e31b6feb89db794e6d572d"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/relevance-ranking/SPEC-014-feature-snapshot-freshness",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/relevance-ranking/SPEC-014-feature-snapshot-freshness/spec.md",
+          "kind": "file",
+          "sha256": "cde5e1d94bddfaf3bbfaae8c5e31979b748bd37ddff0a9bba01e979155fabac9"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/pipeline.py",
+          "kind": "file",
+          "sha256": "cbe59cd4efcfe2a63926dd5a27dd416c37d47ca2369495487cb571bdf11f0826"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_pipeline.py",
+          "kind": "file",
+          "sha256": "9dddb353f4e9510eccc0c9aa54f02326b3620236dd192b11a304aacfe748917a"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "bc71e123ceaed50c4fa26b4f68ea155544e82e680537cfacf51b24f667860608"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "6a7771c79998b7e0129fccf7512f191fc01a82feb2d432eea2966e38f7a92fa6"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "4813fafb14a28611958f6ec2309ceaa26adb72dc00e1b4a56be12d97dbf0cacf"
+        }
+      ],
+      "strictTreeSha256": "b1ba955f2a751a4dd39810d558cbacb31eed95e88f41242e8b2d10089eb13bdf"
+    },
+    {
+      "path": "test/skill-evals/converge-completion-gate",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/.gitignore",
+          "kind": "file",
+          "sha256": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "b8cb5cff827c5cbf3502043b469094fa2d9377e28e02760b9784d08a06cf888e"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/daily_report_job.py",
+          "kind": "file",
+          "sha256": "9b0a451c8d78d448a2317eb48be8f16393a66c4fe11f062640e34e51524083e2"
+        },
+        {
+          "path": "fixture/data",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/data/orders.csv",
+          "kind": "file",
+          "sha256": "927f62b1c7a6cb3b7037c20529d5db46535edd8806079d4fd675acae1213bc76"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/last-implementation-summary.md",
+          "kind": "file",
+          "sha256": "1267e07e96bd4daffaff108a1f27f3a68e8e4c33866649476333cd35c01bce4d"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "72a15e7478e0dccb50cd21bed2c44b346ab59b8f41c6e36734481c9168202354"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/batch-reporting",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/batch-reporting/SPEC-041-deterministic-daily-reports",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/batch-reporting/SPEC-041-deterministic-daily-reports/plan.md",
+          "kind": "file",
+          "sha256": "2a330c55c7c54db7b859c01d1a7db96fa8949ffa4636a4fc5bb5fd9f27296950"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/batch-reporting/SPEC-041-deterministic-daily-reports/spec.md",
+          "kind": "file",
+          "sha256": "23ebba3fcecfbe3076e71eff8be92909414d260c2d97bbaedddd3a260da548af"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/batch-reporting/SPEC-041-deterministic-daily-reports/tasks.md",
+          "kind": "file",
+          "sha256": "1ae65c7573665609cc2cf17fddb34e49c2efa74ed5dafde468cadc4f33d8e5f0"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/legacy_csv_export.py",
+          "kind": "file",
+          "sha256": "272ead2250313587ae39e7849919c40f506d7b6cd6094dc33a2f8b8a8d37b72e"
+        },
+        {
+          "path": "fixture/src/report_pipeline.py",
+          "kind": "file",
+          "sha256": "c29877ca55ba958c58703f5885a85d133937434cfa1348e0416a4df184efdf6c"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_report_pipeline.py",
+          "kind": "file",
+          "sha256": "5baec15fb74a93fad18e04ebd5eefe1e1d2446026425daad869d4add6ebaf15f"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "69893808a5ab8b006f3c2cd1409e3f3c4f69587e53b7e86a1d920a0ca3c6a7cc"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "44d61e23d71217fdc7d9fdbf4cf1039c810c0ce3580f9a51fe6be303bf29d049"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "d964d9e5afb618073a6e4cad6e60245dcdfe94f245d8b94660c88c5d5a44931e"
+        }
+      ],
+      "strictTreeSha256": "35d0e2d5804b55c6058af32191592edde00d851a78cf022ce786b7040a94c3de"
+    },
+    {
+      "path": "test/skill-evals/converge-to-spec",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "bc6edeea483d450ac1c7e764e25ef03b31d4d80cb04810b7886100486e5f9166"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/http-handler.js",
+          "kind": "file",
+          "sha256": "a3c8ba6e278919b3a26dc525245ca6c99e3505aba9d897eccf80db136f7a90fc"
+        },
+        {
+          "path": "fixture/config",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/config/policies.json",
+          "kind": "file",
+          "sha256": "1aede28c7e1dc88c19dd0a8f9eb27dd4b1c5c37eca8168f6f05fdcc106fbe1a6"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "21f02aed9f894204a74ffefc0a6c24eaeb5b89a32b7f2c7322f32e6493dc256e"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/access-policy",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions/plan.md",
+          "kind": "file",
+          "sha256": "1e3dd2efd1993627770ad421efb6f08fc37aabb38bf2002db4e53abe155bec31"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions/spec.md",
+          "kind": "file",
+          "sha256": "dada8af59e346d75001f0eed42333f45d1b954de6e27e7d1e49b27fe6131144b"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions/tasks.md",
+          "kind": "file",
+          "sha256": "e0d5f890d87d557e42d98e5d32038a31eae2b0b55b2ae8cba166575e855cdafb"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "31734f8867c50955cd81f971cae213715bb68e05de1cb5372c2c4ab2cdecc387"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/access-policy.js",
+          "kind": "file",
+          "sha256": "fe735512b88f28aaa6e695e2b322d2950c2848585c20d18bd907b099860acc0c"
+        },
+        {
+          "path": "fixture/src/legacy-policy.js",
+          "kind": "file",
+          "sha256": "710a0d37e25c9cb2744b2e72d1303dd116824dbee6bb212a387be18a06bd8534"
+        },
+        {
+          "path": "fixture/src/policy-preview.js",
+          "kind": "file",
+          "sha256": "c0218257ad71b9a278bdd2fa74a63378505ae454990177c9879c010920cac0db"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/access-policy.test.js",
+          "kind": "file",
+          "sha256": "f7d385866084126ed49b8941b36ddc2fe7679440985c28cebeba647fa2e587c4"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "2d9624ab0817f32afacf8c61c676c025432dcc1082ad853cc691b077a5098c11"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "b4e015759ebb31118022f5af69da25e9eb9904fdbb9d84af2e889e359917fdd7"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "77c28be3e0c9cbe2985b1f879d341ca795dc3fb7511c6fb4fa740cbfcaded531"
+        }
+      ],
+      "strictTreeSha256": "ff9279558a4d5b2187359a399815a6d2095a12632b845e1f068cd9959b8f9d78"
+    },
+    {
+      "path": "test/skill-evals/crash-audit-calibrated-none",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "c5b9a16f1388839c3461a232268e068b85bc9d334c404d1c3b8cf399570eafba"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "kind": "file",
+          "sha256": "80f25292e61aadb461a3efbb13fdfcbe2b5b2e55f76ce65885514dc3b4e8dc9a"
+        },
+        {
+          "path": "evidence/baseline/wave5/environment.md",
+          "kind": "file",
+          "sha256": "63338a98cc6e41ed5001bb876234d47dba74dc8f238cb5fd1728845052c971d1"
+        },
+        {
+          "path": "evidence/baseline/wave5/interaction.md",
+          "kind": "file",
+          "sha256": "9f3ef9fdf347add7a5043e1bd29c27581245ff763e45e8480e2df4a8b00aefee"
+        },
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "cf2ba3516373d7238f97450308980a42dd895bea8506cdb525854b8c6f259da1"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer-task.md",
+          "kind": "file",
+          "sha256": "e9ab85de3e4cc2afc19e3bc9675c57b3ee4637f50b82368346d4505f3a1fd481"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "kind": "file",
+          "sha256": "c49cec34dbb22b941258c17ee29479ad6da6cfdc519e0357e0c0a8f7f08ebe17"
+        },
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "kind": "file",
+          "sha256": "f68180de3d625ab8b6e4debdf83bef55f30b2ea84fd74527a32ddb1db95e1181"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "4165f604dabfc30e34a7c38a12adb83986e5a32c5acc640da3452fd95433401d"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "132a3c9763c8707bb3857b3aa640c1462faeb557d08b68eb8b8294f73610c69d"
+        },
+        {
+          "path": "fixture/formatter.py",
+          "kind": "file",
+          "sha256": "147313e772fdfd6c26fde80ff000b672edc870dd2cc081f78ede38dab68518a7"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/prepare_review.py",
+          "kind": "file",
+          "sha256": "98413079ac99cb5d60ed5e39d56e7645f9d7c81d0d76641ed828e08697fefad5"
+        },
+        {
+          "path": "fixture/snapshots",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/snapshots/error-output.txt",
+          "kind": "file",
+          "sha256": "0d06ec54438ac6e06008161e2527c06deb62f16d1b6ced447ea550d5bf6915fa"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_formatter.py",
+          "kind": "file",
+          "sha256": "572da572a2ffa9fccf3edda222ee6791eaa48d2fa7b7b500f7919f71d6faaf4f"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "bb5e0a46db6e3cce4dc98ab646053de858c0cce62491f3d06a2eabb4493ba74f"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "f88f363c13b4fe61c2c78a1da222abd43bfdfe7bd00b257e371d808c01fb691b"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "063f3bb6f91937c65e74263d83bd2f6555b7826d013986167ad8f39485098f57"
+        }
+      ],
+      "strictTreeSha256": "4bb9f28f93223f7cc3016c1243bfb40f7ec5a044071516e2c569ca3e212df697"
+    },
+    {
+      "path": "test/skill-evals/crash-audit-release-blind-spot",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "eb96f902f40fa3500870adecd6235ea10f39596efc1cbf30441644dd5649fd34"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "kind": "file",
+          "sha256": "9b292810650f9098d03b3224b1bd6d35d293f5dd41d9135aae084398f2d82b97"
+        },
+        {
+          "path": "evidence/baseline/wave5/environment.md",
+          "kind": "file",
+          "sha256": "4ec8fad165d9597f17a10e58259348e6ce5dc89f8aec18914a5f3d8798718bca"
+        },
+        {
+          "path": "evidence/baseline/wave5/interaction.md",
+          "kind": "file",
+          "sha256": "bde7b70300688aca437596fb2398d382ce812ca7b6a9c3b53168c1d0ba3e589a"
+        },
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "38c2c64f136c2bdb4c1e0fdbe7766bc10bd5053df7a2427f546b77769af9626e"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer-task.md",
+          "kind": "file",
+          "sha256": "302f4ce79cc04152552dcb84fe770e1cce218b98448a4f94f9c9aee6f9037eea"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "kind": "file",
+          "sha256": "3f9722ec35630c9db25643e376190a62268c50612080a9c323a174b74d4d4cdd"
+        },
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "kind": "file",
+          "sha256": "7393b439f8cde48e269a373415464bbbe7069553ccb69ad27a83b59af0707b90"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "7874bc5ba348c2109cec7a7189e6257e93819fbd07d0e7dd66b522683f33dc1d"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "545283cd90a59d788e520bb5e3f3ebfe6a209b8e824037c71616e786722eed2d"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/release-plan.md",
+          "kind": "file",
+          "sha256": "d71f4bd5dd1882ea66e91e856f4e2386ee04f40e133c05d23b4e394fb2342b40"
+        },
+        {
+          "path": "fixture/fixtures",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/fixtures/persisted-v1.json",
+          "kind": "file",
+          "sha256": "4b1d6fcf424fa01b3b8841669fa78b9f02d27eac2b7ebd4b56eb549bf7a0d155"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "23842785d6a9f30cf5425cfdb73c593069d84f63f8d34f1fda3b82e802a84bd0"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cli.js",
+          "kind": "file",
+          "sha256": "20e8dc69972d2c75307c29c323ef1b0d162c1f9d2895002c352c7ddc4bd5b18e"
+        },
+        {
+          "path": "fixture/src/config.js",
+          "kind": "file",
+          "sha256": "1d06b6392b52b52d771062591b2d6a0412a604da4d45edf1cf557067e50f6374"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/config.test.js",
+          "kind": "file",
+          "sha256": "5adb4bc97b2eb2aef7ee40d555a04192f0dc251e4dcc2549d440d56a09896c9b"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "707e037a2052d9872ee410ad73daf2bc50f8df55c502f3b685b688fe905cdafc"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "478ef137dd39e26d40c8c90fe7023302e92d875621101e12c8dcd5fd0f996c94"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "d8a0491065d85b20a8791e6fab5b930ec8d59167e2c52fccc7add3103f3d58c4"
+        }
+      ],
+      "strictTreeSha256": "807bb18cbdae47ad5e1333ee510074146c616f244fb904f12a3f1657f3d0a628"
+    },
+    {
+      "path": "test/skill-evals/docs-maintenance-architecture",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "06fd5fa38053cf31725032b3eba2aecf4ded37ed39a2f4ebe8f6c0f0365d618d"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "f8a8026855e11793a1fede29f57302ebdd59ea4ccc07e14e12ff21f9b6ef3534"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/INDEX.md",
+          "kind": "file",
+          "sha256": "1bf9e42b8594cb88c41fb003b281fea4f8299e050297d2542eb902bde6e1c935"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/INDEX.md",
+          "kind": "file",
+          "sha256": "9c961b656e61c4479ca0df540326ca806adff2adbf79296679117fce41902105"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-310-hybrid-retrieval",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-310-hybrid-retrieval/plan.md",
+          "kind": "file",
+          "sha256": "3c6a54de745c326d8e6865e702042c6b2ada5d44dd19a1b505fb12cb03683b62"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-310-hybrid-retrieval/spec.md",
+          "kind": "file",
+          "sha256": "53cb55ad71839074efd8a81e8c1187a6ee4a1a464a535060b72aaf25fdd9a8fd"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-310-hybrid-retrieval/tasks.md",
+          "kind": "file",
+          "sha256": "f4071fcbb1cd1cc6a63f0010e9fd255a627f6d1c8ac9cd80e73f406cf288f096"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-311-adaptive-query-planner",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-platform/SPEC-311-adaptive-query-planner/spec.md",
+          "kind": "file",
+          "sha256": "09d2a1c170f3eb06664548e91100abc989cb38aec82beb15be46f3ab2b489c58"
+        },
+        {
+          "path": "fixture/results",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/results/recall-metrics.json",
+          "kind": "file",
+          "sha256": "6f0e348f6241fcde2744ae9b53f5bbdd8ad89fe2faac9ca2771b9729d4a9edad"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260729-1500-hybrid-retrieval",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260729-1500-hybrid-retrieval/record.md",
+          "kind": "file",
+          "sha256": "dbbe4ccfa79be198d4d647e43fdf05988e100dba9a998616d152ed9a18212b09"
+        },
+        {
+          "path": "fixture/runs/INDEX.md",
+          "kind": "file",
+          "sha256": "1380e995ffc3261876f60af8448d604099359d171b2c5a8e0c8f08f64ecda7dd"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/retrieval.py",
+          "kind": "file",
+          "sha256": "09950480c657855923b0548f6b885bd127563e397fd5a1158678819df08f847a"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_retrieval.py",
+          "kind": "file",
+          "sha256": "a876092e0ef1befcf2563ad209ca6cecca5c2087c5d29fb284ec007bad20e7f8"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "e196231f0b9ebc2a1fd8f694ebe658125e8f6f937664198145963eb87717675a"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "d1e7e16cf97bd7ae8d4d61b0665a4e87a9d6821a8b643738ee1ae56d8ff89a7a"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "4ea7f47d67b15de2815961dc5e90dad24620e4f13db46f59c138f1aa6660d3c2"
+        }
+      ],
+      "strictTreeSha256": "afee1efca017b1f71ee32b1fc746d923f9884978829efe99c4ce21076dd26b13"
+    },
+    {
+      "path": "test/skill-evals/docs-maintenance-check",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "b5a290022d7e7c6718c3fc067631b773218218d80d63508d72185e13104620e4"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "2825af7fdfa7a0b7afda8bbe5965c4bd90f6937a0c13edf2c078167ac27a960a"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/INDEX.md",
+          "kind": "file",
+          "sha256": "e511f5464b0316deab1b15d1bf16d3f921a6c8328cfec2a764e2c6a96fc29d31"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/bundle-validation",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/bundle-validation/INDEX.md",
+          "kind": "file",
+          "sha256": "fc57bb9855135e59c0f7aecbcebae50bb3fa2880e5f7b4c5de274502bcfdca0e"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/bundle-validation/SPEC-101-rule-ownership",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/bundle-validation/SPEC-101-rule-ownership/plan.md",
+          "kind": "file",
+          "sha256": "c1647c91724fda725e1dd940bced0397a2a73496b7cc16f79c637dbb6aadd098"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/bundle-validation/SPEC-101-rule-ownership/spec.md",
+          "kind": "file",
+          "sha256": "e32e330f0e4dd9686c4617687af22acde4d7ebf131539695a48bca7f225b7001"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-invalid-import",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-invalid-import/record.md",
+          "kind": "file",
+          "sha256": "aca5a261d8d37fad3f0cb0c8d147369b48f287af3bf4f7ed24bfedd8900ea7fd"
+        },
+        {
+          "path": "fixture/runs/INDEX.md",
+          "kind": "file",
+          "sha256": "f217e09d2e535e53222617d99d62c78a8fa751a3aae46472b7a91b005b722d79"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/verify_check_contract.py",
+          "kind": "file",
+          "sha256": "b04ffb8f921751f61e7e1f3b04c665617a911100a2c493f68eb1fb352e9f138c"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/bundle_rules.py",
+          "kind": "file",
+          "sha256": "1257639d8ea30776b5fdb2b560393f35381ba907cb20191d4c66ca425f858801"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_bundle_rules.py",
+          "kind": "file",
+          "sha256": "3f16ac9f44b4b828c0e87742f5eac575e623b036d11d1a69a065d88f4af5816a"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "3dfd961fe0e7fba1fd5459fef6446d3307d333aba1b76682590b0ff8be19d350"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "20e242ff4c989e198694345e1ba17e4874d97309b80ab0c1f58cf6e20bf34dd8"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "b612511ef41c55e5b0d66310d384ad86ae6596e5fbdab99d1bd14a3cc40995bc"
+        }
+      ],
+      "strictTreeSha256": "18051d109a3a38681fbf53336f442f20b8f7bec288f1c9a09213f0b4c7d206e8"
+    },
+    {
+      "path": "test/skill-evals/docs-maintenance-index",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "83b8bf49ef568cdc7c53af5af74a0fbec939d163df2c9fd52562263579791376"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "644257bb841f096ac0c2670e055b526d79b7618a197194e8c80aa94a8ce1f091"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/INDEX.md",
+          "kind": "file",
+          "sha256": "b3eca0af072bcaf702c87d15a5c9f8e5809df1f6b87cbc21b47ee34a8cb29ff9"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/run-navigation",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/run-navigation/INDEX.md",
+          "kind": "file",
+          "sha256": "0670d590d2755688bc11c736f8fb562bedf26551fafdc964a74f2217e351e130"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/run-navigation/SPEC-204-run-summary",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/run-navigation/SPEC-204-run-summary/spec.md",
+          "kind": "file",
+          "sha256": "9da70658cc1d01f24d68864a8aa6923f468e9283cbad7e64af5adcfa6aa2801c"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "e57e1bd52ef565736d0a9c93717e27e2baef4db971b546ca791db308ca3a84de"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1200-summary-order",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1200-summary-order/record.md",
+          "kind": "file",
+          "sha256": "ea6a274f034985eff11f55116fecc27c0d318b24ef37b207a802305811349782"
+        },
+        {
+          "path": "fixture/runs/INDEX.md",
+          "kind": "file",
+          "sha256": "b837d9953145048d5c53f6c6d8e4404e20a4364c7fed88bd9ec87a312c713cf9"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/verify-index-idempotence.mjs",
+          "kind": "file",
+          "sha256": "cc81ac3e0cb365e25cb18e315eb4b0e4c53d8234ad0c412ac5234162f8f4b291"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/run-summary.js",
+          "kind": "file",
+          "sha256": "901bc8c345f95178ce318046bc855bd5b3a44166d122c71466fb5a8ede53ca56"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/run-summary.test.js",
+          "kind": "file",
+          "sha256": "8ede23f76a4228c00ed2a41f670eeff5082acf6fd2335f92c1e561aa7d585316"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "5a6ee0a704e12640720c97c18f01f3180a153acf8b1ecf9ca9561505365dbbaf"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "55209ecfcaef1f131afe72ddbd19f4740e380ef10975fd0bfb2cc0e1fa966c1c"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "b938d73da7cca41ef419956e0b306b2f52134f6bd170df4040b274f0c9788f0d"
+        }
+      ],
+      "strictTreeSha256": "3aac9a8f9bcc5d830d33a7e83a058613fa1a5f6e49ff5a967b2c9e2fc33e8293"
+    },
+    {
+      "path": "test/skill-evals/docs-maintenance-recover",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "520afedb2a07103a47e49802a27d2a28d664c19a4431778dfbf669b8332a762f"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization/plan.md",
+          "kind": "file",
+          "sha256": "b34b3e9ff119ee164729d2151b025050949c222eab25ab37f3fababa4ee54419"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization/spec.md",
+          "kind": "file",
+          "sha256": "51990d9ea5af4660894a9fe604b3dda59bfdac3f89c8995eff150325839f65b8"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-420-score-normalization/tasks.md",
+          "kind": "file",
+          "sha256": "da2235478e5cf2fe25dec28cd57e1970f6e1d1725be545c3e23cc7cfe18ab9db"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-421-evaluator-provenance",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/agent-evaluation/SPEC-421-evaluator-provenance/spec.md",
+          "kind": "file",
+          "sha256": "52f9035011491ebc1cb3e01a841c927ab0a19243b63d71d31fcac58d10abb60f"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "f0c0ab98d3e7c33c4c34b862a1e11df5757e1e32f3062caae336810f95a9caec"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260727-1800-provider-sample",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260727-1800-provider-sample/record.md",
+          "kind": "file",
+          "sha256": "16dde62ca08f6075b40a17da41eb6001dda76d7525e7d883c392cbbc09b164cd"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/score.js",
+          "kind": "file",
+          "sha256": "4793073b8742578d10c6794d9e5e0f329ad9b7efd4dab4f4167d6c92adce51a1"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/score.test.js",
+          "kind": "file",
+          "sha256": "aa9d4b7951da82b588f9092d54f498f1942d4fe3625404976f03040d36e79de8"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "4c7b754b18b2a289c347b6b716f8f77496d820784b0d37afb426af4806fd223a"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "313fb028cc64e0c64ad99679fb5a2a7e20283957128195316cfb1e87638160cf"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "b3d3539795182431be96a1b314ac92c637f5bb12ae51910e78b43d66499622f6"
+        }
+      ],
+      "strictTreeSha256": "c18e4c5903d726cf1024afafda04e3eebac08f1fb2f400dac366e47fa9ce9fcf"
+    },
+    {
+      "path": "test/skill-evals/framework-e2e-paged-cache",
+      "protocolVersion": 1,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "49bf467b3be639360c1c1812c3a417f010b947781cc3547d5849d95695608eba"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/commands.txt",
+          "kind": "file",
+          "sha256": "879c2885161d55d9db35cba24725229cfc107fb048bf6c276522c24545ac05b9"
+        },
+        {
+          "path": "evidence/baseline/environment.txt",
+          "kind": "file",
+          "sha256": "58337d9c45c4f529cc4d58ff7c07c2638f5f50159b0bb36a41624bbff8dea2c4"
+        },
+        {
+          "path": "evidence/baseline/interactions.txt",
+          "kind": "file",
+          "sha256": "13d14f4839013acf607823b4682c8990c7cb6690e1294c9e1c0a49b85fcf8307"
+        },
+        {
+          "path": "evidence/baseline/reviewer.txt",
+          "kind": "file",
+          "sha256": "5d501f411b80f85fac8f642675b84cde8d515f245ef425e4001158df26b94256"
+        },
+        {
+          "path": "evidence/baseline/tree.txt",
+          "kind": "file",
+          "sha256": "e32180192da585d49b05a7967d1cd65b1cf8d06e78b4b5cd99a464a010b971d4"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "244144e71e3f9fd8dface6b79b24b27c3ea303a78c7cb974b37160a14d73d6fb"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "46cb2c56598e917d7550c51309ac1de9f5794a1a7cf0c5b2ff9f79425d0fde40"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/spec.md",
+          "kind": "file",
+          "sha256": "8ebb698ec83e8b0551718a47752376bb111fa9abc9afd851cdfec25f9e1c07c8"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/benchmark_cache.py",
+          "kind": "file",
+          "sha256": "324692c26565b3f646227b7013e9172a6e93fbfefb727e87e628acaf23b27c10"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/kv_cache",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/kv_cache/contiguous_allocator.py",
+          "kind": "file",
+          "sha256": "c8b0a813883699a3de89bac8ef33cd8ccf776cfc0addea117454c28686d482ab"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_contiguous_allocator.py",
+          "kind": "file",
+          "sha256": "35d931e6318590ae0536b533bfef0ac0fe060d25d5c75b1a74faf822822485cb"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "095a32ec6bdfa495745781af6e77201916c487ebfac2e8fbdfef919755827228"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "baf04608d17acdce547acbe0c64604a7a05a82ef27255c17fb3575fe35fdc568"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "9fe8cf995aecbe1a684bc1e1f8794521c435efc8bb504905191f85e8f91d5afa"
+        }
+      ],
+      "strictTreeSha256": "7d2acf486ea5ae6b45d1c0aa121f3f64da905939d5bf85640598ea1272e86874"
+    },
+    {
+      "path": "test/skill-evals/framework-e2e-paged-cache-v2",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "244144e71e3f9fd8dface6b79b24b27c3ea303a78c7cb974b37160a14d73d6fb"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "46cb2c56598e917d7550c51309ac1de9f5794a1a7cf0c5b2ff9f79425d0fde40"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/kv-cache-acceleration/SPEC-001-paged-cache/spec.md",
+          "kind": "file",
+          "sha256": "8ebb698ec83e8b0551718a47752376bb111fa9abc9afd851cdfec25f9e1c07c8"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/benchmark_cache.py",
+          "kind": "file",
+          "sha256": "324692c26565b3f646227b7013e9172a6e93fbfefb727e87e628acaf23b27c10"
+        },
+        {
+          "path": "fixture/scripts/run_formal_benchmark.py",
+          "kind": "file",
+          "sha256": "f7d3c7d3ec9f4bb6f773a988b0b74a926dff8b7515bd40430d328fab13ea01d4"
+        },
+        {
+          "path": "fixture/scripts/verify_formal_run.py",
+          "kind": "file",
+          "sha256": "a385db621c8b698554fbd053c5a519c0ab87319264b81d2d47e7c94428c95f7d"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/kv_cache",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/kv_cache/contiguous_allocator.py",
+          "kind": "file",
+          "sha256": "c8b0a813883699a3de89bac8ef33cd8ccf776cfc0addea117454c28686d482ab"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_contiguous_allocator.py",
+          "kind": "file",
+          "sha256": "35d931e6318590ae0536b533bfef0ac0fe060d25d5c75b1a74faf822822485cb"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "c7c0092bec583880f704de0881ee2b6707af330af2a9fefe9907a53b1ac2c3f4"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "1b9f892e54e1c42406978bde08d697ead35e0379524d5c03c9f0a2ab947f1c45"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "94244518fc46a6a0e28cacc22370727e28142826a0b7feaaf53b0d78cf5cae19"
+        }
+      ],
+      "strictTreeSha256": "ec136eaeb4d796086446ee59dfaafba1979d2eb07edb70955391177630c4ac4b"
+    },
+    {
+      "path": "test/skill-evals/generating-tasks",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "90d8a8b328ccd06e339607bd7b441d8baf7220fbc2d04bfde291f25a68428da6"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "kind": "file",
+          "sha256": "063d10bf32b92492b87ba00e12a1bf720bae3108121e15539e8ccef9c990115b"
+        },
+        {
+          "path": "evidence/baseline/wave5/environment.md",
+          "kind": "file",
+          "sha256": "5e48a9aaca97e29bf609a46d733fd0ce41d531be4faa0df94e59293c9e6092bf"
+        },
+        {
+          "path": "evidence/baseline/wave5/interaction.md",
+          "kind": "file",
+          "sha256": "50335ff6bb33fecb6e4f3953afb7660c550cd4d4dc2415752d7a95353eec23d5"
+        },
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "c784b5462b6c77d69fcef994f754a73f915e617930427c3e8f7835bb2e1dfcb7"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer-task.md",
+          "kind": "file",
+          "sha256": "aa9850e81731ff619c5ed05a059ecc15701c337fa8dbf4595174f8460c5f09d8"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "kind": "file",
+          "sha256": "87b54b4f99bc4dcd284c68a4d19e548eac4a61ac15345f538b8633600616395e"
+        },
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "kind": "file",
+          "sha256": "463f58629764253857241676def944e935e59f4a4810d6677ae0f345661c5cac"
+        },
+        {
+          "path": "evidence/live",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/live/wave6",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/live/wave6/environment.md",
+          "kind": "file",
+          "sha256": "5497654d1b7946b60db91db52e386ee42da42bc75013d6b92cb1df44a1197359"
+        },
+        {
+          "path": "evidence/live/wave6/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "665c6cb51a4977063dc3bfd1186706f0a49094d44dae3ce79038b7effd5d0753"
+        },
+        {
+          "path": "evidence/live/wave7",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/live/wave7/commands.md",
+          "kind": "file",
+          "sha256": "508472cd13bb3f91fdd72c53fb7a6e225ae978ac72f6f893a92eef9e0896277b"
+        },
+        {
+          "path": "evidence/live/wave7/environment.md",
+          "kind": "file",
+          "sha256": "e6989392e2e213a2373373f134aad59af08ebf1d7e5aba4bb926579872856c68"
+        },
+        {
+          "path": "evidence/live/wave7/interaction.md",
+          "kind": "file",
+          "sha256": "eeda23f1589b50d1ca714a167c3c573094edf154c7faf55a270ea31fc87ca92c"
+        },
+        {
+          "path": "evidence/live/wave7/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "5dc57ca1405bdff0a1676688ee37f68e4644e9ea9ecddd6445393d018d3a7daa"
+        },
+        {
+          "path": "evidence/live/wave7/reviewer-task.md",
+          "kind": "file",
+          "sha256": "ea50d3cca669bdaad4c8b1e523be4d5a5dd967098059c681050aeb7ebd2071e6"
+        },
+        {
+          "path": "evidence/live/wave7/reviewer.md",
+          "kind": "file",
+          "sha256": "588cb877df5620f518c656e67e2bced5ccd4b2928471e0de38ae0eebe5acfb54"
+        },
+        {
+          "path": "evidence/live/wave7/tree.md",
+          "kind": "file",
+          "sha256": "ce056423df02f2b5e179ab6b0803a103e8c856165686feb6825e760abe289cef"
+        },
+        {
+          "path": "evidence/live/wave8",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/live/wave8/environment.md",
+          "kind": "file",
+          "sha256": "9613f03c27af3e919b74be8cdcd705cec7580c39d6d5c9a02817b1c78f7412c3"
+        },
+        {
+          "path": "evidence/live/wave8/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "3cc24603bb8bb7d78a76a7befa39cb997d936be575dc1fd77e70c7b3b538022e"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "fb1d480f00d488cfb28bc1c6765983070d44ba48632a344ba926a77590a1ecdb"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/feature-policy",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md",
+          "kind": "file",
+          "sha256": "9ee1b2c6522ea4f8983572b5cb06cd6e6a61e81d4066892991aa7c42eaa2b845"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md",
+          "kind": "file",
+          "sha256": "1499b9071eb14db8489ae0c2d9f1866c728525236e248febab98021d4189ba9c"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/policy.py",
+          "kind": "file",
+          "sha256": "fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_policy.py",
+          "kind": "file",
+          "sha256": "33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "c4a33691a56394056bfe3dd4d1e3eb482c2b2c9ef14ead42b6aa0700e3e94faf"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "887b36c8fa2205cb184c0ef59a419768dac2bc0c799abae57a554c0e24094021"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "7fa6960fdf241d168fe3fbc38ab0e4d2d4db3717cd6a77f29061db3febd89cfc"
+        },
+        {
+          "path": "scorecard.json",
+          "kind": "file",
+          "sha256": "86156f77cf90a2375c35e075bf0b9ef3622fc4bd87d8e7b6c155c80acaa8fa6d"
+        }
+      ],
+      "strictTreeSha256": "b7d71718948aa05a2bb07b7d9aae486bc85b6287913e8f3cd45de12f90d0e1bf"
+    },
+    {
+      "path": "test/skill-evals/generating-tasks-migration",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "a2f5424780bdc5933b3b25cf38ac44d0dcd9815d20941b702929cd41f016e48e"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave5/commands.md",
+          "kind": "file",
+          "sha256": "4221c992c056fe48038167fa4516de613f18724640d208a0be4cddc61d2592a1"
+        },
+        {
+          "path": "evidence/baseline/wave5/environment.md",
+          "kind": "file",
+          "sha256": "55ac7624b109e1477db9d94c86b42406ba8b018dc41d51e147b8a1e63c31928c"
+        },
+        {
+          "path": "evidence/baseline/wave5/interaction.md",
+          "kind": "file",
+          "sha256": "450ca0415462b8a4f2240faa68474eb336fa66cde8232d58d3ce5ea70236e1bd"
+        },
+        {
+          "path": "evidence/baseline/wave5/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "f86bcb7d2d239f1e6591dfa63ae3badb009bc5f4f22802b71eee6499414bf4c6"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer-task.md",
+          "kind": "file",
+          "sha256": "76931d1b7eab8eff337ea06999856516196bc3a50a4e2729b92824a353273320"
+        },
+        {
+          "path": "evidence/baseline/wave5/reviewer.md",
+          "kind": "file",
+          "sha256": "7a5a2081b415c1d0da8269b8d79af79eccd6a38cde6c52b040f3fabf4ead2b3b"
+        },
+        {
+          "path": "evidence/baseline/wave5/tree.md",
+          "kind": "file",
+          "sha256": "3a4b88cf40e3cfac159f6e38cf6389b9043f8a480710b8e74a1b32c01b0ecbc2"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "c66aa648f592f6bf3620a3880b90908cfc8c762bfef34317e606f8283db74e28"
+        },
+        {
+          "path": "fixture/config",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/config/migration-state.json",
+          "kind": "file",
+          "sha256": "cf7cd99d48aa4de4b5a27e50e1bbfa2568902c286177694b3840bf9f5705b4ed"
+        },
+        {
+          "path": "fixture/config/profiles",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/config/profiles/east.properties",
+          "kind": "file",
+          "sha256": "881cd051056376750394b5ef33c31986084712628aff188f95eeb57b4f2b4b23"
+        },
+        {
+          "path": "fixture/config/profiles/west.json",
+          "kind": "file",
+          "sha256": "274ece4160d3ea657c110441a0011d4b70f63fa52d67354008802a1cbcf6188c"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "dbbab707ce0aa137926d4a52d6ab54e847bedc86a09863adc2f74917b2450245"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-format",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-format/SPEC-014-json-config-migration",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-format/SPEC-014-json-config-migration/plan.md",
+          "kind": "file",
+          "sha256": "254588a45436f4621b110e0f4e3e7b772b4be9fab98ad9f275cf1acc80f90367"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-format/SPEC-014-json-config-migration/spec.md",
+          "kind": "file",
+          "sha256": "cf259f88053b48f644ee02ee47014745cf9bb095bd89d29888a358c43456a0e5"
+        },
+        {
+          "path": "fixture/package-lock.json",
+          "kind": "file",
+          "sha256": "d9ed0ee3d4bb822e7375060103760dfee0edc759c7a81af8541638d643861462"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "b5e6257be3ca0c47ed5c704e54747687bdec3f39fea26bc58c11c6e8dc8a0ff4"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cli.js",
+          "kind": "file",
+          "sha256": "0d2e5df9d2a47ff61a81ddce5006a4eaf355c24b5b6f22c1cc6b73c04cb1fa8a"
+        },
+        {
+          "path": "fixture/src/config-store.js",
+          "kind": "file",
+          "sha256": "25f018fe6829cd4d4da56ec4dca4f3b877fe7170b288612f7e162c54561c6d64"
+        },
+        {
+          "path": "fixture/src/legacy-writer.js",
+          "kind": "file",
+          "sha256": "f28f8b67bef419359b322f51d21b14962415ec4ade77eb5c18e68761218c4f0f"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/cli.test.js",
+          "kind": "file",
+          "sha256": "2c424a9d8c7a3acf44ef98c445ee4a0ede1a4568f7c36bf208d0170941cea6be"
+        },
+        {
+          "path": "fixture/test/config-store.test.js",
+          "kind": "file",
+          "sha256": "54f0d2cd0934ca7c1e52419b96f720d9e92ca628db99dc8dc2da71e08cd9b6e9"
+        },
+        {
+          "path": "fixture/vendor",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/vendor/legacy-properties-codec",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/vendor/legacy-properties-codec/index.js",
+          "kind": "file",
+          "sha256": "3337433e15a162454e55bbeabb97b69893728c44a9179a2d145304e90a951aff"
+        },
+        {
+          "path": "fixture/vendor/legacy-properties-codec/package.json",
+          "kind": "file",
+          "sha256": "17b4c5c538e81e3a6ab1c8a7a77fed675ac59e9b0b04007610167ffbbdd7c65c"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "2384303d3208b12b83a1aa4cde2388a8ab8a6ab1a9fbd5ece8d8ceb19210e21c"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "6295c1715525f0af9533b3bfeef41a187f716a1625c0a203b2453fba19a1a252"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "7c4008d8e3f85c1b398087830dee3d688b7a4df706852440eeb6d76fea8bcb07"
+        }
+      ],
+      "strictTreeSha256": "75b8fb6ba978838b94781f2272dccdac15d20cef6659679e65d6d1e7e16f0be9"
+    },
+    {
+      "path": "test/skill-evals/handoff-dirty-implementation",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "6d171793a3dbc25c7fcb92b3532e23da1c0cad60c4d61543c444b67622662bba"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-normalization",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-normalization/SPEC-021-query-normalization",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-normalization/SPEC-021-query-normalization/plan.md",
+          "kind": "file",
+          "sha256": "8c11f20fcde29604f42554d0e4cee54268e59da05dbe66bface70e565c22ee09"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-normalization/SPEC-021-query-normalization/spec.md",
+          "kind": "file",
+          "sha256": "e5ed36167cc071bd5f043e72608dfab77f07300fa83a68a8ca12bd7dfc3c90cb"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-normalization/SPEC-021-query-normalization/tasks.md",
+          "kind": "file",
+          "sha256": "71de8ecade8340ad870af9df7697c08bf29e42800eea9dfa0a902489ed99f870"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/prepare_dirty_state.py",
+          "kind": "file",
+          "sha256": "b2d471c35f14949004a0145782a00859d5bacfe8cab2155e135064059dd890f3"
+        },
+        {
+          "path": "fixture/scripts/verify_dirty_state.py",
+          "kind": "file",
+          "sha256": "1ff3877a044c0ec25e7d29661df39a4666c0be43dbaa2a1e1cebd923ceb7bcb7"
+        },
+        {
+          "path": "fixture/scripts/verify_handoff.py",
+          "kind": "file",
+          "sha256": "0904a364894c3aba7a03eec8bf64d571d2f9f830b968189e2bd94a587a553302"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/search_normalization.py",
+          "kind": "file",
+          "sha256": "e4f334896fe4dcd3dba28d8ee0011568e89c710f2cc0eeaab978b1c436e859dc"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_search_normalization.py",
+          "kind": "file",
+          "sha256": "9f82387cdaf56e7d8595f2d2e738c2fc4d5601c8b39b68700016e89176077579"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "64027683470540b6a791121e9cf3d19ac1758426e48d293cd8d6a636fee20118"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "855d35b96cc76af7459ee279c23d96324fc962de668a6a2119cc5575e34d7e4b"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "d687d7f38fdd872ff91f0c588ab8863a080751b241ed63374d9a43aa66883dc4"
+        }
+      ],
+      "strictTreeSha256": "9b54fa9bc273ee87a5cac9c78f20d1486b4d1de62432ca10cfc38fdd4106294e"
+    },
+    {
+      "path": "test/skill-evals/handoff-negative-experiment",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "e7c03a68f012bdd8ceb7481548732a28035c4079e774c9a4c1ce186cb0faf001"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom/outputs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom/outputs/stderr.log",
+          "kind": "file",
+          "sha256": "31cc83e8e95d987ea301e26bf853dc9c0d0018711bf2e64520a74b97a411081c"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom/record.md",
+          "kind": "file",
+          "sha256": "550ce61d125f2cb0757b02f79044630286d5a33d214651a54167c030d30f00d1"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom/results",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-oom/results/failure.json",
+          "kind": "file",
+          "sha256": "65a92b47dda49caabeafbb1e0ba9b38e672ece8e9034b664821784e6f9e44090"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality/outputs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality/outputs/eval.log",
+          "kind": "file",
+          "sha256": "0775495a8335ce0cedd4992a36b52245e71becf2cc6b065659f404dff5983b91"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality/record.md",
+          "kind": "file",
+          "sha256": "b9b2448d124cad16e660a9e4ad08eb268fadd045a4fed3c8eb95b17a6c3e9793"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality/results",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality/results/metrics.json",
+          "kind": "file",
+          "sha256": "a0cc3de7e33f56b5ac7cacae898f3538c73dedf6f91e0ca48ae271c369b7a440"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/prepare_session_state.py",
+          "kind": "file",
+          "sha256": "ed5941f1020551493f9b40538af3ac8ada63331de0e963a24d7a815ef912347c"
+        },
+        {
+          "path": "fixture/scripts/verify_experiment_state.py",
+          "kind": "file",
+          "sha256": "14814e71ad043a7be3a519897202d6cbbd4b73ebfbcc40a2553636fa6630b778"
+        },
+        {
+          "path": "fixture/scripts/verify_handoff.py",
+          "kind": "file",
+          "sha256": "680bf7419287a0f33c02c5f9c257b54e501b4aa950e594dda39f76ab493f0178"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/model_footprint.py",
+          "kind": "file",
+          "sha256": "9a436db77995342a3c0ee60f595a8d24ac5be3d88b4c6af8c890a4f855a5a568"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_model_footprint.py",
+          "kind": "file",
+          "sha256": "e9d9742c7947b22f91aaba36daf8c81b28176cb6f692f1c45cfb4ebbdbf59a7d"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "503d890a6fa76f95072f8834126d9e825d9e18884ff3f06a1491094fb519775e"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "6276f15d8506addb5b549a388fe30d90466ea27a0f0b96ffaf4a8f2afc921ea8"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "06a678ed8d146d76a506ac33b456d2be16aea85935cd9852bdcde928ad527423"
+        }
+      ],
+      "strictTreeSha256": "5cfb2d0fe736074ab2bb85e92def470ac9bf35a8f195e8ba835658daeb979ad8"
+    },
+    {
+      "path": "test/skill-evals/landing-explicit-durable-queue",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "7e51a86d3e0788b6e880fceb28740e6d53728ede0f44b48b5680d8b957f61f47"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "902b7beed82f18de8bf430562735490377edc6e8e7fd5093878a02433b97d601"
+        },
+        {
+          "path": "fixture/consumers",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/consumers/reporting-worker.js",
+          "kind": "file",
+          "sha256": "7c3fca943accfbe58ba941da02f8c23c4489066bff1ccd71b021fdd7ab941ee5"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/operating-constraints.md",
+          "kind": "file",
+          "sha256": "5e910abef8c430794a45f360406b0cb030b559862a6409529ce0b55a19be49ed"
+        },
+        {
+          "path": "fixture/docs/takeoff-output.md",
+          "kind": "file",
+          "sha256": "3b76efd917838e9d5c7128b36fb46e82e3a42270231214371d1b0650e4c2fbda"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "0579660c2206fbd9adeab64bd6e16b9bd51ae01e14420793e37ad7e12a61c07a"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/scheduler.js",
+          "kind": "file",
+          "sha256": "11384d685a57c512f64e8b035e3f9605bc1fa57b6ece3a679e105d720abb7098"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/scheduler.test.js",
+          "kind": "file",
+          "sha256": "e7c4c04f79c794d295eaaf3c1b3c9f9212167bd0cd304eddf7aca25c02bffa83"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "8cfdd8a81439ce2aa69764b2680b9ee94de1f415fdb2d254e38b09dfbec78bd2"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "62e17c29250873948583789605c6a46f4cdbeae9beae30d6c55bd97deb59d817"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "d68c3b60e8abf94e731f0412042a378e6fb2523bd8230dea20f6fb8352f39dec"
+        }
+      ],
+      "strictTreeSha256": "c2c88c2ca8a550db8a7eefce059a6ed725d04487718395f4836dc74ff65ba9d0"
+    },
+    {
+      "path": "test/skill-evals/landing-explicit-feasibility",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "bea5e09affcb03b2df7f95e313dc4cc6b11594d9316b43d9faf722abf0fc2506"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "b99976d42437279d46ccd569a18ff32b56b736da2ed179ad522e74157306a7ab"
+        },
+        {
+          "path": "fixture/capacity",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/capacity/baseline.json",
+          "kind": "file",
+          "sha256": "f9f6ec9aaca2dddf731ea673ced700efa94c3d978cd208f2fad5893c93be87f2"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/search_api.py",
+          "kind": "file",
+          "sha256": "15f28a73c321d7542e3d5c521f04869b4e54e0613407e62e0c904d958e1a1cf2"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/architecture.md",
+          "kind": "file",
+          "sha256": "00543d5d96a1c3231ff61c4e843268658c07c131c5c43ff8d9d5033e955c2f66"
+        },
+        {
+          "path": "fixture/docs/takeoff-thesis.md",
+          "kind": "file",
+          "sha256": "200a715aea840cdc3d03a82b0b7ca554065b4814bfff5e5880ec37d8ed2322ee"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/show_capacity.py",
+          "kind": "file",
+          "sha256": "f726ddd0f71d73ee6cbc6442738d4996dd85ec114a6eaebde71d13e9a6d0b373"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/__init__.py",
+          "kind": "file",
+          "sha256": "4572c9ad7eefe7a06621a0fd70edcad4c421eca65566153540f7886d096c4b5c"
+        },
+        {
+          "path": "fixture/src/vector_index.py",
+          "kind": "file",
+          "sha256": "c29eb5076e2b49137f2cf0b914a32ac58d26f21c66ddeb1796c0b56bcb36f65d"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_vector_index.py",
+          "kind": "file",
+          "sha256": "faaa9ff6c918f7094189cc4e85bf51b2d2d00d7f769402cd8d4a184fffc2bae6"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "46a9894936582a4b2a41033024a34f581f63dd458421fc12e15e7635bbba35c8"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "1671cf55869a932683df374e5fc5f127f566596b26d93054b993b12938b96ebf"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "3f4c95361355e59e5de8d6e5f3947be901e6255414ef3b7c3bdd8f01747ef34b"
+        }
+      ],
+      "strictTreeSha256": "91f03ddf01ada151ff0025b1ddebe0e46c3d5010be9b67b42e839a4d390c9a82"
+    },
+    {
+      "path": "test/skill-evals/manage-specs-existing",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "a9db0547303ea10090f18080a1ea1777045818fa88d8098229a9c3787f97dbcd"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/commands.md",
+          "kind": "file",
+          "sha256": "e26ae9d89f26a2f052e3fb64715d3334b4bc55bff71428e87bb08f1a1cff7ec1"
+        },
+        {
+          "path": "evidence/baseline/environment.md",
+          "kind": "file",
+          "sha256": "136d94e945a674d95f3e8905398ff7fd4472600885d8327b9c45ceaeeb07f4e1"
+        },
+        {
+          "path": "evidence/baseline/interaction.md",
+          "kind": "file",
+          "sha256": "3b0962b9ec7c3ae9d6219cb77afb799758ce626c50c5430268a2e1adc8b7068f"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "692b6370b1b9ffcfc2c5f779f7bfab3758703e1a8490029f3e4052640c3b4e76"
+        },
+        {
+          "path": "evidence/baseline/reviewer-task.md",
+          "kind": "file",
+          "sha256": "9c0aec534d14ed9aa455e39e8fbc0c762ecea93010ae3246555ad3e9e070d65c"
+        },
+        {
+          "path": "evidence/baseline/reviewer.md",
+          "kind": "file",
+          "sha256": "7c9fe8ab3d3389a69471e305ea7ede72c3017954b8871e00b392f8a47c6caa9a"
+        },
+        {
+          "path": "evidence/baseline/tree.md",
+          "kind": "file",
+          "sha256": "2a121198d9e4a5266a8855cfacd5aa8179f19e9d70cb4a4b843442b7610c4c42"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "57c440ce751bb51f9e4016fd40f510d02e4bac8145d560b149cf73c89890b5c8"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "0c585ed829d1d7013c3fe8ed803be9a064a69509f827964d71a889110f62386c"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+          "kind": "file",
+          "sha256": "c77ea805fe690653d21d47ed07f4a279a933a74e5aa9a1f4d7ba0ae2f10c6491"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-004-result-diversity",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md",
+          "kind": "file",
+          "sha256": "1d9e6fe916f13ee39b32763572ec3a40bbd3aec46cd87c6c972eb181646686ec"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/ranking.py",
+          "kind": "file",
+          "sha256": "d91409a8c9f70bdd822bb2b68ccee9393dfaa4d56b7b8b981d90e3c3296aac60"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_ranking.py",
+          "kind": "file",
+          "sha256": "17fa99aae4dc00b93c7f6e790d38557590c8eb5e4e9ad591a90f5f19e7af08d5"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "1df4b2d476429cd9958885b4bc30853caf433af3520c099ae69d8fc56d0cd9bd"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "5c64ae8286e11aa4645635c0fd77bdcd6699bf9348844667df6dede669251164"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "0ba0386c0c0f0545ebe53a071993bede13b8c2a00ded2f8d01d14732bb85c854"
+        }
+      ],
+      "strictTreeSha256": "42ef2f58b16a5045e416d774056e9c75714552dcdf02653d5b2aae39561b13c8"
+    },
+    {
+      "path": "test/skill-evals/manage-specs-independent",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "aefa8d51f81f31188ef500392feffdaaa1b4db8cbc09628301799752ccf0acb5"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "2d737b0135a537df1563a7dc8109d80358da53636b3bebf601c18c128e2d3195"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/observability",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/observability/SPEC-009-request-tracing",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/observability/SPEC-009-request-tracing/spec.md",
+          "kind": "file",
+          "sha256": "e7f7120332bec6215e1ed58e8544ac907874957ce54cb0921a5fb1f3c550bfef"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/spec.md",
+          "kind": "file",
+          "sha256": "34ae4b2aae12ef8c483edf198b02623996c77fd9ce964a24eeafac504a3a4791"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/retrieval_api.py",
+          "kind": "file",
+          "sha256": "8425b8c2cb283d3b18e75c03053f4d1342ee7ada434ef2ab56a41b3b811a4a67"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_retrieval_api.py",
+          "kind": "file",
+          "sha256": "88571ec3dce510791a03e0db5fdfc415f6f7292fe58699869e7fcad588b9595b"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "a3451b88a540a2c5877e558c03a8380524fb00c89da1f9436b0120ffd04ca23f"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "1f8eaced3bb6484b8e8539264a6578ac48ba2ac35df0325588bcfd22af31e148"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "5eb41e95bdfcdcee4f4a53cabb743fade2395ec8f5adc3f1f7b9c3ea3c64c93f"
+        }
+      ],
+      "strictTreeSha256": "1b1742e13348d4f251cd6c91b99d5f61df6ec30b6904a05f9bafa69a70c86f16"
+    },
+    {
+      "path": "test/skill-evals/manage-specs-options",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "420559f1facb884463a72a01047a621872bf8ee26cf0b544afcefb1feb386057"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "fdfc14b644d5cd1f77ec77bdc4d9411e6a2e1b52fe5e3711e998f88c6b0505ce"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-policy",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md",
+          "kind": "file",
+          "sha256": "8fdd6ac2fca46d569d9bc260d2fc80ab256b5c17511028ba1850ecffcd92e247"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-policy/SPEC-008-background-warming",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-policy/SPEC-008-background-warming/spec.md",
+          "kind": "file",
+          "sha256": "b615a50bcf2923eb0e4a7f4886d65dbe00d419737022e51a66802edfb61d475c"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "e90bb5183abfe90a85f43729947a7c1c37336fad857f83178b17adcaa71cb7bd"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cache-policy.js",
+          "kind": "file",
+          "sha256": "6f925aabf7812b95347f46438b362b495051967e647d420d24191fcbc8e3d501"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/cache-policy.test.js",
+          "kind": "file",
+          "sha256": "36d732e1d62281f99343476f81a1ba1747b222f5c58e8cdd9a05702b24f41b9e"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "1e04c35bfbba166c5813e24881dc821708a3d9a04175f78ed74672c26d1c348c"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "50813bf2d531ff7c498a93849f2a4743f6f10a211c58097d8e8f70bf49750149"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "148130c1e5de729eeff5a6e5f29611bc807ef05dcf46f0b56de6cdfbe8bc3feb"
+        }
+      ],
+      "strictTreeSha256": "bdd3720da5d45c208ca6cfacbfd7910e4ad09225bbc1a2ff39b0afb30da8b12c"
+    },
+    {
+      "path": "test/skill-evals/manage-specs-successor",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "baseline.json",
+          "kind": "file",
+          "sha256": "fcc3cb6f98f5db1d584e42f449a96ce496e339d142ca5ce2016a2672fb623e69"
+        },
+        {
+          "path": "evidence",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/environment.md",
+          "kind": "file",
+          "sha256": "5f9da7f9c414a826ca8bcc0788331cf6058f0be3341e20144b6c4331d726fb61"
+        },
+        {
+          "path": "evidence/baseline/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "aed35be002e7711e2ac33c9cef70606cfd248cc9c553e9344b53b6d259763da9"
+        },
+        {
+          "path": "evidence/baseline/wave3",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave3/environment.md",
+          "kind": "file",
+          "sha256": "7c9a7e6d3ce9b930512f6c66aa72f3737331fe45853a9fbe4ab3e26775d4e167"
+        },
+        {
+          "path": "evidence/baseline/wave3/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "678fbcc4b8d7d8c14d86b6c229014c9cc0ebcd17af89f97229f705faa7adf0fe"
+        },
+        {
+          "path": "evidence/baseline/wave4",
+          "kind": "directory"
+        },
+        {
+          "path": "evidence/baseline/wave4/commands.md",
+          "kind": "file",
+          "sha256": "3eccd7621d9eb22e0200dabd40b425ec0188674d49911bcf5441e15cca6e0436"
+        },
+        {
+          "path": "evidence/baseline/wave4/environment.md",
+          "kind": "file",
+          "sha256": "466b821163e0084be247a4291da1c0c2296e1e92ddece6a1981a8ffb297fa34a"
+        },
+        {
+          "path": "evidence/baseline/wave4/interaction.md",
+          "kind": "file",
+          "sha256": "23449aa1756a64f77ce4432a983866b83f1fc08df72391c7c47f905d70c3106d"
+        },
+        {
+          "path": "evidence/baseline/wave4/prompt-round-0.md",
+          "kind": "file",
+          "sha256": "7c8b6db7ab528cb0019f2510ef3304eaf9a7d514a010a57dcb6fd44ecd829b81"
+        },
+        {
+          "path": "evidence/baseline/wave4/prompt-round-1.md",
+          "kind": "file",
+          "sha256": "0dc274aad9a050b337b020775fdba0144334e78b5cfbf3497760923f210d18ff"
+        },
+        {
+          "path": "evidence/baseline/wave4/reviewer-task.md",
+          "kind": "file",
+          "sha256": "ae0ef410ea9d5450c9abfa72c01461d490f651c804126ee90cad556dae4cf1b9"
+        },
+        {
+          "path": "evidence/baseline/wave4/reviewer.md",
+          "kind": "file",
+          "sha256": "11af68fdffd306f39e9e79b965405c7c1e1cec9961f82f6d5d0f4b80da836c40"
+        },
+        {
+          "path": "evidence/baseline/wave4/tree.md",
+          "kind": "file",
+          "sha256": "704002767a855213053fad9c479617ae520c6e60a6849268846a49870387127c"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "29d93a34fbd5d2cbd805a9eb750d23280b382c817ca7f4da70eb06f02cde4f6b"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "f6209979f14131ed52869c25f3e8f05b0211a03ebe574f38193484f9485acc36"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/session-auth",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md",
+          "kind": "file",
+          "sha256": "d229fb566d4084b1f6c98039631c190b66cb2b4128de5618ab85eb97e631f306"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/session-auth/SPEC-011-session-audit-events",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/session-auth/SPEC-011-session-audit-events/spec.md",
+          "kind": "file",
+          "sha256": "2274c2a4fa4d9e58b1fb1c085a8e64d8a2aee1cedfd8d6cbd6a9d7764c7b7aa0"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "66e61cf69df3fec5c68f771bab45e0857ecbf05e1eb0d88633ecf74ecb8e991a"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/token-store.js",
+          "kind": "file",
+          "sha256": "b2e2a7ccacfec0d342466e9a83e72601f8ab9735b0af5a983b01bad52f368334"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/token-store.test.js",
+          "kind": "file",
+          "sha256": "0a2dd1986501af1f2a586e258b4d7834d7b78f9040ce2ca57526bf6531a92933"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "1b64f5def1e75130a90b95fd676ed4276e54d9e033fbc9ea9f1c66fdafeb945b"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "39bf6e840b141d9770846c5d5b88de32f55346ef3023d9424cd08daf819b0a27"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "f3bc0d49aac7c3b8e457992e340cab02f57bc44870b6cc15616c99d17de0f981"
+        }
+      ],
+      "strictTreeSha256": "b3b538bd5ac11d6b01a1770a05658b52eff087728285ee36fc34ab887c53ad90"
+    },
+    {
+      "path": "test/skill-evals/record-exploration-backfill",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "c4d4b0b925192fbe0ea834b0b6cb65a213db069c5f659e8185109b2dfcc8972c"
+        },
+        {
+          "path": "fixture/cases",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/cases/prompt-cases.json",
+          "kind": "file",
+          "sha256": "529cb0a6d2d00a55454f06fb0a1b6a423e74a44f1a0f0c8f2ae63df23c268d78"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/exploration-boundary.md",
+          "kind": "file",
+          "sha256": "e8faa03f58c3401223149900a72a2ce2bb39b9e3bc9d8fd826e3c30aed0b7a3c"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "25cd5064d55ca19cfe1f721eddb128dd4622a55f9362899ac05aebd5f599127b"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/prompt-sweep.mjs",
+          "kind": "file",
+          "sha256": "c5f98db65852de44dfc624bf378f16a01a3e433916606f24b7b239cdcba62868"
+        },
+        {
+          "path": "fixture/scripts/verify-backfill.mjs",
+          "kind": "file",
+          "sha256": "fa03e7e5c427213dfbb0f0a06d6cb16a9bf2f525e1cf9fa992965b6bfb53716a"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/router.mjs",
+          "kind": "file",
+          "sha256": "5488dbf2bd9d5e008317356492b3223a08a51d4dd071aa2e2d2963b855313dc8"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/router.test.mjs",
+          "kind": "file",
+          "sha256": "abbcc82f99b58b6f8417f6eda1b4ceae6c9249de7ce767cdd1c3a715fe9063a7"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "24e681c85101e41069cdbdd6379ebdfe8abcb0eb507c6c517a7005e170c909ac"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "cbd4c8297c31d30aab8a74ef2ac1218f3bca2bfda8140e309bb9f4f119c5c1d5"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "a4c0f4829bc44fed43865fa78facd04172956db5367cb091d9e3c9eebb58ff59"
+        }
+      ],
+      "strictTreeSha256": "0b1e0cd48645634aa49d9fd2cb95c9c402ded94e960a323f95ff2f54745b97e6"
+    },
+    {
+      "path": "test/skill-evals/record-formal-prelaunch",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/.gitignore",
+          "kind": "file",
+          "sha256": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "1fd4f16bcb101ca2c9f857821e1f4b557ebcd37b6b6907f8cba31a47f726380f"
+        },
+        {
+          "path": "fixture/benchmark",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/benchmark/config.json",
+          "kind": "file",
+          "sha256": "0574f73f986213d3e6e72fa5340df5ccb515a0c13a582b08ddbab0532f846b84"
+        },
+        {
+          "path": "fixture/benchmark/request-trace.json",
+          "kind": "file",
+          "sha256": "9687a7ed639d364244d3d74a5efbcb078bae90bf2f141c446e6c1c5efcb9961c"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "3926409473af008f11263199c844503ffa07ce3108757d1cc938640fca72f42c"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-admission",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/plan.md",
+          "kind": "file",
+          "sha256": "e1a408b167cd0d4d2059d44aca935e7e683640ffda22cb09bb80cdefbbd96ab2"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/spec.md",
+          "kind": "file",
+          "sha256": "2477a0579338e717d62aa747658b389f222e1d85d52d63a843f23b4debec8ecc"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/tasks.md",
+          "kind": "file",
+          "sha256": "01709301070c08e55f734c5e52f13bc98f187f2dfbd5f806dd2ec00948c437d0"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/benchmark_cache.py",
+          "kind": "file",
+          "sha256": "ca3c1e57ef2cb2ca632267606fb6297efdbd2b70c3ad834f5250c79920361219"
+        },
+        {
+          "path": "fixture/scripts/verify_formal_run.py",
+          "kind": "file",
+          "sha256": "012852659955ed155fc4017ae3768cc304aa23cb11942d890f6a97845a2a3b75"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cache_model.py",
+          "kind": "file",
+          "sha256": "cb5ae4508e95581e021bef709de079782283242e132888c53e8a38fd119420f9"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_cache_model.py",
+          "kind": "file",
+          "sha256": "fe8e24b15e0137f350aa46924fec5a04d0356ccfd340dbcf8a14cd5dff78b47d"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "16e6eacf7847292b4dcffa5205c73ea7a893975e081184993b08218b71b22326"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "4536009be53ce6635c40887deb34e0e75361c0c7fc7122f574ea8ce5d14eb58a"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "e42d3edb384cbc11f06075ad53a0ea445f06264ec05b8b850a165cb715327383"
+        }
+      ],
+      "strictTreeSha256": "6b70aba4bc629912631a6339d45ff3b7493132a8e41dc022bf3c3610bea1fecd"
+    },
+    {
+      "path": "test/skill-evals/record-terminal-evidence",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "729b8dc7642f93985bc948afbc2d5eef8378faa143f7a7cff1ae23a555b9b46b"
+        },
+        {
+          "path": "fixture/configs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/configs/int4-quality.json",
+          "kind": "file",
+          "sha256": "f611e41ff64816bf45340d6133f53c4dc9a220146901fb464c8d71394a8c6bce"
+        },
+        {
+          "path": "fixture/configs/int8-calibration.json",
+          "kind": "file",
+          "sha256": "9d367a7499b282dcaa62aa175cf49005c503fe9fe89f7c0e09633468b5a8549a"
+        },
+        {
+          "path": "fixture/models",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/models/model-card.json",
+          "kind": "file",
+          "sha256": "bee2750d320b63877cc9fb85fe22945bd55a2fd29d0c9f4d7aba6a1fd6e3504b"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0/logs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0/logs/stderr.log",
+          "kind": "file",
+          "sha256": "090fd85682ea7f8d7c5e012b68fca2a60c4428bbeceed79b1bbc945174f1a5f1"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0/record.md",
+          "kind": "file",
+          "sha256": "dec0d7ab53003312d12331145ead6b90d2cfc6fb4b60f6f1373213cf18d80464"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0/results",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260730-0900-int8-cuda-oom-s0/results/failure.json",
+          "kind": "file",
+          "sha256": "74422d201b88545703da24fc8be5a49befde26ad2462287e1465deb4ef15571f"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0/logs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0/logs/eval.log",
+          "kind": "file",
+          "sha256": "fbcfdb763c70b5e007ca6c5651ff27726d185d19651153790a6d9877101923a8"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0/record.md",
+          "kind": "file",
+          "sha256": "cb56d5549da9798eef2bba351067ae251e3d188733427d8e8246177a0f08ad70"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0/results",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1400-int4-quality-s0/results/metrics.json",
+          "kind": "file",
+          "sha256": "2988bd86ee1040c501591e48bce4356be26c3e73466c7130b6dbffc97f00d0e4"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/verify_terminal_records.py",
+          "kind": "file",
+          "sha256": "5437efbfb946cc1fc60f6a363f1998dec88508929b689d0c78a90fa60acfb336"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/quantization.py",
+          "kind": "file",
+          "sha256": "82aa65a1bfc21ff81066b9b0ed516a31b0af2342a1ab97bf8bd57c5ab50a8e69"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_quantization.py",
+          "kind": "file",
+          "sha256": "06870fd9d01adedb34c5523e6718044924ba3c459f71af9adada2980e21e9afc"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "bd1266b6c23492f65c1b81ec97b076465877c50b40e13741c49fed2e1756fe7e"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "921f5670461f67b678e44969fad5a00be56d77bc8df3d4b68d8188fe88f7fc98"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "8b37048018202ed9d0c8c4350788f226d5a0d8ece16348d7226d18b29d2a26dc"
+        }
+      ],
+      "strictTreeSha256": "13f1246b87ed50918922c23b5e585efa4d11f66dfb384b107fc06491bdd9cbc0"
+    },
+    {
+      "path": "test/skill-evals/router-design",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "60bc727267b69e0732aa15e5b2e13280f070096dfe8358f916151b89b71bfbf2"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/current-system.md",
+          "kind": "file",
+          "sha256": "d8352d6aa470da118941a0daf19ff10ec31ae1a44b71b4f3739eaafad3df1581"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "27840839797f21d70433c6d70e2783fac113a9ac583d25a967e3dc1fdf7072c4"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/query-service.js",
+          "kind": "file",
+          "sha256": "0b760807b23b5a6b463c19e160951c1b76fff6f1a5ed6b1d48e4fe6629725c49"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/query-service.test.js",
+          "kind": "file",
+          "sha256": "327d6919929ac5787f7945dfb1a642632ac69dfb5add12f30ebed164946460fc"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "527639d1e30c31df5da755ee6b50d606c465cfbea17f04355039b6c6d082ea17"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "9a964595c70e36194c9c114b6792e08f905bf320073909ad0db781b0aa2f43ed"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "017d157c790614f10449a173fe7c67b07c49f1925d30d17b17d88dfa843db446"
+        }
+      ],
+      "strictTreeSha256": "a4f11cd9117fa21b8592a133aa07f37b4fdb616282f8aecc7938b161119b27dc"
+    },
+    {
+      "path": "test/skill-evals/router-execution",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "484eee2411f7cf215591d32a043cf374138bc847049c3b1bea6986c4e6e3b2c5"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-eviction",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-eviction/SPEC-004-lru-eviction",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-eviction/SPEC-004-lru-eviction/plan.md",
+          "kind": "file",
+          "sha256": "2b1b8683d02a7e0cf8b6a598b5b8f76e5530012acbd170a57cd8a9147935f3ea"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-eviction/SPEC-004-lru-eviction/spec.md",
+          "kind": "file",
+          "sha256": "ddf6f3630f1bee6b2004c50c11c868544554a4089ac432e3abd6afc382751c72"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/cache-eviction/SPEC-004-lru-eviction/tasks.md",
+          "kind": "file",
+          "sha256": "c7f5fd857b5f133ba0111eec1ca991680a353a1a12166b7720b087ac4fbace12"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/check_bundle_state.py",
+          "kind": "file",
+          "sha256": "6505bf282c24efd919e6144ecd9b7d31c2e1ec953d29051a30df67e143626ef3"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cache_allocator.py",
+          "kind": "file",
+          "sha256": "ae1d9cf367e90424fe4aea2708532ba19bf05ea92aa8ce8616553811f2edf022"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_cache_allocator.py",
+          "kind": "file",
+          "sha256": "bc47ab77fbf15aac143b8b37588f10c5036549d076fc946a9f0004fd4ee08a64"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "4cecbea5a5cd878403a69c38dcebee95051ceead9ed392162eb95ad57a80da10"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "73dfbb419e475a1ccaf11f91c025a1c7d82c57d969dbd28a0f5789c5253de476"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "da960b6c0ccba2846273f6be6805ced27ab76e46f1ddd0803c6c2e046cf1a85f"
+        }
+      ],
+      "strictTreeSha256": "4ac66cdb79919b74bae94c8be96a23d6bc54b538efa82d540ae26e87714a1147"
+    },
+    {
+      "path": "test/skill-evals/router-experiment",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "859b58813432ef5ab67522f4b134182066ea23d422732901b322888fbb092ac0"
+        },
+        {
+          "path": "fixture/data",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/data/ranking-cases.json",
+          "kind": "file",
+          "sha256": "7d9686a7535ae5a93e95429f38e2e0dd18f24df3650ab053ba91ea6b31cbb7ee"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/benchmark-campaign.md",
+          "kind": "file",
+          "sha256": "b9dca38ac965761a9ba44b50b9e1c4eb6794c4816cb9f159057f485cb3504dcf"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "995e8944a3ba31e0017a182a17b1024fb07a506064f459f7e0683397ec58d0f6"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/benchmark.mjs",
+          "kind": "file",
+          "sha256": "8d2f6eedc8750f7021fcc047eecd369b78b525a221643c9d3e7d7fd0c54e4518"
+        },
+        {
+          "path": "fixture/scripts/verify-run.mjs",
+          "kind": "file",
+          "sha256": "84431045a0d2a8c72c59063f06d67fbe4844fa32b097390831ff7cd0758e8739"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/ranker.mjs",
+          "kind": "file",
+          "sha256": "c9bceece40a623629364ad973b2f8de97455485e83c784a9cd4837aa7d324e71"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/ranker.test.mjs",
+          "kind": "file",
+          "sha256": "8e78f505cc9186d774b164b7cbfe7f62ca2b1d95ce3efe9dc2e43a657182284f"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "8fc50a1bcf37bcbd3b7464224fda5c7ee5c25f492c827d19501796677c00e248"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "d73b9da6ad1945b353ee6851e4b3afc1d604f4122ff9b69f94059b734f0a217f"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "04127d5d5ab6418943f322b827e3f67cf6e4ec424fe51933b4a88c729bf077fd"
+        }
+      ],
+      "strictTreeSha256": "050fdc5743f16d99ef7025c2a5cee5a09dd3b8326890b258a08d9686dd797808"
+    },
+    {
+      "path": "test/skill-evals/router-fast",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "5662d09586770b7ae9baab24f97b9f80a949611d79fb59371ccb9af5b9c36f71"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/issues",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/issues/whitespace-normalization.md",
+          "kind": "file",
+          "sha256": "aa3ec2a67e2bc67309549deab8c54e4236e21dffd7281b468144a1ddbc0bbe08"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/text_normalizer.py",
+          "kind": "file",
+          "sha256": "0590cf2b709d13a89b00f078559bc5da6635568a7cd6872bfaf754155106c10d"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_text_normalizer.py",
+          "kind": "file",
+          "sha256": "5cf48a21c7291e62c2c580f8b9cdb5463e6de613cd5122dfa6d2d4507d597945"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "c6e512558690653b453d3421b36bcb9d3f614e5fc935992899a822021d74b8a5"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "690f3109c4eda6c9f3cdd797a7cebea722f2cb388876acb796bd1e126d2c84db"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "6d8a6d0c807b97b57e8e36e96aa4113c0010da6d6753be6adf0777641ee8cac5"
+        }
+      ],
+      "strictTreeSha256": "dd4a262c88aaba8f49485cd822f4fa08a8681b1433f9432f7159bd515ad9da68"
+    },
+    {
+      "path": "test/skill-evals/router-maintenance",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "28d89a906ce1bd2503261468f5b2daea5fc14e652037d9dcbb02784f35665353"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "340b5dd3595ab978e9ea4caa8f3cf455869d426593e6334543805b935ab848f0"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/INDEX.md",
+          "kind": "file",
+          "sha256": "70c6072b149f03471eae771d7946bc1bc30222b73275cf5ebff9b61f4724f54b"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-evaluation",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-evaluation/INDEX.md",
+          "kind": "file",
+          "sha256": "3951a19ed44453a1687ef89eb7187a81349c32cc2ad529f474fb7b2bf3863534"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-evaluation/SPEC-012-query-fixtures",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/retrieval-evaluation/SPEC-012-query-fixtures/spec.md",
+          "kind": "file",
+          "sha256": "b97631b83f8f077edb9f3a6b545ea8e55991e453b5a5d3993dfdae17c8401873"
+        },
+        {
+          "path": "fixture/runs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1600-query-fixtures",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/runs/20260731-1600-query-fixtures/record.md",
+          "kind": "file",
+          "sha256": "b5ddeb5c5b6ba9ef32147f5016e4003b30d197a245bd762adfc75e5ab97192d3"
+        },
+        {
+          "path": "fixture/runs/INDEX.md",
+          "kind": "file",
+          "sha256": "068795af341a08209ba25d079bf663c29d3c5d358f0e8fafcffd056f1b93bcfc"
+        },
+        {
+          "path": "fixture/scripts",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/scripts/verify_stale_indexes.py",
+          "kind": "file",
+          "sha256": "c0d9b8e2f174cfbcd1722ffc58305a5e8a0d353b4bafea3fbcba6c85f0ad7ce3"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/paper_index.py",
+          "kind": "file",
+          "sha256": "c82502610d1e55b99dc3b90c055ab70ba2eb3704b36e180d41a20f0c28563a26"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_paper_index.py",
+          "kind": "file",
+          "sha256": "f65ba738ecf753e6705d36c49118542082063a8d949d3a761a6cd62d0816b5d2"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "8dd3477b1aacfd3330e014e9f0a6d9059957ecd44113c154a79c6fb98db53ea1"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "69a5cc283b02ca370aeb06378e0450f78580ca94ea9e03deede1113469b4f3ec"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "ff66fc4b9105244e0e5608190c12e392c5382b85e542f32c4bf0163098d884fd"
+        }
+      ],
+      "strictTreeSha256": "667468dc697e06452875484ef0e5372e372d089e616044888dbf7c73fd5e2a8f"
+    },
+    {
+      "path": "test/skill-evals/takeoff-delete-internal-compat",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "4822401dc057561b3bc7b3095b36e428e545bfcfd361294f123868f47719ab08"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "f3e3582c64947a79e7ef017471544688d895755144cb239907820f43674be51f"
+        },
+        {
+          "path": "fixture/data",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/data/flags.json",
+          "kind": "file",
+          "sha256": "d64ac038239b3f8c8bdef0ba1d639acd4935a6bffc3602ce8a2693d8540b8792"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/refactor-history.md",
+          "kind": "file",
+          "sha256": "f10128081b267271015de8acfa5d5a0406b930cd73c9c2708846de89d4293132"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/__init__.py",
+          "kind": "file",
+          "sha256": "18b0bb44f32dfc14c61c6aec88bc4e39a93a4d63555ce6649662521905464750"
+        },
+        {
+          "path": "fixture/src/feature_flags.py",
+          "kind": "file",
+          "sha256": "52927014730ae4fda9b25de2d7ae20c2d0f913ad9c41342a51f782f703b8f5b3"
+        },
+        {
+          "path": "fixture/src/web_app.py",
+          "kind": "file",
+          "sha256": "12fba692797f9df108254aa40f49dd05557c45aafb3d0b4ae67a6161dffbfcc7"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_feature_flags.py",
+          "kind": "file",
+          "sha256": "217d71ae3a0b5746cc58b88e22f34311cd482cac795909fca52ab60d17699061"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "0ea3d6718d97d826ec93ca5fbe26a721dd8dc262a5dd732efe1a9a377f7a9453"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "da95cf3240f5f31aca1c9befc8e255dceb7c838febf7b3f46b95093715206627"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "9c6e80059ac8e19390feef5f02b35b4627bacfb67b1e1b8f20e8c0e8508a247b"
+        }
+      ],
+      "strictTreeSha256": "1368880e6f57527222355647ca632a3ef2a90558fb8e19bd3452428afb43241d"
+    },
+    {
+      "path": "test/skill-evals/takeoff-protect-real-contract",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "250a0852f40e654c21be184665d50dd97b6e996733ff7e239281da274db45bc7"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "ca55285e5e5ce78b913021e818cd183c9fe10150d53e03b2735cf3b1635c708f"
+        },
+        {
+          "path": "fixture/examples",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/examples/eval-worker.js",
+          "kind": "file",
+          "sha256": "653316984aab2e328a4d5ffd64bae6b80a505bb6f56d3d6e171aa91878ee908c"
+        },
+        {
+          "path": "fixture/examples/training-worker.js",
+          "kind": "file",
+          "sha256": "d508030c09f0213c5ec538482a4e436dffafda43b3607a6a89a590fdbe1b39dd"
+        },
+        {
+          "path": "fixture/fixtures",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/fixtures/current-model-v2.json",
+          "kind": "file",
+          "sha256": "6395858cbef340d99ac55ca904b3ffcbeb2bdb85b5583f90021550cac1507ff0"
+        },
+        {
+          "path": "fixture/fixtures/customer-model-v1.json",
+          "kind": "file",
+          "sha256": "395072d92d3bd17c105998559c35ef0adf74ee97bb610837d887ab05ab718563"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "6ad162a25da4b4f3ef0e9df04fa1ec04fbef07f0745fe0244d63c4d4a63d76dc"
+        },
+        {
+          "path": "fixture/schemas",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/schemas/model-config-v1.schema.json",
+          "kind": "file",
+          "sha256": "9fc4aed2b5687a2cf21067a7f21b2b9fc9c8ef9059f95c81deb260ae686a15ac"
+        },
+        {
+          "path": "fixture/schemas/model-config-v2.schema.json",
+          "kind": "file",
+          "sha256": "6d7e149e910b62cfd1208ed571a4c039f97fa9ab7c8319813864b6b86c1ca560"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/index.js",
+          "kind": "file",
+          "sha256": "42f10bf79e50b9536076c5bc5898fc1296ef24ae8f7ec60d6a73ddad3cdcfb78"
+        },
+        {
+          "path": "fixture/src/internal",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/internal/legacy-model.js",
+          "kind": "file",
+          "sha256": "a2742f216e378c2e73f155cc8c99a58708664696fd70c73bfa7117cf1992e389"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/sdk.test.js",
+          "kind": "file",
+          "sha256": "8e1f4d59c4d3536692d13d2875538f11c90d6873c45d1270fe73944868d838ec"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "8d28db45b534009d30b56bad841736d33090b2b43f2bfb06106fd338940c68c6"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "452e0b1666352d9f26bd8c7ad2182533736cf21ed79c0a1c2f25d67a0bfb7a8d"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "86042f84f80f59ed353bea67b7224eb66a32ebcab2c3148d22c4f50c804c9fde"
+        }
+      ],
+      "strictTreeSha256": "da230bf32d4d0b950328a7fa078dd1328e3f1894858e6d39e93048027c25e52e"
+    },
+    {
+      "path": "test/skill-evals/tdd-approved-task-trigger",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "997744fdb6aadae60ef867428534accbee995dd3c62213de212614f083c601f2"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "c3ee2f0205be9c844e9cd24df9991a9bf0c2a09ddb19db05274381a87cc46206"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-upgrade",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/plan.md",
+          "kind": "file",
+          "sha256": "8c2b76273fd89547bbf485038c5b88ba07d7790a8b9cad6d38bd9b2a50b0c7c6"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/spec.md",
+          "kind": "file",
+          "sha256": "a99377a666e71c669bc23eb57b1feb2395b658a715a49d9d1871f011d3017066"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/config-upgrade/SPEC-007-unknown-keys/tasks.md",
+          "kind": "file",
+          "sha256": "7e6fa591c8c7a6f6f6281495b42ba1dc270dba3dd8be8582db2846cc327a81f9"
+        },
+        {
+          "path": "fixture/samples",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/samples/valid-v1.json",
+          "kind": "file",
+          "sha256": "ec611cdda944c7c77d967c44e32923a8cc5ada4d225485e5047dd7547c9c14b4"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/config_upgrader.py",
+          "kind": "file",
+          "sha256": "74f460a4c2d66ae195ab54d66add68761d78a6b8678360e20905d5d61c386772"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_config_upgrader.py",
+          "kind": "file",
+          "sha256": "026c6d2565994ac01d1125d240f0471e795e9754057b4ed042409c24d9c05ac3"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "70417f0af5786bde194fe9cd4a73a68ba6a1a64cd26441127470c6bc0de4ad1d"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "01543814bbc0acb3880861d90acbe5698c378aac27ee5693f74e1737fce9bbac"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "ec1c367c7e89e6e0b18d29fd2be14b0db7e7abbc7917f22eaad6b5b0d1a5a1f8"
+        }
+      ],
+      "strictTreeSha256": "8fef3eddeb5de06b847d5eb4cef8c85cb891a749ccd6cf2a2e3bf5d6c7bac220"
+    },
+    {
+      "path": "test/skill-evals/tdd-user-trigger",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "672c78fc98621ad06a628db91975d2d9a20d91921224ce93a90d60bed24db31f"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "c13d73d2cbe91d9d132a602b487ddc72cc0e7ce0993e42a6203bd1f55ef0cc9e"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "20c76b3deb726c170a21835a8cc30e7bb330f9e7293cd56b2e68f64c90b315a7"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/rate-window.js",
+          "kind": "file",
+          "sha256": "afabc346375c94e8901be0fb43e183410b62ce980ff4d44e0a7c41e2c5de6225"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/rate-window.test.js",
+          "kind": "file",
+          "sha256": "792499404bf8ff92ca52584d604f1d1efd0fea5f6a20597bdb03dea478ec5bf2"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "26c14948862949ac103f62ba38683a795b32679675997a962533e3702b65a06d"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "2d70f24dc1f24509255368d57e0038b2781f2160ca8b13485cd615140684afcd"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "60a722973b5b37d40fd822a4a6d878e06e5ffb576f866b01490efd6b9043df7d"
+        }
+      ],
+      "strictTreeSha256": "63e978f033fd88417e59422e67ec11dae8ee3c4e300f09f406870f5bcab543f6"
+    },
+    {
+      "path": "test/skill-evals/worktree-explicit-bundle-isolation",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/.gitignore",
+          "kind": "file",
+          "sha256": "b18aa601c08deae4db2a084f8747ad4e15bb0a47eec456d90df2aa99ad00d239"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "cd19e341c61621496f46f30d98f9fa4da0c2da27459bff4619ea21ff94aac571"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "ae57781a0e997381d371ef7788bf5ebdc365e149603f1229f233e56b94d16bbc"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "ad66f41a05f9cabe970cc16291903e65a583521e9f4bbff3e204bad672e7df3f"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/localization-parser",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/localization-parser/SPEC-003-brace-escaping",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/localization-parser/SPEC-003-brace-escaping/plan.md",
+          "kind": "file",
+          "sha256": "b5524e84f477a2ab1fb2e42cc7290252822c75e0ef387ace8fe6b639b48d0098"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/localization-parser/SPEC-003-brace-escaping/spec.md",
+          "kind": "file",
+          "sha256": "a43d17f191dc8d4af68be60f12b219c7d52b54224df9a13976ad1cafbb006b52"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/localization-parser/SPEC-003-brace-escaping/tasks.md",
+          "kind": "file",
+          "sha256": "daecae31d93e9e39e8142990954cc57430bcd0522ff66389be0d49b52241f3da"
+        },
+        {
+          "path": "fixture/notes",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/notes/release-copy.md",
+          "kind": "file",
+          "sha256": "92cca5344101029e3366561278b28b0c11a3f901f5764f27d14aa172194b084f"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/localization_parser",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/localization_parser/parser.py",
+          "kind": "file",
+          "sha256": "2f951c4c3be88dacdc8a1f35d85f941c9aa0d3413c92a7f17df5d0ca95523889"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_parser.py",
+          "kind": "file",
+          "sha256": "a70cf10c6c4503387ef038062e1ff7711d791ffeb47cc03b820788d35a04eb0d"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "7f7bdc54c96c7d9e3e0c90ee47cb5a2688df2cbfecb07a84cd4dac9f89711953"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "b22d30cc085637df5a1464f71948b4e4e4537086744f0b4355dcda59b100323c"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "37ae9038b727e8272690113129852a4b0761b0253f7f7000482a9f0ca06a2ab2"
+        }
+      ],
+      "strictTreeSha256": "999a518189c9fd7079f463b8757cd4b32d4af99562438b72d73358c07f2b2636"
+    },
+    {
+      "path": "test/skill-evals/worktree-explicit-create",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/.gitignore",
+          "kind": "file",
+          "sha256": "b18aa601c08deae4db2a084f8747ad4e15bb0a47eec456d90df2aa99ad00d239"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "3de5ac20e16d82a9fa51de98b883e54fce9c6fd6dc3f9ecd4d3020d954f90cff"
+        },
+        {
+          "path": "fixture/README.md",
+          "kind": "file",
+          "sha256": "1b91c5833a667fc9629bf19766530fe331556280713dd384f4589d02b879c374"
+        },
+        {
+          "path": "fixture/docs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/docs/cache-key-notes.md",
+          "kind": "file",
+          "sha256": "b591bbeaefcef63250e1c0826e697f2dbb22b506dac9900fb2c4f8a8c2c4c1cd"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "ed2b25a070357152b4199ae74ac5a5ca8f95e3d7965f990cf6da697c7594da7c"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/cache-key.js",
+          "kind": "file",
+          "sha256": "2a3cf2622dfc680785eee0c5ed067a8af27c689d18516b2d1ced28a828f7facd"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/cache-key.test.js",
+          "kind": "file",
+          "sha256": "22d7ff398be639cd5377e3557a23342ef7708a17a106b9926a6b8e784d4eeb9f"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "564ca1c1b792f5f63cbaa11098edd042a3f54f4454bc85185ef597b3145b8f32"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "771af6e75526f724e9b73c81048951101df5244fca33f049dd7a48f66f227ede"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "4c685c371e438769241706c186ee0eec4614bbcc0324a68771dbeefa73131c4e"
+        }
+      ],
+      "strictTreeSha256": "23199dba8fb7e60429ac17497a954f22c359af46dd8458f13ebd39311da057e6"
+    },
+    {
+      "path": "test/skill-evals/writing-plans-bundle",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "bb6f26f6da9930a63ae5ab653e315fdd9b86f7d87acd405ac5bcbb4a560a994c"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/replay_job.py",
+          "kind": "file",
+          "sha256": "8240503a2bb2b5c3a504b002d96acd3213ca36a017e1abec1db34df8c4a11d30"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "778c6cc7e12ef759ae3e4830d0338eabe95f949d49b7907c5f4049d699b20367"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/event-export",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/event-export/SPEC-017-deterministic-gzip-archives/spec.md",
+          "kind": "file",
+          "sha256": "7d3f8eacd670b61fbfa0c4e7dfcde4dc81b117f077b2e5da09eb944f71afbda8"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/archive_reader.py",
+          "kind": "file",
+          "sha256": "a10770e6746ed59405309ff2ff42ddf6f1b48939b8b6f93f32b8016eaf46e710"
+        },
+        {
+          "path": "fixture/src/event_schema.py",
+          "kind": "file",
+          "sha256": "501c4b9f6a20adaad6647a2a79fac66bf28cae21ae2f89eac8b13d59dbaf6e78"
+        },
+        {
+          "path": "fixture/src/exporter.py",
+          "kind": "file",
+          "sha256": "d7356a9f7d6b012e2b6c09a351be714507249640b5ff04535c956f46a9c92091"
+        },
+        {
+          "path": "fixture/tests",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/tests/test_archive_reader.py",
+          "kind": "file",
+          "sha256": "aceed4d492ac962ffe11095b0de7a128960cea0a015f441212a88f3ff4d59f8c"
+        },
+        {
+          "path": "fixture/tests/test_exporter.py",
+          "kind": "file",
+          "sha256": "3d1d9b0345df653951e18aa8af3b27d552d8ac9ddb5a176535c761d3ad1db349"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "b68e31b2d4820d4f90b9b4394205d6f621d1a1e0d5efeffe5dfff6fb6cfdd444"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "e04da35846b2315a324eede54fab457d391df5ebde39ea89934754c6a1cd0930"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "dea6b42a0980c7e61b941d4af2748184d399ec4eea4460748592a955db9ecb65"
+        }
+      ],
+      "strictTreeSha256": "4c31bfc0d05661ad2566abb35982c8445d4ca9752d8cc0452b194fa0380d4781"
+    },
+    {
+      "path": "test/skill-evals/writing-plans-spec-gap",
+      "protocolVersion": 2,
+      "entries": [
+        {
+          "path": ".",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/AGENTS.md",
+          "kind": "file",
+          "sha256": "e9027dae01916cd060ebe629ff6ebe3b62f0ef2200ee8a3c64e02719bc330524"
+        },
+        {
+          "path": "fixture/clients",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/clients/webhook-client.js",
+          "kind": "file",
+          "sha256": "0c282a122c0cfab942846dfe243c8473d54de012ce4f15e0bd01ff637fd31ae0"
+        },
+        {
+          "path": "fixture/hello-scholar",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/architecture.md",
+          "kind": "file",
+          "sha256": "a369538ac4a82ba885c3e965fe2c7445a73e5bf66d675a794ee26e3ff70ce928"
+        },
+        {
+          "path": "fixture/hello-scholar/specs",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/webhook-security",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/hello-scholar/specs/webhook-security/SPEC-026-signing-key-rotation/spec.md",
+          "kind": "file",
+          "sha256": "4e6f8c51de46c4231e1785352e67a572678650129e3f55bc8095daaf3b6ea56f"
+        },
+        {
+          "path": "fixture/package.json",
+          "kind": "file",
+          "sha256": "69b894ad5e4d074e5a24486f7ad751ded15f857b429f608a6e37b8484b828493"
+        },
+        {
+          "path": "fixture/server",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/server/webhook-handler.js",
+          "kind": "file",
+          "sha256": "09b9e5c74a23291946dd7302727b832ad2e3a65da0e5b010f54b86ab5929b8ef"
+        },
+        {
+          "path": "fixture/src",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/src/verify-signature.js",
+          "kind": "file",
+          "sha256": "d6ff570a6ea4ae620cdbb6e9d2380ab44b5570d5e064f27f863557cde6a10b9a"
+        },
+        {
+          "path": "fixture/test",
+          "kind": "directory"
+        },
+        {
+          "path": "fixture/test/webhook-handler.test.js",
+          "kind": "file",
+          "sha256": "b27020d5c9f9a5394329636a1b1b199b6d99e281e1c9b1ec60aaa5ae436fb2f8"
+        },
+        {
+          "path": "proposal-approval.json",
+          "kind": "file",
+          "sha256": "c39ba2218d811ff90fd56c59d72f5be937ef7cf35b5f7a8b717c7e58481dd95d"
+        },
+        {
+          "path": "protocol.json",
+          "kind": "file",
+          "sha256": "f168470cecb69661f448b61ed0f5f4fe1fe3c6597cda5b35e6dd5475812413d8"
+        },
+        {
+          "path": "scenario.md",
+          "kind": "file",
+          "sha256": "6e1facfd459a71835762e3551f0d8bca2235fdb710cb45fa890db5752fb16ee4"
+        }
+      ],
+      "strictTreeSha256": "36c3f3ac67d48cd2ce6eb9e0eacf4d91f4064f98c25e22a9eff974e0ba961cec"
+    }
+  ],
+  "sharedDependencies": {
+    "userValueRubric": {
+      "path": "test/skill-evals/user-value-rubric.json",
+      "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+    }
+  }
+}

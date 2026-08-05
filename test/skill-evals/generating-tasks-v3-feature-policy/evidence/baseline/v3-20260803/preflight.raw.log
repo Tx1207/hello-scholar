@@ -1,0 +1,22 @@
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 1
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/feature-policy/INDEX.md
+notice tasks-missing hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: Spec SPEC-003 has no Tasks
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 1
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/feature-policy/INDEX.md
+notice tasks-missing hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: Spec SPEC-003 has no Tasks
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+$ git init -q
+$ git add --all && git commit Base
+$ git rev-parse HEAD
+60820982cd6e1b609f501e1aecb374bf10fce81b
+$ git diff --check HEAD && git status --porcelain=v1 -uall
+$ find runtime artifacts

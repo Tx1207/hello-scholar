@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
+  "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-1-spec-design / f19ae44911caaa7580fda459ba620f1cb6eb82847e06bcd57b0ed605f6fbbc0e"
+}

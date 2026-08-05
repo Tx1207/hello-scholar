@@ -1,0 +1,34 @@
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3 npm test
+
+> config-format-cli-fixture@1.4.0 test
+> node --test test/*.test.js
+
+✔ show exposes one canonical shape for a legacy profile (57.133807ms)
+✔ legacy output flag still invokes the old writer (50.779363ms)
+✔ compatibility reader normalizes legacy and JSON profiles (2.09022ms)
+✔ writer emits JSON v2 by default (0.528167ms)
+✔ legacy writer remains available during the dual-read window (0.472263ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 214.697095
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 1
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/config-format/INDEX.md
+notice tasks-missing hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: Spec SPEC-014 has no Tasks
+$ env -C /tmp/hello-scholar-eval-generating-tasks-v3-migration-baseline-4ea23bb3 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 1
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/config-format/INDEX.md
+notice tasks-missing hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: Spec SPEC-014 has no Tasks
+$ git init -q
+$ git add --all && git commit Base
+$ git rev-parse HEAD
+d735c7c51b2828ada271e686ecdc8e9dd4d8a1fc
+$ git diff --check HEAD && git status --porcelain=v1 -uall
+$ find runtime artifacts

@@ -28,6 +28,7 @@ description: Decomposition：把 Accepted Spec 及其当前 Approved Plan 拆成
 每个 Task：
 
 - 使用唯一 `TNNN` ID 和自然语言结果。
+- 每个 Task 都写成列零的规范复选框块：`- [ ] TNNN: <清晰的自然语言目标>`（或已勾选的等价形式）。Task Map 或带标题的章节不能替代 Task。
 - 在 `Spec Coverage` 中映射精确 AC ID 或 Spec 章节。
 - 在 `Files` 中列出所有新增、修改、移动和删除路径。
 - 在 `Work` 中写有序的 2–5 minute actions。每个动作点名精确 symbol、interface、data shape 或文件区域以及具体编辑；当 Approved Plan 或当前项目事实已固定内容时，提供代码或配置片段，需要新设计时返回上游。
@@ -73,6 +74,8 @@ approved_revision: null
 status: pending
 ```
 
+先把选定模板作为起始骨架复制，再替换占位符。`approval: pending-review` 是审核状态，`status: pending` 是执行状态；两者必须精确保留且彼此独立。出现 Tasks 元数据错误时，在 `tasks.md` 修复这个 pending-review header，不批准 Tasks，也不修改上游文档。
+
 只有用户或 Approved Plan 对某个结果明确要求 TDD 时，才在对应 Task 中加入：
 
 ```markdown
@@ -93,11 +96,12 @@ status: pending
 ## 5. 证明审核候选可用
 
 1. 把每条义务账本记录映射到至少一个 Task，并把每个 Task 反向映射到 Approved Plan。覆盖 AC、回归、迁移、删除、清理、回滚和最终 gate。
-2. 检查 ID 唯一、DAG 无环、frontier 冲突、精确路径、接口一致性、命令可执行性、预期信号和禁止范围。
-3. 通过绝对 hello-scholar CLI 依次运行 `docs sync`、`docs check`。
-4. 运行 Plan 要求的项目检查；每条 Python 命令使用上面的无产物形式。
-5. 对比初始与最终 Git 状态。写入集合只能是 `tasks.md` 和 CLI 生成的 Index，本事务不能新增 `__pycache__` 目录或 `.pyc` 文件。
-6. 回复先给出 `tasks.md` 路径和 pending-review 结果，再简述 AC 覆盖、blocking edges/frontier 与验证证据，然后停下来等待用户审核。
+2. 在运行 CLI 前，核对精确的 pending-review header，且每个顶层 `TNNN` 都把 `Spec Coverage`、`Depends On`、`Parallel`、`Files`、`Work`、`Validation` 和 `Completion` 作为自己的字段。该字面合同不完整时，先修复 `tasks.md`。
+3. 检查 ID 唯一、DAG 无环、frontier 冲突、精确路径、接口一致性、命令可执行性、预期信号和禁止范围。
+4. 通过绝对 hello-scholar CLI 依次运行 `docs sync`、`docs check`。
+5. 运行 Plan 要求的项目检查；每条 Python 命令使用上面的无产物形式。
+6. 对比初始与最终 Git 状态。写入集合只能是 `tasks.md` 和 CLI 生成的 Index，本事务不能新增 `__pycache__` 目录或 `.pyc` 文件。
+7. 回复先给出 `tasks.md` 路径和 pending-review 结果，再简述 AC 覆盖、blocking edges/frontier 与验证证据，然后停下来等待用户审核。
 
 <REVIEW-GATE>
 终止状态是一份等待用户审核的完整 `tasks.md`。创建或批准 Tasks 都不会启动实施；实施必须另有一条明确请求。

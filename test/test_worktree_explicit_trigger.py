@@ -84,6 +84,13 @@ class WorktreeExplicitTriggerTests(unittest.TestCase):
         ):
             self.assertIn(phrase, self.chinese)
 
+    def test_legacy_global_fallback_is_not_available(self) -> None:
+        """Purpose: prevent revived legacy worktree paths; Input: localized Skill bodies; Output: none; Errors: assertion failure if a retired path returns."""
+
+        self.assertNotIn("~/.config/superpowers/worktrees", self.all_text)
+        self.assertNotIn("legacy global directory", self.english)
+        self.assertNotIn("legacy 全局目录", self.chinese)
+
     def test_safety_gates_survive_the_narrower_entry(self) -> None:
         """Purpose: retain isolation, native-tool, ignore, and baseline guards; Input: localized Skill bodies; Output: none; Errors: assertion failure for a removed safety boundary."""
 

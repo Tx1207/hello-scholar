@@ -1,0 +1,106 @@
+# manage-specs-options-v3 Haiku v4 Baseline full tree evidence
+fixtureBaseCommit: 7140910da66e0b67a056c4692737ea1657261397
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index be50418..80be04d 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| cache-policy | [SPEC-003](cache-policy/SPEC-003-cache-eviction-policy/spec.md) | system-design | accepted | 1 | Missing | Missing | - | Use deterministic LRU eviction with observable hit and eviction metrics |
++| cache-policy | [SPEC-003](cache-policy/SPEC-003-cache-eviction-policy/spec.md) | system-design | accepted | 2 | Missing | Missing | - | Compare three cache policy candidates with benchmark evidence before deciding |
+ | cache-policy | [SPEC-008](cache-policy/SPEC-008-background-warming/spec.md) | capability | accepted | 1 | Missing | Missing | - | Prefetch configured hot keys without blocking requests |
+diff --git a/hello-scholar/specs/cache-policy/INDEX.md b/hello-scholar/specs/cache-policy/INDEX.md
+index d2d6a8e..7127aa8 100644
+--- a/hello-scholar/specs/cache-policy/INDEX.md
++++ b/hello-scholar/specs/cache-policy/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-003](SPEC-003-cache-eviction-policy/spec.md) | system-design | accepted | 1 | Missing | Missing | - | Use deterministic LRU eviction with observable hit and eviction metrics | - |
++| [SPEC-003](SPEC-003-cache-eviction-policy/spec.md) | system-design | accepted | 2 | Missing | Missing | - | Compare three cache policy candidates with benchmark evidence before deciding | - |
+ | [SPEC-008](SPEC-008-background-warming/spec.md) | capability | accepted | 1 | Missing | Missing | - | Prefetch configured hot keys without blocking requests | - |
+diff --git a/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md b/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md
+index 5f5d260..40a253b 100644
+--- a/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md
++++ b/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md
+@@ -6,10 +6,10 @@ title: Cache admission and eviction policy
+ topic: cache-policy
+ type: system-design
+ status: accepted
+-revision: 1
+-summary: Use deterministic LRU eviction with observable hit and eviction metrics
++revision: 2
++summary: Compare three cache policy candidates with benchmark evidence before deciding
+ created: 2026-06-20
+-updated: 2026-06-20
++updated: 2026-08-04
+ supersedes: []
+ superseded_by: null
+ ---
+@@ -33,7 +33,27 @@ Every inserted key is admitted. Capacity overflow evicts the least recently used
+ 
+ ## 5. Target Design
+ 
+-The current accepted target is deterministic LRU with hit, miss, and eviction counters.
++No implementation change is requested at this stage. The design remains open pending benchmark evidence.
++
++## 5.1 Candidate Options
++
++- **A — LRU + TTL:** retain least-recently-used eviction and add per-entry time-to-live expiration. Compare how expiration interacts with recency and bounded memory.
++- **B — Segmented LRU:** divide entries into probationary and protected segments so frequently reused entries receive stronger retention than one-pass entries.
++- **C — TinyLFU admission + LRU eviction:** use TinyLFU frequency estimates to decide admission, then use LRU for eviction among admitted entries.
++
++## 5.2 Comparison Metrics
++
++Evaluate all candidates under the same capacity, workload traces, and measurement window using:
++
++- hit rate and miss rate;
++- eviction rate and admission/rejection rate;
++- stale-expiration rate (where applicable);
++- memory footprint and metadata overhead;
++- request latency, including policy decision overhead;
++- scan resistance and sensitivity to workload mix; and
++- operational complexity and observability.
++
++**Decision checkpoint:** measure with a representative load test and decide only after the benchmark results are available. 等压测后决定。
+ 
+ ## 6. Implementation Boundary
+ 
+@@ -49,7 +69,7 @@ Stored entries never exceed capacity. Reads and writes remain synchronous.
+ 
+ ## 9. Options And Decision
+ 
+-Decision: plain LRU. No replacement candidates are currently approved.
++Candidates A, B, and C are recorded for comparison; none is selected. The decision is explicitly deferred until after load testing (等压测后决定).
+ 
+ ## 10. Acceptance Criteria
+ 
+@@ -74,3 +94,4 @@ Deploy the previous service build.
+ ## 15. Revision History
+ 
+ - Revision 1: accepted plain LRU policy.
++- Revision 2: documented candidates A/B/C, comparison metrics, and deferred decision pending load testing.
+## untracked files
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/cache-policy/INDEX.md
+ M hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md
+## final regular file hashes outside .git
+420559f1facb884463a72a01047a621872bf8ee26cf0b544afcefb1feb386057  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/AGENTS.md
+fdfc14b644d5cd1f77ec77bdc4d9411e6a2e1b52fe5e3711e998f88c6b0505ce  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/hello-scholar/architecture.md
+3ab503d3448243f203437d17237c098f9c1ec1363497c88ba90b274033a7c966  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/hello-scholar/specs/INDEX.md
+ebc2b362a0fb6e891e15de74e6632e90b74421772d895e956eba0ea1157e4e0d  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/hello-scholar/specs/cache-policy/INDEX.md
+5f4d7922e124a3ddb1c2ccacf824b146bf1f0a05f89078819e39e2fda63532d5  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/hello-scholar/specs/cache-policy/SPEC-003-cache-eviction-policy/spec.md
+b615a50bcf2923eb0e4a7f4886d65dbe00d419737022e51a66802edfb61d475c  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/hello-scholar/specs/cache-policy/SPEC-008-background-warming/spec.md
+e90bb5183abfe90a85f43729947a7c1c37336fad857f83178b17adcaa71cb7bd  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/package.json
+6f925aabf7812b95347f46438b362b495051967e647d420d24191fcbc8e3d501  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/src/cache-policy.js
+36d732e1d62281f99343476f81a1ba1747b222f5c58e8cdd9a05702b24f41b9e  /tmp/hello-scholar-eval-manage-specs-options-v3-baseline-20260804-164844/test/cache-policy.test.js
+## final runtime artifacts outside .git
+
+## diff whitespace check

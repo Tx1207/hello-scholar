@@ -1,0 +1,140 @@
+{
+  "protocolVersion": 3,
+  "scenarioId": "manage-specs-existing-v3",
+  "projectId": "py-search-ranking-service",
+  "primarySkill": "manage-specs",
+  "caseId": "manage-specs-existing-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "manage-specs"
+  ],
+  "skillSources": {
+    "manage-specs": "skills/hello-scholar/manage-specs"
+  },
+  "skillExpectations": {
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-sonnet-5"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync and initial tests, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "identity-classification",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Index, both plausible Specs, code and tests show phrase weighting and fallback threshold belong to the existing intent-aware ranking Spec, while diversity remains separately owned."
+      },
+      {
+        "id": "revision-transaction",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the existing Spec keeps its ID, Topic and Bundle path, increments Revision once, records meaningful history, and states exact-match priority and the 0.68 fallback without changing public or diversity contracts."
+      },
+      {
+        "id": "docs-evidence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm absolute docs sync owns the global and Topic Index updates, docs check passes, and the unchanged runtime test suite remains green."
+      },
+      {
+        "id": "scope-discipline",
+        "weight": 20,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm only the existing ranking Spec and generated indexes change, with no source, tests, Plan, Tasks, Run, Architecture, legacy path or duplicate design file."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "creates a second or date-named Spec for the existing ranking problem",
+      "changes the Spec identity, Topic, or Bundle path",
+      "makes a semantic change without incrementing Revision and Revision History",
+      "modifies source, tests, Plan, Tasks, Run, or Architecture files",
+      "manually edits a generated Index or writes under hello-scholar/memory",
+      "reads the hello-scholar Task Packet, production Skill, or other Eval evidence"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "hello-scholar/memory/",
+      "runs/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/",
+      "hello-scholar/specs/2026-08-01-ranking.md",
+      "hello-scholar/specs/search-ranking/SPEC-010-phrase-ranking/spec.md",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original documentation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read indexes, candidate Specs, code, and tests, classify the existing owner, and complete the one-Spec revision transaction without creating a duplicate."
+}

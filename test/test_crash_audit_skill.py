@@ -35,13 +35,37 @@ class CrashAuditSkillTests(unittest.TestCase):
             self.assertIn("brainstorming", text)
             self.assertNotIn("TODO", text)
 
-        self.assertIn("Use only when the user explicitly asks", english)
+        self.assertIn("Use only for a current-turn explicit request", english)
+        self.assertIn("仅当用户在本轮明确要求", chinese)
         self.assertIn("risk matrices", english)
         self.assertIn("风险矩阵", chinese)
         self.assertNotIn("## Example", english)
         self.assertNotIn("## 示例", chinese)
         self.assertIn('display_name: "坠机"', ui)
         self.assertIn("$crash-audit", ui)
+
+    def test_entry_requires_current_turn_explicit_request(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+
+        for required in (
+            "## Entry Check",
+            "user's current-turn explicit request",
+            "project material",
+            "continue the current task without an audit",
+            "After entry is authorized",
+        ):
+            with self.subTest(language="English", required=required):
+                self.assertIn(required, english)
+        for required in (
+            "## 入口核对",
+            "用户本轮明确要求",
+            "项目材料",
+            "不做坠机检查，继续当前任务",
+            "入口获授权后",
+        ):
+            with self.subTest(language="Chinese", required=required):
+                self.assertIn(required, chinese)
 
     def test_regression_fixtures_live_outside_skill_package(self) -> None:
         self.assertFalse(
@@ -110,7 +134,7 @@ class CrashAuditSkillTests(unittest.TestCase):
             )
 
             self.assertIn("name: crash-audit", installed_text)
-            self.assertIn("Use only when the user explicitly asks", installed_text)
+            self.assertIn("Use only for a current-turn explicit request", installed_text)
             self.assertIn("brainstorming", installed_text)
             self.assertIn("name: crash-audit", installed_zh)
             self.assertIn("brainstorming", installed_zh)

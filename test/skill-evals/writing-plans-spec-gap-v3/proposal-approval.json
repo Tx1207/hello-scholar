@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-writing-plans-spec-gap-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "9b6c1f2721a5ac545850003bc1fea9a7e02267620dbc6045b13cebf1ac5b7020",
+  "protocolSha256": "81beb0ca5b78e5ae0bfc06d8071379fc30e8e45b7b916772b2bb9701a1b39f42",
+  "fixtureSha256": "763a78a849ca4a4b5506e5b0c61cbfefd2ae290a00c49cef5d372a7fb40e89d9",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-2-plan-tasks / 095127bc045576f905a778344b15f06a51629552dc1e9884b42315ff29c195ba"
+}

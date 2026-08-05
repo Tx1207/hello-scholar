@@ -117,6 +117,33 @@ function architectureAttributes(overrides = {}) {
   };
 }
 
+function taskBlock(id, checked = false, omittedField = null) {
+  // Purpose: build one complete top-level Task block; Input: Task ID, checkbox state, and optional omitted field; Output: Markdown lines.
+  const fields = [
+    ["Spec Coverage", "AC-001"],
+    ["Depends On", "None"],
+    ["Parallel", "No"],
+    ["Files", ""],
+    ["Work", ""],
+    ["Validation", ""],
+    ["Completion", ""],
+  ].filter(([field]) => field !== omittedField);
+  const lines = [`- [${checked ? "x" : " "}] ${id}: Complete ${id}`];
+  for (const [field, value] of fields) {
+    lines.push(`  - ${field}:${value ? ` ${value}` : ""}`);
+    if (field === "Files") {
+      lines.push("    - `src/example.js`");
+    } else if (field === "Work") {
+      lines.push("    1. Make the focused change.");
+    } else if (field === "Validation") {
+      lines.push("    - Run `node --test`; expect a passing result.");
+    } else if (field === "Completion") {
+      lines.push("    - The observable repository state is complete.");
+    }
+  }
+  return lines;
+}
+
 const bundle = "hello-scholar/specs/kv-cache/SPEC-001-paged-cache";
 
 function errorCodes(result) {
@@ -134,9 +161,9 @@ test("validates a complete current bundle and computes top-level task completion
     document(`${bundle}/tasks.md`, tasksAttributes(), [
       "# Tasks",
       "",
-      "- [x] T001: Implement allocator",
+      ...taskBlock("T001", true),
       "  - [ ] T999: Nested checklist is not a task",
-      "- [ ] T002：Run benchmark",
+      ...taskBlock("T002"),
       "",
     ].join("\n")),
     document("runs/20260801-1430-paged-cache/record.md", recordAttributes()),
@@ -160,6 +187,132 @@ test("validates a complete current bundle and computes top-level task completion
   assert.equal(result.records[0].runId, "20260801-1430-paged-cache");
   assert.equal(result.architecture.relativePath, "hello-scholar/architecture.md");
   assert.deepEqual(input, before, "validation must not mutate discovery results");
+});
+
+test("requires each top-level Task to contain every template field", () => {
+  const validDocuments = [
+    document(`${bundle}/spec.md`, specAttributes()),
+    document(`${bundle}/plan.md`, planAttributes()),
+    document("hello-scholar/architecture.md", architectureAttributes()),
+  ];
+  const valid = validateDocumentSet(discovery([
+    ...validDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), [
+      "# Tasks",
+      "",
+      ...taskBlock("T001"),
+      "  - [ ] T999: Nested checklist is not a task",
+      ...taskBlock("T002", true),
+      "",
+    ].join("\n")),
+  ]));
+  assert.deepEqual(valid.errors, []);
+
+  const missingSecondField = validateDocumentSet(discovery([
+    ...validDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), [
+      ...taskBlock("T001"),
+      ...taskBlock("T002", false, "Validation"),
+      "",
+    ].join("\n")),
+  ]));
+
+  assert.deepEqual(missingSecondField.errors, [
+    {
+      code: "missing-task-field",
+      path: `${bundle}/tasks.md`,
+      message: "Task T002 requires field Validation",
+    },
+  ]);
+});
+
+test("requires canonical checkbox Task blocks and rejects heading or short-ID substitutes", () => {
+  const supportingDocuments = [
+    document(`${bundle}/spec.md`, specAttributes()),
+    document(`${bundle}/plan.md`, planAttributes()),
+    document("hello-scholar/architecture.md", architectureAttributes()),
+  ];
+
+  const headingSubstitute = validateDocumentSet(discovery([
+    ...supportingDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), [
+      "# Tasks",
+      "",
+      "## Phase 1",
+      "",
+      "## Task Map",
+      "",
+      "| ID | Task |",
+      "| --- | --- |",
+      "| T1 | Prepare the migration |",
+      "",
+      "## T1 — Prepare the migration",
+      "- [ ] **Status:** Not started",
+      "- **Spec Coverage:** AC-001",
+      "",
+    ].join("\n")),
+  ]));
+  assert.deepEqual(headingSubstitute.errors, [
+    {
+      code: "invalid-task-id",
+      path: `${bundle}/tasks.md`,
+      message: "Task ID T1 must match T[0-9]{3,}",
+    },
+    {
+      code: "noncanonical-task-block",
+      path: `${bundle}/tasks.md`,
+      message: "Task T1 must use - [ ] TNNN: <plain-language goal>, not a heading",
+    },
+  ]);
+
+  const longHeadingSubstitute = validateDocumentSet(discovery([
+    ...supportingDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), "## T001 — A titled Task\n"),
+  ]));
+  assert.deepEqual(longHeadingSubstitute.errors, [
+    {
+      code: "noncanonical-task-block",
+      path: `${bundle}/tasks.md`,
+      message: "Task T001 must use - [ ] TNNN: <plain-language goal>, not a heading",
+    },
+  ]);
+
+  const shortCheckbox = validateDocumentSet(discovery([
+    ...supportingDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), "- [ ] T01: Short identifier\n"),
+  ]));
+  assert.deepEqual(shortCheckbox.errors, [
+    {
+      code: "invalid-task-id",
+      path: `${bundle}/tasks.md`,
+      message: "Task ID T01 must match T[0-9]{3,}",
+    },
+  ]);
+
+  const taskless = validateDocumentSet(discovery([
+    ...supportingDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), "# Tasks\n\n## Phase 1\n"),
+  ]));
+  assert.deepEqual(taskless.errors, [
+    {
+      code: "missing-canonical-tasks",
+      path: `${bundle}/tasks.md`,
+      message: "Tasks requires at least one top-level - [ ] TNNN: <plain-language goal> block",
+    },
+  ]);
+
+  const canonical = validateDocumentSet(discovery([
+    ...supportingDocuments,
+    document(`${bundle}/tasks.md`, tasksAttributes(), [
+      "# Tasks",
+      "",
+      ...taskBlock("T001", true),
+      ...taskBlock("T002"),
+      "",
+    ].join("\n")),
+  ]));
+  assert.deepEqual(canonical.errors, []);
+  assert.deepEqual(canonical.specs[0].completion, { completed: 1, total: 2, percent: 50 });
 });
 
 test("does not count task-shaped examples in fenced code or HTML comments", () => {
@@ -203,7 +356,11 @@ test("derives Missing and Stale as notices without turning them into errors", ()
   const stale = validateDocumentSet(discovery([
     document(`${bundle}/spec.md`, specAttributes()),
     document(`${bundle}/plan.md`, planAttributes({ spec_revision: 2 })),
-    document(`${bundle}/tasks.md`, tasksAttributes({ plan_revision: 1 })),
+    document(
+      `${bundle}/tasks.md`,
+      tasksAttributes({ plan_revision: 1 }),
+      [...taskBlock("T001"), ""].join("\n")
+    ),
     document("hello-scholar/architecture.md", architectureAttributes()),
   ]));
 

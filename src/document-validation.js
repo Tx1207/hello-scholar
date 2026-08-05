@@ -32,6 +32,16 @@ const ENUMS = {
   recordStatus: new Set(["planned", "running", "completed", "failed", "interrupted", "cancelled"]),
 };
 
+const REQUIRED_TASK_BLOCK_FIELDS = [
+  "Spec Coverage", "Depends On", "Parallel", "Files", "Work", "Validation", "Completion",
+];
+const CANONICAL_TASK_ID_PATTERN = /^T[0-9]{3,}$/;
+const CANONICAL_TASK_PATTERN = /^- \[([ xX])\] (T[0-9]{3,}): ([^\r\n]*\S[^\r\n]*)$/;
+const TOP_LEVEL_COMPLETION_TASK_PATTERN = /^- \[([ xX])\] (T[0-9]{3,})(?:：|:)/;
+const TOP_LEVEL_TASK_LIKE_CHECKBOX_PATTERN = /^- \[([ xX])\] (T[0-9]+)(?=$|[ \t:：—–-])/;
+const TOP_LEVEL_TASK_LIKE_HEADING_PATTERN = /^#{1,6}[ \t]+(T[0-9]+)(?=$|[ \t:：—–-])/;
+const TASK_BLOCK_FIELD_PATTERN = /^ {2}- (Spec Coverage|Depends On|Parallel|Files|Work|Validation|Completion):(?:[ \t]|$)/;
+
 function classifyPath(relativePath) {
   // Purpose: map a canonical project-relative path to its document role; Input: relative path; Output: location metadata or null.
   if (relativePath === "hello-scholar/architecture.md") {
@@ -186,6 +196,10 @@ function validateDocumentSet(discoveryResult) {
   const tasksEntries = typed.filter((entry) => entry.location.kind === "tasks");
   const recordEntries = typed.filter((entry) => entry.location.kind === "record");
   const architectureEntries = typed.filter((entry) => entry.location.kind === "architecture");
+
+  for (const entry of tasksEntries) {
+    validateTaskBlocks(entry.document.body || "", entry.document.relativePath, addError);
+  }
 
   const specsById = new Map();
   for (const entry of specEntries) {
@@ -582,6 +596,104 @@ function validateDateFields(attributes, fields, path, addError) {
   }
 }
 
+function validateTaskBlocks(body, path, addError) {
+  // Purpose: require visible canonical Task blocks and their direct template fields; Input: Markdown body, path, and error sink; Output: none; Side effects: appends structural and missing-field errors.
+  const tasks = [];
+  let activeTask = null;
+  let taskLikeFormFound = false;
+  let fence = null;
+  let inHtmlComment = false;
+  for (const line of body.split(/\r?\n/)) {
+    if (fence !== null) {
+      const closing = line.match(/^ {0,3}(`+|~+)[ \t]*$/);
+      if (closing && closing[1][0] === fence.character
+          && closing[1].length >= fence.length) {
+        fence = null;
+      }
+      continue;
+    }
+    if (inHtmlComment) {
+      if (line.includes("-->")) {
+        inHtmlComment = false;
+      }
+      continue;
+    }
+
+    let visible = line;
+    const commentStart = visible.indexOf("<!--");
+    if (commentStart !== -1) {
+      if (visible.indexOf("-->", commentStart + 4) === -1) {
+        inHtmlComment = true;
+      }
+      visible = visible.slice(0, commentStart);
+    }
+    const opening = visible.match(/^ {0,3}(`{3,}|~{3,})/);
+    if (opening) {
+      fence = { character: opening[1][0], length: opening[1].length };
+      continue;
+    }
+
+    const canonicalMatch = visible.match(CANONICAL_TASK_PATTERN);
+    if (canonicalMatch) {
+      activeTask = { id: canonicalMatch[2], fields: new Set() };
+      tasks.push(activeTask);
+      continue;
+    }
+
+    if (/^\S/.test(visible)) {
+      activeTask = null;
+    }
+
+    const checkboxMatch = visible.match(TOP_LEVEL_TASK_LIKE_CHECKBOX_PATTERN);
+    if (checkboxMatch) {
+      taskLikeFormFound = true;
+      const id = checkboxMatch[2];
+      if (!CANONICAL_TASK_ID_PATTERN.test(id)) {
+        addError("invalid-task-id", path, `Task ID ${id} must match T[0-9]{3,}`);
+      } else {
+        addError(
+          "noncanonical-task-block",
+          path,
+          `Task ${id} must use - [ ] TNNN: <plain-language goal>`
+        );
+      }
+      continue;
+    }
+
+    const headingMatch = visible.match(TOP_LEVEL_TASK_LIKE_HEADING_PATTERN);
+    if (headingMatch) {
+      taskLikeFormFound = true;
+      const id = headingMatch[1];
+      if (!CANONICAL_TASK_ID_PATTERN.test(id)) {
+        addError("invalid-task-id", path, `Task ID ${id} must match T[0-9]{3,}`);
+      }
+      addError(
+        "noncanonical-task-block",
+        path,
+        `Task ${id} must use - [ ] TNNN: <plain-language goal>, not a heading`
+      );
+      continue;
+    }
+
+    const fieldMatch = visible.match(TASK_BLOCK_FIELD_PATTERN);
+    if (fieldMatch && activeTask !== null) {
+      activeTask.fields.add(fieldMatch[1]);
+    }
+  }
+
+  if (tasks.length === 0 && !taskLikeFormFound) {
+    addError("missing-canonical-tasks", path, "Tasks requires at least one top-level - [ ] TNNN: <plain-language goal> block");
+  }
+
+  for (const task of tasks) {
+    for (const field of REQUIRED_TASK_BLOCK_FIELDS) {
+      if (!task.fields.has(field)) {
+        addError("missing-task-field", path, `Task ${task.id} requires field ${field}`);
+      }
+    }
+  }
+}
+
 function taskCompletion(body, path, addError) {
   // Purpose: calculate top-level Task completion outside comments and fences; Input: Markdown body, path, and error sink; Output: counts and percentage; Side effects: reports malformed lists.
   const seen = new Set();
@@ -619,7 +731,7 @@ function taskCompletion(body, path, addError) {
       continue;
     }
 
-    const match = visible.match(/^- \[([ xX])\] (T[0-9]{3,})(?:：|:)/);
+    const match = visible.match(TOP_LEVEL_COMPLETION_TASK_PATTERN);
     if (!match) {
       continue;
     }

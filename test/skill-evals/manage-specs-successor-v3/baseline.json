@@ -1,0 +1,353 @@
+{
+  "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
+  "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
+  "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
+  "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
+  "result": "fail",
+  "summary": "The general Haiku Implementer respected the approval stop and built valid reciprocal successor artifacts, but its first-round recommendation chose modification rather than the required successor classification.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "manage-specs": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "84caf63a3f2067a1251d5e6ff54d5661b9853d9f",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "Scenario, Protocol, Fixture, shared rubric, and approved Proposal bindings were current before the isolated copy ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "9918f73266c9430c2093cf632b142214804c6340bc1bc513bd05c65a8c6391d5"
+          }
+        ]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was initialized and committed at the recorded Base commit with a clean tree before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "9918f73266c9430c2093cf632b142214804c6340bc1bc513bd05c65a8c6391d5"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/preflight.raw.log",
+            "sha256": "2d4df6ad2f7ee605fa34250ed1997c49ff43349f226405640db586b7617e0d27"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The Fixture test suite passed before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/preflight.raw.log",
+            "sha256": "2d4df6ad2f7ee605fa34250ed1997c49ff43349f226405640db586b7617e0d27"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The Fixture docs check passed before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/preflight.raw.log",
+            "sha256": "2d4df6ad2f7ee605fa34250ed1997c49ff43349f226405640db586b7617e0d27"
+          }
+        ]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/environment.md",
+            "sha256": "9918f73266c9430c2093cf632b142214804c6340bc1bc513bd05c65a8c6391d5"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "aa67d00c35a1bb52c",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a507b77a849022bf7",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "identity-classification",
+      "passed": false,
+      "reason": "The independent Reviewer found a material mismatch with this approved gate in the saved interaction or final artifact.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+        }
+      ]
+    },
+    {
+      "id": "approval-gate",
+      "passed": true,
+      "reason": "The independent Reviewer found this approved gate directly supported by the saved interaction, final artifacts, and tree evidence.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+        }
+      ]
+    },
+    {
+      "id": "supersession-integrity",
+      "passed": true,
+      "reason": "The independent Reviewer found this approved gate directly supported by the saved interaction, final artifacts, and tree evidence.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": true,
+      "reason": "The independent Reviewer found this approved gate directly supported by the saved interaction, final artifacts, and tree evidence.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/reviewer.md",
+          "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Every approved Protocol command exited successfully.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "6af142100ca6f3b0670cc361e6237869a59232924ec019499e618e977848ccd9"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The evidence records committed, index, working-tree, untracked, final-hash, and runtime-artifact states from the Fixture Base.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/tree.raw.log",
+          "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "6af142100ca6f3b0670cc361e6237869a59232924ec019499e618e977848ccd9"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/commands.raw.log",
+          "sha256": "6af142100ca6f3b0670cc361e6237869a59232924ec019499e618e977848ccd9"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "27391cdf035ce3e443a07302315182c57ec52fe8ed768c7d357e0bceba6f9bb7",
+        "promptSha256": "96a0f23cba0a36c9dbba6dccf21d54673a8998b4abeb1652f2cbdead0de346aa",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-0.md",
+            "sha256": "96a0f23cba0a36c9dbba6dccf21d54673a8998b4abeb1652f2cbdead0de346aa"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "1a6a7a7ea3fade2150f5a189ad8d31f94b2f95e2d17a4a8fa7fd3a95faf1bfb3"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-classification-decision",
+        "messageSha256": "d3cb8e7d6bd7887e1d203ed94cf3fb3b0ad84797fe031a7d8a391e471d130dc5",
+        "promptSha256": "4064dc03ccd20f0f9fe2ca3e627c458f26dddcbf6fa0ae3a0faccfcf25f5cf90",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260804/prompt-round-1.md",
+            "sha256": "4064dc03ccd20f0f9fe2ca3e627c458f26dddcbf6fa0ae3a0faccfcf25f5cf90"
+          },
+          {
+            "path": "evidence/baseline/v4-20260804/interaction.md",
+            "sha256": "1a6a7a7ea3fade2150f5a189ad8d31f94b2f95e2d17a4a8fa7fd3a95faf1bfb3"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260804/prompt-round-0.md",
+          "sha256": "96a0f23cba0a36c9dbba6dccf21d54673a8998b4abeb1652f2cbdead0de346aa"
+        },
+        {
+          "path": "evidence/baseline/v4-20260804/interaction.md",
+          "sha256": "1a6a7a7ea3fade2150f5a189ad8d31f94b2f95e2d17a4a8fa7fd3a95faf1bfb3"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "identity-classification": 0,
+        "approval-gate": 100,
+        "supersession-integrity": 100,
+        "scope-discipline": 100
+      },
+      "reasons": {
+        "identity-classification": "The independent Reviewer found a material approved-contract failure for this dimension.",
+        "approval-gate": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension.",
+        "supersession-integrity": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension.",
+        "scope-discipline": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension."
+      },
+      "evidence": {
+        "identity-classification": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "approval-gate": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "supersession-integrity": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ]
+      },
+      "totalScore": 70.0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 90,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension.",
+        "audience-fit": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension.",
+        "information-design": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension.",
+        "actionability": "The independent Reviewer found a minor user-facing limitation while all material value remains usable.",
+        "signal-to-noise": "The independent Reviewer found the saved output and artifact evidence fully satisfies this dimension."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/v4-20260804/reviewer.md",
+            "sha256": "344f3f3f43751c1315758e49f04b9e4b03d0e4af579fbc9546b6af4ffa517e35"
+          }
+        ]
+      },
+      "totalScore": 98.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+    },
+    "index": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+    },
+    "untracked": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/v4-20260804/tree.raw.log",
+      "sha256": "5c35ecc5e4f8e9823bce0e66c140ad6d09590a9d2a34ae351aee8fac23e5a234"
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "handoff-negative-experiment-v3",
+  "projectId": "py-model-quantization-handoff",
+  "primarySkill": "handoff",
+  "caseId": "handoff-negative-experiment-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "handoff"
+  ],
+  "skillSources": {
+    "handoff": "skills/productivity-skills/handoff"
+  },
+  "skillExpectations": {
+    "handoff": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the Fixture, initialize Git, run clean project checks, commit the starting project material, run the session-state preparation and verification scripts, and preserve the resulting state before delivering the original user request.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "run-fact-accuracy",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Handoff cites both relevant Run Records and result files, preserving the distinction between an execution failure and a completed negative result."
+      },
+      {
+        "id": "hypothesis-boundary",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm established Run facts remain separate from the unverified batch-size hypothesis, with an evidence gate and stop condition before any new experiment decision."
+      },
+      {
+        "id": "handoff-location-and-language",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm exactly one English Handoff is created at the requested project handoff path and no Run, project contract, report, code, test, or Git state changes occur."
+      },
+      {
+        "id": "concise-safe-continuation",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm a new agent can inspect concise cited sources, avoid repeating a known failed configuration, preserve the decision boundary, and continue without credentials, personal data, private paths, or sensitive placeholders."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "describes a completed negative result as an execution failure or omits the separate failed Run",
+      "presents the batch-size hypothesis as established, recommends immediate experimentation, or omits a stop condition",
+      "uses a non-English user-facing Handoff, writes outside the requested project handoff path, or creates a second summary or Handoff Index",
+      "copies full records or logs or exposes credentials, personal data, private paths, or sensitive placeholders",
+      "changes a Run, project contract, report, code, test, session material, Git index, or commit"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B scripts/verify_experiment_state.py",
+    "python3 -B scripts/verify_handoff.py hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+    ],
+    "deny": [
+      "hello-scholar/memory/",
+      "runs/",
+      ".session/",
+      "src/",
+      "tests/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/handoffs/2026-08-01-model-quantization-handoff.md"
+    ],
+    "forbidden": [
+      "hello-scholar/memory/handoffs/2026-08-01-model-quantization-handoff.md",
+      "hello-scholar/handoffs/INDEX.md",
+      "runs/20260801-smaller-batch/",
+      "quantization-report.md",
+      "hello-scholar/architecture.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Handoff request is delivered after session-state construction",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect both Run Records and their evidence, then create one Handoff that preserves the failure-versus-negative-result distinction and the next evidence gate."
+}

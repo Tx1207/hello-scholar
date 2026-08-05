@@ -1,0 +1,8 @@
+{
+  "name": "prompt-routing-sandbox-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

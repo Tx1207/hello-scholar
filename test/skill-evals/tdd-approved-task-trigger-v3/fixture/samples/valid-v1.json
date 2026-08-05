@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "endpoint": "https://api.internal.example",
+  "retries": 3
+}

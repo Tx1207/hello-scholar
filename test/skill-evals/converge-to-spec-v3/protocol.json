@@ -1,0 +1,150 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "converge-to-spec-v3",
+  "projectId": "node-access-policy-service",
+  "primarySkill": "converge-to-spec",
+  "caseId": "converge-to-spec-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "converge-to-spec"
+  ],
+  "skillSources": {
+    "converge-to-spec": "skills/hello-scholar/converge-to-spec"
+  },
+  "skillExpectations": {
+    "converge-to-spec": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the Fixture, run npm test and the absolute documentation synchronization and check commands, initialize Git, commit every resulting Fixture file, and verify a clean tree before delivering the original user request.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "semantic-audit-coverage",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the initial assessment compares the full SPEC-028 Bundle with runtime source, tests, caller, persisted configuration, and cleanup surfaces, identifying each present semantic deviation category."
+      },
+      {
+        "id": "traceable-repair-guidance",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm each reported finding includes severity, a controlling Spec, Plan, or Task reference, direct file-and-line evidence, and a practical repair direction."
+      },
+      {
+        "id": "tasks-amendment-review-gate",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm no file changes precede the audit stop, then the authorized amendment appends complete unchecked Tasks to the existing file and returns its lifecycle state to pending review before stopping."
+      },
+      {
+        "id": "scope-and-owner-discipline",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the existing Tasks file and CLI-generated Indexes may change after authorization, while implementation, upstream documents, and unrelated project material remain unchanged."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "treats checked Tasks or passing tests as proof without comparing the full Bundle and project tree",
+      "reports a material finding without severity, controlling reference, file-and-line evidence, and an implementable repair direction",
+      "changes a file during the initial read-only assessment or creates a separate audit report",
+      "amends Tasks before the initial audit stop or replaces existing Task content instead of appending directly implementable work",
+      "fails to return the amended Tasks document to revision 5, pending-review approval, null approved revision, and pending status",
+      "changes implementation, upstream documents, or anything other than the permitted Tasks file and generated Indexes after authorization"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "npm test",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/access-policy/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "test/",
+      "clients/",
+      "config/",
+      "runs/",
+      "hello-scholar/architecture.md",
+      "hello-scholar/memory/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/access-policy/SPEC-028-deterministic-access-decisions/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/access-policy/INDEX.md"
+    ],
+    "forbidden": [
+      "convergence-report.md",
+      "audit-report.md",
+      "tasks/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original read-only convergence audit request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has reported a traceable read-only audit in chat, made no file changes, and stopped",
+        "contentRole": "authorized-append-actionable-convergence-tasks-request",
+        "message": "同意把刚才审计中可直接实施的偏差和清理项追加到现有 tasks.md。保留既有历史，把 Tasks 更新为 revision 5、approval pending-review、approved_revision null、status pending；新 Task 全部不勾选，运行 docs sync 后停下来等我重新审核。不要修改实现或上游文档。"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect the Bundle and all relevant project surfaces, report the first file-and-line-backed semantic deviation, then wait for authorization before any Tasks amendment."
+}

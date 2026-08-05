@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-landing-explicit-feasibility-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "7f5d3146e12ec92b7835fa187a687d8a84c47caef6b355c08a437a611eab37af",
+  "protocolSha256": "bcd4746dc4281295275df74f006e4c077301bba307a4770c2988726acacb04a5",
+  "fixtureSha256": "bc0cad6fb4ffdb423b3350ba33b0abb91d5bf64ac680daa2a6872c0bebad37f7",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-5-explicit-workflows / e207656bdbac671e350c08ccbe0b6a2a0f83c53479aa35c7e9b1dac64bf1ed7c"
+}

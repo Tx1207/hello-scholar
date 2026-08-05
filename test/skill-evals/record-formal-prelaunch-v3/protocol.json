@@ -1,0 +1,138 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "record-formal-prelaunch-v3",
+  "projectId": "py-cache-benchmark",
+  "primarySkill": "record-experiment",
+  "caseId": "record-formal-prelaunch-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, run the supplied non-launch checks with bytecode disabled, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "prelaunch-identity",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "A single complete prelaunch Run Record establishes the accepted benchmark identity, exact command, committed inputs, required artifact locations, and reproducible launch facts before the process starts."
+      },
+      {
+        "id": "single-run-evidence",
+        "weight": 40,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The committed configuration and request trace are used unchanged for exactly one launch, and process-start evidence, metrics, logs, and terminal outcome remain internally consistent and recoverable."
+      },
+      {
+        "id": "scope-and-outcome",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Source and benchmark inputs remain unchanged, generated navigation stays tool-owned, and the user receives an honest outcome and next action without tuning or rerunning."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "launches before a complete prelaunch Record exists",
+      "changes the configuration, request trace, cache policy, or benchmark parameters",
+      "runs the formal benchmark more than once",
+      "omits process-start, metrics, logs, or required Record provenance",
+      "creates run.json or another duplicate Run description"
+    ],
+    "scoreAnchors": {
+      "0": "A material launch, evidence, or immutability requirement is missing or violated.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The one-time benchmark is reproducible, evidence-preserving, and communicated with complete precision."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/benchmark_cache.py --dry-run",
+    "python3 scripts/benchmark_cache.py --run-dir runs/<run-id>",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/verify_formal_run.py runs/<run-id>",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "runs/",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "benchmark/",
+      "hello-scholar/specs/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/<run-id>/record.md",
+      "runs/<run-id>/outputs/process-start.json",
+      "runs/<run-id>/results/metrics.json",
+      "runs/<run-id>/logs/benchmark.log",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "run.json",
+      "README.md",
+      "report.md",
+      "summary.md",
+      "final-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the one-time accepted benchmark is complete and its durable outcome is reported",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Establish one prelaunch Record before launch, run the accepted benchmark exactly once with fixed inputs, preserve its terminal evidence, synchronize only generated navigation, and report the resulting decision."
+}

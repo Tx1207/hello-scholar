@@ -45,7 +45,7 @@ class NoDispatchingParallelAgentsSkillTests(unittest.TestCase):
         for phrase in (
             "全新 Implementer subagent",
             "独立 Reviewer subagent",
-            "每次最多启动一个正式 Eval Agent",
+            "当前用户授权最多三个正式 Eval Agent 并行",
             "两个角色的 Agent ID 必须不同",
         ):
             self.assertIn(phrase, workflow)

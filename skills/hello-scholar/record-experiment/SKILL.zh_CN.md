@@ -95,4 +95,8 @@ node <hello-scholar-repo>/bin/hello-scholar.js docs sync
 
 **完成条件：** `docs check` 先成功，再运行 `docs sync`；只有 Record 和 CLI 生成的 Index 反映持久文档变化。
 
+## 7. 向用户说明持久结果
+
+每次判断后，向用户说明判断和简要原因。如创建或更新了 Record，给出其标准 Record 路径和 `docs check`/`docs sync` 的状态；对于正式事前 Record，说明已记录命令是否解除启动阻塞。若为“不记录”，说明原因及没有更改 Run 或 Index。只报告持久事实，不报告瞬时监控。
+
 字段和生命周期规则见 `references/status-and-fields.md`。时机、碰撞、终态证据和 provenance 示例见 `references/examples.md`。

@@ -1,8 +1,8 @@
 {
   "proposalId": "proposal-generating-tasks-v3-migration-sonnet",
-  "decision": "pending",
+  "decision": "approved",
   "scenarioSha256": "0a2f24b5e5a77a25aa5749831dd4707b6eaded6c0e4fe857e63f8135d6bec016",
   "protocolSha256": "1f2fd5fe7bd548fc6d33d16531f4cf892fdabcd4981781b037472eac554337a1",
   "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
-  "replyEvidence": null
+  "replyEvidence": "User approved generating-tasks-sonnet-v3-proposals-batch-v1 at SHA-256 4f39d2a323c6e262850c9ffb76a54c25caaed06213d39ca0c4790a822bc82c0e by replying: 同意 (2026-08-02)."
 }

@@ -528,6 +528,39 @@ class LandingSkillScopeTests(unittest.TestCase):
         self.assertIn("进入 `brainstorming` 细化设计", chinese)
         self.assertIn("不要预选落地版方案", chinese)
 
+    def test_joint_explicit_request_stays_with_takeoff(self) -> None:
+        takeoff_english = (TAKEOFF_DIR / "SKILL.md").read_text(encoding="utf-8")
+        takeoff_chinese = (TAKEOFF_DIR / "SKILL.zh_CN.md").read_text(
+            encoding="utf-8"
+        )
+        landing_english = (LANDING_DIR / "SKILL.md").read_text(encoding="utf-8")
+        landing_chinese = (LANDING_DIR / "SKILL.zh_CN.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(
+            "If a current-turn request names both `takeoff` and `landing`, Takeoff owns that turn",
+            takeoff_english,
+        )
+        self.assertIn(
+            "本轮请求同时点名 `takeoff` 和 `landing` 时，由 `takeoff` 接管这一轮",
+            takeoff_chinese,
+        )
+        self.assertIn(
+            "A joint `takeoff` + `landing` request stays in Takeoff.",
+            frontmatter_description(landing_english),
+        )
+        self.assertIn(
+            "同时点名 `takeoff` 和 `landing` 的请求仍停在 Takeoff。",
+            frontmatter_description(landing_chinese),
+        )
+        self.assertIn(
+            "Enter Landing only after a later explicit request", landing_english
+        )
+        self.assertIn(
+            "后续一轮再次明确请求 Landing 后才进入", landing_chinese
+        )
+
     def test_takeoff_returns_to_verification_not_execution(self) -> None:
         english = (TAKEOFF_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (TAKEOFF_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")

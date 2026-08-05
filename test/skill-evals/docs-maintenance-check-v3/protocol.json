@@ -1,0 +1,125 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "docs-maintenance-check-v3",
+  "projectId": "py-spec-bundle-validator",
+  "primarySkill": "docs-maintenance",
+  "caseId": "docs-maintenance-check-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "docs-maintenance"
+  ],
+  "skillSources": {
+    "docs-maintenance": "skills/hello-scholar/docs-maintenance"
+  },
+  "skillExpectations": {
+    "docs-maintenance": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "read-only-diagnosis",
+        "weight": 40,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The documentation check is executed without changing file bytes or mtimes, and it does not trigger synchronization, repair, or revision updates."
+      },
+      {
+        "id": "accurate-actionable-report",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The response reports the actual command, exit code, diagnostics, notices, and project-relative paths in a concise form that enables a later repair transaction."
+      },
+      {
+        "id": "scope-preservation",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Generated Indexes, Bundle documents, Run Records, runtime source, tests, and Architecture remain unchanged while relevant project facts are used only to contextualize the diagnosis."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "runs docs sync during the check request",
+      "repairs Front Matter or revision bindings",
+      "changes any project bytes or mtimes",
+      "omits command outcome, material diagnostics, or affected relative paths",
+      "hand-edits generated navigation"
+    ],
+    "scoreAnchors": {
+      "0": "A material read-only, diagnostic, or scope requirement is missing or violated.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "The diagnosis is exact, useful, and demonstrably leaves the project unchanged."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/verify_check_contract.py <hello-scholar-repo>"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "hello-scholar/",
+      "runs/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/bundle-validation/INDEX.md",
+      "runs/INDEX.md",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the read-only documentation diagnosis is reported with no project writes",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Run only the documentation check, preserve the complete project state, and report the concrete diagnostics and next action without attempting repair."
+}

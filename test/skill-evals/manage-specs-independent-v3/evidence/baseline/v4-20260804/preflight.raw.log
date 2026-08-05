@@ -1,0 +1,73 @@
+$ node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs sync
+docs sync: written 3, deleted 0, errors 0, notices 4
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/observability/INDEX.md
+written hello-scholar/specs/search-ranking/INDEX.md
+notice plan-missing hello-scholar/specs/observability/SPEC-009-request-tracing/plan.md: Spec SPEC-009 has no Plan
+notice tasks-missing hello-scholar/specs/observability/SPEC-009-request-tracing/tasks.md: Spec SPEC-009 has no Tasks
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/plan.md: Spec SPEC-002 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/tasks.md: Spec SPEC-002 has no Tasks
+exit=0
+
+$ python3 -B -m unittest discover -s tests
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+exit=0
+
+$ node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 2, records 0, indexes 3, errors 0, notices 4
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/observability/INDEX.md
+index Current hello-scholar/specs/search-ranking/INDEX.md
+notice plan-missing hello-scholar/specs/observability/SPEC-009-request-tracing/plan.md: Spec SPEC-009 has no Plan
+notice tasks-missing hello-scholar/specs/observability/SPEC-009-request-tracing/tasks.md: Spec SPEC-009 has no Tasks
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/plan.md: Spec SPEC-002 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/tasks.md: Spec SPEC-002 has no Tasks
+exit=0
+
+$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /tmp/hello-scholar-eval-manage-specs-independent-v3-baseline-20260804-164844/.git/
+exit=0
+
+$ git config user.name Hello Scholar Eval
+exit=0
+
+$ git config user.email eval@localhost
+exit=0
+
+$ git add -A
+exit=0
+
+$ git commit -m Fixture Base for manage-specs-independent-v3
+[master (root-commit) b2744b2] Fixture Base for manage-specs-independent-v3
+ 9 files changed, 144 insertions(+)
+ create mode 100644 AGENTS.md
+ create mode 100644 hello-scholar/architecture.md
+ create mode 100644 hello-scholar/specs/INDEX.md
+ create mode 100644 hello-scholar/specs/observability/INDEX.md
+ create mode 100644 hello-scholar/specs/observability/SPEC-009-request-tracing/spec.md
+ create mode 100644 hello-scholar/specs/search-ranking/INDEX.md
+ create mode 100644 hello-scholar/specs/search-ranking/SPEC-002-retrieval-ranking/spec.md
+ create mode 100644 src/retrieval_api.py
+ create mode 100644 tests/test_retrieval_api.py
+exit=0
+
+$ git status --porcelain=v1
+exit=0
+
+$ git rev-parse HEAD
+b2744b23b93b87d61c94083a2e61167fab74d9cd
+exit=0

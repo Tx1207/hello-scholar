@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-router-experiment-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "8004c60dfc7ce9065170b0a526eb54a0db77ed90894738c15cd99330e88fc6ef",
+  "protocolSha256": "475a4d5df3ba81947f71ba42a2c825c0810f8ec9c8a0058e48005cda3fa08b29",
+  "fixtureSha256": "5e1c1497e8a223a2dc3d25fa531101a20bed27cdde4d1174631e54e22e117a5b",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-6-router / ccaf9fee5f46c72706db7099e3e458e75c9196e4d74838aaf965aebea7b992fa"
+}

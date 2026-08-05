@@ -1,0 +1,438 @@
+{
+  "manifestVersion": 1,
+  "batchId": "haiku-v4-wave-2-plan-tasks",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 4,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 4 Protocol v4 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v4-wave-2.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 4,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+      "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+      "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+    ],
+    "materialCorrections": [],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-writing-plans-bundle-v3-haiku-v4",
+      "scenarioId": "writing-plans-bundle-v3",
+      "caseId": "writing-plans-bundle-v3",
+      "projectId": "py-event-export-service",
+      "primarySkill": "writing-plans",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/writing-plans-bundle-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/writing-plans-bundle-v3/scenario.md",
+          "sha256": "bf56bce58c5e905e0abbda0ac05d17188c655fbdf3c2ac0e696712aaa5d706a9"
+        },
+        "protocol": {
+          "path": "test/skill-evals/writing-plans-bundle-v3/protocol.json",
+          "sha256": "34854e45a76fd8472cd361dfc08e67175428f68bbb95da718def1a467d3b12ad"
+        },
+        "fixture": {
+          "path": "test/skill-evals/writing-plans-bundle-v3/fixture",
+          "sha256": "41215692930d1d9619c9b633cc4ad937b985961d6e3c1d3c416ed40cfd1560c2"
+        }
+      },
+      "businessGoal": "请使用 `$writing-plans`，从当前 Accepted `SPEC-017` revision 3 生成同一 Spec Bundle 下可单独审核的高层 `plan.md`。Plan 要写清实现目标、范围、技术方案、模块和文件边界、接口、阶段、测试/实验、迁移、清理、回滚和 Tasks 生成规则，但不要写 Task 复选框、逐步源码、微操作清单、逐步 commit 或执行器选择，也不要创建 `tasks.md` 或开始实现。先生成 `draft` 并停下来等我审核。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "source-and-gate-reading",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Plan reads Architecture, accepted SPEC-017 revision 3, source, tests, replay caller, and project rules as fixed inputs, and retains revision 1 as draft before the separate approval decision."
+          },
+          {
+            "id": "high-level-plan-contract",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm plan.md is independently reviewable as a high-level implementation strategy with goal, scope, approach, module and file boundaries, interfaces, phases, and testing, without a Task checklist, source-level procedure, or executor selection."
+          },
+          {
+            "id": "coverage-and-migration",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm every accepted interface, compatibility, migration, cleanup, error, rollback, and must-not-touch constraint is mapped, including the rule that later Tasks generation follows Plan approval."
+          },
+          {
+            "id": "scope-and-routing",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm only the Bundle Plan and generated indexes change, approval changes only after the separate review message, and the response stops with generating-tasks as the next owner without Tasks, code, Runs, or upstream edits."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "writes outside the current Bundle Plan and generated indexes",
+          "creates tasks.md, implementation code, tests, Runs, an implementation report, or a memory artifact",
+          "uses Task checkboxes, complete implementation code, executor micro-steps, per-step commits, or execution-agent options in the Plan",
+          "omits an accepted criterion, public interface, migration, cleanup, rollback, or must-not-touch boundary",
+          "marks the Plan approved before the separate review message or begins implementation after approval",
+          "changes the accepted Spec or makes an unaccepted architecture or public-contract decision",
+          "routes somewhere other than generating-tasks after Plan approval",
+          "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the accepted archive contract and real implementation boundaries, create a reviewable high-level draft Plan, then stop before Tasks or code."
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-writing-plans-spec-gap-v3-haiku-v4",
+      "scenarioId": "writing-plans-spec-gap-v3",
+      "caseId": "writing-plans-spec-gap-v3",
+      "projectId": "node-webhook-signing-service",
+      "primarySkill": "writing-plans",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/writing-plans-spec-gap-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/writing-plans-spec-gap-v3/scenario.md",
+          "sha256": "9b6c1f2721a5ac545850003bc1fea9a7e02267620dbc6045b13cebf1ac5b7020"
+        },
+        "protocol": {
+          "path": "test/skill-evals/writing-plans-spec-gap-v3/protocol.json",
+          "sha256": "81beb0ca5b78e5ae0bfc06d8071379fc30e8e45b7b916772b2bb9701a1b39f42"
+        },
+        "fixture": {
+          "path": "test/skill-evals/writing-plans-spec-gap-v3/fixture",
+          "sha256": "763a78a849ca4a4b5506e5b0c61cbfefd2ae290a00c49cef5d372a7fb40e89d9"
+        }
+      },
+      "businessGoal": "请使用 `$writing-plans` 为当前 Accepted `SPEC-026` 生成实施 Plan，重点覆盖多 key rotation、失败响应和旧签名迁移。先结合真实 handler、verifier、调用方和测试检查 Spec 是否足以约束实现；如果仍有会改变公共 API、安全边界或迁移路径的重大决定没有定稿，请明确列出影响和最小澄清问题，零写入停止并让我先回到 `brainstorming/manage-specs`。不要替我选择方案，也不要先创建一个草稿 Plan 占位。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "fact-reading-and-gap-detection",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the accepted Spec, handler, verifier, caller, and tests are read and the unresolved key identity, HTTP response, and legacy-signature window are identified as real contract gaps."
+          },
+          {
+            "id": "contract-impact-and-questions",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm each gap is connected to its Spec section and affected project files, explains its public, security, or migration impact, and asks only the minimum decision questions without an invented default."
+          },
+          {
+            "id": "zero-write-stop-gate",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the complete Git tree remains byte-identical and no Plan, Tasks, index, report, source, test, Spec, or Architecture file is created or modified."
+          },
+          {
+            "id": "terminal-routing",
+            "weight": 10,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the response stops and routes unresolved design work to brainstorming and manage-specs rather than proceeding to Tasks or implementation."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "creates or modifies plan.md, tasks.md, an index, a report, source, tests, the Spec, or Architecture",
+          "chooses a key identity, HTTP failure contract, or compatibility window not accepted by the Spec",
+          "treats accepted status as sufficient while ignoring explicit unresolved design decisions",
+          "asks generic implementation questions without connecting them to affected Spec sections and real project files",
+          "routes directly to Tasks or implementation instead of brainstorming and manage-specs",
+          "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the accepted webhook contract and callers, identify the first material unresolved public decision, then stop with zero writes and route it to design ownership."
+    },
+    {
+      "ordinal": 3,
+      "proposalId": "proposal-generating-tasks-product-feature-policy-v3-haiku-v4",
+      "scenarioId": "generating-tasks-product-feature-policy-v3",
+      "caseId": "generating-tasks-product-feature-policy-v3",
+      "projectId": "py-feature-policy-engine",
+      "primarySkill": "generating-tasks",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/generating-tasks-product-feature-policy-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/generating-tasks-product-feature-policy-v3/scenario.md",
+          "sha256": "77763b042c411626fc34cd1994f0cb8cde594567d2b92c3b76ee92b963ce04fd"
+        },
+        "protocol": {
+          "path": "test/skill-evals/generating-tasks-product-feature-policy-v3/protocol.json",
+          "sha256": "56d6b1652732bdde6be9f81efe78bd88ee4dcff8d7dbb0c7392e41d01c5caf7d"
+        },
+        "fixture": {
+          "path": "test/skill-evals/generating-tasks-product-feature-policy-v3/fixture",
+          "sha256": "caefa42d07d2ff450a391a46f37fd0cb32d7e43bde5e10197934095734b886a6"
+        }
+      },
+      "businessGoal": "请从当前 Accepted Spec 和 Approved Plan 生成一份可单独审核的 `tasks.md`。不要修改 Spec、Plan、源码或测试，也不要开始实施。每个 Task 要能脱离对话阅读，写清依赖、文件、工作、验证和完成条件；Plan 明确指定 TDD 的那一项要原样传递，其他项不要自动加 TDD。生成后做覆盖和依赖自审，然后停下来等我审核 Tasks。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "task-document-contract",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm tasks.md binds SPEC-003 revision 2 and Plan revision 1, initializes revision 1 with pending-review, null approved revision, and pending status, and gives every Task independently readable sections."
+          },
+          {
+            "id": "coverage-and-dependencies",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm unique Tasks cover every Spec acceptance criterion and Plan migration, cleanup, regression, and rollback obligation with exact files and an acyclic graph whose parallel writers do not overlap or depend on one another."
+          },
+          {
+            "id": "validation-and-tdd-boundary",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm every Task has executable validation, observable expected signals, and checkable completion, and Red-Green-Refactor appears only on the precedence behavior explicitly selected by the approved Plan."
+          },
+          {
+            "id": "scope-discipline",
+            "weight": 15,
+            "critical": false,
+            "minimum": 90,
+            "criterion": "Confirm only same-Bundle tasks.md and CLI-generated indexes are written, Tasks remain unapproved and unimplemented, and the Spec, Plan, Architecture, runtime, tests, packages, Runs, and legacy paths remain unchanged."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "creates Tasks without kind tasks, SPEC-003/spec revision 2/plan revision 1 bindings, or the exact revision 1 pending-review approval state",
+          "omits a unique Task ID, plain-language goal, Spec Coverage, Depends On, Parallel, Files, Work, Validation, or Completion from any top-level Task",
+          "modifies the Spec, Plan, Architecture, source, tests, or package files",
+          "omits an acceptance criterion or Plan migration, cleanup, regression, or rollback obligation",
+          "marks Tasks approved or begins implementation",
+          "applies TDD to Tasks whose approved Plan does not select it or drops Red-Green-Refactor from the selected behavior",
+          "uses cyclic dependencies, dependent or same-file parallel Tasks, placeholders, non-observable validation, or context-dependent shorthand",
+          "reopens decisions fixed by the accepted Spec and approved Plan",
+          "writes a global tasks directory or hello-scholar/memory path",
+          "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the accepted Spec and approved Plan, then produce the first independently executable Task coverage result without implementing it."
+    },
+    {
+      "ordinal": 4,
+      "proposalId": "proposal-generating-tasks-product-migration-v3-haiku-v4",
+      "scenarioId": "generating-tasks-product-migration-v3",
+      "caseId": "generating-tasks-product-migration-v3",
+      "projectId": "node-config-format-cli",
+      "primarySkill": "generating-tasks",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/generating-tasks-product-migration-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/generating-tasks-product-migration-v3/scenario.md",
+          "sha256": "3b7766d298eb80c2738459b01ae54c53a40dba5b4e47967d36613f220263dead"
+        },
+        "protocol": {
+          "path": "test/skill-evals/generating-tasks-product-migration-v3/protocol.json",
+          "sha256": "3922fa6c311693576f92b4c004c0ffb37b33a800565a46d8d02ae4cc10aca2d6"
+        },
+        "fixture": {
+          "path": "test/skill-evals/generating-tasks-product-migration-v3/fixture",
+          "sha256": "69ff5b5be97cdf739f8e7bd6422fa943eca1f2f5729687e248ab1173a0050ac9"
+        }
+      },
+      "businessGoal": "请调用 `$generating-tasks`，把当前 Accepted Spec 和 Approved Plan 拆成同一 Bundle 下可独立审核的 `tasks.md`。不要修改 Spec、Plan、Architecture、配置数据、源码、测试或 package 文件，也不要开始迁移。Tasks 必须保留兼容读取窗口、迁移准备、切换门、旧 writer/flag/dependency 删除、回归矩阵和回滚验证；每项都要能交给不了解本对话的 Agent 单独执行。生成后检查覆盖、依赖和并行边界，然后停下来等我审核。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "task-document-contract",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm tasks.md binds SPEC-014 revision 3 and Plan revision 2, starts at revision 1 pending-review with null approved revision and pending status, and every unique Task contains all required standalone sections."
+          },
+          {
+            "id": "migration-and-cutover-sequence",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm distinct dependency-ordered Tasks preserve migration preparation, dual-read proof, persisted-profile conversion, and an evidence-gated format cutover with explicit recovery when the gate fails."
+          },
+          {
+            "id": "cleanup-regression-and-rollback",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm later Tasks name exact legacy profile, writer, flag, and codec-dependency removals, require prerequisite evidence, cover the complete regression matrix, and include an executable rollback drill with expected signals."
+          },
+          {
+            "id": "scope-and-parallel-discipline",
+            "weight": 15,
+            "critical": false,
+            "minimum": 90,
+            "criterion": "Confirm dependent or same-file migration Tasks are not parallel and only tasks.md plus generated indexes change, with no migration execution, data, state, source, tests, vendor, package, lockfile, backup, or approval mutation."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "creates Tasks without kind tasks, SPEC-014/spec revision 3/plan revision 2 bindings, or the exact revision 1 pending-review approval state",
+          "omits a unique Task ID, plain-language goal, Spec Coverage, Depends On, Parallel, Files, Work, Validation, or Completion from any top-level Task",
+          "collapses migration preparation, compatibility reading, conversion, cutover, cleanup, regression, or rollback into an implementation-new-format happy path",
+          "deletes a legacy profile, writeLegacyConfig, --legacy-output, or the local codec dependency without the approved Plan's prerequisite evidence and recovery action",
+          "uses cyclic dependencies or marks dependent or same-file writers as parallel",
+          "uses placeholders, context-dependent shorthand, generic cleanup, or validation without an executable command and observable expected signal",
+          "modifies or approves upstream documents, data, migration state, source, tests, vendor, package metadata, or lockfile, runs migration, or begins implementation",
+          "reopens persistence-format or migration decisions fixed by the accepted Spec and approved Plan",
+          "writes a global tasks directory, hello-scholar/memory, backup, or migration report",
+          "reads a repository-wide task packet, production Skill, or other evaluation evidence"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the approved migration contract, then produce dependency-ordered cutover, cleanup, regression, rollback, and recovery Tasks without running them."
+    }
+  ]
+}

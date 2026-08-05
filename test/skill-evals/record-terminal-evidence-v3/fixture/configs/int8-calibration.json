@@ -1,0 +1,7 @@
+{
+  "bits": 8,
+  "calibration_samples": 2048,
+  "device": "cuda:0",
+  "max_device_memory_gib": 16,
+  "seed": 0
+}

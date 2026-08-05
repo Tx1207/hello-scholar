@@ -24,6 +24,12 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 **Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
 
+## Confirm the Seam
+
+Before RED, name the public interface or observable behavior that this slice will test—the seam. Reuse a seam explicitly named in the user request or Approved Task; otherwise ask one bounded question: "What public interface or observable behavior should this slice verify?" Do not write evidence against an unconfirmed internal collaborator or private method.
+
+**Completion criterion:** The current slice has one confirmed seam and one observable behavior.
+
 **Violating the letter of the rules is violating the spirit of the rules.**
 
 ## Evidence Artifacts

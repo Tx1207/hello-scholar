@@ -1,0 +1,145 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "record-terminal-evidence-v3",
+  "projectId": "py-model-quantization-lab",
+  "primarySkill": "record-experiment",
+  "caseId": "record-terminal-evidence-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "record-experiment"
+  ],
+  "skillSources": {
+    "record-experiment": "skills/hello-scholar/record-experiment"
+  },
+  "skillExpectations": {
+    "record-experiment": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "Copy the fixture, initialize Git at its root, commit every fixture file, and verify a clean tree before the first prompt.",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "immutable-evidence-review",
+        "weight": 30,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The initial review derives each terminal conclusion from saved exit state, result validity, and hypothesis evidence without rerunning commands or changing logs, results, configurations, or model information."
+      },
+      {
+        "id": "gated-terminal-closeout",
+        "weight": 45,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "No closeout write occurs before the later requested review gate; afterward, each existing Record is updated with evidence-preserving terminal state, concise material facts, and complete durable sections."
+      },
+      {
+        "id": "bounded-documentation-change",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Only the existing Record documents and CLI-generated Run navigation change, the saved evidence remains byte-for-byte intact, and the user receives a clear status summary and reason for each Run."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "reruns a quantization or evaluation command",
+      "edits a saved log or result file",
+      "writes terminal closeout before the requested review gate",
+      "infers a terminal state from a Run name rather than saved evidence",
+      "creates a replacement Run, run.json, report, or summary document"
+    ],
+    "scoreAnchors": {
+      "0": "A material evidence-preservation, review-gate, or terminal-state requirement is missing or violated.",
+      "90": "All material requirements are met; only a minor presentation issue remains.",
+      "100": "Both reviews and the gated closeout are evidence-grounded, precisely scoped, and immediately usable."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/verify_terminal_records.py",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "runs/20260730-0900-int8-cuda-oom-s0/record.md",
+      "runs/20260731-1400-int4-quality-s0/record.md",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "configs/",
+      "models/",
+      "runs/20260730-0900-int8-cuda-oom-s0/logs/",
+      "runs/20260730-0900-int8-cuda-oom-s0/results/",
+      "runs/20260731-1400-int4-quality-s0/logs/",
+      "runs/20260731-1400-int4-quality-s0/results/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/20260730-0900-int8-cuda-oom-s0/record.md",
+      "runs/20260731-1400-int4-quality-s0/record.md",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "run.json",
+      "README.md",
+      "report.md",
+      "summary.md",
+      "final-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the saved-evidence assessment is reported and both Records remain unchanged",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the requested evidence-preserving Record closeout and generated navigation update are complete",
+        "contentRole": "review-gate",
+        "message": "I have reviewed the saved-evidence assessment. Please perform the requested closeout now, preserve the existing logs and results, and tell me the final statuses."
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Inspect immutable evidence and report an evidence-based assessment, stop for the requested review gate, then update only the existing Records and generated navigation while preserving all saved execution artifacts."
+}

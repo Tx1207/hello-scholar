@@ -97,6 +97,36 @@ class TddExplicitTriggerTests(unittest.TestCase):
                 iron_law = "## The Iron Law" if language == "english" else "## 铁律"
                 self.assertLess(text.index(gate.group(0)), text.index(iron_law))
 
+    def test_confirmed_seam_precedes_red_evidence(self) -> None:
+        expected_by_language = {
+            "english": (
+                "## Confirm the Seam",
+                "Before RED",
+                "public interface or observable behavior",
+                "one bounded question",
+                "unconfirmed internal collaborator or private method",
+                "one confirmed seam and one observable behavior",
+                "### RED - Write Failing Evidence",
+            ),
+            "chinese": (
+                "## 确认测试边界（Seam）",
+                "在 RED 之前",
+                "公共接口或可观察行为",
+                "一个有界问题",
+                "未经确认的内部协作者或私有方法",
+                "一个已确认的测试边界和一个可观察行为",
+                "### RED - 编写失败证据",
+            ),
+        }
+        for language, text in skill_texts().items():
+            with self.subTest(language=language):
+                for required in expected_by_language[language]:
+                    self.assertIn(required, text)
+                self.assertLess(
+                    text.index(expected_by_language[language][0]),
+                    text.index(expected_by_language[language][-1]),
+                )
+
     def test_explicit_entry_preserves_nonoptional_red_green_refactor(self) -> None:
         required_by_language = {
             "english": (

@@ -1,0 +1,26 @@
+$ npm test
+
+> test
+> node --test test/*.test.js
+
+✔ opaque token verifies until expiry or revocation (1.547068ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.539519
+exit=0
+$ node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check
+docs check: specs 3, records 0, indexes 2, errors 0, notices 6
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/session-auth/INDEX.md
+notice plan-missing hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/plan.md: Spec SPEC-005 has no Plan
+notice tasks-missing hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/tasks.md: Spec SPEC-005 has no Tasks
+notice plan-missing hello-scholar/specs/session-auth/SPEC-011-session-audit-events/plan.md: Spec SPEC-011 has no Plan
+notice tasks-missing hello-scholar/specs/session-auth/SPEC-011-session-audit-events/tasks.md: Spec SPEC-011 has no Tasks
+notice plan-missing hello-scholar/specs/session-auth/SPEC-012-signed-session-tokens/plan.md: Spec SPEC-012 has no Plan
+notice tasks-missing hello-scholar/specs/session-auth/SPEC-012-signed-session-tokens/tasks.md: Spec SPEC-012 has no Tasks
+exit=0

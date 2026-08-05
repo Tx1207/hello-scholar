@@ -1,0 +1,289 @@
+{
+  "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
+  "liveApprovalId": "live-manage-specs-successor-v3-haiku-v4-rerun-2",
+  "liveApprovalSha256": "f06375c62a5c04ad724a0b8ed69bd29bce1131a0bd25fad718f8514f86b6059e",
+  "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
+  "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
+  "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "8a61252673b48af9241aaaf1bea0b8568110f0394b809326cfcb6e0e81794bdd"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "a53bfb43cf93c056a",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "af7de071b5f70d5fa",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "identity-classification",
+      "passed": true,
+      "reason": "Store-backed verification replacement was correctly classified as a successor while audit ownership stayed separate.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+          "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+        }
+      ]
+    },
+    {
+      "id": "approval-gate",
+      "passed": true,
+      "reason": "Round zero stopped read-only and all writes followed the successor approval.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+          "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+        }
+      ]
+    },
+    {
+      "id": "supersession-integrity",
+      "passed": false,
+      "reason": "Relations are reciprocal and acyclic, but the actual successor path omits the approved and Protocol-required stateless identity.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+          "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": false,
+      "reason": "Only intended document categories changed, but the new artifact path is outside the Protocol allowlist.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+          "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Every approved Protocol command exited successfully in the required order.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/commands.raw.log",
+          "sha256": "aefc473df2fe614ec58741a340205ece205ea883db37c4efe0f0e06bfa3d485f"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+          "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/commands.raw.log",
+          "sha256": "aefc473df2fe614ec58741a340205ece205ea883db37c4efe0f0e06bfa3d485f"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/commands.raw.log",
+          "sha256": "aefc473df2fe614ec58741a340205ece205ea883db37c4efe0f0e06bfa3d485f"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "27391cdf035ce3e443a07302315182c57ec52fe8ed768c7d357e0bceba6f9bb7",
+        "promptSha256": "2806beef9f5308ed310624a7e327718e0af55e8d26ad4a04e657289567d84cf6",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/prompt-round-0.md",
+            "sha256": "2806beef9f5308ed310624a7e327718e0af55e8d26ad4a04e657289567d84cf6"
+          },
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/interaction.md",
+            "sha256": "7d76ed3ef524b15b5609621f1c9c73762069d1bf8fe41e9b57e32132243a340c"
+          }
+        ]
+      },
+      {
+        "sender": "eval-main",
+        "contentRole": "future-classification-decision",
+        "messageSha256": "d3cb8e7d6bd7887e1d203ed94cf3fb3b0ad84797fe031a7d8a391e471d130dc5",
+        "promptSha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/prompt-round-1.md",
+            "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"
+          },
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/interaction.md",
+            "sha256": "7d76ed3ef524b15b5609621f1c9c73762069d1bf8fe41e9b57e32132243a340c"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/prompt-round-0.md",
+          "sha256": "2806beef9f5308ed310624a7e327718e0af55e8d26ad4a04e657289567d84cf6"
+        },
+        {
+          "path": "evidence/live/v4-20260804-rerun-2/interaction.md",
+          "sha256": "7d76ed3ef524b15b5609621f1c9c73762069d1bf8fe41e9b57e32132243a340c"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "identity-classification": 100,
+        "approval-gate": 100,
+        "supersession-integrity": 90,
+        "scope-discipline": 90
+      },
+      "reasons": {
+        "identity-classification": "The replacement lifecycle and unchanged audit owner were correctly identified.",
+        "approval-gate": "No project write preceded the classification approval.",
+        "supersession-integrity": "Reciprocal links pass, with a material exact-path identity mismatch.",
+        "scope-discipline": "Runtime and unrelated documents stayed unchanged, but the successor path missed the allowlisted identity."
+      },
+      "evidence": {
+        "identity-classification": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "approval-gate": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "supersession-integrity": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ]
+      },
+      "totalScore": 95.5
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The successor result and all affected paths are immediately visible.",
+        "audience-fit": "Chinese prose retains exact token fields and document terms.",
+        "information-design": "Changes, checks, and exclusions are clearly organized.",
+        "actionability": "The created relationship and verification state are explicit.",
+        "signal-to-noise": "The response stays focused on the authorized transaction."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260804-rerun-2/reviewer.md",
+            "sha256": "ec0d112ee8a4bf405cc978b8f7b71eca64054980e6704c14ba90921863d33121"
+          }
+        ]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+      "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+      "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+      "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+      "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260804-rerun-2/tree.raw.log",
+      "sha256": "684bd0b575d1e606772ca8bfea2a4a9f40f5cf481a8ac222e617b984b2892c1a"
+    }
+  }
+}

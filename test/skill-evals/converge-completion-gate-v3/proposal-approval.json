@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-converge-completion-gate-v3-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "cb5e7cbfd7f52fa10fadbd95a1f262b512e474193de0c3fdafaa37b5aecbb93b",
+  "protocolSha256": "c0798537c5d37f9e349ae47cbb312e988d332483e96081ec3c6aa5f93128af70",
+  "fixtureSha256": "fd7a974afd03f7e5215996c07b25edbccbbe9c616ca59354366c958fe5ba00c2",
+  "replyEvidence": "用户授权开启正式运行，并允许最多 3 个 Haiku Formal Eval Agent 并行；授权当前六个 Haiku v4 Batch 及其已发布 SHA-256。 haiku-v4-wave-4-convergence-handoff / 7a82e5208d8471904127187ea069e2dc101270adc1f395e4c9f5b1eb0f1d50a7"
+}

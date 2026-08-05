@@ -51,7 +51,7 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ```
 
-语义 Plan 修订会递增 `revision` 并更新 `updated`。向用户展示前，将全部模板提示替换为具体项目事实。
+语义 Plan 修订会递增 `revision`、将 `status` 设为 `draft` 并更新 `updated`。向用户展示前，将全部模板提示替换为具体项目事实。
 
 正文固定包含 12 节：
 
@@ -80,6 +80,7 @@ updated: YYYY-MM-DD
    node <hello-scholar-repo>/bin/hello-scholar.js docs check
    ```
 3. 将完整 Plan 交给用户进行一次整份审核。只有用户明确批准前，它保持 `draft`。
-4. 用户明确批准后，将 `status` 设为 `approved`，通过相同 CLI 序列验证，再调用 `$generating-tasks` 生成需要独立审核的 Tasks。
+4. 设置 `status: approved` 前，重新读取目标 Spec 的 Front Matter，并确认 Plan 的 `spec` 与 `spec_revision` 仍匹配其 accepted ID 和 revision。任一不匹配时，Plan 保持 `draft`，修订后重新审核。
+5. 用户明确批准并通过该新鲜度检查后，将 `status` 设为 `approved`，通过相同 CLI 序列验证，再调用 `$generating-tasks` 生成需要独立审核的 Tasks。
 
 **完成条件：** 终态是已审核 Plan，或阻止计划的明确设计停止点。Plan 批准不代表 Tasks 或实施获得批准。

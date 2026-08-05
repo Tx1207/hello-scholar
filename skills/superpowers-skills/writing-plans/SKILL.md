@@ -51,7 +51,7 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ```
 
-A semantic Plan revision increments `revision` and updates `updated`. Replace every template prompt with concrete project facts before presenting the file.
+A semantic Plan revision increments `revision`, sets `status: draft`, and updates `updated`. Replace every template prompt with concrete project facts before presenting the file.
 
 The body always contains these 12 sections:
 
@@ -80,6 +80,7 @@ The body always contains these 12 sections:
    node <hello-scholar-repo>/bin/hello-scholar.js docs check
    ```
 3. Present the complete Plan for one whole-file user review. It remains `draft` until the user explicitly approves it.
-4. After explicit approval, set `status: approved`, validate through the same CLI sequence, and invoke `$generating-tasks` to produce separately reviewed Tasks.
+4. Before setting `status: approved`, reread the target Spec Front Matter and confirm the Plan's `spec` and `spec_revision` still match its accepted ID and revision. If either differs, leave the Plan `draft` and revise and review it again.
+5. After explicit approval and that freshness check, set `status: approved`, validate through the same CLI sequence, and invoke `$generating-tasks` to produce separately reviewed Tasks.
 
 **Completion:** the terminal state is a reviewed Plan or a clear stop at the design decision that prevents one. Plan approval does not approve Tasks or implementation.

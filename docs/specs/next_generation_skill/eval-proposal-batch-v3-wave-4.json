@@ -1,0 +1,434 @@
+{
+  "manifestVersion": 1,
+  "batchId": "sonnet-v3-wave-4-convergence-handoff",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 4,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 4 Protocol v3 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v3-wave-4.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 4,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+      "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+      "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+    ],
+    "materialCorrections": [
+      {
+        "scenarioId": "handoff-dirty-implementation-v3",
+        "change": "Fixture verifiers now enforce only public scope and redaction boundaries; hidden Handoff path and answer details remain evaluator-only."
+      },
+      {
+        "scenarioId": "handoff-negative-experiment-v3",
+        "change": "Fixture verifiers now expose only project-state existence and redaction boundaries; classification and Handoff answer details remain evaluator-only."
+      }
+    ],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-converge-completion-gate-v3-sonnet",
+      "scenarioId": "converge-completion-gate-v3",
+      "caseId": "converge-completion-gate-v3",
+      "projectId": "py-batch-reporting-pipeline",
+      "primarySkill": "converge-to-spec",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/converge-completion-gate-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/converge-completion-gate-v3/scenario.md",
+          "sha256": "cb5e7cbfd7f52fa10fadbd95a1f262b512e474193de0c3fdafaa37b5aecbb93b"
+        },
+        "protocol": {
+          "path": "test/skill-evals/converge-completion-gate-v3/protocol.json",
+          "sha256": "ba0d715d86ca9d776c62962dabfbe110fccccad534f6d6adb41a2aec24ea7322"
+        },
+        "fixture": {
+          "path": "test/skill-evals/converge-completion-gate-v3/fixture",
+          "sha256": "fd7a974afd03f7e5215996c07b25edbccbbe9c616ca59354366c958fe5ba00c2"
+        }
+      },
+      "businessGoal": "请只读判断当前 `SPEC-041` Bundle 是否已经可以声明完成。不要因为 Tasks 全勾、旧摘要写着通过或现有单测是绿的就直接下结论；检查 Spec/Plan/Tasks 是否 Current、每个勾选 Task 的 Completion 是否有项目事实支撑、正式 Benchmark/Eval 是否有有效根目录 Run Record、迁移清理是否结束，以及当前工作树是否已有完整的新鲜验证证据。给出明确的 `Ready` 或 `Not Ready`，列出所有直接可观察的阻塞和下一步 owner，然后停下来。不要修改文档、代码、复选框，不要补造 Record，也不要另写报告。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "current-contract-review",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the response compares the current SPEC-041 Spec, Plan, and Tasks with their stated revisions and lifecycle facts instead of treating checkboxes or a summary as completion proof."
+          },
+          {
+            "id": "completion-fact-traceability",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm every material completion claim is checked against implementation, tests, callers, and directly observable project facts, with concrete blockers rather than unsupported conclusions."
+          },
+          {
+            "id": "benchmark-and-cleanup-review",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the assessment examines the formal benchmark provenance requirement and migration cleanup across the relevant implementation, caller, and test surfaces."
+          },
+          {
+            "id": "decision-and-boundary-discipline",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the chat response gives a clear Ready or Not Ready decision, routes observable blockers to appropriate next owners, and leaves the project byte-for-byte unchanged."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "declares completion without checking current Bundle revision and lifecycle facts",
+          "uses checked Tasks, a prose summary, or a passing happy-path test suite as substitute proof for material completion conditions",
+          "omits the formal benchmark provenance requirement or remaining migration cleanup from the assessment",
+          "fails to provide a clear Ready or Not Ready decision with observable blockers and next owners",
+          "changes files, Git state, generated documentation, Run material, or creates a separate report"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect the current Bundle, implementation, callers, tests, records, and cleanup state, then return the first evidence-backed completion decision without writing files."
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-converge-to-spec-v3-sonnet",
+      "scenarioId": "converge-to-spec-v3",
+      "caseId": "converge-to-spec-v3",
+      "projectId": "node-access-policy-service",
+      "primarySkill": "converge-to-spec",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/converge-to-spec-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/converge-to-spec-v3/scenario.md",
+          "sha256": "160c39d5a82d67c10c1a6d5dc695786c2253a0db6cf437353050c007fba5e1b5"
+        },
+        "protocol": {
+          "path": "test/skill-evals/converge-to-spec-v3/protocol.json",
+          "sha256": "f94034a1ccfdfb16b85beb0a1649d14ceeb687a948b89279bacf4f74c6a06191"
+        },
+        "fixture": {
+          "path": "test/skill-evals/converge-to-spec-v3/fixture",
+          "sha256": "fc576d84b6d607eb7fd79d4c4afc32bfe8214b91e5b5dd41fe5092b307583529"
+        }
+      },
+      "businessGoal": "请对当前 `SPEC-028` Bundle 做一次完成前的只读收敛审计。不要只看 Tasks 复选框或测试结果；逐项对照 Spec、Plan、Tasks、源码、测试、调用方和持久配置，找出 `Missing`、`Partial`、`Contradictory`、`Unrequested` 以及清理残留。每项都要给严重程度、Spec/Plan/Task 引用、`file:line` 实际证据和可实施的修复方向。先不要修改任何文件，也不要另写审计报告，直接在回复中给我审计结果并停下来。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "semantic-audit-coverage",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the initial assessment compares the full SPEC-028 Bundle with runtime source, tests, caller, persisted configuration, and cleanup surfaces, identifying each present semantic deviation category."
+          },
+          {
+            "id": "traceable-repair-guidance",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm each reported finding includes severity, a controlling Spec, Plan, or Task reference, direct file-and-line evidence, and a practical repair direction."
+          },
+          {
+            "id": "tasks-amendment-review-gate",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm no file changes precede the audit stop, then the authorized amendment appends complete unchecked Tasks to the existing file and returns its lifecycle state to pending review before stopping."
+          },
+          {
+            "id": "scope-and-owner-discipline",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm only the existing Tasks file and CLI-generated Indexes may change after authorization, while implementation, upstream documents, and unrelated project material remain unchanged."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "treats checked Tasks or passing tests as proof without comparing the full Bundle and project tree",
+          "reports a material finding without severity, controlling reference, file-and-line evidence, and an implementable repair direction",
+          "changes a file during the initial read-only assessment or creates a separate audit report",
+          "amends Tasks before the initial audit stop or replaces existing Task content instead of appending directly implementable work",
+          "fails to return the amended Tasks document to revision 5, pending-review approval, null approved revision, and pending status",
+          "changes implementation, upstream documents, or anything other than the permitted Tasks file and generated Indexes after authorization"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect the Bundle and all relevant project surfaces, report the first file-and-line-backed semantic deviation, then wait for authorization before any Tasks amendment."
+    },
+    {
+      "ordinal": 3,
+      "proposalId": "proposal-handoff-dirty-implementation-v3-sonnet",
+      "scenarioId": "handoff-dirty-implementation-v3",
+      "caseId": "handoff-dirty-implementation-v3",
+      "projectId": "py-search-normalization",
+      "primarySkill": "handoff",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/handoff-dirty-implementation-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/handoff-dirty-implementation-v3/scenario.md",
+          "sha256": "c5a682065bba4529ed5b76f1db82c13f004dae29a6b2b91fc30159e697202153"
+        },
+        "protocol": {
+          "path": "test/skill-evals/handoff-dirty-implementation-v3/protocol.json",
+          "sha256": "44e8d52cfb840abc5210b2b87471d81aa7e7fd80dc2cb86624ff7ac8f528fb1e"
+        },
+        "fixture": {
+          "path": "test/skill-evals/handoff-dirty-implementation-v3/fixture",
+          "sha256": "dfa3ae794b79fe257ce9f25b6c38bd50e8259ae91232d5c5fb27b1ff40f4592a"
+        }
+      },
+      "businessGoal": "请为下一次会话写一份 handoff，让新的 Agent继续 search normalization 的实现，重点接住现在失败的测试和还没提交的改动。不要替我继续改代码，也不要提交。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "workspace-state-accuracy",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Handoff accurately separates completed, active, pending, and failing work and identifies the staged, modified, and untracked paths from current Git, Task, and test facts."
+          },
+          {
+            "id": "handoff-location-and-language",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm exactly one Chinese Handoff is created at the requested project handoff path, with no secondary summary, Index, or legacy memory location."
+          },
+          {
+            "id": "fresh-agent-continuation",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm a new agent can find the Bundle, relevant Task IDs, dirty paths, known failing dash-normalization test, and an executable first verification action without hidden conversation context."
+          },
+          {
+            "id": "scope-and-redaction",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Handoff summarizes fact sources without copying sensitive values or large project documents, and preserves source, tests, Tasks, Git state, and session material."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "writes anywhere other than the one requested project Handoff path or changes the existing dirty state",
+          "misstates a staged, modified, untracked, completed, pending, or failing fact",
+          "uses a non-Chinese user-facing Handoff or creates a second summary or Handoff Index",
+          "copies sensitive placeholders or large Spec, Plan, Tasks, diff, or session-note content",
+          "omits an executable first verification action for a new agent or commits changes"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect Git, Tasks, tests, and dirty files, then create one concise Handoff that lets a new agent take the first correct verification action."
+    },
+    {
+      "ordinal": 4,
+      "proposalId": "proposal-handoff-negative-experiment-v3-sonnet",
+      "scenarioId": "handoff-negative-experiment-v3",
+      "caseId": "handoff-negative-experiment-v3",
+      "projectId": "py-model-quantization-handoff",
+      "primarySkill": "handoff",
+      "agentModel": "claude-sonnet-5",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/handoff-negative-experiment-v3/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/handoff-negative-experiment-v3/scenario.md",
+          "sha256": "6416821161812d272c4032395f4fef81ae9644aeb8717bfa8ed44dd46d6fc3c4"
+        },
+        "protocol": {
+          "path": "test/skill-evals/handoff-negative-experiment-v3/protocol.json",
+          "sha256": "a37560e409d588c0dd603a894cc54a8a3d729bd676048f8ed5112ca04b033d8b"
+        },
+        "fixture": {
+          "path": "test/skill-evals/handoff-negative-experiment-v3/fixture",
+          "sha256": "b7a01e62822d728a652e840e50d00a458098cc3ab4e973d08e277d3b6cdd1051"
+        }
+      },
+      "businessGoal": "请写一份 handoff 给下一次会话，让新的 Agent继续判断量化搜索空间是否值得缩小。要接住两次已有实验和刚发现但还没验证的 batch-size 假设，不要现在启动新实验。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "run-fact-accuracy",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Handoff cites both relevant Run Records and result files, preserving the distinction between an execution failure and a completed negative result."
+          },
+          {
+            "id": "hypothesis-boundary",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm established Run facts remain separate from the unverified batch-size hypothesis, with an evidence gate and stop condition before any new experiment decision."
+          },
+          {
+            "id": "handoff-location-and-language",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm exactly one English Handoff is created at the requested project handoff path and no Run, project contract, report, code, test, or Git state changes occur."
+          },
+          {
+            "id": "concise-safe-continuation",
+            "weight": 30,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm a new agent can inspect concise cited sources, avoid repeating a known failed configuration, preserve the decision boundary, and continue without credentials, personal data, private paths, or sensitive placeholders."
+          }
+        ],
+        "minimumTotal": 90,
+        "hardRejects": [
+          "describes a completed negative result as an execution failure or omits the separate failed Run",
+          "presents the batch-size hypothesis as established, recommends immediate experimentation, or omits a stop condition",
+          "uses a non-English user-facing Handoff, writes outside the requested project handoff path, or creates a second summary or Handoff Index",
+          "copies full records or logs or exposes credentials, personal data, private paths, or sensitive placeholders",
+          "changes a Run, project contract, report, code, test, session material, Git index, or commit"
+        ],
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Inspect both Run Records and their evidence, then create one Handoff that preserves the failure-versus-negative-result distinction and the next evidence gate."
+    }
+  ]
+}

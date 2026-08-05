@@ -36,6 +36,26 @@ class HandoffPathTests(unittest.TestCase):
             self.assertIn("memory", text)
             self.assertIn("do not infer", text.lower()) if path.name == "SKILL.md" else self.assertIn("不要根据任务提示语言推断", text)
 
+    def test_saved_handoff_reports_path_and_continuation(self) -> None:
+        """Purpose: require a concise user-facing Handoff outcome; Input: bilingual Skill texts; Output: none; Errors: assertion failure identifies a missing saved path or next-session focus."""
+
+        english = SKILL_FILES[0].read_text(encoding="utf-8")
+        chinese = SKILL_FILES[1].read_text(encoding="utf-8")
+        for term in (
+            "After a successful save",
+            "exact Handoff path",
+            "what the next session can continue",
+            "Reference the document rather than reproducing its contents",
+        ):
+            self.assertIn(term, english)
+        for term in (
+            "成功保存后",
+            "准确的 Handoff 路径",
+            "下一次会话可以接续什么",
+            "引用该文档，不复述其内容",
+        ):
+            self.assertIn(term, chinese)
+
     def test_templates_remain_byte_stable(self) -> None:
         """Purpose: preserve Handoff content and template ownership; Input: template bytes; Output: none; Errors: assertion failure identifies an unauthorized template change."""
 

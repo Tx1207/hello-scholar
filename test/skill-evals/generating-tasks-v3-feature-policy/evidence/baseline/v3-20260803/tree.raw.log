@@ -1,0 +1,21 @@
+# Feature Policy Sonnet v3 Baseline full tree evidence
+fixtureBaseCommit: 60820982cd6e1b609f501e1aecb374bf10fce81b
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+## untracked files
+hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+## porcelain status including untracked files
+?? hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+## final regular file hashes outside .git
+fb1d480f00d488cfb28bc1c6765983070d44ba48632a344ba926a77590a1ecdb  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/AGENTS.md
+caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/architecture.md
+fdd7ee3bb287f445e6c1e30e38bbd3795ba38e9db39b1b665167c916d33a7331  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/specs/INDEX.md
+6e990d956f558bfb4a822bdc22a6f41c4561cb80ab7749f7abb7d72a3695710c  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/specs/feature-policy/INDEX.md
+9ee1b2c6522ea4f8983572b5cb06cd6e6a61e81d4066892991aa7c42eaa2b845  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+1499b9071eb14db8489ae0c2d9f1866c728525236e248febab98021d4189ba9c  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+45d7f4859465d096572f4daa310a7474d41a5724f6cadbdb702f0b790d500feb  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/src/policy.py
+33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae  /tmp/hello-scholar-eval-generating-tasks-v3-feature-policy-baseline-4ea23bb3/tests/test_policy.py
+## final runtime artifacts outside .git
+## diff whitespace check

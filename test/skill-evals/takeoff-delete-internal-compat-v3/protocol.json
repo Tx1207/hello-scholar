@@ -1,0 +1,148 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "takeoff-delete-internal-compat-v3",
+  "projectId": "py-feature-flag-core",
+  "primarySkill": "takeoff",
+  "caseId": "takeoff-delete-internal-compat-v3",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "takeoff"
+  ],
+  "skillSources": {
+    "takeoff": "skills/hai-skills/takeoff"
+  },
+  "skillExpectations": {
+    "takeoff": {
+      "branch": "enter",
+      "baselineLoad": "absent",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy fixture, initialize Git, commit the unchanged tree, and keep all direction analysis read-only",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "repository-fact-reading",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm README promises, refactor history, production caller, persisted flags, source and tests are inspected before classifying LegacyFlagAdapter."
+      },
+      {
+        "id": "contract-versus-inertia",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the adapter is identified as internal migration inertia while FlagService and current persisted data are protected as the observable contract, with a boundary for contrary evidence."
+      },
+      {
+        "id": "frame-opening-thesis",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the thesis reframes the problem from adding a context shim to operating one Feature Flag model and names the removable adapter concept and duplicated state."
+      },
+      {
+        "id": "proof-and-falsifier",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the first proof point checks for real external or persisted adapter dependence and the falsifier would reverse the delete judgment if such dependence exists."
+      },
+      {
+        "id": "payoff-ledger",
+        "weight": 15,
+        "critical": false,
+        "minimum": 90,
+        "criterion": "Confirm benefits and costs are concrete, covering removed translation/state/error surfaces, compatibility risk, evidence needed and the value of one target model."
+      },
+      {
+        "id": "direction-stage-boundary",
+        "weight": 10,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm output remains at direction level with options and an asking next move, no files or ordered implementation steps, and no automatic Brainstorming or Landing."
+      }
+    ],
+    "minimumTotal": 90,
+    "hardRejects": [
+      "does not inspect the public surface, callers, persisted data, and refactor record before classifying compatibility",
+      "keeps the internal adapter by default without testing whether any real contract depends on it",
+      "gives slogans without a concrete thesis, deletion boundary, proof question, falsifier, and payoff",
+      "edits the fixture or turns direction analysis into an ordered implementation plan",
+      "automatically starts brainstorming or landing"
+    ],
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    }
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "commands": [
+    "python3 -B -m unittest discover -s tests",
+    "python3 -B -m src.web_app",
+    "git diff --exit-code"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      ".git/",
+      "README.md",
+      "data/",
+      "docs/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "hello-scholar/",
+      "implementation-plan.md",
+      "migration-plan.md",
+      "runs/"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the explicit Takeoff direction request has been delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "criticalPath": "Read public promises, callers, persisted data, history, source, and tests, then state whether the adapter is contract or inertia before opening the target frame."
+}
