@@ -43,9 +43,9 @@ class NoReceivingCodeReviewSkillTests(unittest.TestCase):
     def test_agents_keeps_fact_checking_validation_and_communication_rules(self) -> None:
         agents = AGENTS_MD.read_text(encoding="utf-8")
         for phrase in (
-            "Read local facts first, then generate changes.",
-            "Test behavior that can actually break",
-            "Say what you did, why you did it, and what remains uncertain.",
+            "ground implementation choices in project facts",
+            "behavior, boundaries, and regression risks that can actually fail",
+            "Report completed work, evidence, scope of impact, and facts that still need confirmation.",
         ):
             self.assertIn(phrase, agents)
 

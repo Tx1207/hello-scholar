@@ -447,11 +447,17 @@ test("install does not write instruction block when skill install fails", () => 
 
 test("claude install falls back to AGENTS content when CLAUDE.md source is absent", () => {
   const projectRoot = makeTempProject();
+  const repoRoot = makeTempProject();
   try {
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, "CLAUDE.md")), false);
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, "CLAUDE.MD")), false);
+    fs.writeFileSync(
+      path.join(repoRoot, "AGENTS.md"),
+      fs.readFileSync(path.join(REPO_ROOT, "AGENTS.md"), "utf8"),
+      "utf8"
+    );
+    fs.symlinkSync(path.join(REPO_ROOT, "skills"), path.join(repoRoot, "skills"), "dir");
+    assert.equal(fs.existsSync(path.join(repoRoot, "CLAUDE.md")), false);
 
-    install({ tool: "claude", mode: "link", projectRoot: projectRoot, repoRoot: REPO_ROOT });
+    install({ tool: "claude", mode: "link", projectRoot: projectRoot, repoRoot });
 
     const claudeText = fs.readFileSync(path.join(projectRoot, "CLAUDE.md"), "utf8");
     assert.match(claudeText, /HELLO-SCHOLAR:BEGIN claude/);
@@ -459,6 +465,7 @@ test("claude install falls back to AGENTS content when CLAUDE.md source is absen
     assert.match(claudeText, /Read Before You Write/);
   } finally {
     fs.rmSync(projectRoot, { recursive: true, force: true });
+    fs.rmSync(repoRoot, { recursive: true, force: true });
   }
 });
 
