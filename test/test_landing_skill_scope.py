@@ -8,8 +8,8 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-TAKEOFF_DIR = REPO_ROOT / "skills" / "hai-skills" / "takeoff"
-LANDING_DIR = REPO_ROOT / "skills" / "hai-skills" / "landing"
+TAKEOFF_DIR = REPO_ROOT / "skills" / "takeoff"
+LANDING_DIR = REPO_ROOT / "skills" / "landing"
 
 
 @dataclass(frozen=True)

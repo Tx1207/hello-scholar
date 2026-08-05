@@ -181,12 +181,12 @@
 
 ## 架构判断与文档治理
 
-- `NEED-SKILL-001` | `hai-stack` | [takeoff](../../skills/hai-skills/takeoff/SKILL.zh_CN.md)（原 `geju`）：做高层次“格局判断”：提出大胆方向、删除清单、方案对比和验证路径。（需要）
+- `NEED-SKILL-001` | `hai-stack` | [takeoff](../../skills/takeoff/SKILL.zh_CN.md)（原 `geju`）：做高层次“格局判断”：提出大胆方向、删除清单、方案对比和验证路径。（需要）
   - 记录/产物路径：无固定持久文件；主要输出在对话中。
-  - 源文件：`skills/hai-skills/takeoff/SKILL.zh_CN.md`
-- `NEED-SKILL-016` | `hai-stack` | [landing](../../skills/hai-skills/landing/SKILL.zh_CN.md)（原 `goudi`）：对宏大方案做落地压力测试，给出推进、缩小、暂停、拒绝或先验证判断。（需要）
+  - 源文件：`skills/takeoff/SKILL.zh_CN.md`
+- `NEED-SKILL-016` | `hai-stack` | [landing](../../skills/landing/SKILL.zh_CN.md)（原 `goudi`）：对宏大方案做落地压力测试，给出推进、缩小、暂停、拒绝或先验证判断。（需要）
   - 记录/产物路径：无固定持久文件；主要输出在对话中。
-  - 源文件：`skills/hai-skills/landing/SKILL.zh_CN.md`
+  - 源文件：`skills/landing/SKILL.zh_CN.md`
 - `REF-SKILL-084` | `hai-stack` | [hai-architecture](../../references/code/hai-stack/skills/hai-architecture/SKILL-zh.md)：基于 APoSD/Ousterhout 视角做证据驱动的架构审查或设计决策批判。
   - 记录/产物路径：未声明固定路径
   - 源文件：`references/code/hai-stack/skills/hai-architecture/SKILL-zh.md`
@@ -208,9 +208,9 @@
 
 ## 代理执行、工程质量与交接（需要）
 
-- `NEED-SKILL-002` | `superpowers` | [brainstorming](../../skills/superpowers-skills/brainstorming/SKILL.zh_CN.md)：实现前澄清用户意图、需求和设计，形成可审阅设计。
+- `NEED-SKILL-002` | `superpowers` | [brainstorming](../../skills/brainstorming/SKILL.zh_CN.md)：实现前澄清用户意图、需求和设计，形成可审阅设计。
   - 记录/产物路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-  - 源文件：`skills/superpowers-skills/brainstorming/SKILL.zh_CN.md`
+  - 源文件：`skills/brainstorming/SKILL.zh_CN.md`
 - `NEED-SKILL-003` | `superpowers` | [dispatching-parallel-agents](../../skills/superpowers-skills/dispatching-parallel-agents/SKILL.zh_CN.md)：面对多个独立任务时并行派发 subagents。
   - 记录/产物路径：无固定持久文件；结果汇总在对话中。
   - 源文件：`skills/superpowers-skills/dispatching-parallel-agents/SKILL.zh_CN.md`
@@ -223,36 +223,36 @@
 - `NEED-SKILL-006` | `superpowers` | [receiving-code-review](../../skills/superpowers-skills/receiving-code-review/SKILL.zh_CN.md)：接收 code review 时先理解、验证、评估，再逐项处理。
   - 记录/产物路径：无固定持久文件；在回复中说明修复位置。
   - 源文件：`skills/superpowers-skills/receiving-code-review/SKILL.zh_CN.md`
-- `NEED-SKILL-007` | `superpowers` | [requesting-code-review](../../skills/superpowers-skills/requesting-code-review/SKILL.zh_CN.md)：完成任务、重大功能或合并前派发 code reviewer 检查。
+- `NEED-SKILL-007` | `superpowers` | [requesting-code-review](../../skills/requesting-code-review/SKILL.zh_CN.md)：完成任务、重大功能或合并前派发 code reviewer 检查。
   - 记录/产物路径：使用 `BASE_SHA`、`HEAD_SHA` 和计划引用；无固定记录文件。
-  - 源文件：`skills/superpowers-skills/requesting-code-review/SKILL.zh_CN.md`
+  - 源文件：`skills/requesting-code-review/SKILL.zh_CN.md`
 - `NEED-SKILL-008` | `superpowers` | [subagent-driven-development](../../skills/superpowers-skills/subagent-driven-development/SKILL.zh_CN.md)：按实现计划逐任务派发 subagent，并做 spec/code quality 双重审查。
   - 记录/产物路径：读取 `docs/superpowers/plans/...`；自身不规定新记录路径。
   - 源文件：`skills/superpowers-skills/subagent-driven-development/SKILL.zh_CN.md`
 - `NEED-SKILL-009` | `superpowers` | [systematic-debugging](../../skills/superpowers-skills/systematic-debugging/SKILL.zh_CN.md)：遇到 bug、测试失败或异常行为时先查 root cause，再修复。
   - 记录/产物路径：无固定持久文件；要求记录路径、行号、错误码等诊断信息。
   - 源文件：`skills/superpowers-skills/systematic-debugging/SKILL.zh_CN.md`
-- `NEED-SKILL-010` | `superpowers` | [test-driven-development](../../skills/superpowers-skills/test-driven-development/SKILL.zh_CN.md)：功能或 bugfix 前先写失败测试，再最小实现和重构。
+- `NEED-SKILL-010` | `superpowers` | [test-driven-development](../../skills/test-driven-development/SKILL.zh_CN.md)：功能或 bugfix 前先写失败测试，再最小实现和重构。
   - 记录/产物路径：无固定记录文件；测试文件按项目测试目录产生。
-  - 源文件：`skills/superpowers-skills/test-driven-development/SKILL.zh_CN.md`
-- `NEED-SKILL-011` | `superpowers` | [using-git-worktrees](../../skills/superpowers-skills/using-git-worktrees/SKILL.zh_CN.md)：开始功能或执行计划前创建/确认隔离 worktree。
+  - 源文件：`skills/test-driven-development/SKILL.zh_CN.md`
+- `NEED-SKILL-011` | `superpowers` | [using-git-worktrees](../../skills/using-git-worktrees/SKILL.zh_CN.md)：开始功能或执行计划前创建/确认隔离 worktree。
   - 记录/产物路径：默认 `.worktrees/<branch>`；备选 `worktrees/<branch>` 或 `~/.config/superpowers/worktrees/<project>/<branch>`。
-  - 源文件：`skills/superpowers-skills/using-git-worktrees/SKILL.zh_CN.md`
+  - 源文件：`skills/using-git-worktrees/SKILL.zh_CN.md`
 - `NEED-SKILL-012` | `superpowers` | [using-superpowers](../../skills/superpowers-skills/using-superpowers/SKILL.zh_CN.md)：会话开始时建立 skill 查找和使用规则。
   - 记录/产物路径：无固定持久文件。
   - 源文件：`skills/superpowers-skills/using-superpowers/SKILL.zh_CN.md`
-- `NEED-SKILL-013` | `superpowers` | [verification-before-completion](../../skills/superpowers-skills/verification-before-completion/SKILL.zh_CN.md)：宣称完成、修复或通过前必须运行验证并确认输出。
+- `NEED-SKILL-013` | `superpowers` | [verification-before-completion](../../skills/verification-before-completion/SKILL.zh_CN.md)：宣称完成、修复或通过前必须运行验证并确认输出。
   - 记录/产物路径：无固定记录文件；验证证据在回复中报告。
-  - 源文件：`skills/superpowers-skills/verification-before-completion/SKILL.zh_CN.md`
-- `NEED-SKILL-014` | `superpowers` | [writing-plans](../../skills/superpowers-skills/writing-plans/SKILL.zh_CN.md)：有 spec 或需求后，写可执行的实现计划。
+  - 源文件：`skills/verification-before-completion/SKILL.zh_CN.md`
+- `NEED-SKILL-014` | `superpowers` | [writing-plans](../../skills/writing-plans/SKILL.zh_CN.md)：有 spec 或需求后，写可执行的实现计划。
   - 记录/产物路径：`docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
-  - 源文件：`skills/superpowers-skills/writing-plans/SKILL.zh_CN.md`
-- `NEED-SKILL-015` | `superpowers` | [writing-skills](../../skills/superpowers-skills/writing-skills/SKILL.zh_CN.md)：创建、修改或验证 skill。
+  - 源文件：`skills/writing-plans/SKILL.zh_CN.md`
+- `NEED-SKILL-015` | `superpowers` | [writing-skills](../../skills/writing-skills/SKILL.zh_CN.md)：创建、修改或验证 skill。
   - 记录/产物路径：个人 skill 默认在 `~/.claude/skills/` 或 `~/.agents/skills/`；本项目内收集在 `skills/...`。
-  - 源文件：`skills/superpowers-skills/writing-skills/SKILL.zh_CN.md`
-- `NEED-SKILL-017` | `skills` | [handoff](../../skills/productivity-skills/handoff/SKILL.zh_CN.md)：将当前对话压缩成可交接给新代理的 handoff 文档并保存到临时目录。
+  - 源文件：`skills/writing-skills/SKILL.zh_CN.md`
+- `NEED-SKILL-017` | `skills` | [handoff](../../skills/handoff/SKILL.zh_CN.md)：将当前对话压缩成可交接给新代理的 handoff 文档并保存到临时目录。
   - 记录/产物路径：用户操作系统临时目录
-  - 源文件：`skills/productivity-skills/handoff/SKILL.zh_CN.md`
+  - 源文件：`skills/handoff/SKILL.zh_CN.md`
 
 ## 路径约定
 

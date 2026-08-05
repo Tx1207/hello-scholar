@@ -9,7 +9,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-RETIRED_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "dispatching-parallel-agents"
+RETIRED_DIR = REPO_ROOT / "skills" / "dispatching-parallel-agents"
 EXPECTED_RETIRED_FILES = {
     "SKILL.md",
     "SKILL.zh_CN.md",

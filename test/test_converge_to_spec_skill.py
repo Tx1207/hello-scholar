@@ -10,7 +10,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "hello-scholar" / "converge-to-spec"
+SKILL_DIR = REPO_ROOT / "skills" / "converge-to-spec"
 SCENARIO_ROOT = REPO_ROOT / "test" / "skill-evals"
 SKILL_FILES = (SKILL_DIR / "SKILL.md", SKILL_DIR / "SKILL.zh_CN.md")
 DEVIATIONS = ("Missing", "Partial", "Contradictory", "Unrequested")

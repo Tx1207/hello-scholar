@@ -43,7 +43,7 @@
         "prompt_lines": [
           "You are running a real with-skill pressure scenario for a skill-value test. Do not edit files.",
           "Scenario id: takeoff_hypothesis_not_execution_slice with_skill.",
-          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/hai-skills/takeoff/SKILL.md. You may consider its paired relationship with landing at /Users/tx/code/hello-scholar-2/skills/hai-skills/landing/SKILL.md, but the answer should be a takeoff judgment, not a landing plan.",
+          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/takeoff/SKILL.md. You may consider its paired relationship with landing at /Users/tx/code/hello-scholar-2/skills/landing/SKILL.md, but the answer should be a takeoff judgment, not a landing plan.",
           "A user says in Chinese: 我现在的 takeoff 里面写了：找出第一个不可逆决策、第一个证明点、什么证据会推翻这个 thesis，以及不该花时间的事情。First Proof Point 是证据问题，不是推荐执行切片。你结合 landing 想一下，这两个 skill 是配合的。给我一个判断：takeoff 这里到底应该怎么写，格局打开一些。",
           "Answer as the assistant would in a real conversation. Keep the answer in Chinese. Make a concrete recommendation. Do not write a spec or implementation plan."
         ],
@@ -127,7 +127,7 @@
         "prompt_lines": [
           "You are running a real with-skill pressure scenario for a skill-value test. Do not edit files.",
           "Scenario id: landing_reprices_takeoff_hypothesis with_skill.",
-          "Use the landing skill at /Users/tx/code/hello-scholar-2/skills/hai-skills/landing/SKILL.md. Treat the prior direction below as the takeoff hypothesis to land. You may inspect the takeoff skill at /Users/tx/code/hello-scholar-2/skills/hai-skills/takeoff/SKILL.md only to understand the pair boundary.",
+          "Use the landing skill at /Users/tx/code/hello-scholar-2/skills/landing/SKILL.md. Treat the prior direction below as the takeoff hypothesis to land. You may inspect the takeoff skill at /Users/tx/code/hello-scholar-2/skills/takeoff/SKILL.md only to understand the pair boundary.",
           "Prior takeoff hypothesis: change takeoff so it ends by returning to verification instead of execution. It should produce a bold hypothesis, proof question, and falsifier. Landing should consume that hypothesis from the current context and re-price it into a feasible version, preserving ambition while naming stage boundary, verification, and stop rule. Old model: takeoff drifts into first execution slice and landing is treated as a smaller first step. Main reality question: can the pair preserve bold direction without auto-writing spec or collapsing into planning?",
           "A user asks in Chinese: 这个 takeoff 方案听起来不错，但可能太飘。你结合 landing 想一下，怎么把它落地成两个 skill 配合的规则？也说一下如果我不同意你的价值判断怎么办。",
           "Answer as the assistant would in a real conversation. Keep the answer in Chinese. Make a concrete recommendation. Do not write a spec or implementation plan."
@@ -193,7 +193,7 @@
       "initial_with_skill": {
         "agent_id": "019f2ce9-8e91-74e0-9be7-5e076c6fa09e",
         "prompt_lines": [
-          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/hai-skills/takeoff.",
+          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/takeoff.",
           "Fresh-agent runtime validation. A user asks for a high-level judgment on a unified Process Router that asks two questions before every process skill, starts spec writing when brainstorming is mentioned, and lets takeoff recommend landing's next step."
         ],
         "response_lines": [
@@ -226,7 +226,7 @@
       "final_with_skill": {
         "agent_id": "019f2ced-0657-7600-895e-75cb7abf97de",
         "prompt_lines": [
-          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/hai-skills/takeoff.",
+          "Use the takeoff skill at /Users/tx/code/hello-scholar-2/skills/takeoff.",
           "Fresh-agent runtime validation rerun. A user asks for a high-level judgment on a unified Process Router that asks two questions before every process skill, starts spec writing when brainstorming is mentioned, and lets takeoff recommend landing's next step."
         ],
         "response_lines": [

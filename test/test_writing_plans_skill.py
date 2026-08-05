@@ -8,7 +8,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "writing-plans"
+SKILL_DIR = REPO_ROOT / "skills" / "writing-plans"
 SKILL_FILES = (SKILL_DIR / "SKILL.md", SKILL_DIR / "SKILL.zh_CN.md")
 TEMPLATE_FILES = (
     SKILL_DIR / "assets" / "plan-template.md",
@@ -126,7 +126,7 @@ class WritingPlansSkillTests(unittest.TestCase):
     def test_generating_tasks_is_the_explicit_follow_up_owner(self) -> None:
         """Purpose: prevent task-level constraints from disappearing during Plan narrowing; Input: Plan Skill and generating-tasks Skill; Output: none; Errors: assertion failure identifies an absent handoff target."""
         task_skill = (
-            REPO_ROOT / "skills" / "superpowers-skills" / "generating-tasks" / "SKILL.md"
+            REPO_ROOT / "skills" / "generating-tasks" / "SKILL.md"
         )
         self.assertTrue(task_skill.is_file())
         text = task_skill.read_text(encoding="utf-8")

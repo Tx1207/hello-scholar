@@ -7,8 +7,8 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ENGLISH = REPO_ROOT / "skills" / "hai-skills" / "landing" / "SKILL.md"
-CHINESE = REPO_ROOT / "skills" / "hai-skills" / "landing" / "SKILL.zh_CN.md"
+ENGLISH = REPO_ROOT / "skills" / "landing" / "SKILL.md"
+CHINESE = REPO_ROOT / "skills" / "landing" / "SKILL.zh_CN.md"
 
 
 def description(text: str) -> str:

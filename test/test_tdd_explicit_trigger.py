@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "test-driven-development"
+SKILL_DIR = REPO_ROOT / "skills" / "test-driven-development"
 SKILL_PATHS = {
     "english": SKILL_DIR / "SKILL.md",
     "chinese": SKILL_DIR / "SKILL.zh_CN.md",

@@ -6,7 +6,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "using-helloscholar"
+SKILL_DIR = REPO_ROOT / "skills" / "using-helloscholar"
 
 ROUTER_FORWARD_TEST_PROMPT = f"""Use the skill router at {SKILL_DIR}.
 

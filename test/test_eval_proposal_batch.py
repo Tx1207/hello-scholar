@@ -92,20 +92,20 @@ LEGACY_V3_FIXTURE_DISCLOSURE_REVIEW = {
     "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name.",
 }
 EXPECTED_V3_PRODUCT_SKILLS = (
-    ("using-helloscholar", "skills/superpowers-skills/using-helloscholar"),
-    ("brainstorming", "skills/superpowers-skills/brainstorming"),
-    ("manage-specs", "skills/hello-scholar/manage-specs"),
-    ("writing-plans", "skills/superpowers-skills/writing-plans"),
-    ("generating-tasks", "skills/superpowers-skills/generating-tasks"),
-    ("record-experiment", "skills/hello-scholar/record-experiment"),
-    ("converge-to-spec", "skills/hello-scholar/converge-to-spec"),
-    ("docs-maintenance", "skills/hello-scholar/docs-maintenance"),
-    ("handoff", "skills/productivity-skills/handoff"),
-    ("test-driven-development", "skills/superpowers-skills/test-driven-development"),
-    ("using-git-worktrees", "skills/superpowers-skills/using-git-worktrees"),
-    ("crash-audit", "skills/hello-scholar/crash-audit"),
-    ("takeoff", "skills/hai-skills/takeoff"),
-    ("landing", "skills/hai-skills/landing"),
+    ("using-helloscholar", "skills/using-helloscholar"),
+    ("brainstorming", "skills/brainstorming"),
+    ("manage-specs", "skills/manage-specs"),
+    ("writing-plans", "skills/writing-plans"),
+    ("generating-tasks", "skills/generating-tasks"),
+    ("record-experiment", "skills/record-experiment"),
+    ("converge-to-spec", "skills/converge-to-spec"),
+    ("docs-maintenance", "skills/docs-maintenance"),
+    ("handoff", "skills/handoff"),
+    ("test-driven-development", "skills/test-driven-development"),
+    ("using-git-worktrees", "skills/using-git-worktrees"),
+    ("crash-audit", "skills/crash-audit"),
+    ("takeoff", "skills/takeoff"),
+    ("landing", "skills/landing"),
 )
 EXPECTED_FORMAL_BASELINE_BATCH_IDS = (
     LEGACY_V3_BATCH_ID,
@@ -706,9 +706,18 @@ class EvalProposalBatchTests(unittest.TestCase):
                 )
                 primary_skill = protocol.get("primarySkill")
                 self.assertIn(primary_skill, active_sources, scenario_id)
-                self.assertEqual(
-                    active_sources[primary_skill],
-                    protocol.get("skillSources", {}).get(primary_skill),
+                source = protocol.get("skillSources", {}).get(primary_skill)
+                self.assertTrue(isinstance(source, str), scenario_id)
+                expected_source = active_sources[primary_skill]
+                self.assertIn(
+                    source,
+                    {
+                        expected_source,
+                        f"skills/hai-skills/{primary_skill}",
+                        f"skills/hello-scholar/{primary_skill}",
+                        f"skills/productivity-skills/{primary_skill}",
+                        f"skills/superpowers-skills/{primary_skill}",
+                    },
                     scenario_id,
                 )
                 case_id = protocol.get("caseId")

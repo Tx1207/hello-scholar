@@ -6,59 +6,59 @@
   "activeProductSkills": [
     {
       "name": "using-helloscholar",
-      "source": "skills/superpowers-skills/using-helloscholar"
+      "source": "skills/using-helloscholar"
     },
     {
       "name": "brainstorming",
-      "source": "skills/superpowers-skills/brainstorming"
+      "source": "skills/brainstorming"
     },
     {
       "name": "manage-specs",
-      "source": "skills/hello-scholar/manage-specs"
+      "source": "skills/manage-specs"
     },
     {
       "name": "writing-plans",
-      "source": "skills/superpowers-skills/writing-plans"
+      "source": "skills/writing-plans"
     },
     {
       "name": "generating-tasks",
-      "source": "skills/superpowers-skills/generating-tasks"
+      "source": "skills/generating-tasks"
     },
     {
       "name": "record-experiment",
-      "source": "skills/hello-scholar/record-experiment"
+      "source": "skills/record-experiment"
     },
     {
       "name": "converge-to-spec",
-      "source": "skills/hello-scholar/converge-to-spec"
+      "source": "skills/converge-to-spec"
     },
     {
       "name": "docs-maintenance",
-      "source": "skills/hello-scholar/docs-maintenance"
+      "source": "skills/docs-maintenance"
     },
     {
       "name": "handoff",
-      "source": "skills/productivity-skills/handoff"
+      "source": "skills/handoff"
     },
     {
       "name": "test-driven-development",
-      "source": "skills/superpowers-skills/test-driven-development"
+      "source": "skills/test-driven-development"
     },
     {
       "name": "using-git-worktrees",
-      "source": "skills/superpowers-skills/using-git-worktrees"
+      "source": "skills/using-git-worktrees"
     },
     {
       "name": "crash-audit",
-      "source": "skills/hello-scholar/crash-audit"
+      "source": "skills/crash-audit"
     },
     {
       "name": "takeoff",
-      "source": "skills/hai-skills/takeoff"
+      "source": "skills/takeoff"
     },
     {
       "name": "landing",
-      "source": "skills/hai-skills/landing"
+      "source": "skills/landing"
     }
   ],
   "minimumDistinctProjectsPerAcceptedSkill": 2,

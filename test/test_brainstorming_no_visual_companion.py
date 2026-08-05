@@ -7,8 +7,8 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BRAINSTORMING_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "brainstorming"
-MANAGE_SPECS_ASSETS = REPO_ROOT / "skills" / "hello-scholar" / "manage-specs" / "assets"
+BRAINSTORMING_DIR = REPO_ROOT / "skills" / "brainstorming"
+MANAGE_SPECS_ASSETS = REPO_ROOT / "skills" / "manage-specs" / "assets"
 RETIRED_FILES = {
     "visual-companion.md",
     "scripts/frame-template.html",

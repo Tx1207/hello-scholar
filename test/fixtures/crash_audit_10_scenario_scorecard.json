@@ -1,6 +1,6 @@
 {
   "date": "2026-07-07",
-  "skill_path": "skills/hello-scholar/crash-audit",
+  "skill_path": "skills/crash-audit",
   "scenario_source": "test/fixtures/crash_audit_10_scenario_protocol.json",
   "skill_revision_note": "After adding explicit no-risk-matrix / no-verdict-ladder / no-scoring-table rules to SKILL.md and SKILL.zh_CN.md.",
   "thresholds": {
@@ -85,7 +85,7 @@
     "date": "2026-07-07",
     "method": "python3 -m unittest discover -s test -p 'test_crash_audit_skill.py'",
     "passed": true,
-    "notes": "The deterministic install simulation copies skills/hello-scholar/crash-audit into a temporary Codex home with pathlib/tempfile/shutil.copytree, then verifies SKILL.md, SKILL.zh_CN.md, agents/openai.yaml, frontmatter, triggers, brainstorming boundary, and UI metadata. The reusable test avoids POSIX-only cp/mv/rmdir assumptions."
+    "notes": "The deterministic install simulation copies skills/crash-audit into a temporary Codex home with pathlib/tempfile/shutil.copytree, then verifies SKILL.md, SKILL.zh_CN.md, agents/openai.yaml, frontmatter, triggers, brainstorming boundary, and UI metadata. The reusable test avoids POSIX-only cp/mv/rmdir assumptions."
   },
   "routing_regression_after_brainstorming_boundary": {
     "date": "2026-07-07",

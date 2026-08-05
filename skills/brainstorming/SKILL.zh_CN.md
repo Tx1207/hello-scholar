@@ -55,7 +55,7 @@ digraph brainstorming {
 
 使用它返回的分类、确认门、Bundle 路径和当前身份。这个 owner 转交是硬停止点：若 `$manage-specs` 不可用、无法读取，或没有返回完整分类和 canonical 路径，不能自行分类或写入 Spec。不要复制其 ID 分配、Revision、继任关系、slug 或 Index 逻辑。若返回 `Need Human Classification`，停在该决定；若选定分类需要确认，写入前先取得完整路径确认，只批准 ID 或 Topic 不属于路径批准。
 
-读取 `skills/hello-scholar/manage-specs/assets/` 中选定的模板：仓库语言偏好为中文时用 `spec-template.zh_CN.md`，否则用 `spec-template.md`。用户可读的 Spec 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。
+读取 `skills/manage-specs/assets/` 中选定的模板：仓库语言偏好为中文时用 `spec-template.zh_CN.md`，否则用 `spec-template.md`。用户可读的 Spec 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。
 
 写入或修订选定的 Bundle 文件。若为 `Create Successor Spec`，还只进行 `$manage-specs` 要求的关联旧 `spec.md` 更新：
 

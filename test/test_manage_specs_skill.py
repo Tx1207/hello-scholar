@@ -9,7 +9,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "hello-scholar" / "manage-specs"
+SKILL_DIR = REPO_ROOT / "skills" / "manage-specs"
 SKILL_FILES = (SKILL_DIR / "SKILL.md", SKILL_DIR / "SKILL.zh_CN.md")
 TEMPLATE_FILES = (
     SKILL_DIR / "assets" / "spec-template.md",
