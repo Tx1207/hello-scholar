@@ -11,7 +11,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "hello-scholar" / "crash-audit"
+SKILL_DIR = REPO_ROOT / "skills" / "crash-audit"
 PROTOCOL_PATH = REPO_ROOT / "test" / "fixtures" / "crash_audit_10_scenario_protocol.json"
 SCORECARD_PATH = REPO_ROOT / "test" / "fixtures" / "crash_audit_10_scenario_scorecard.json"
 
@@ -83,7 +83,7 @@ class CrashAuditSkillTests(unittest.TestCase):
             "Install and Windows compatibility",
             {item["criterion"] for item in protocol["skill_quality_rubric_100"]},
         )
-        self.assertEqual("skills/hello-scholar/crash-audit", scorecard["skill_path"])
+        self.assertEqual("skills/crash-audit", scorecard["skill_path"])
         self.assertEqual(
             "test/fixtures/crash_audit_10_scenario_protocol.json",
             scorecard["scenario_source"],

@@ -9,7 +9,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "productivity-skills" / "handoff"
+SKILL_DIR = REPO_ROOT / "skills" / "handoff"
 SKILL_FILES = (SKILL_DIR / "SKILL.md", SKILL_DIR / "SKILL.zh_CN.md")
 NEW_PATH = "hello-scholar/handoffs/YYYY-MM-DD-<topic>-handoff.md"
 OLD_PATH = "hello-scholar/memory/handoffs/"

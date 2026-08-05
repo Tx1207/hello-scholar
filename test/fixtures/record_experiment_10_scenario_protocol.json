@@ -32,7 +32,7 @@
     "Save the final run as the scorecard fixture at test/fixtures/record_experiment_10_scenario_scorecard.json.",
     "Run python3 -m unittest discover -s test -p test_record_experiment_10_scenario_quality_gate.py before claiming the quality gate passes."
   ],
-  "answer_agent_instruction": "Use /xsb/hello-scholar/skills/hello-scholar/record-experiment/SKILL.md in a fresh subagent. Answer as in a real user conversation, keep the response in Chinese unless the scenario says otherwise, do not edit repository files, do not launch long-running commands, and explicitly choose Full record, Append event, or No record.",
+  "answer_agent_instruction": "Use /xsb/hello-scholar/skills/record-experiment/SKILL.md in a fresh subagent. Answer as in a real user conversation, keep the response in Chinese unless the scenario says otherwise, do not edit repository files, do not launch long-running commands, and explicitly choose Full record, Append event, or No record.",
   "grader_instruction": "Act as a subagent grader. Score the raw answer from 0-100 for trigger_decision, record_granularity, launch_gate, evidence_integrity, and write_minimality. Quote concrete evidence, identify hard contract failures, and do not inflate scores for generic answers.",
   "main_agent_evaluation_instruction": "The main agent must read the raw subagent answer and grader result, then record whether the answer demonstrates real record-experiment value. Static checks alone are not enough.",
   "scenario_blueprints": [

@@ -12,6 +12,7 @@ hello-scholar 是一套面向科研和工程协作的 agent skills 与项目规�
 - [安装 CLI](#安装-cli)
 - [卸载 CLI](#卸载-cli)
 - [使用](#使用)
+- [迁移已有文档](#迁移已有文档)
 - [卸载](#卸载)
 - [指令块](#指令块)
 - [link 和 copy 的区别](#link-和-copy-的区别)
@@ -109,6 +110,14 @@ hello-scholar install codex --mode copy
 hello-scholar install claude --mode copy
 ```
 
+## 迁移已有文档
+
+将下面这一行直接发送给已安装 hello-scholar 的 Claude Code 或 Codex：
+
+```text
+请按 hello-scholar 的 Document Model v2 流程迁移本项目既有文档：先只读盘点 `hello-scholar/memory/` 下的材料并输出逐项 Mapping Proposal，等待我批准后仅执行获批行，最后运行 `docs check`、`docs sync`、`docs check`；不要自动移动、删除、双写或创建迁移脚本。
+```
+
 ## 卸载
 
 卸载 Codex 支持：
@@ -174,16 +183,13 @@ hello-scholar 不覆盖已有 `AGENTS.md` 或 `CLAUDE.md`。
 本仓库会扫描：
 
 ```text
-skills/*/*/SKILL.md
+skills/*/SKILL.md
 ```
 
-当前 skill 分组包括：
+当前 Skill 使用扁平目录结构：
 
 ```text
-skills/hai-skills/
-skills/hello-scholar/
-skills/productivity-skills/
-skills/superpowers-skills/
+skills/<skill-name>/SKILL.md
 ```
 
 每个 skill 以 `SKILL.md` frontmatter 中的 `name` 作为安装目录名。

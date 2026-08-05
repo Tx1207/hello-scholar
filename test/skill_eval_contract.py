@@ -485,6 +485,26 @@ def _relative_contract_path(value: Any) -> bool:
     return not path.is_absolute() and ".." not in path.parts
 
 
+def resolve_current_skill_source(repo_root: Path, source: str) -> Path:
+    """Purpose: resolve a current Skill directory from a saved source path; Input: repository root and current or pre-flattening source; Output: current directory; Errors: invalid or unknown source raises."""
+    if not _relative_contract_path(source):
+        raise ContractError(f"invalid skill source: {source!r}")
+    current_path = repo_root / source
+    if current_path.is_dir():
+        return current_path
+    parts = PurePosixPath(source).parts
+    if len(parts) == 3 and parts[0] == "skills" and parts[1] in {
+        "hai-skills",
+        "hello-scholar",
+        "productivity-skills",
+        "superpowers-skills",
+    }:
+        flattened_path = repo_root / "skills" / parts[2]
+        if flattened_path.is_dir():
+            return flattened_path
+    return current_path
+
+
 def _validate_evaluator_setup(
     value: Any,
     fixture_root: Path,
@@ -1707,7 +1727,7 @@ def _validate_live_approval(
                 errors.append(f"{field}.status: does not match protocol liveLoad")
             source = sources.get(skill)
             try:
-                expected_hash = sha256_tree(repo_root / source)
+                expected_hash = sha256_tree(resolve_current_skill_source(repo_root, source))
             except (ContractError, TypeError) as error:
                 errors.append(f"{field}.sha256: cannot hash current skill: {error}")
             else:
@@ -1767,7 +1787,7 @@ def _validate_scorecard(
             else:
                 source = sources.get(skill)
                 try:
-                    expected_hash = sha256_tree(repo_root / source)
+                    expected_hash = sha256_tree(resolve_current_skill_source(repo_root, source))
                 except (ContractError, TypeError) as error:
                     errors.append(f"{field}.sha256: cannot hash current skill: {error}")
                 else:

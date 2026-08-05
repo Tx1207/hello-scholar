@@ -9,7 +9,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "generating-tasks"
+SKILL_DIR = REPO_ROOT / "skills" / "generating-tasks"
 TASK_LABELS = (
     "Spec Coverage",
     "Depends On",

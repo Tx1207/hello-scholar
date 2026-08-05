@@ -18,27 +18,21 @@ function discoverSkills(repoRoot) {
   const skills = [];
   const seen = new Map();
 
-  for (const groupName of fs.readdirSync(skillsRoot).sort()) {
-    const groupDir = path.join(skillsRoot, groupName);
-    if (!fs.statSync(groupDir).isDirectory()) {
+  for (const skillDirName of fs.readdirSync(skillsRoot).sort()) {
+    const sourceDir = path.join(skillsRoot, skillDirName);
+    if (!fs.statSync(sourceDir).isDirectory()) {
       continue;
     }
-    for (const skillDirName of fs.readdirSync(groupDir).sort()) {
-      const sourceDir = path.join(groupDir, skillDirName);
-      if (!fs.statSync(sourceDir).isDirectory()) {
-        continue;
-      }
-      const skillMdPath = path.join(sourceDir, "SKILL.md");
-      if (!fs.existsSync(skillMdPath)) {
-        continue;
-      }
-      const name = parseSkillName(fs.readFileSync(skillMdPath, "utf8"), skillMdPath);
-      if (seen.has(name)) {
-        throw new Error(`Duplicate skill name: ${name}`);
-      }
-      seen.set(name, skillMdPath);
-      skills.push({ name, sourceDir, skillMdPath });
+    const skillMdPath = path.join(sourceDir, "SKILL.md");
+    if (!fs.existsSync(skillMdPath)) {
+      continue;
     }
+    const name = parseSkillName(fs.readFileSync(skillMdPath, "utf8"), skillMdPath);
+    if (seen.has(name)) {
+      throw new Error(`Duplicate skill name: ${name}`);
+    }
+    seen.set(name, skillMdPath);
+    skills.push({ name, sourceDir, skillMdPath });
   }
 
   return skills;

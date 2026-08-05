@@ -6,8 +6,8 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ENGLISH_PATH = REPO_ROOT / "skills" / "hai-skills" / "takeoff" / "SKILL.md"
-CHINESE_PATH = REPO_ROOT / "skills" / "hai-skills" / "takeoff" / "SKILL.zh_CN.md"
+ENGLISH_PATH = REPO_ROOT / "skills" / "takeoff" / "SKILL.md"
+CHINESE_PATH = REPO_ROOT / "skills" / "takeoff" / "SKILL.zh_CN.md"
 
 
 def read_description(path: Path) -> str:

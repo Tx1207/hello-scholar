@@ -313,7 +313,7 @@
       "word_count": 1696,
       "word_count_limit": 1696,
       "grader_evidence": [
-        "Grader read /xsb/hello-scholar/skills/hello-scholar/record-experiment/SKILL.md directly; observed 1696 words with clear scope, decision table, hard gate, status/conclusion enums, and forbidden cases.",
+        "Grader read /xsb/hello-scholar/skills/record-experiment/SKILL.md directly; observed 1696 words with clear scope, decision table, hard gate, status/conclusion enums, and forbidden cases.",
         "The document explicitly covers Full record, Append event, No record, upstream provenance, derived reports, checkpoint inference, failed/invalid/stopped/negative runs, and INDEX update discipline.",
         "Minor repetition across hard-gate and No-record principles remains, but every document quality dimension is at or above 98."
       ],

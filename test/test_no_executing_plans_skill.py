@@ -9,12 +9,12 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-RETIRED_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "executing-plans"
+RETIRED_DIR = REPO_ROOT / "skills" / "executing-plans"
 EXPECTED_RETIRED_FILES = {
     "SKILL.md",
     "SKILL.zh_CN.md",
 }
-WORKTREE_SKILL = REPO_ROOT / "skills" / "superpowers-skills" / "using-git-worktrees"
+WORKTREE_SKILL = REPO_ROOT / "skills" / "using-git-worktrees"
 DISCOVERY_SCRIPT = """
 const path = require('node:path');
 const { discoverSkills } = require(path.join(process.argv[1], 'src', 'skill-discovery.js'));

@@ -87,7 +87,7 @@ Claude Code：
 从本仓库扫描：
 
 ```text
-skills/*/*/SKILL.md
+skills/*/SKILL.md
 ```
 
 每个 skill 的安装名使用 `SKILL.md` frontmatter 里的 `name`，不是 group 目录名。

@@ -9,7 +9,7 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "using-git-worktrees"
+SKILL_DIR = REPO_ROOT / "skills" / "using-git-worktrees"
 ENGLISH_PATH = SKILL_DIR / "SKILL.md"
 CHINESE_PATH = SKILL_DIR / "SKILL.zh_CN.md"
 

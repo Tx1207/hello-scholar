@@ -18,7 +18,7 @@ import unittest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 AGENTS_MD = REPO_ROOT / "AGENTS.md"
 AGENTS_ZH = REPO_ROOT / "AGENTS-zh.md"
-RECORD_EXPERIMENT_SKILL = REPO_ROOT / "skills" / "hello-scholar" / "record-experiment"
+RECORD_EXPERIMENT_SKILL = REPO_ROOT / "skills" / "record-experiment"
 RECORD_EXPERIMENT_ASSETS = RECORD_EXPERIMENT_SKILL / "assets"
 RUNS_ROOT = Path("runs")
 

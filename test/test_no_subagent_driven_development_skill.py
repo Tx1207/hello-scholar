@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-RETIRED_DIR = REPO_ROOT / "skills" / "superpowers-skills" / "subagent-driven-development"
+RETIRED_DIR = REPO_ROOT / "skills" / "subagent-driven-development"
 EXPECTED_RETIRED_FILES = {
     "SKILL.md",
     "SKILL.zh_CN.md",

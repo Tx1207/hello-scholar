@@ -43,7 +43,7 @@ class FileWritingSkillCase:
 CASES: tuple[FileWritingSkillCase, ...] = (
     FileWritingSkillCase(
         skill_id="record-experiment",
-        skill_path=REPO_ROOT / "skills" / "hello-scholar" / "record-experiment",
+        skill_path=REPO_ROOT / "skills" / "record-experiment",
         output_root=Path("runs"),
         required_path_parts=(),
         protected_terms=(
@@ -62,7 +62,7 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     ),
     FileWritingSkillCase(
         skill_id="writing-plans",
-        skill_path=REPO_ROOT / "skills" / "superpowers-skills" / "writing-plans",
+        skill_path=REPO_ROOT / "skills" / "writing-plans",
         output_root=Path("hello-scholar/memory/plans"),
         required_path_parts=(),
         protected_terms=(
@@ -82,7 +82,7 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     ),
     FileWritingSkillCase(
         skill_id="brainstorming",
-        skill_path=REPO_ROOT / "skills" / "superpowers-skills" / "brainstorming",
+        skill_path=REPO_ROOT / "skills" / "brainstorming",
         output_root=Path("hello-scholar/specs"),
         required_path_parts=(),
         protected_terms=(
@@ -103,7 +103,7 @@ CASES: tuple[FileWritingSkillCase, ...] = (
     ),
     FileWritingSkillCase(
         skill_id="handoff",
-        skill_path=REPO_ROOT / "skills" / "productivity-skills" / "handoff",
+        skill_path=REPO_ROOT / "skills" / "handoff",
         output_root=Path("hello-scholar/handoffs"),
         required_path_parts=(),
         protected_terms=(
@@ -492,7 +492,7 @@ class SkillWrittenFileLanguageTests(unittest.TestCase):
         self.assertIn("user approval", text.lower())
         self.assertIn("$manage-specs", text)
         self.assertIn("whole-file", text)
-        self.assertIn("skills/hello-scholar/manage-specs/assets/", text)
+        self.assertIn("skills/manage-specs/assets/", text)
         self.assertIn("The design has already been approved by the user", PROMPTS[(brainstorming.skill_id, "Chinese", "English")])
 
     def test_all_file_writing_skills_have_prompt_matrix(self) -> None:
@@ -528,14 +528,14 @@ class SkillWrittenFileLanguageTests(unittest.TestCase):
             "writing-plans": ("assets/plan-template.md", "assets/plan-template.zh_CN.md"),
             "handoff": ("assets/handoff-template.md", "assets/handoff-template.zh_CN.md"),
         }
-        manage_specs_assets = REPO_ROOT / "skills" / "hello-scholar" / "manage-specs" / "assets"
+        manage_specs_assets = REPO_ROOT / "skills" / "manage-specs" / "assets"
         for case in CASES:
             with self.subTest(skill=case.skill_id):
                 english = (case.skill_path / "SKILL.md").read_text(encoding="utf-8")
                 chinese = (case.skill_path / "SKILL.zh_CN.md").read_text(encoding="utf-8")
                 if case.skill_id == "brainstorming":
-                    self.assertIn("skills/hello-scholar/manage-specs/assets/", english)
-                    self.assertIn("skills/hello-scholar/manage-specs/assets/", chinese)
+                    self.assertIn("skills/manage-specs/assets/", english)
+                    self.assertIn("skills/manage-specs/assets/", chinese)
                     for template in ("spec-template.md", "spec-template.zh_CN.md"):
                         self.assertIn(template, english)
                         self.assertIn(template, chinese)
