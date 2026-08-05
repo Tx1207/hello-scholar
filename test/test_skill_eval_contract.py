@@ -21,6 +21,7 @@ from skill_eval_contract import (
     TERRA_EVAL_AGENT_MODEL,
     accepted_case_coverage,
     sha256_file,
+    sha256_historical_skill_snapshot,
     sha256_tree,
     validate_all_scenarios,
     validate_frozen_history,
@@ -700,6 +701,28 @@ class SkillEvalContractTests(unittest.TestCase):
                 for result in invalid
             ),
         )
+
+    def test_flattened_brainstorming_snapshot_allows_only_its_verified_path_rewrite(self) -> None:
+        source = "skills/superpowers-skills/brainstorming"
+        expected = "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"
+        self.assertEqual(expected, sha256_historical_skill_snapshot(REPO_ROOT, source))
+
+        with tempfile.TemporaryDirectory() as temp_name:
+            root = Path(temp_name)
+            skill_dir = root / "skills" / "brainstorming"
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_bytes(
+                b"skills/manage-specs/assets/\nextra behavior\n"
+            )
+            self.assertNotEqual(
+                expected,
+                sha256_historical_skill_snapshot(root, source),
+            )
+
+            with self.assertRaisesRegex(ContractError, "unsupported historical skill relocation"):
+                sha256_historical_skill_snapshot(
+                    root, "skills/superpowers-skills/not-brainstorming"
+                )
 
     def test_file_and_tree_hashes_are_deterministic_and_ignore_runtime_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as temp_name:
