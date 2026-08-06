@@ -68,7 +68,7 @@ updated: YYYY-MM-DD
 11. Rollback
 12. Tasks Generation Rules
 
-**完成条件：** 同一 Bundle 的 `plan.md` 绑定当前 Accepted Spec revision，完整描述实施策略，不含 Task checkbox、微步骤、代码清单或执行交接菜单。
+**完成条件：** 同一 Bundle 的 `plan.md` 绑定当前 Accepted Spec revision，完整描述实施策略，不含 Task checkbox、微步骤、代码清单或执行交接。
 
 ## 4. 审核与交接
 

@@ -72,7 +72,7 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
         chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
 
         self.assertIn("brainstorming, debugging, takeoff, landing", english)
-        self.assertIn("takeoff、landing、brainstorming、debugging", chinese)
+        self.assertIn("brainstorming、debugging、takeoff、landing", chinese)
 
 
 if __name__ == "__main__":

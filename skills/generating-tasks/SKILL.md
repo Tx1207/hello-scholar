@@ -11,7 +11,7 @@ A top-level Task is a **tracer task**: the smallest dependency-complete slice th
 
 ## 1. Establish the contract
 
-1. Locate the target Spec Bundle. Read `spec.md`, then `plan.md` in full. Read relevant Architecture, source, tests, configuration, or persisted formats only to confirm facts the Plan already depends on.
+1. Locate the target Spec Bundle. Read `spec.md` in full, then read `plan.md` in full. Read relevant Architecture, source, tests, configuration, or persisted formats only to confirm facts the Plan already depends on.
 2. Run `docs check` through the absolute hello-scholar CLI. Continue when the Spec is `accepted`, the Plan is `approved`, and `plan.spec_revision` equals the current Spec `revision`.
 3. Build an obligation ledger covering every Spec acceptance criterion and every Plan requirement: scope, files, interfaces, phases, tests or experiments, migration, cleanup, rollback, `Must Not Touch`, and Tasks-generation rules.
 

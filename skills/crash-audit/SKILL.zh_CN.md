@@ -1,7 +1,7 @@
 ---
 name: crash-audit
 description: |
-  仅当用户在本轮明确要求轻量检查当前回答、方案或决策里的不确定性和盲区时使用。触发词：
+  仅当用户在本轮明确要求轻量检查当前回答、方案或决策里的不确定性和盲区时使用；适用于用户准备相信回答、结束会话、批准方案或继续推进前。触发词：
   坠机、坠机一下、会不会坠机、哪里可能翻车、翻车检查、最没把握什么、我漏了什么、
   我没意识到什么、crash audit、what are you least confident about、what am I missing、
   what don't I realize。
@@ -79,6 +79,26 @@ description: |
   - 为什么重要:
   - 如果成立应该改变什么:
   - 最快验证:
+```
+
+输出使用用户的语言。英文对话使用：
+
+```text
+Crash audit
+
+1. What I am least confident about
+
+- [uncertainty]
+  - Why confidence is low:
+  - Impact:
+  - Fastest verification:
+
+2. What you may be missing
+
+- [blind spot]
+  - Why it matters:
+  - What should change if true:
+  - Fastest verification:
 ```
 
 ## 规则
