@@ -1,4 +1,4 @@
-# hello-scholar-2
+# hello-scholar
 
 hello-scholar 是一套面向科研和工程协作的 Agent Skills 与项目规则集合。
 
