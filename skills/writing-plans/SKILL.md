@@ -73,11 +73,9 @@ The body always contains these 12 sections:
 ## 4. Review and hand off
 
 1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps.
-2. Run:
+2. After writing or revising the Plan, run once:
    ```sh
-   hello-scholar docs check
    hello-scholar docs sync
-   hello-scholar docs check
    ```
 3. Present the complete Plan for one whole-file user review. It remains `draft` until the user explicitly approves it.
 4. Before setting `status: approved`, reread the target Spec Front Matter and confirm the Plan's `spec` and `spec_revision` still match its accepted ID and revision. If either differs, leave the Plan `draft` and revise and review it again.

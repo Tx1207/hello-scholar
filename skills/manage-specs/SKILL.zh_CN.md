@@ -18,9 +18,9 @@ description: 将设计请求归入一个稳定 Spec 身份。创建、修订或�
 
 1. 确认项目根目录并运行：
    ```sh
-   hello-scholar docs sync
    hello-scholar docs check
    ```
+   如果检查报告生成的 Index 过期，再运行 `hello-scholar docs sync` 后读取候选项。
 2. 遇到结构错误时停止并报告 diagnostics。
 3. 读取全局 Spec Index、存在时的目标 Topic Index，以及问题、目标或 owner 边界可能匹配的候选 `spec.md`。只读取区分候选所需的项目事实。
 
@@ -71,16 +71,14 @@ description: 将设计请求归入一个稳定 Spec 身份。创建、修订或�
 
 ## 4. 验证与交接
 
-运行：
+写入 Spec 后运行一次：
 
 ```sh
-hello-scholar docs check
 hello-scholar docs sync
-hello-scholar docs check
 ```
 
 只有 CLI 重建生成的 Index。确认最终 diff 仅包含所选 Spec 事务和生成的 Index。
 
 新建 Spec 和语义更新保持 `draft`，直到用户批准完整 Spec。然后停在下一位被请求的 owner。
 
-**完成条件：** 两次检查通过，生成 Index 为 current，且每条变更路径都属于已确认事务。
+**完成条件：** `docs sync` 成功，生成 Index 为 current，且每条变更路径都属于已确认事务。
