@@ -73,11 +73,9 @@ updated: YYYY-MM-DD
 ## 4. 审核与交接
 
 1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。
-2. 运行：
+2. 写入或修订 Plan 后运行一次：
    ```sh
-   hello-scholar docs check
    hello-scholar docs sync
-   hello-scholar docs check
    ```
 3. 将完整 Plan 交给用户进行一次整份审核。只有用户明确批准前，它保持 `draft`。
 4. 设置 `status: approved` 前，重新读取目标 Spec 的 Front Matter，并确认 Plan 的 `spec` 与 `spec_revision` 仍匹配其 accepted ID 和 revision。任一不匹配时，Plan 保持 `draft`，修订后重新审核。

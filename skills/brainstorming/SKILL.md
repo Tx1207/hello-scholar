@@ -60,7 +60,7 @@ Invoke `$manage-specs` with the design context before writing. It returns exactl
 - `Create Successor Spec`
 - `Need Human Classification`
 
-Use its classification, confirmation gate, selected Bundle path, and current identity. This owner transition is a hard stop: if `$manage-specs` is unavailable, cannot be read, or does not return a complete classification and canonical path, do not classify or write the Spec yourself. Do not duplicate its ID allocation, revision, successor, slug, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get confirmation of the complete path before writing; an ID- or Topic-only reply is not path approval.
+Use its classification, confirmation gate, selected Bundle path, and current identity. `$manage-specs` owns the initial `hello-scholar docs check`, so this Skill does not repeat it. This owner transition is a hard stop: if `$manage-specs` is unavailable, cannot be read, or does not return a complete classification and canonical path, do not classify or write the Spec yourself. Do not duplicate its ID allocation, revision, successor, slug, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get confirmation of the complete path before writing; an ID- or Topic-only reply is not path approval.
 
 Read the selected template from `skills/manage-specs/assets/`: use `spec-template.zh_CN.md` for a Chinese repository language preference; otherwise use `spec-template.md`. user-readable Spec prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written.
 
@@ -82,21 +82,19 @@ Fill all seven core sections with the approved design:
 
 Add a conditional section only when a material risk requires it. The saved revision remains `status: draft` until whole-file review. Do not create an intermediate design document, hand-edit generated Indexes, or write Plan, Tasks, source code, or Record files.
 
-Run:
+After writing or revising the Spec, run once:
 
 ```sh
-hello-scholar docs check
 hello-scholar docs sync
-hello-scholar docs check
 ```
 
 **Completion:** the selected `spec.md` transaction—plus only the linked old `spec.md` for a successor—and CLI-generated Indexes reflect the approved design decision.
 
 ## 5. Self-review and whole-file review
 
-Review the saved Spec for all seven core sections, any necessary conditional section, placeholders, contradictions, ambiguity, scope, acceptance evidence, language, and agreement with the `manage-specs` classification, ID, revision, and Bundle path. Correct only the selected draft and rerun the same validation sequence.
+Review the saved Spec for all seven core sections, any necessary conditional section, placeholders, contradictions, ambiguity, scope, acceptance evidence, language, and agreement with the `manage-specs` classification, ID, revision, and Bundle path. Correct only the selected draft, then run `hello-scholar docs sync` once.
 
-Present the complete file for one whole-file user review. On explicit acceptance of that exact revision, set `status: accepted`, validate through the same CLI sequence, and stop if the user requests design-only work. Classification confirmation is not Spec acceptance.
+Present the complete file for one whole-file user review. On explicit acceptance of that exact revision, set `status: accepted`, then run `hello-scholar docs sync` once. Stop if the user requests design-only work. Classification confirmation is not Spec acceptance.
 
 **Completion:** the result is either an explicit review stop, a corrected draft awaiting review, or an accepted current Spec.
 

@@ -60,7 +60,7 @@ digraph brainstorming {
 - `Create Successor Spec`
 - `Need Human Classification`
 
-使用它返回的分类、确认门、Bundle 路径和当前身份。这个 owner 转交是硬停止点：若 `$manage-specs` 不可用、无法读取，或没有返回完整分类和 canonical 路径，不能自行分类或写入 Spec。不要复制其 ID 分配、Revision、继任关系、slug 或 Index 逻辑。若返回 `Need Human Classification`，停在该决定；若选定分类需要确认，写入前先取得完整路径确认，只批准 ID 或 Topic 不属于路径批准。
+使用它返回的分类、确认门、Bundle 路径和当前身份。初始 `hello-scholar docs check` 由 `$manage-specs` 负责，本 Skill 不重复执行。这个 owner 转交是硬停止点：若 `$manage-specs` 不可用、无法读取，或没有返回完整分类和 canonical 路径，不能自行分类或写入 Spec。不要复制其 ID 分配、Revision、继任关系、slug 或 Index 逻辑。若返回 `Need Human Classification`，停在该决定；若选定分类需要确认，写入前先取得完整路径确认，只批准 ID 或 Topic 不属于路径批准。
 
 读取 `skills/manage-specs/assets/` 中选定的模板：仓库语言偏好为中文时用 `spec-template.zh_CN.md`，否则用 `spec-template.md`。用户可读的 Spec 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。
 
@@ -82,21 +82,19 @@ hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
 
 只有材料性风险确实需要时才增加条件章节。保存的 revision 在整份文件审核前保持 `status: draft`。不创建中间 design 文档，不手工编辑生成的 Index，也不写 Plan、Tasks、源码或 Record。
 
-运行：
+写入或修订 Spec 后运行一次：
 
 ```sh
-hello-scholar docs check
 hello-scholar docs sync
-hello-scholar docs check
 ```
 
 **完成条件：** 选定的 `spec.md` 事务，以及仅在 successor 时关联的旧 `spec.md`，和 CLI 生成的 Index 都反映已批准的设计决定。
 
 ## 5. 自审与整份文件审核
 
-检查保存的 Spec 是否含全部七个核心章节、必要条件章节、占位符、矛盾、歧义、范围、验收依据、语言，以及与 `manage-specs` 分类、ID、revision 和 Bundle 路径是否一致。只修正选定 draft，然后重跑相同验证序列。
+检查保存的 Spec 是否含全部七个核心章节、必要条件章节、占位符、矛盾、歧义、范围、验收依据、语言，以及与 `manage-specs` 分类、ID、revision 和 Bundle 路径是否一致。只修正选定 draft，然后运行一次 `hello-scholar docs sync`。
 
-将完整文件交给用户进行一次整份文件审核。用户明确接受该精确 revision 后，设为 `status: accepted`，通过相同 CLI 序列验证；若用户只要求完成设计则停止。分类确认不等于 Spec accepted。
+将完整文件交给用户进行一次整份文件审核。用户明确接受该精确 revision 后，设为 `status: accepted`，再运行一次 `hello-scholar docs sync`；若用户只要求完成设计则停止。分类确认不等于 Spec accepted。
 
 **完成条件：** 结果是明确的审核停止点、等待审核的已修正 draft，或 accepted 的 Current Spec。
 

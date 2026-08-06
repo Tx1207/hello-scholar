@@ -18,9 +18,9 @@ The result names the candidate Spec(s), evidence, and the next confirmation gate
 
 1. Confirm the project root and run:
    ```sh
-   hello-scholar docs sync
    hello-scholar docs check
    ```
+   If the check reports stale or outdated generated Indexes, run `hello-scholar docs sync` before reading candidates.
 2. Stop on a structural error and report the diagnostics.
 3. Read the global Spec Index, the relevant Topic Index when it exists, and candidate `spec.md` files whose problem, goal, or ownership boundary may match. Read only the project facts needed to distinguish those candidates.
 
@@ -71,16 +71,14 @@ Return the unresolved identity decision with zero project writes.
 
 ## 4. Validate and hand off
 
-Run:
+After writing the Spec, run once:
 
 ```sh
-hello-scholar docs check
 hello-scholar docs sync
-hello-scholar docs check
 ```
 
 Only the CLI rebuilds generated Indexes. Confirm the final diff contains the selected Spec transaction and generated Indexes.
 
 A new Spec and a semantic update remain `draft` until the user approves the complete Spec. Then stop at the next requested owner.
 
-**Completion:** both checks pass, generated Indexes are current, and every changed path belongs to the confirmed transaction.
+**Completion:** `docs sync` succeeds, generated Indexes are current, and every changed path belongs to the confirmed transaction.
