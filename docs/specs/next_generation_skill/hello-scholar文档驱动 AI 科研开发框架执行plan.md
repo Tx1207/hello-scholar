@@ -2,7 +2,7 @@
 
 **状态：** Approved
 **目标版本：** `0.2.0`
-**目标仓库：** `Tx1207/hello-scholar-2`
+**目标仓库：** `Tx1207/hello-scholar`
 **主要运行环境：** Codex CLI
 **适用对象：** 使用 Codex、Claude Code 等 AI 编程工具开展 AI 科研、Agent 开发、模型优化和工程实验的个人或小型团队。
 
@@ -212,7 +212,7 @@ runs/
 
 # 当前项目基础与复用策略
 
-hello\-scholar\-2 当前定位是将规则和 Skills 轻量安装进已有项目，支持 Codex 和 Claude Code，并通过扫描 `skills/*/*/SKILL.md` 自动发现 Skill。新 Skill 继续放在现有两级目录结构中即可，不需要重写安装器或 Skill 发现协议。\([GitHub](https://github.com/Tx1207/hello-scholar-2)\)
+hello\-scholar\-2 当前定位是将规则和 Skills 轻量安装进已有项目，支持 Codex 和 Claude Code，并通过扫描 `skills/*/*/SKILL.md` 自动发现 Skill。新 Skill 继续放在现有两级目录结构中即可，不需要重写安装器或 Skill 发现协议。\([GitHub](https://github.com/Tx1207/hello-scholar)\)
 
 当前 CLI 只支持：
 
@@ -226,7 +226,7 @@ uninstall codex|claude
 
 当前项目使用 CommonJS，没有生产依赖；测试入口同时运行 Node 测试和 Python `unittest`。第一版继续使用 Node 标准库，不增加 YAML 或文档框架依赖。
 
-当前测试目录已经存在 CLI 测试、Skill 静态测试、Record Experiment 质量门和其他场景质量门。新的测试框架应扩展现有 `test/` 目录，而不是另建独立测试系统。\([GitHub](https://github.com/Tx1207/hello-scholar-2/tree/main/test)\)
+当前测试目录已经存在 CLI 测试、Skill 静态测试、Record Experiment 质量门和其他场景质量门。新的测试框架应扩展现有 `test/` 目录，而不是另建独立测试系统。\([GitHub](https://github.com/Tx1207/hello-scholar/tree/main/test)\)
 
 ---
 
