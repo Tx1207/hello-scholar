@@ -11,7 +11,7 @@ Create one reviewable, high-level `plan.md` for one Accepted `spec.md`. A Plan e
 
 1. Confirm the project root and run:
    ```sh
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   hello-scholar docs check
    ```
 2. Read the target `spec.md`. It must be `status: accepted`; otherwise report the current Spec state and stop.
 3. Read only the Architecture, code, tests, configuration, records, and existing Bundle documents needed to plan the accepted design.
@@ -75,9 +75,9 @@ The body always contains these 12 sections:
 1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps.
 2. Run:
    ```sh
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
-   node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   hello-scholar docs check
+   hello-scholar docs sync
+   hello-scholar docs check
    ```
 3. Present the complete Plan for one whole-file user review. It remains `draft` until the user explicitly approves it.
 4. Before setting `status: approved`, reread the target Spec Front Matter and confirm the Plan's `spec` and `spec_revision` still match its accepted ID and revision. If either differs, leave the Plan `draft` and revise and review it again.

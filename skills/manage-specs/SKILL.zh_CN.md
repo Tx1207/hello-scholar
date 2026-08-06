@@ -18,8 +18,8 @@ description: 将设计请求归入一个稳定 Spec 身份。创建、修订或�
 
 1. 确认项目根目录并运行：
    ```sh
-   node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   hello-scholar docs sync
+   hello-scholar docs check
    ```
 2. 遇到结构错误时停止并报告 diagnostics。
 3. 读取全局 Spec Index、存在时的目标 Topic Index，以及问题、目标或 owner 边界可能匹配的候选 `spec.md`。只读取区分候选所需的项目事实。
@@ -74,9 +74,9 @@ description: 将设计请求归入一个稳定 Spec 身份。创建、修订或�
 运行：
 
 ```sh
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
-node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
+hello-scholar docs check
+hello-scholar docs sync
+hello-scholar docs check
 ```
 
 只有 CLI 重建生成的 Index。确认最终 diff 仅包含所选 Spec 事务和生成的 Index。

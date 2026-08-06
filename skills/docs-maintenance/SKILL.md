@@ -13,7 +13,7 @@ Choose exactly one mode: `check`, `index`, `architecture`, or `recover`. Do not 
 2. If the user names a mode, use it. If one mode is unambiguous, state it before acting. If the request spans multiple write sets, ask the user to choose.
 3. Enter `architecture` only when the user explicitly asks, or after a completed Bundle shows a material change to project structure, a key module responsibility, a public runtime flow, or a persistent location; in the latter case, state the evidence and proposed scope, then wait for confirmation.
 4. Record the initial Git status and Git diff baseline with the mode's allowed write set before acting. At completion, inspect the transaction delta against that baseline and stop to report any newly changed path outside that set; pre-existing changes remain out of scope.
-5. Read only the relevant Index, Architecture, Bundle, Run, and code facts. Use the absolute `hello-scholar` CLI path supplied by the installation or repository context.
+5. Read only the relevant Index, Architecture, Bundle, Run, and code facts. Invoke the installed `hello-scholar` command directly.
 
 | Mode | Purpose | Allowed writes | Completion |
 | --- | --- | --- | --- |

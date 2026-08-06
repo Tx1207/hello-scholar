@@ -12,7 +12,7 @@ description: Decomposition：把 Accepted Spec 及其当前 Approved Plan 拆成
 ## 1. 建立合同
 
 1. 定位目标 Spec Bundle，完整读取 `spec.md`，再完整读取 `plan.md`。只有为确认 Plan 已依赖的事实时，才读取相关 Architecture、源码、测试、配置或持久化格式。
-2. 通过绝对 hello-scholar CLI 运行 `docs check`。只有 Spec 为 `accepted`、Plan 为 `approved`，且 `plan.spec_revision` 等于当前 Spec `revision` 时才继续。
+2. 通过 `hello-scholar` 运行 `docs check`。只有 Spec 为 `accepted`、Plan 为 `approved`，且 `plan.spec_revision` 等于当前 Spec `revision` 时才继续。
 3. 建立义务账本，覆盖每个 Spec 验收条件和每项 Plan 要求：范围、文件、接口、阶段、测试或实验、迁移、清理、回滚、`Must Not Touch` 和 Tasks 生成规则。
 
 若仍有材料性选择未定或文档相互冲突，保持 `tasks.md` 不变，并指出应当回到 Spec 或 Plan 的确切决定。
@@ -98,7 +98,7 @@ status: pending
 1. 把每条义务账本记录映射到至少一个 Task，并把每个 Task 反向映射到 Approved Plan。覆盖 AC、回归、迁移、删除、清理、回滚和最终 gate。
 2. 在运行 CLI 前，核对精确的 pending-review header，且每个顶层 `TNNN` 都把 `Spec Coverage`、`Depends On`、`Parallel`、`Files`、`Work`、`Validation` 和 `Completion` 作为自己的字段。该字面合同不完整时，先修复 `tasks.md`。
 3. 检查 ID 唯一、DAG 无环、frontier 冲突、精确路径、接口一致性、命令可执行性、预期信号和禁止范围。
-4. 通过绝对 hello-scholar CLI 依次运行 `docs sync`、`docs check`。
+4. 通过 `hello-scholar` 依次运行 `docs sync`、`docs check`。
 5. 运行 Plan 要求的项目检查；每条 Python 命令使用上面的无产物形式。
 6. 对比初始与最终 Git 状态。写入集合只能是 `tasks.md` 和 CLI 生成的 Index，本事务不能新增 `__pycache__` 目录或 `.pyc` 文件。
 7. 回复先给出 `tasks.md` 路径和 pending-review 结果，再简述 AC 覆盖、blocking edges/frontier 与验证证据，然后停下来等待用户审核。
