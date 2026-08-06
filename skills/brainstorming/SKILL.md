@@ -78,9 +78,9 @@ Add a conditional section only when a material risk requires it. The saved revis
 Run:
 
 ```sh
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
-node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
+hello-scholar docs check
+hello-scholar docs sync
+hello-scholar docs check
 ```
 
 **Completion:** the selected `spec.md` transaction—plus only the linked old `spec.md` for a successor—and CLI-generated Indexes reflect the approved design decision.

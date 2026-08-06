@@ -11,7 +11,7 @@ description: 针对已完成 Spec Bundle 的追溯与收敛检查。当用户要
 
 1. 记录初始 Git status 和 Git diff 基线，以及允许写入集合。默认允许写入集合为空。以该基线识别本次事务增量；既有变更不在范围内。
 2. 只按以下顺序读取目标 Bundle 相关事实：相关 Architecture、`spec.md`、`plan.md`、`tasks.md`、Git diff/status、相关代码/测试/配置、再读取 Spec 引用的 `runs/<run-id>/record.md`。
-3. 通过绝对路径的 `hello-scholar docs check` 命令运行检查。
+3. 运行 `hello-scholar docs check`。
 
 若 Spec 不是 `accepted`、Plan 不是 `approved`，或 Plan/Tasks 为 Missing 或 Stale，不得给出 Ready 结论。报告精确 Revision/状态、对应 owner 及其他直接可观察的 blocker；不修复合同。
 
@@ -59,7 +59,7 @@ description: 针对已完成 Spec Bundle 的追溯与收敛检查。当用户要
 1. 先分类发现：新设计回 Spec；技术方案失效回 Plan；Stale 合同先由对应 owner 同步。只追加当前 Spec 和 Plan 内可直接实施的工作。
 2. 在现有 `tasks.md` 末尾追加 `Convergence` Phase，延续 `TNNN` 序号。每个新且未勾选的 Task 都包含目标、`Spec Coverage`、`Depends On`、`Parallel`、`Files`、`Work`、`Validation` 和 `Completion`。只有已批准合同明确要求 TDD 时，才加入 Red-Green-Refactor。
 3. `revision` 加一；设为 `approval: pending-review`、`approved_revision: null`、`status: pending`；更新 `updated`。
-4. 通过绝对 CLI 运行 `docs sync` 再运行 `docs check`。相对已记录基线，核对本次事务增量只包含 `tasks.md` 和 CLI 生成的 Index。
+4. 运行 `hello-scholar docs sync`，再运行 `hello-scholar docs check`。相对已记录基线，核对本次事务增量只包含 `tasks.md` 和 CLI 生成的 Index。
 5. 展示新 Revision 与覆盖变化，随后停在用户审核门。批准此 Revision 与授权实施是两个未来的独立决定。
 
 **完成条件：** 只改了允许的 Tasks 事务和生成的 Index，所有追加 Task 都可审核且未勾选，并在回复中停在审核门。

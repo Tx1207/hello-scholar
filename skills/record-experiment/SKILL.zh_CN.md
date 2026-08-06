@@ -87,8 +87,8 @@ runs/<run-id>/record.md
 创建 Record 或材料性改变其状态、决定或摘要后，运行：
 
 ```sh
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
-node <hello-scholar-repo>/bin/hello-scholar.js docs sync
+hello-scholar docs check
+hello-scholar docs sync
 ```
 
 `runs/INDEX.md` 由文档 CLI 生成。不直接编辑 `runs/INDEX.md`，也不创建手写 Index 模板。

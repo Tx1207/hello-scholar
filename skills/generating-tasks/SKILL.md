@@ -12,7 +12,7 @@ A top-level Task is a **tracer task**: the smallest dependency-complete slice th
 ## 1. Establish the contract
 
 1. Locate the target Spec Bundle. Read `spec.md` in full, then read `plan.md` in full. Read relevant Architecture, source, tests, configuration, or persisted formats only to confirm facts the Plan already depends on.
-2. Run `docs check` through the absolute hello-scholar CLI. Continue when the Spec is `accepted`, the Plan is `approved`, and `plan.spec_revision` equals the current Spec `revision`.
+2. Run `docs check` with `hello-scholar`. Continue when the Spec is `accepted`, the Plan is `approved`, and `plan.spec_revision` equals the current Spec `revision`.
 3. Build an obligation ledger covering every Spec acceptance criterion and every Plan requirement: scope, files, interfaces, phases, tests or experiments, migration, cleanup, rollback, `Must Not Touch`, and Tasks-generation rules.
 
 If a material choice remains open or the documents conflict, leave `tasks.md` unchanged and name the exact decision that belongs in the Spec or Plan.
@@ -98,7 +98,7 @@ Use exactly `PYTHONDONTWRITEBYTECODE=1 python3 -B ...` for every Python command 
 1. Audit every ledger entry against at least one Task and every Task against the approved Plan. Include ACs, regressions, migration, deletion, cleanup, rollback, and final gates.
 2. Before the CLI, verify the exact pending-review header and that every top-level `TNNN` has `Spec Coverage`, `Depends On`, `Parallel`, `Files`, `Work`, `Validation`, and `Completion` as its own fields. Repair `tasks.md` until this literal contract is complete.
 3. Check unique IDs, DAG acyclicity, frontier conflicts, exact paths, interface consistency, command executability, expected signals, and forbidden scope.
-4. Run `docs sync`, then `docs check`, through the absolute hello-scholar CLI.
+4. Run `docs sync`, then `docs check`, with `hello-scholar`.
 5. Run the Plan's project checks. Apply the artifact-free Python form above to each Python command.
 6. Compare final Git state with the initial state. The write set must be `tasks.md` plus CLI-generated Indexes, and the transaction must add no `__pycache__` directory or `.pyc` file.
 7. Lead the response with the `tasks.md` path and pending-review result. Summarize AC coverage, blocking edges/frontier, and validation evidence, then stop for user review.

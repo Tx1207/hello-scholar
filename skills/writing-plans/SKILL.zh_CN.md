@@ -11,7 +11,7 @@ description: 当用户需要为已 Accepted 的 Spec 编写可审核实施 Plan 
 
 1. 确认项目根目录并运行：
    ```sh
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   hello-scholar docs check
    ```
 2. 读取目标 `spec.md`。它必须是 `status: accepted`；否则报告当前 Spec 状态并停止。
 3. 只读取为制定已接受设计所需的 Architecture、代码、测试、配置、Record 和既有 Bundle 文档。
@@ -75,9 +75,9 @@ updated: YYYY-MM-DD
 1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。
 2. 运行：
    ```sh
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
-   node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-   node <hello-scholar-repo>/bin/hello-scholar.js docs check
+   hello-scholar docs check
+   hello-scholar docs sync
+   hello-scholar docs check
    ```
 3. 将完整 Plan 交给用户进行一次整份审核。只有用户明确批准前，它保持 `draft`。
 4. 设置 `status: approved` 前，重新读取目标 Spec 的 Front Matter，并确认 Plan 的 `spec` 与 `spec_revision` 仍匹配其 accepted ID 和 revision。任一不匹配时，Plan 保持 `draft`，修订后重新审核。

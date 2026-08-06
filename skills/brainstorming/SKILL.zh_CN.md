@@ -78,9 +78,9 @@ hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
 运行：
 
 ```sh
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
-node <hello-scholar-repo>/bin/hello-scholar.js docs sync
-node <hello-scholar-repo>/bin/hello-scholar.js docs check
+hello-scholar docs check
+hello-scholar docs sync
+hello-scholar docs check
 ```
 
 **完成条件：** 选定的 `spec.md` 事务，以及仅在 successor 时关联的旧 `spec.md`，和 CLI 生成的 Index 都反映已批准的设计决定。
