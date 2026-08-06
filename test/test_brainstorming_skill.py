@@ -74,6 +74,25 @@ class BrainstormingSkillTests(unittest.TestCase):
         ):
             self.assertIn(required, chinese)
 
+    def test_bilingual_grilling_mode_is_explicit_and_returns_to_design_approval(self) -> None:
+        """Require one optional grilling branch without merging shared understanding into approval."""
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+
+        for text in (english, chinese):
+            self.assertIn("$grilling", text)
+            self.assertIn("Material question?", text)
+            self.assertIn("Choose ordinary or grilling", text)
+            self.assertIn('"grilling" -> "Approve design"', text)
+
+        self.assertIn("let the user choose a mode before asking", english)
+        self.assertIn("ordinary mode asks one question at a time", english)
+        self.assertIn("return to this Skill after shared understanding is reached", english)
+        self.assertIn("Shared understanding does not approve the design", english)
+        self.assertIn("在提问前让用户选择模式", chinese)
+        self.assertIn("普通模式一次一个问题", chinese)
+        self.assertIn("形成共同理解后返回本 Skill", chinese)
+        self.assertIn("确认共同理解不等于设计获批", chinese)
+
     def test_manage_specs_owns_identity_and_bundle_write(self) -> None:
         """Purpose: bind Brainstorming to the sole Spec identity owner; Input: bilingual Skill texts and owner templates; Output: none; Errors: assertion failure identifies duplicated identity logic or an obsolete write path."""
 

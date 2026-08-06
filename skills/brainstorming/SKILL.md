@@ -19,23 +19,30 @@ Once entered, do not implement source code, create a Plan or Tasks, or run an im
 
 1. Read only the relevant Architecture, accepted Bundle documents, code, tests, configuration, Records, and current Git facts.
 2. If the request contains independently valuable capabilities with separate approval, implementation, validation, or rollback boundaries, explain the decomposition and design one bounded capability at a time.
-3. Ask one question at a time only for a material uncertainty about value, behavior, interface, data, lifecycle, risk, or acceptance. Do not ask again for facts already established by project evidence or the user.
+3. Do not ask again for facts already established by project evidence or the user. When a material uncertainty remains about value, behavior, interface, data, lifecycle, risk, or acceptance, let the user choose a mode before asking: ordinary mode asks one question at a time and resolves only what is needed for a complete design; `$grilling` probes each related decision.
 
 **Completion:** the problem, constraints, observable success criteria, and the bounded design surface are explicit.
 
 ## 3. Compare and approve the design decision
 
-Present 2–3 approaches with tradeoffs and a recommendation. Cover the affected modules, interfaces, data flow, error behavior, test/experiment evidence, migration implications, and deliberate non-goals. Keep unrelated refactoring outside the design.
+Ordinary mode presents 2–3 approaches with tradeoffs and a recommendation. When the user chooses `$grilling`, invoke `$grilling` to resolve the remaining material uncertainties one by one; return to this Skill after shared understanding is reached.
 
-Present the complete proposed decision and obtain user approval before any Spec write. Approval of the decision does not classify a Spec, accept a Spec, approve a Plan, approve Tasks, or authorize implementation.
+Synthesize a complete proposed design that covers the affected modules, interfaces, data flow, error behavior, test/experiment evidence, migration implications, and deliberate non-goals. Keep unrelated refactoring outside the design.
+
+Obtain user approval before any Spec write. Shared understanding does not approve the design; approval of the design does not classify a Spec, accept a Spec, approve a Plan, approve Tasks, or authorize implementation.
 
 **Completion:** the user-approved design content is specific enough to fill a complete Spec without inventing material decisions.
 
 ```dot
 digraph brainstorming {
-    "Explore project context" -> "Ask clarifying questions";
+    "Explore project context" -> "Material question?";
+    "Material question?" -> "Compare approaches" [label="no"];
+    "Material question?" -> "Choose ordinary or grilling" [label="yes"];
+    "Choose ordinary or grilling" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Compare approaches";
+    "Choose ordinary or grilling" -> "grilling";
     "Compare approaches" -> "Approve design";
+    "grilling" -> "Approve design";
     "Approve design" -> "manage-specs";
     "manage-specs" -> "Write or update Spec";
     "Write or update Spec" -> "Self-review";

@@ -19,23 +19,30 @@ description: 当请求需要为新能力、材料性的外部行为、接口或�
 
 1. 只读取相关 Architecture、已接受的 Bundle 文档、代码、测试、配置、Record 和当前 Git 事实。
 2. 若请求包含可独立批准、实施、验证或回滚的能力，说明拆分边界，并一次只设计一个有边界的能力。
-3. 只为价值、行为、接口、数据、生命周期、风险或验收中的材料性不确定性一次一个问题。项目证据或用户已经确定的事实不重复询问。
+3. 项目证据或用户已经确定的事实不重复询问。若仍有价值、行为、接口、数据、生命周期、风险或验收中的材料性不确定性，在提问前让用户选择模式：普通模式一次一个问题，只解决形成完整设计所需的问题；`$grilling` 逐项深挖相关决定。
 
 **完成条件：** 问题、约束、可观察成功标准和设计范围都已明确。
 
 ## 3. 比较并批准设计决定
 
-提出 2–3 种可行方案，说明权衡并给出建议。覆盖受影响模块、接口、数据流、错误行为、测试/实验依据、迁移影响和刻意不做的范围。无关重构不纳入设计。
+普通模式提出 2–3 种可行方案，说明权衡并给出建议。用户选择 `$grilling` 时，调用 `$grilling` 逐项解决剩余的材料性不确定性；形成共同理解后返回本 Skill。
 
-展示完整的拟议决定，并在写入任何 Spec 前取得用户批准。设计决定获批不等于完成 Spec 分类、不等于 Spec accepted、不等于 Plan 或 Tasks 获批，也不授权实施。
+汇总完整的拟议设计，覆盖受影响模块、接口、数据流、错误行为、测试/实验依据、迁移影响和刻意不做的范围。无关重构不纳入设计。
+
+在写入任何 Spec 前取得用户批准。确认共同理解不等于设计获批；设计获批也不等于完成 Spec 分类、不等于 Spec accepted、不等于 Plan 或 Tasks 获批，也不授权实施。
 
 **完成条件：** 用户已批准的设计内容足以填入完整 Spec，无需凭空补充材料性决定。
 
 ```dot
 digraph brainstorming {
-    "Explore project context" -> "Ask clarifying questions";
+    "Explore project context" -> "Material question?";
+    "Material question?" -> "Compare approaches" [label="no"];
+    "Material question?" -> "Choose ordinary or grilling" [label="yes"];
+    "Choose ordinary or grilling" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Compare approaches";
+    "Choose ordinary or grilling" -> "grilling";
     "Compare approaches" -> "Approve design";
+    "grilling" -> "Approve design";
     "Approve design" -> "manage-specs";
     "manage-specs" -> "Write or update Spec";
     "Write or update Spec" -> "Self-review";
