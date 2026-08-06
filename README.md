@@ -312,6 +312,7 @@ hello-scholar install claude --mode copy
 ```text
 请先运行 `npm root -g`，并读取其输出目录下的 `hello-scholar/docs/migration/document-model-v2.md`。如果文件不存在，请停止并报告，不要猜测其他路径。
 读取后，严格按该文件的 Document Model v2 流程迁移当前项目文档：先只读盘点并输出逐项 Mapping Proposal，等待我批准后仅执行获批行；不要自动移动、删除、双写或创建迁移脚本。当前版本没有 `docs migrate` 命令。对于文件夹数量过多的情况，询问用户是否使用subagent加速处理。
+完成前必须确认每个获批目标位于 canonical v2 path，相关 `legacy-path` notices 已消失或在 Mapping Proposal 中明确获批保留。
 ```
 
 该指令会从全局 npm 安装目录读取迁移说明，不会将 hello-scholar 源文件复制到项目文件夹。

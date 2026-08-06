@@ -80,7 +80,7 @@ class MigrationGuideTests(unittest.TestCase):
             "## 阶段 B：Approved Migration，只执行批准映射",
             "完整映射表和本轮允许操作",
             "未批准、被修改或仍 `pending` 的行保持只读",
-            "找不到当前 owner/模板、owner 与批准映射冲突或 Hash 已变化时停止对应行",
+            "找不到当前 owner/模板、Hash 已变化，或 Proposal 未批准必要的身份、路径或生命周期映射时停止对应行",
             "draft -> accepted",
             "draft -> approved",
             "pending-review -> approved",
@@ -98,6 +98,37 @@ class MigrationGuideTests(unittest.TestCase):
             "随后处理 Record 和 Handoff，最后生成 Index",
             "Visual Companion 产物",
             "不自动迁移，也不因产品代码已删除而自动删除用户产物",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_guide_requires_canonical_targets_before_completion(self) -> None:
+        """Purpose: require canonical paths and notice verification for completed migrations; Input: migration guide; Output: none; Errors: assertion failure identifies a legacy-path migration gap."""
+        text = GUIDE.read_text(encoding="utf-8")
+
+        for phrase in (
+            "## v2 Canonical 目录结构与迁移目标",
+            "一个项目通常按以下结构组织",
+            "Mapping Proposal 的 `Proposed Target` 必须相对于 `<project-root>` 填写",
+            "`hello-scholar/memory/...` 只保存 legacy source",
+            "`runs/<run-id>/record.md`",
+            "### Canonical path 验收",
+            "`legacy-path` notice 已消失",
+            "`docs check` 没有 errors 不能单独证明迁移完成",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_guide_requires_evidence_based_legacy_record_status_mapping(self) -> None:
+        """Purpose: prevent legacy Record enum names from blocking a reviewed semantic migration; Input: migration guide; Output: none; Errors: assertion failure identifies missing status preservation or mapping approval."""
+        text = GUIDE.read_text(encoding="utf-8")
+
+        for phrase in (
+            "Lifecycle / Status Mapping",
+            "旧状态名不在当前 enum 中自动保留源文件",
+            "历史 `abandoned`、`invalid`、`superseded`",
+            "它们不能直接成为 v2 `status`",
+            "不得以文件创建时间、迁移时间或推测值补造 terminal 时间",
+            "只有缺少开始、结束或终止原因等必要证据",
+            "旧状态名不在当前 owner enum 中本身不是 owner 冲突",
         ):
             self.assertIn(phrase, text)
 
