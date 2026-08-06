@@ -4,7 +4,7 @@
 **状态：** Accepted
 **产品名称：** Spec–Plan–Tasks–Record–Architecture Framework
 **适用范围：** 使用 Codex、Claude Code 等 AI 编程工具进行 AI 科研、Agent 开发、模型优化和工程实验的个人或小型团队
-**目标仓库：** `Tx1207/hello-scholar-2`
+**目标仓库：** `Tx1207/hello-scholar`
 
 ---
 
