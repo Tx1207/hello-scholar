@@ -37,6 +37,9 @@ class CrashAuditSkillTests(unittest.TestCase):
 
         self.assertIn("Use only for a current-turn explicit request", english)
         self.assertIn("仅当用户在本轮明确要求", chinese)
+        self.assertIn("结束会话、批准方案或继续推进前", chinese)
+        self.assertIn("输出使用用户的语言", chinese)
+        self.assertIn("Crash audit", chinese)
         self.assertIn("risk matrices", english)
         self.assertIn("风险矩阵", chinese)
         self.assertNotIn("## Example", english)

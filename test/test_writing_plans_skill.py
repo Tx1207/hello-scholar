@@ -100,6 +100,9 @@ class WritingPlansSkillTests(unittest.TestCase):
         self.assertIn("递增 `revision`、将 `status` 设为 `draft`", chinese)
         self.assertIn("Plan's `spec` and `spec_revision` still match", english)
         self.assertIn("Plan 的 `spec` 与 `spec_revision` 仍匹配", chinese)
+        self.assertIn("or execution handoffs.", english)
+        self.assertIn("或执行交接。", chinese)
+        self.assertNotIn("执行交接菜单", chinese)
 
     def test_retired_reviewer_prompt_is_absent(self) -> None:
         """Purpose: remove the uncalled Plan reviewer workflow; Input: retired prompt path; Output: none; Errors: assertion failure identifies retained dead workflow."""

@@ -79,6 +79,8 @@ class GeneratingTasksSkillTests(unittest.TestCase):
 
         self.assertIn("approved Plan", english)
         self.assertIn("Approved Plan", chinese)
+        self.assertIn("Read `spec.md` in full, then read `plan.md` in full.", english)
+        self.assertIn("完整读取 `spec.md`，再完整读取 `plan.md`", chinese)
         self.assertIn("explicitly requires TDD", english)
         self.assertIn("明确要求 TDD", chinese)
         self.assertIn("user review", english.lower())
