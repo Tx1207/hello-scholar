@@ -91,14 +91,14 @@ Strong success criteria let you loop independently. Weak success criteria requir
 - When adding a dependency, explain the concrete need it solves, why existing options were not chosen, and its maintenance or runtime impact.
 - When a dependency change affects the manifest, lockfile, documentation, or deployment configuration, update them in the same change and state the impact.
 
-## 9. Code Review Comments
+## 9. Code Comments
 
-**Comments give reviewers the semantic basis for an implementation: its constraints, boundaries, failure conditions, and design rationale.**
+**Comments are a guide for reviewers who did not implement the code: use plain, concrete language to explain what the code does, its main flow, why it works that way, and what happens on failure.**
 
-- Use comments to supply semantic constraints, business boundaries, failure conditions, and non-obvious design rationale that function names, signatures, types, and local control flow cannot express.
-- When a function's result, key invariant, failure semantics, or external side effect is not obvious, add a short explanation at its declaration. Keep simple pure calculation functions concise; they do not require comments.
-- When the reason for a critical decision is not obvious, explain immediately before it which constraint it protects, which error it prevents, or why this implementation was chosen. Organize comments around invariants, boundaries, and design rationale, rather than `Purpose`, `Input`, or `Output` templates or narrative execution steps such as “first,” “then,” and “finally.”
-- When function behavior, constraints, failure semantics, or critical correctness conditions change, update the related comments. Treat disagreement among comments, code, and tests as a defect.
+- For modules, classes, and functions involving business rules, state changes, I/O, or multiple stages, summarize their responsibility, main flow, and caller-observable results or side effects at the entry point; before key branches and non-obvious handling, explain the relevant constraints, design rationale, and failure impact.
+- Match comment depth to the code's complexity and risk. Let naming and structure express obvious local steps; use comments for business meaning and information the code cannot express by itself. Simple code needs no comments.
+- Write comments in the language selected by “Language preference” under “User Preferences”; retain code identifiers, technical terms, and API names in their original form without changing the comments' main language.
+- When behavior, constraints, side effects, or failure semantics change, update the related comments. Treat disagreement among comments, code, and tests as a defect.
 
 ## 10. Communication
 
@@ -124,5 +124,5 @@ Statuses: `💡直接响应`, `⚡快速执行`, `🔵规划流程`, `✅完成`
 
 ## User Preferences
 
-- Language preference: keep necessary code symbols, method names, place names, technical terms, field names, enum values, paths, commands, file names, and template-required headings as written. Papers, code comments, general documentation, and user-readable documents written by skills should choose language according to context and user requirements; when uncertain, use Chinese as the default language.
+- Language preference: keep necessary code symbols, method names, place names, technical terms, field names, enum values, paths, commands, file names, and template-required headings as written, without using them to switch the prose or comment language. Papers, code comments, general documentation, and user-readable documents written by skills should first use the language specified by the user for the current task; otherwise, follow the target file's or project's existing primary language. When uncertain, use the default language: Chinese
 - Git preference: do not add large binaries, model weights, datasets, checkpoints, experiment `outputs` / `results` / `logs`, build artifacts, or archives to Git. Before staging or committing, check newly added file sizes; exclude unneeded large files with the smallest precise `.gitignore` rule. If a large file is required for release, reproducibility, or an external contract, or is already tracked, report its purpose and alternatives and wait for confirmation; do not force-add, delete tracked files, or rewrite history.
