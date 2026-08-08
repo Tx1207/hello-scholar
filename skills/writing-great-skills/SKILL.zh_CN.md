@@ -1,7 +1,6 @@
 ---
 name: writing-great-skills
 description: 编写和编辑高质量 Skill 的参考：让 Skill 行为可预测的术语与原则。
-disable-model-invocation: true
 ---
 
 Skill 的作用是从随机系统中提炼确定性。根本美德是**Predictability（可预测性）**——每次运行中 Agent 采取相同的**过程**，而不是产生相同的输出；下面每个杠杆都服务于它。

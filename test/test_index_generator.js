@@ -35,9 +35,9 @@ function generated(content = "old\n") {
   return `${GENERATED_MARKER}\n${content}`;
 }
 
-function plan(relativePath) {
-  // Purpose: build a minimal Plan reference for renderer fixtures; Input: relative document path; Output: Plan reference object.
-  return { relativePath };
+function plan(relativePath, status = "approved") {
+  // Purpose: build a minimal Plan reference for renderer fixtures; Input: relative document path and lifecycle status; Output: Plan reference object.
+  return { relativePath, attributes: { status } };
 }
 
 function tasks(relativePath) {
@@ -66,6 +66,8 @@ function sampleValidation() {
         tasks: tasks("hello-scholar/specs/alpha/SPEC-010-later/tasks.md"),
         planState: "Current",
         tasksState: "Stale",
+        approvalState: "approved",
+        tasksStatus: "in-progress",
         completion: { completed: 1, total: 3, percent: 33 },
       },
       {
@@ -96,10 +98,12 @@ function sampleValidation() {
         supersedes: [],
         supersededBy: null,
         relativePath: "hello-scholar/specs/zeta/SPEC-001-zeta/spec.md",
-        plan: plan("hello-scholar/specs/zeta/SPEC-001-zeta/plan.md"),
+        plan: plan("hello-scholar/specs/zeta/SPEC-001-zeta/plan.md", "cancelled"),
         tasks: tasks("hello-scholar/specs/zeta/SPEC-001-zeta/tasks.md"),
         planState: "Stale",
         tasksState: "Current",
+        approvalState: "approved",
+        tasksStatus: "cancelled",
         completion: { completed: 2, total: 2, percent: 100 },
       },
     ],
@@ -160,21 +164,21 @@ test("renders global, Topic, and Run indexes with exact stable bytes", () => {
     GENERATED_MARKER,
     "# Specs",
     "",
-    "| Topic | Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
-    "| alpha | [SPEC-002](alpha/SPEC-002-first/spec.md) | research | completed | 10 | Missing | Missing | - | First summary |",
-    "| alpha | [SPEC-010](alpha/SPEC-010-later/spec.md) | prototype | accepted | 2 | [Current](alpha/SPEC-010-later/plan.md) | [Stale](alpha/SPEC-010-later/tasks.md) | 1/3 (33%) | Pipe \\| line<br>next |",
-    "| zeta | [SPEC-001](zeta/SPEC-001-zeta/spec.md) | capability | draft | 1 | [Stale](zeta/SPEC-001-zeta/plan.md) | [Current](zeta/SPEC-001-zeta/tasks.md) | 2/2 (100%) | Zeta summary |",
+    "| Topic | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| alpha | [SPEC-002](alpha/SPEC-002-first/spec.md) | research | completed | 10 | Missing | - | Missing | - | - | - | First summary |",
+    "| alpha | [SPEC-010](alpha/SPEC-010-later/spec.md) | prototype | accepted | 2 | [Current](alpha/SPEC-010-later/plan.md) | approved | [Stale](alpha/SPEC-010-later/tasks.md) | approved | in-progress | 1/3 (33%) | Pipe \\| line<br>next |",
+    "| zeta | [SPEC-001](zeta/SPEC-001-zeta/spec.md) | capability | draft | 1 | [Stale](zeta/SPEC-001-zeta/plan.md) | cancelled | [Current](zeta/SPEC-001-zeta/tasks.md) | approved | cancelled | 2/2 (100%) | Zeta summary |",
     "",
   ].join("\n"));
   assert.equal(files.get("hello-scholar/specs/alpha/INDEX.md"), [
     GENERATED_MARKER,
     "# Topic: alpha",
     "",
-    "| Spec | Type | Spec Status | Revision | Plan | Tasks | Completion | Summary | Relations |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
-    "| [SPEC-002](SPEC-002-first/spec.md) | research | completed | 10 | Missing | Missing | - | First summary | superseded by [SPEC-010](SPEC-010-later/spec.md) |",
-    "| [SPEC-010](SPEC-010-later/spec.md) | prototype | accepted | 2 | [Current](SPEC-010-later/plan.md) | [Stale](SPEC-010-later/tasks.md) | 1/3 (33%) | Pipe \\| line<br>next | supersedes [SPEC-002](SPEC-002-first/spec.md) |",
+    "| Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary | Relations |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| [SPEC-002](SPEC-002-first/spec.md) | research | completed | 10 | Missing | - | Missing | - | - | - | First summary | superseded by [SPEC-010](SPEC-010-later/spec.md) |",
+    "| [SPEC-010](SPEC-010-later/spec.md) | prototype | accepted | 2 | [Current](SPEC-010-later/plan.md) | approved | [Stale](SPEC-010-later/tasks.md) | approved | in-progress | 1/3 (33%) | Pipe \\| line<br>next | supersedes [SPEC-002](SPEC-002-first/spec.md) |",
     "",
   ].join("\n"));
   assert.equal(files.get("runs/INDEX.md"), [

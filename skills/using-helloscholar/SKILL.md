@@ -49,9 +49,9 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-too
 
 Route progress, completion status, remaining work, or continuation requests to the current Task state, not `converge-to-spec`.
 
-- After context compaction, resume TodoWrite or rebuild it from the current `tasks.md` if unavailable. Unchecked `Convergence` Tasks remain pending work.
-- Continue the first unblocked unchecked Task by `Depends On` only when Plan and Tasks are Current, Tasks have `approval: approved` with `approved_revision` equal to `revision`, and the current request explicitly authorizes implementation; otherwise report the gate and frontier.
-- Keep execution state in TodoWrite. Once every required Task has current Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
+- **Resolve:** after same-session compaction, resume TodoWrite. In a new conversation, read `hello-scholar/specs/INDEX.md`; a named Bundle only selects the target. Otherwise use the lifecycle gate `accepted / Current / approved / pending|in-progress / incomplete`: one candidate resumes, many wait for a choice, and none stops. Do not guess by time or file order.
+- **Verify:** read the target `tasks.md`; all INDEX gates must still hold and `approved_revision` must equal `revision`. Report and stop on failure. Otherwise report the Bundle, Tasks Revision, and frontier (the first unblocked unchecked Task). A switch changes only the current execution context; only explicit cancellation sets the old Bundle to `cancelled` and excludes it from recovery.
+- **Execute:** after the current request explicitly authorizes implementation, continue the frontier by `Depends On` and track it in TodoWrite. Once all required Tasks have Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
 
 ```dot
 digraph skill_flow {
