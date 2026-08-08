@@ -103,6 +103,37 @@ class WritingPlansSkillTests(unittest.TestCase):
         self.assertIn("or execution handoffs.", english)
         self.assertIn("或执行交接。", chinese)
         self.assertNotIn("执行交接菜单", chinese)
+        for required in (
+            "core algorithms",
+            "critical steps or state transitions",
+            "critical business flows",
+            "high regression risk",
+            "recommend TDD",
+            "ordinary validation",
+            "fix expectations before implementation",
+            "AI implementation errors escaping detection",
+            "one TDD decision",
+            "propagate it to the corresponding Tasks",
+            "records its test-process choice",
+        ):
+            self.assertIn(required, english)
+        for required in (
+            "核心算法",
+            "关键步骤或状态转换",
+            "关键业务流程",
+            "高回归风险",
+            "推荐 TDD",
+            "普通验证",
+            "实现前固定预期",
+            "实现错误漏检",
+            "只进行一次 TDD 判断",
+            "传播到对应 Tasks",
+            "记录测试过程选择",
+        ):
+            self.assertIn(required, chinese)
+        for text in (english, chinese):
+            self.assertNotIn("稳定 seam", text)
+            self.assertNotIn("可靠 Red signal", text)
 
     def test_retired_reviewer_prompt_is_absent(self) -> None:
         """Purpose: remove the uncalled Plan reviewer workflow; Input: retired prompt path; Output: none; Errors: assertion failure identifies retained dead workflow."""
