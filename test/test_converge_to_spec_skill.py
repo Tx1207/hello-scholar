@@ -62,12 +62,57 @@ class ConvergeToSpecSkillTests(unittest.TestCase):
         english, chinese = texts
         self.assertIn("Traceability", frontmatter(english)["description"])
         self.assertIn("收敛", frontmatter(chinese)["description"])
-        self.assertIn("user asks", english)
+        self.assertIn("user explicitly asks", english)
         self.assertIn("用户明确要求", chinese)
         self.assertIn("Default to an empty write set", english)
         self.assertIn("默认允许写入集合为空", chinese)
-        self.assertIn("Ordinary local work", english)
-        self.assertIn("普通局部工作", chinese)
+        self.assertIn("Task continuation", english)
+        self.assertIn("Task 续做", chinese)
+
+    def test_entry_selects_one_cheap_branch_before_audit_work(self) -> None:
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+
+        english_description = frontmatter(english)["description"]
+        chinese_description = frontmatter(chinese)["description"]
+        self.assertIn("explicitly asks", english_description)
+        self.assertIn("明确要求", chinese_description)
+        self.assertIn("Spec/Plan contract", english_description)
+        self.assertIn("Spec/Plan 合同", chinese_description)
+        self.assertIn("just-completed convergence audit", english_description)
+        self.assertIn("刚完成的收敛审计", chinese_description)
+        for description in (english_description, chinese_description):
+            self.assertNotIn("approved_revision", description)
+            self.assertNotIn("status: completed", description)
+
+        self.assertIn("## 0. Select one entry branch", english)
+        self.assertIn("## 0. 选择唯一入口", chinese)
+        self.assertIn("Before scanning implementation or running `hello-scholar docs check`", english)
+        self.assertIn("在扫描实现或运行 `hello-scholar docs check` 前", chinese)
+        for text in (english, chinese):
+            self.assertIn("approval: approved", text)
+            self.assertIn("status: completed", text)
+            self.assertIn("approved_revision", text)
+            self.assertIn("revision", text)
+        self.assertIn("every required top-level Task is checked", english)
+        self.assertIn("每个必需的顶层 Task 均已勾选", chinese)
+        self.assertIn("report the first unmet gate", english)
+        self.assertIn("报告第一道未满足的门", chinese)
+        self.assertIn("without scanning implementation", english)
+        self.assertIn("没有扫描实现", chinese)
+
+    def test_append_branch_reuses_only_current_audit_findings(self) -> None:
+        english, chinese = (path.read_text(encoding="utf-8") for path in SKILL_FILES)
+
+        self.assertIn("findings from the just-completed audit", english)
+        self.assertIn("刚完成审计的发现", chinese)
+        self.assertIn("recorded Spec, Plan, and Tasks revisions still match", english)
+        self.assertIn("记录的 Spec、Plan 与 Tasks Revision 仍然匹配", chinese)
+        self.assertIn("skip Sections 1–3", english)
+        self.assertIn("跳过第 1–3 节", chinese)
+        self.assertIn("Run `hello-scholar docs sync` once", english)
+        self.assertIn("运行一次 `hello-scholar docs sync`", chinese)
+        self.assertNotIn("docs sync` then `hello-scholar docs check", english)
+        self.assertNotIn("docs sync`，再运行 `hello-scholar docs check", chinese)
 
     def test_transaction_delta_excludes_preexisting_worktree_changes(self) -> None:
         """Purpose: require convergence writes to compare against a recorded baseline; Input: bilingual Skill texts; Output: none; Errors: assertion failure for a whole-worktree-only write check."""

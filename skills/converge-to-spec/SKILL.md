@@ -1,11 +1,21 @@
 ---
 name: converge-to-spec
-description: Traceability and convergence checks for a completed Spec Bundle. Use when the user asks to audit implementation against a Bundle, decide whether a Bundle is ready for completion evidence, or append directly implementable convergence work to existing tasks.md.
+description: Traceability and convergence audit for a completed Spec Bundle. Use when the user explicitly asks to compare implementation with its Spec/Plan contract or append findings from the just-completed convergence audit as Convergence Tasks.
 ---
 
 # Converge to Spec
 
-Audit a Bundle; do not execute its repair. Enter only on an explicit user request, or after its required Tasks and their validation are complete. Ordinary local work remains on its normal verification path.
+Audit a Bundle; do not execute its repair.
+
+## 0. Select one entry branch
+
+Before scanning implementation or running `hello-scholar docs check`, classify the current request.
+
+- **Convergence audit:** Select this branch when the user explicitly asks to compare implementation with its Spec/Plan contract. Read only the Spec, Plan, and Tasks lifecycle fields plus top-level Task checkboxes. Continue to Section 1 only when the Spec is `accepted`, the Plan is `approved`, the Plan and Tasks are Current, and Tasks have `approval: approved`, `approved_revision` equal to `revision`, `status: completed`, and every required top-level Task is checked. Otherwise report the first unmet gate and return the Bundle to `using-helloscholar` for Task continuation.
+- **Append audit findings:** Select this branch when the user explicitly asks to save findings from the just-completed convergence audit as `Convergence` Tasks. When the findings and their recorded Bundle revisions remain in context and the recorded Spec, Plan, and Tasks revisions still match, skip Sections 1–3 and continue to Section 4. Otherwise report that no current audit can be reused and stop for an explicit new-audit request.
+- **Task continuation:** Route progress, completion status, remaining work, and continuation requests to `using-helloscholar`, which restores state from `tasks.md` and TodoWrite.
+
+**Complete when:** exactly one branch is selected; an ineligible audit ends at its lifecycle gate without scanning implementation or running the full document check.
 
 ## 1. Establish the evidence boundary
 
@@ -52,14 +62,14 @@ Always state the exact verification commands the main Agent must actually run an
 
 **Complete when:** the response gives an evidence-backed Ready/Not Ready result, blockers or satisfied conditions, fresh-command next actions, and any conditional Architecture reminder.
 
-## 4. Append convergence Tasks only when authorized
+## 4. Save audit findings as Convergence Tasks
 
-Use this branch only after the user explicitly asks to preserve directly implementable findings as Tasks.
+Use this branch only when the user explicitly asks to save findings from the just-completed audit, or Section 0 selected a still-current audit. Confirm that the recorded Spec, Plan, and Tasks revisions still match before writing; a reusable audit skips Sections 1–3, while a mismatch stops for an explicit new-audit request.
 
-1. Classify the finding first: return new design to the Spec; return an invalid technical approach to the Plan; ask the relevant owner to synchronize a Stale contract. Append only work already directly implementable within the current Spec and Plan.
+1. Classify the finding first: return new design to the Spec; return an invalid technical approach to the Plan; ask the relevant owner to synchronize a Stale contract. Append only directly implementable work within the current Spec and Plan.
 2. Append a `Convergence` Phase to the existing `tasks.md`; continue its `TNNN` sequence. Every new unchecked Task contains a goal, `Spec Coverage`, `Depends On`, `Parallel`, `Files`, `Work`, `Validation`, and `Completion`. Include Red-Green-Refactor only when the approved contract explicitly requires TDD.
 3. Increment `revision`; set `approval: pending-review`, `approved_revision: null`, `status: pending`; update `updated`.
-4. Run `hello-scholar docs sync` then `hello-scholar docs check`. Against the recorded baseline, verify the transaction delta contains only `tasks.md` and CLI-generated Indexes.
+4. Run `hello-scholar docs sync` once. Against the recorded baseline, verify the transaction delta contains only `tasks.md` and CLI-generated Indexes.
 5. Present the new revision and coverage change, then stop for user review. Approval of this revision and authorization to implement are separate future decisions.
 
 **Complete when:** only the allowed Tasks transaction and generated Indexes changed, all appended Tasks are reviewable and unchecked, and the response stops at the review gate.
