@@ -80,10 +80,10 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
             self.assertIn("Depends On", text)
         self.assertIn("first unblocked unchecked Task", english)
         self.assertIn("第一个未阻塞且未勾选的 Task", chinese)
-        self.assertIn("After context compaction", english)
-        self.assertIn("上下文压缩后", chinese)
-        self.assertIn("`approved_revision` equal to `revision`", english)
-        self.assertIn("approved_revision` 等于 `revision", chinese)
+        self.assertIn("same-session compaction", english)
+        self.assertIn("同一会话压缩后", chinese)
+        self.assertIn("`approved_revision` must equal `revision`", english)
+        self.assertIn("approved_revision` 必须等于 `revision", chinese)
         self.assertIn("current request explicitly authorizes implementation", english)
         self.assertIn("当前请求明确授权实施", chinese)
         self.assertIn("update `tasks.md` once", english)
@@ -92,6 +92,40 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
         self.assertIn("运行一次 `hello-scholar docs sync`", chinese)
         self.assertNotIn("hello-scholar docs check", english)
         self.assertNotIn("hello-scholar docs check", chinese)
+
+    def test_routers_resolve_bundle_from_index_lifecycle(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+
+        for text in (english, chinese):
+            for required in (
+                "hello-scholar/specs/INDEX.md",
+                "accepted / Current / approved / pending|in-progress / incomplete",
+                "cancelled",
+            ):
+                self.assertIn(required, text)
+
+        for required in (
+            "named Bundle only selects the target",
+            "one candidate resumes",
+            "many wait for a choice",
+            "none stops",
+            "Report and stop",
+            "switch changes only the current execution context",
+            "Do not guess by time or file order",
+        ):
+            self.assertIn(required, english)
+
+        for required in (
+            "用户点名只确定目标，不绕过生命周期门",
+            "唯一候选恢复",
+            "多个候选等待选择",
+            "没有候选则停止",
+            "任一门不满足时报告并停止",
+            "切换只改变本轮执行上下文",
+            "不按时间或文件顺序猜测",
+        ):
+            self.assertIn(required, chinese)
 
     def test_skill_priority_lists_takeoff_and_landing_as_process_skills(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")

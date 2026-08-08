@@ -49,9 +49,9 @@ Hello-scholar 技能会覆盖默认 system prompt 行为，但**用户指令始�
 
 进度、完成情况、剩余工作或继续实施请求进入当前 Task 状态，而不是 `converge-to-spec`。
 
-- 上下文压缩后恢复 TodoWrite；状态不可用时，从当前 `tasks.md` 重建。未勾选的 `Convergence` Tasks 仍是待完成工作。
-- 仅当 Plan 与 Tasks 为 Current、Tasks 的 `approval: approved` 且 `approved_revision` 等于 `revision`、当前请求明确授权实施时，才按 `Depends On` 继续第一个未阻塞且未勾选的 Task；否则报告当前门与 frontier。
-- 执行状态保存在 TodoWrite。每个必需 Task 都取得当前 Validation 与 Completion 证据后，一次性更新 `tasks.md` 的复选框、`status: completed` 与 `updated`，随后运行一次 `hello-scholar docs sync`。
+- **定位：**同一会话压缩后恢复 TodoWrite。新对话读取 `hello-scholar/specs/INDEX.md`；用户点名只确定目标，不绕过生命周期门。否则使用 `accepted / Current / approved / pending|in-progress / incomplete` 生命周期门：唯一候选恢复，多个候选等待选择，没有候选则停止。不按时间或文件顺序猜测。
+- **核验：**读取目标 `tasks.md`；INDEX 各门仍须成立，且 `approved_revision` 必须等于 `revision`。任一门不满足时报告并停止；通过后报告 Bundle、Tasks Revision 与 frontier（第一个未阻塞且未勾选的 Task）。切换只改变本轮执行上下文；仅明确取消才把旧 Bundle 设为 `cancelled` 并排除其恢复。
+- **执行：**当前请求明确授权实施后，按 `Depends On` 继续 frontier，以 TodoWrite 跟踪。全部必需 Task 取得 Validation 与 Completion 证据后，一次性更新 `tasks.md` 的复选框、`status: completed` 与 `updated`，再运行一次 `hello-scholar docs sync`。
 
 ```dot
 digraph skill_flow {
