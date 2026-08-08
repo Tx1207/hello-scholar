@@ -53,6 +53,10 @@ Route progress, completion status, remaining work, or continuation requests to t
 - **Verify:** read the target `tasks.md`; all INDEX gates must still hold and `approved_revision` must equal `revision`. Report and stop on failure. Otherwise report the Bundle, Tasks Revision, and frontier (the first unblocked unchecked Task). A switch changes only the current execution context; only explicit cancellation sets the old Bundle to `cancelled` and excludes it from recovery.
 - **Execute:** after the current request explicitly authorizes implementation, continue the frontier by `Depends On` and track it in TodoWrite. Once all required Tasks have Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
 
+## Architecture Reminder
+
+When `architecture-missing` is first observed in an existing flow's `hello-scholar docs check` or `hello-scholar docs sync` output, report once in the current conversation that Architecture is missing but does not block the current work. Continue the current flow. Later occurrences need no reminder. Do not run another command or create a file for this reminder. If the user explicitly asks to create it, invoke `$docs-maintenance` in `architecture` mode.
+
 ```dot
 digraph skill_flow {
     "User message received" [shape=doublecircle];

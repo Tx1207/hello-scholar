@@ -53,6 +53,10 @@ Hello-scholar 技能会覆盖默认 system prompt 行为，但**用户指令始�
 - **核验：**读取目标 `tasks.md`；INDEX 各门仍须成立，且 `approved_revision` 必须等于 `revision`。任一门不满足时报告并停止；通过后报告 Bundle、Tasks Revision 与 frontier（第一个未阻塞且未勾选的 Task）。切换只改变本轮执行上下文；仅明确取消才把旧 Bundle 设为 `cancelled` 并排除其恢复。
 - **执行：**当前请求明确授权实施后，按 `Depends On` 继续 frontier，以 TodoWrite 跟踪。全部必需 Task 取得 Validation 与 Completion 证据后，一次性更新 `tasks.md` 的复选框、`status: completed` 与 `updated`，再运行一次 `hello-scholar docs sync`。
 
+## Architecture 提醒
+
+现有流程首次从 `hello-scholar docs check` 或 `hello-scholar docs sync` 观察到 `architecture-missing` 时，报告 Architecture 缺失但不阻塞当前工作，本次对话只提醒一次，然后继续当前流程；后续同类 notice 无需提醒。不为提醒额外运行命令或创建文件。用户明确要求创建时，调用 `$docs-maintenance` 的 `architecture` 模式。
+
 ```dot
 digraph skill_flow {
     "User message received" [shape=doublecircle];

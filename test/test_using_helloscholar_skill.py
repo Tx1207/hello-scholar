@@ -90,8 +90,14 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
         self.assertIn("一次性更新 `tasks.md`", chinese)
         self.assertIn("run `hello-scholar docs sync` once", english)
         self.assertIn("运行一次 `hello-scholar docs sync`", chinese)
-        self.assertNotIn("hello-scholar docs check", english)
-        self.assertNotIn("hello-scholar docs check", chinese)
+        english_continuation = english.split("## Task Continuation", 1)[1].split(
+            "## Architecture Reminder", 1
+        )[0]
+        chinese_continuation = chinese.split("## Task 续做", 1)[1].split(
+            "## Architecture 提醒", 1
+        )[0]
+        self.assertNotIn("hello-scholar docs check", english_continuation)
+        self.assertNotIn("hello-scholar docs check", chinese_continuation)
 
     def test_routers_resolve_bundle_from_index_lifecycle(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
@@ -124,6 +130,43 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
             "任一门不满足时报告并停止",
             "切换只改变本轮执行上下文",
             "不按时间或文件顺序猜测",
+        ):
+            self.assertIn(required, chinese)
+
+    def test_router_reports_missing_architecture_once_without_blocking(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+
+        for text in (english, chinese):
+            for required in (
+                "architecture-missing",
+                "hello-scholar docs check",
+                "hello-scholar docs sync",
+                "docs-maintenance",
+                "architecture",
+            ):
+                self.assertIn(required, text)
+
+        for required in (
+            "first observed",
+            "once in the current conversation",
+            "does not block the current work",
+            "Continue the current flow",
+            "Later occurrences need no reminder",
+            "Do not run another command or create a file for this reminder",
+            "explicitly asks to create it",
+        ):
+            self.assertIn(required, english)
+
+        for required in (
+            "首次从",
+            "观察到",
+            "本次对话只提醒一次",
+            "不阻塞当前工作",
+            "继续当前流程",
+            "后续同类 notice 无需提醒",
+            "不为提醒额外运行命令或创建文件",
+            "明确要求创建",
         ):
             self.assertIn(required, chinese)
 
