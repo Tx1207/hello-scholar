@@ -45,6 +45,14 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-too
 
 **Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
 
+## Task Continuation
+
+Route progress, completion status, remaining work, or continuation requests to the current Task state, not `converge-to-spec`.
+
+- After context compaction, resume TodoWrite or rebuild it from the current `tasks.md` if unavailable. Unchecked `Convergence` Tasks remain pending work.
+- Continue the first unblocked unchecked Task by `Depends On` only when Plan and Tasks are Current, Tasks have `approval: approved` with `approved_revision` equal to `revision`, and the current request explicitly authorizes implementation; otherwise report the gate and frontier.
+- Keep execution state in TodoWrite. Once every required Task has current Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
+
 ```dot
 digraph skill_flow {
     "User message received" [shape=doublecircle];

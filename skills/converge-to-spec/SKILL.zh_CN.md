@@ -1,11 +1,21 @@
 ---
 name: converge-to-spec
-description: 针对已完成 Spec Bundle 的追溯与收敛检查。当用户要求审计实现是否符合 Bundle、判断 Bundle 能否进入完成证据，或要求把可直接实施的收敛工作追加到现有 tasks.md 时使用。
+description: 审计已完成 Spec Bundle 的实现追溯与收敛。仅在用户明确要求核对实现与 Spec/Plan 合同，或将刚完成的收敛审计发现追加为 Convergence Tasks 时使用。
 ---
 
 # Converge to Spec
 
-审计 Bundle，不直接实施修复。只在用户明确要求，或 Bundle 的必需 Tasks 及其验证已经完成时进入；普通局部工作继续走原有验证路径。
+审计 Bundle，不直接实施修复。
+
+## 0. 选择唯一入口
+
+在扫描实现或运行 `hello-scholar docs check` 前，先分类当前请求。
+
+- **收敛审计：** 用户明确要求核对实现与 Spec/Plan 合同时选择此分支。先只读取 Spec、Plan、Tasks 的生命周期字段与顶层 Task 复选框。仅当 Spec 为 `accepted`、Plan 为 `approved`、Plan 与 Tasks 为 Current，且 Tasks 的 `approval: approved`、`approved_revision` 等于 `revision`、`status: completed`、每个必需的顶层 Task 均已勾选时，才进入第 1 节；否则报告第一道未满足的门，并将 Bundle 返回 `using-helloscholar` 续做 Task。
+- **追加审计发现：** 用户明确要求把刚完成审计的发现保存为 `Convergence` Tasks 时选择此分支。若发现及其记录的 Bundle Revision 仍在当前上下文中，且记录的 Spec、Plan 与 Tasks Revision 仍然匹配，则跳过第 1–3 节并进入第 4 节；否则报告当前没有可复用的审计，并停在明确的新审计请求门。
+- **Task 续做：** 进度、完成情况、剩余工作和继续实施请求交给 `using-helloscholar`，由它从 `tasks.md` 与 TodoWrite 恢复状态。
+
+**完成条件：** 已选择唯一分支；不符合入口条件的审计停在生命周期门，没有扫描实现，也没有运行完整文档检查。
 
 ## 1. 建立证据边界
 
@@ -52,14 +62,14 @@ description: 针对已完成 Spec Bundle 的追溯与收敛检查。当用户要
 
 **完成条件：** 回复给出有证据的 Ready/Not Ready 结论、blocker 或已满足条件、新鲜命令下一步，以及条件性的 Architecture 提醒。
 
-## 4. 仅在获授权时追加 Convergence Tasks
+## 4. 将审计发现保存为 Convergence Tasks
 
-仅在用户明确要求把可直接实施发现保留为 Tasks 后走此分支。
+仅当用户明确要求保存刚完成审计的发现，或第 0 节选择了仍然 Current 的审计时进入此分支。写入前确认记录的 Spec、Plan 与 Tasks Revision 仍然匹配；可复用的审计跳过第 1–3 节，Revision 不匹配时停在明确的新审计请求门。
 
 1. 先分类发现：新设计回 Spec；技术方案失效回 Plan；Stale 合同先由对应 owner 同步。只追加当前 Spec 和 Plan 内可直接实施的工作。
 2. 在现有 `tasks.md` 末尾追加 `Convergence` Phase，延续 `TNNN` 序号。每个新且未勾选的 Task 都包含目标、`Spec Coverage`、`Depends On`、`Parallel`、`Files`、`Work`、`Validation` 和 `Completion`。只有已批准合同明确要求 TDD 时，才加入 Red-Green-Refactor。
 3. `revision` 加一；设为 `approval: pending-review`、`approved_revision: null`、`status: pending`；更新 `updated`。
-4. 运行 `hello-scholar docs sync`，再运行 `hello-scholar docs check`。相对已记录基线，核对本次事务增量只包含 `tasks.md` 和 CLI 生成的 Index。
+4. 运行一次 `hello-scholar docs sync`。相对已记录基线，核对本次事务增量只包含 `tasks.md` 和 CLI 生成的 Index。
 5. 展示新 Revision 与覆盖变化，随后停在用户审核门。批准此 Revision 与授权实施是两个未来的独立决定。
 
 **完成条件：** 只改了允许的 Tasks 事务和生成的 Index，所有追加 Task 都可审核且未勾选，并在回复中停在审核门。
