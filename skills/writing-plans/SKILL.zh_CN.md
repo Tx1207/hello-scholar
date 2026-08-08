@@ -72,7 +72,7 @@ updated: YYYY-MM-DD
 
 ## 4. 审核与交接
 
-1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。
+1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。整份审核只进行一次 TDD 判断：核心算法、关键步骤或状态转换、关键业务流程及高回归风险的实施结果推荐 TDD，用测试在实现前固定预期，降低 AI 实现错误漏检；其余使用普通验证。把选择记录到 Plan 的 `Test and Experiment Strategy` 与 `Tasks Generation Rules`，供 `generating-tasks` 传播到对应 Tasks。
 2. 写入或修订 Plan 后运行一次：
    ```sh
    hello-scholar docs sync
@@ -81,4 +81,4 @@ updated: YYYY-MM-DD
 4. 设置 `status: approved` 前，重新读取目标 Spec 的 Front Matter，并确认 Plan 的 `spec` 与 `spec_revision` 仍匹配其 accepted ID 和 revision。任一不匹配时，Plan 保持 `draft`，修订后重新审核。
 5. 用户明确批准并通过该新鲜度检查后，将 `status` 设为 `approved`，通过相同 CLI 序列验证，再调用 `$generating-tasks` 生成需要独立审核的 Tasks。
 
-**完成条件：** 终态是已审核 Plan，或阻止计划的明确设计停止点。Plan 批准不代表 Tasks 或实施获得批准。
+**完成条件：** 终态是已审核且记录测试过程选择的 Plan，或阻止计划的明确设计停止点。Plan 批准不代表 Tasks 或实施获得批准。

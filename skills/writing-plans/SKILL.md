@@ -72,7 +72,7 @@ The body always contains these 12 sections:
 
 ## 4. Review and hand off
 
-1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps.
+1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps. Make one TDD decision for the whole review: recommend TDD for outcomes involving core algorithms, critical steps or state transitions, critical business flows, or high regression risk, using tests to fix expectations before implementation and reduce AI implementation errors escaping detection; use ordinary validation for the rest. Record the choice in `Test and Experiment Strategy` and `Tasks Generation Rules` so `generating-tasks` can propagate it to the corresponding Tasks.
 2. After writing or revising the Plan, run once:
    ```sh
    hello-scholar docs sync
@@ -81,4 +81,4 @@ The body always contains these 12 sections:
 4. Before setting `status: approved`, reread the target Spec Front Matter and confirm the Plan's `spec` and `spec_revision` still match its accepted ID and revision. If either differs, leave the Plan `draft` and revise and review it again.
 5. After explicit approval and that freshness check, set `status: approved`, validate through the same CLI sequence, and invoke `$generating-tasks` to produce separately reviewed Tasks.
 
-**Completion:** the terminal state is a reviewed Plan or a clear stop at the design decision that prevents one. Plan approval does not approve Tasks or implementation.
+**Completion:** the terminal state is a reviewed Plan that records its test-process choice, or a clear stop at the design decision that prevents one. Plan approval does not approve Tasks or implementation.
