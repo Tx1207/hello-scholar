@@ -1,0 +1,13 @@
+{
+  "proposalId": "proposal-record-auto-formal-v3",
+  "decision": "approved",
+  "scenarioSha256": "4acebe2e1e1f30066bd9c2bf5e91106ee64f37ddeb26c061db12d46acf9c26f9",
+  "protocolSha256": "e56ffdd7f4e863cfbf9850cb976bee3bb8e88ba46d052fd498b8f3a7fb6af279",
+  "fixtureSha256": "a6ff57ba8d566162dcbeb5229072819c908b130b65e3395c513af850c0c4bf93",
+  "runnerSha256": "3967a8f838163322ea9282e4b5dba5164283a65a6c2d3d38192444b85dac9ee3",
+  "catalogSkillSnapshots": {
+    "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+    "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+  },
+  "replyEvidence": "用户已批准 v3 scope-verified 修复计划，并此前明确授权连续执行、自行审核、不再为中间阶段停下来询问。该 standing execution authorization 绑定 activation-routing-v3 / 942adb3156f43be47593b53bfeea7028e284c45afdabe0d53f93bb75635f8944，只授权 fresh v3 Probe 执行一次，不表示接受尚未产生的结果。"
+}

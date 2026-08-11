@@ -59,9 +59,16 @@ class NoBrainstormingVisualCompanionTests(unittest.TestCase):
             for forbidden in FORBIDDEN_TEXT:
                 self.assertNotIn(forbidden, lowered)
 
-    def test_graphviz_flows_directly_from_context_to_questions(self) -> None:
+    def test_graphviz_routes_material_questions_before_clarification(self) -> None:
         for text in skill_texts():
-            self.assertIn('"Explore project context" -> "Ask clarifying questions";', text)
+            self.assertIn('"Explore project context" -> "Material question?";', text)
+            self.assertIn(
+                '"Material question?" -> "Choose ordinary or grilling" [label="yes"];',
+                text,
+            )
+            self.assertIn(
+                '"Choose ordinary or grilling" -> "Ask clarifying questions";', text
+            )
 
 
 if __name__ == "__main__":

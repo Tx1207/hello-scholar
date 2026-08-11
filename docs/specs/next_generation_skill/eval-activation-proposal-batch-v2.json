@@ -1,0 +1,68 @@
+{
+  "manifestVersion": 1,
+  "batchId": "activation-routing-v2",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 1,
+  "approvalSemantics": {
+    "approvedAction": "Authorize exactly one fresh Haiku successor formal automatic-activation Probe; preserve the consumed v1 result and do not authorize Skill changes or historical evidence relabeling.",
+    "executionOrder": [
+      "record-auto-formal-v2"
+    ],
+    "includedImmutableBytes": [
+      "The successor scenario.md byte sequence and its published SHA-256 value.",
+      "The successor protocol.json byte sequence and its published SHA-256 value.",
+      "The deterministic fresh Fixture tree and its published SHA-256 value.",
+      "The run_activation_probe_v2.py byte sequence and its published SHA-256 value.",
+      "The current using-helloscholar and record-experiment Skill trees copied into the isolated plugin catalog and their published SHA-256 values.",
+      "This manifest byte sequence, bound by the external Batch SHA-256 published in eval-activation-proposal-review-v2.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json decision and replyEvidence fields, which change only after exact user approval of this Batch ID and Batch SHA-256.",
+      "activation-result.json and evidence directory, which may be created only by the approved successor Probe.",
+      "All v1 Scenario, Protocol, approval, result, evidence, attempts, and runner bytes."
+    ],
+    "invalidationRule": "Any change to the successor Scenario, Protocol, Fixture, runner, catalog Skill tree, or this manifest requires a new Batch SHA-256 and renewed user review before the Probe runs."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "sharedBindings": {
+    "runner": {
+      "path": "test/skill-activation-evals/run_activation_probe_v2.py",
+      "sha256": "a8572970903a133f4e51d65c2d4165ab955718a33c36703f98b48455e61cb3f4"
+    },
+    "catalogSkillSources": {
+      "using-helloscholar": "skills/using-helloscholar",
+      "record-experiment": "skills/record-experiment"
+    },
+    "catalogSkillSnapshots": {
+      "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+      "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+    },
+    "agentModel": "claude-haiku-4-5-20251001",
+    "catalog": "claude-code-plugin-catalog",
+    "transcriptFormat": "stream-json"
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-record-auto-formal-v2",
+      "scenarioId": "record-auto-formal-v2",
+      "projectId": "py-cache-benchmark-auto-activation-successor",
+      "primarySkill": "record-experiment",
+      "expectedActivation": "invoked",
+      "approvalRecordPath": "test/skill-activation-evals/record-auto-formal-v2/proposal-approval.json",
+      "inputBindings": {
+        "scenarioSha256": "a8acab82f98b7588ef9b10f36121747a97f9afafc3a475473f959b7ce12d6002",
+        "protocolSha256": "6da79916d621b6eac6961b63b386f55765e25ac7c212e1d5a5d9742e006f7f1c",
+        "fixtureSha256": "69321cbe58d76f3f61143625f3330b4995d85576e852c46ad45f4258babf4d9e"
+      },
+      "businessGoal": "验证正式 baseline release-acceptance Benchmark 会在唯一一次启动前自动调用 record-experiment，保留完整进程证据，并通过项目支持的绝对 hello-scholar CLI 形式生成 runs/INDEX.md。",
+      "hardRejects": [
+        "record-experiment has no successful Skill tool result before the benchmark command",
+        "the benchmark starts before record.md exists or launches more than once",
+        "raw stdout, raw stderr, exit status, structured metrics, or CLI-generated runs/INDEX.md are missing or inconsistent",
+        "source, tests, inputs, or fixed parameters change",
+        "the v1 consumed Fixture or evidence is modified or rerun"
+      ]
+    }
+  ]
+}

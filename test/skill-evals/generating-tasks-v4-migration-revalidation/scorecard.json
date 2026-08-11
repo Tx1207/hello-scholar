@@ -1,0 +1,327 @@
+{
+  "proposalId": "proposal-generating-tasks-v4-migration-revalidation-haiku",
+  "liveApprovalId": "live-generating-tasks-v4-migration-revalidation-haiku-v1",
+  "liveApprovalSha256": "ace9727489df3a3b28e54f318ec765a897639dcb05045778ca2a107aeb9753f3",
+  "scenarioSha256": "f93f77f40a3b78671f7aa3dc77ffb40cd25fff04a79e7e88c847d32e15d59032",
+  "protocolSha256": "b7ef1a72588a4c42001fe8fb628b49c4552f9195940d4cc47ca026c7bab467a8",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "result": "pass",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "f3cdb7d2d6f341ac2d9d4b2a6df7505889d2243334c6ce2f66209a7912aacfe8"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "781980b2-7a63-467b-a845-c4def1ee3181",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "11011f23-cd80-4c47-8da2-1dc8a54beeba",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": true,
+      "reason": "Exact pending-review metadata and canonical TNNN blocks passed docs check.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+        }
+      ]
+    },
+    {
+      "id": "migration-and-cutover-sequence",
+      "passed": true,
+      "reason": "Distinct dependency-ordered expand, migrate, cutover, and recovery Tasks preserve the complete sequence.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+        }
+      ]
+    },
+    {
+      "id": "cleanup-regression-and-rollback",
+      "passed": true,
+      "reason": "Exact legacy removals, evidence gates, regression matrix, and rollback drill are independently executable.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+        }
+      ]
+    },
+    {
+      "id": "scope-and-parallel-discipline",
+      "passed": true,
+      "reason": "Only tasks.md was added; no migration, source, test, config, package, lockfile, or upstream document changed.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tree.raw.log",
+          "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "npm test and the exact absolute docs check both exited 0.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "78f62dd1da1eaec2bf89d63af80f72ff847b84b179c881bd4091de055804415b"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Complete Base-to-final committed, index, working-tree, untracked, hash, runtime-artifact, and whitespace evidence is saved.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/tree.raw.log",
+          "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "npm test",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "78f62dd1da1eaec2bf89d63af80f72ff847b84b179c881bd4091de055804415b"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "78f62dd1da1eaec2bf89d63af80f72ff847b84b179c881bd4091de055804415b"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "e6a3f146ef3d187fdccc3836cc8eebc950e4a22bbcb98ca10a95f84a1a4ec510",
+        "promptSha256": "e4e80c8f132decb2f0ce3585643cd1f49305f6a792859b1c1c8ec805df601956",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811/prompt-round-0.md",
+            "sha256": "e4e80c8f132decb2f0ce3585643cd1f49305f6a792859b1c1c8ec805df601956"
+          },
+          {
+            "path": "evidence/live/v4-20260811/interaction.md",
+            "sha256": "b14f9aa76c0e022ced89c33439b7c12ccd0fae2d9f2b0ed1110688ad9c043b90"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-stream.jsonl",
+            "sha256": "060cbd341287dbfb31c31a349b84f18fda47a552d3b40875af3fc8d6236c4315"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/prompt-round-0.md",
+          "sha256": "e4e80c8f132decb2f0ce3585643cd1f49305f6a792859b1c1c8ec805df601956"
+        },
+        {
+          "path": "evidence/live/v4-20260811/interaction.md",
+          "sha256": "b14f9aa76c0e022ced89c33439b7c12ccd0fae2d9f2b0ed1110688ad9c043b90"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 100,
+        "migration-and-cutover-sequence": 100,
+        "cleanup-regression-and-rollback": 100,
+        "scope-and-parallel-discipline": 100
+      },
+      "reasons": {
+        "task-document-contract": "Exact pending-review metadata and canonical TNNN blocks passed docs check.",
+        "migration-and-cutover-sequence": "Distinct dependency-ordered expand, migrate, cutover, and recovery Tasks preserve the complete sequence.",
+        "cleanup-regression-and-rollback": "Exact legacy removals, evidence gates, regression matrix, and rollback drill are independently executable.",
+        "scope-and-parallel-discipline": "Only tasks.md was added; no migration, source, test, config, package, lockfile, or upstream document changed."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+          }
+        ],
+        "migration-and-cutover-sequence": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+          }
+        ],
+        "cleanup-regression-and-rollback": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+          }
+        ],
+        "scope-and-parallel-discipline": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "4b1fcc4afc5e121c49bcd0bd9f2f229dddf9a83ab9cc826d4982bf0e9251727f"
+          }
+        ]
+      },
+      "totalScore": 100
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The artifact path and pending-review state lead the response.",
+        "audience-fit": "Concise Chinese preserves exact migration terminology.",
+        "information-design": "The six Tasks, sequence, checks, and scope are easy to scan.",
+        "actionability": "The pending-review stop and exact validation status are explicit.",
+        "signal-to-noise": "The response contains only result, evidence, scope, and review action."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "56cecc23e823d677943a64766303d6ce2fa6692bc007d24d34e031004851d9b2"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "56cecc23e823d677943a64766303d6ce2fa6692bc007d24d34e031004851d9b2"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "56cecc23e823d677943a64766303d6ce2fa6692bc007d24d34e031004851d9b2"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "56cecc23e823d677943a64766303d6ce2fa6692bc007d24d34e031004851d9b2"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "c0ce37aa70791aab8d16cfa4468718a92063735b679c55cc879218b9f883051c"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "56cecc23e823d677943a64766303d6ce2fa6692bc007d24d34e031004851d9b2"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "6506b7dd87be98afd11fa07ee55ecee7f5e0543bd10b76b23537b054d1762d12"
+    }
+  }
+}

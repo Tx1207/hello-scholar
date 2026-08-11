@@ -1,0 +1,78 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b"
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "8c41e1e7c47e246396518380872e39fed19f03c1bb710ab53fb94249ebb29999"
+  },
+  {
+    "path": "benchmark/config.json",
+    "sha256": "0574f73f986213d3e6e72fa5340df5ccb515a0c13a582b08ddbab0532f846b84"
+  },
+  {
+    "path": "benchmark/request-trace.json",
+    "sha256": "9687a7ed639d364244d3d74a5efbcb078bae90bf2f141c446e6c1c5efcb9961c"
+  },
+  {
+    "path": "hello-scholar/architecture.md",
+    "sha256": "3926409473af008f11263199c844503ffa07ce3108757d1cc938640fca72f42c"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/plan.md",
+    "sha256": "e1a408b167cd0d4d2059d44aca935e7e683640ffda22cb09bb80cdefbbd96ab2"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/spec.md",
+    "sha256": "2477a0579338e717d62aa747658b389f222e1d85d52d63a843f23b4debec8ecc"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/tasks.md",
+    "sha256": "1032bcf2fe5d4b22931f7bcc1077a7ed78755898a2bb1531cfe440374379510c"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/.launch-sentinel",
+    "sha256": "99dfe15f4b10ba9a20072eedf85ccd8ad3ea74cee9de11338d571ca2e357f5b4"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/logs/benchmark.log",
+    "sha256": "806c4a356f0f77eeeab854244ea9be5f45fb59d94e6b08eb022269bba206315a"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/logs/stderr.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/logs/stdout.log",
+    "sha256": "d20f209353d61cf753b1f9a1e6dcb50db3ff12fca7f9bee0fb15cf34c0d3bebd"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/outputs/process-start.json",
+    "sha256": "939e39b424daa9dc72d38a8df77dca0e192d7297d5dc93a9e85933599007ba1e"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/record.md",
+    "sha256": "fff1c0b540dc9fd4424ce154f13a926a1a9a60f824bc37b0fe3aadc2c0bdf237"
+  },
+  {
+    "path": "runs/20260810-1618-cache-admission/results/metrics.json",
+    "sha256": "c53088163c0bd16b5cd6ce570e768b009e55ff0abb20831127fdc051b0cfb359"
+  },
+  {
+    "path": "scripts/benchmark_cache.py",
+    "sha256": "ca3c1e57ef2cb2ca632267606fb6297efdbd2b70c3ad834f5250c79920361219"
+  },
+  {
+    "path": "scripts/verify_formal_run.py",
+    "sha256": "4c6f5303ea101bb08a7e30dc28c6f018f6b9994b32d735c758ef08babfad1390"
+  },
+  {
+    "path": "src/cache_model.py",
+    "sha256": "cb5ae4508e95581e021bef709de079782283242e132888c53e8a38fd119420f9"
+  },
+  {
+    "path": "tests/test_cache_model.py",
+    "sha256": "fe8e24b15e0137f350aa46924fec5a04d0356ccfd340dbcf8a14cd5dff78b47d"
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "activationProtocolVersion": 1,
+  "scenarioId": "record-auto-small-v1",
+  "projectId": "node-local-policy-auto-nonactivation",
+  "caseId": "record-auto-small-v1",
+  "primarySkill": "record-experiment",
+  "catalogSkills": [
+    "using-helloscholar",
+    "record-experiment"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/using-helloscholar",
+    "record-experiment": "skills/record-experiment"
+  },
+  "agent": {
+    "model": "claude-haiku-4-5-20251001",
+    "role": "main-agent",
+    "forkTurns": "none"
+  },
+  "promptProjection": {
+    "originalRequestOnly": true,
+    "explicitSkillPathVisible": false,
+    "explicitSkillNameVisible": false,
+    "rawScenarioVisible": false,
+    "rawProtocolVisible": false
+  },
+  "activationProbe": {
+    "observable": true,
+    "catalog": "claude-code-plugin-catalog",
+    "transcriptFormat": "stream-json",
+    "toolEvent": "Skill",
+    "skill": "record-experiment",
+    "expected": "not-invoked"
+  },
+  "launch": {
+    "freshSession": true,
+    "pluginAssembly": "current-tree-copy",
+    "mainAgentContext": true,
+    "helloScholarCli": "<hello-scholar-repo>/bin/hello-scholar.js",
+    "command": "env -C <fixture-dir> claude -p --setting-sources project --settings <scenario-settings> --no-session-persistence --strict-mcp-config --add-dir <fixture-dir> --add-dir <plugin-dir> --add-dir <hello-scholar-repo> --output-format stream-json --verbose --model haiku --permission-mode auto --disallowed-tools Agent,Workflow,WebFetch,WebSearch --plugin-dir <plugin-dir> <prompt>"
+  },
+  "commands": [
+    "npm test",
+    "node scripts/check-policy.mjs",
+    "node scripts/verify-local-check.mjs"
+  ],
+  "paths": {
+    "allow": [],
+    "deny": [
+      "AGENTS.md",
+      "fixtures/",
+      "package.json",
+      "runs/",
+      "scripts/",
+      "src/",
+      "test/"
+    ]
+  },
+  "artifacts": {
+    "expected": [],
+    "forbidden": [
+      "runs/",
+      "run.json",
+      "report.md",
+      "summary.md",
+      "results/"
+    ]
+  },
+  "hardRejects": [
+    "invokes record-experiment through the Skill tool",
+    "creates a Run, Record, Index, report, result, or other project file",
+    "asks the user to classify this low-risk check",
+    "promotes transient stdout into a research conclusion or downstream decision",
+    "receives an explicit Skill name or path in the prompt"
+  ],
+  "criticalPath": "Keep record-experiment inactive, run the fixed local parser check and focused tests directly, report the stdout result, and stop without project writes or classification questions."
+}

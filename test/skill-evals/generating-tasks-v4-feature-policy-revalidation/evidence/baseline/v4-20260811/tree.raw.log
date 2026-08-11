@@ -1,0 +1,21 @@
+# Feature Policy Haiku v4 Revalidation Baseline full tree evidence
+fixtureBaseCommit: 88381176183cdbf375182e762529ed4e06893355
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+## untracked files
+hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+## porcelain status including untracked files
+?? hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+## final regular file hashes outside .git
+fb1d480f00d488cfb28bc1c6765983070d44ba48632a344ba926a77590a1ecdb  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/AGENTS.md
+caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/architecture.md
+8f509da8bbca01b56978fb9a81a1349940ae52a4e1cc3b307884a1b9bb34c2ef  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/specs/INDEX.md
+b17e213839db21a43a9800eef369ed7f2c65edf4a101ba658cd8d6678ecd02b1  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/specs/feature-policy/INDEX.md
+9ee1b2c6522ea4f8983572b5cb06cd6e6a61e81d4066892991aa7c42eaa2b845  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+1499b9071eb14db8489ae0c2d9f1866c728525236e248febab98021d4189ba9c  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+8473002ad4cf1565debdec094a38c16a2f2c9399c8fc4537a22bb349b13e9897  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/src/policy.py
+33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae  /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-baseline-20260811/tests/test_policy.py
+## final runtime artifacts outside .git
+## diff whitespace check

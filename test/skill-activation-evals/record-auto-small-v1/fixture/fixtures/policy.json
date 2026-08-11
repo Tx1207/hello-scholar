@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "kind": "allow",
+      "pattern": "^docs/"
+    },
+    {
+      "kind": "deny",
+      "pattern": "^private/"
+    }
+  ]
+}

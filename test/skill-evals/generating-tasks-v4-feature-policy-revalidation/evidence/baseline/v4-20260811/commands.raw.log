@@ -1,0 +1,19 @@
+# Feature Policy Haiku v4 Revalidation Baseline protocol commands
+$ python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+exitCode: 0
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 0, errors 7, notices 0
+error invalid-enum hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: status has unsupported value draft
+error missing-canonical-tasks hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: Tasks requires at least one top-level - [ ] TNNN: <plain-language goal> block
+error missing-field hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: tasks requires field approval
+error missing-field hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: tasks requires field approved_revision
+error missing-field hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: tasks requires field created
+error missing-field hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: tasks requires field revision
+error missing-field hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: tasks requires field updated
+docs check failed with 7 errors
+exitCode: 1
