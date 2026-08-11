@@ -1,0 +1,327 @@
+{
+  "proposalId": "proposal-generating-tasks-v4-feature-policy-revalidation-haiku",
+  "liveApprovalId": "live-generating-tasks-v4-feature-policy-revalidation-haiku-v1",
+  "liveApprovalSha256": "1e04f47c09bd2c4c0f1d2e134d62f00f677e8da69717f058a509b0e10c056016",
+  "scenarioSha256": "a4a639c1e740b0c050049de820e570acac677d6405d8ebb924ef98c0077266bf",
+  "protocolSha256": "239cba58666ea63762aeea582b0eac3dd1469376504129bccb91d879b20825fb",
+  "fixtureSha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315",
+  "result": "pass",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "f3cdb7d2d6f341ac2d9d4b2a6df7505889d2243334c6ce2f66209a7912aacfe8"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "d601360b-76a4-489d-89cc-2fa4b64ea31e",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "1ca04ffd-0fbf-48af-ad93-b2d03a36af1d",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": true,
+      "reason": "The Tasks document has exact pending-review metadata and every canonical TNNN block has all required standalone fields.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+        }
+      ]
+    },
+    {
+      "id": "coverage-and-dependencies",
+      "passed": true,
+      "reason": "AC-1 through AC-4, migration, cleanup, regression, rollback, and an acyclic conflict-free dependency graph are complete.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+        }
+      ]
+    },
+    {
+      "id": "validation-and-tdd-boundary",
+      "passed": true,
+      "reason": "Every Task has executable validation and observable completion; Red-Green-Refactor appears only on the Plan-selected precedence Task.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tasks.md",
+          "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": true,
+      "reason": "Only tasks.md and two CLI-generated Indexes changed; no implementation or upstream document changed.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/reviewer.md",
+          "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+        },
+        {
+          "path": "evidence/live/v4-20260811/tree.raw.log",
+          "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "The bytecode-disabled Python suite and absolute docs check both exited 0.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "6a2ab85f154206c04d4be604034451829b7dc4ace0f8376c95bd57c7f9cc9e30"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Complete committed, index, working-tree, untracked, final-hash, runtime-artifact, and whitespace evidence is saved from clean Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/tree.raw.log",
+          "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "6a2ab85f154206c04d4be604034451829b7dc4ace0f8376c95bd57c7f9cc9e30"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/commands.raw.log",
+          "sha256": "6a2ab85f154206c04d4be604034451829b7dc4ace0f8376c95bd57c7f9cc9e30"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "7a1be793a1fa4ad09b285c1522bc5bd11b316451400a5d2518e889cbe0c40846",
+        "promptSha256": "5dd5abff9f7fee90990e0ba64f9b21e7be8b416fbee7f92947e61b87dd2ee69d",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811/prompt-round-0.md",
+            "sha256": "5dd5abff9f7fee90990e0ba64f9b21e7be8b416fbee7f92947e61b87dd2ee69d"
+          },
+          {
+            "path": "evidence/live/v4-20260811/interaction.md",
+            "sha256": "4fea1a44d8e72361809d745cc82882258d9096e8f2fa98b51708a679780eebad"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-stream.jsonl",
+            "sha256": "f56d4b9c582e95e8d9ead6a27c6e62bda7515d630933d39fb62a5f85bdf68d57"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811/prompt-round-0.md",
+          "sha256": "5dd5abff9f7fee90990e0ba64f9b21e7be8b416fbee7f92947e61b87dd2ee69d"
+        },
+        {
+          "path": "evidence/live/v4-20260811/interaction.md",
+          "sha256": "4fea1a44d8e72361809d745cc82882258d9096e8f2fa98b51708a679780eebad"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 100,
+        "coverage-and-dependencies": 100,
+        "validation-and-tdd-boundary": 100,
+        "scope-discipline": 100
+      },
+      "reasons": {
+        "task-document-contract": "Exact metadata and canonical standalone Task blocks passed docs check.",
+        "coverage-and-dependencies": "Every accepted obligation has an owner and the dependency graph is complete.",
+        "validation-and-tdd-boundary": "Validation is observable and the explicit TDD boundary is preserved.",
+        "scope-discipline": "The write set is exactly the Tasks artifact and generated Indexes."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+          }
+        ],
+        "coverage-and-dependencies": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+          }
+        ],
+        "validation-and-tdd-boundary": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/tasks.md",
+            "sha256": "ab5818891db3df2511f440cd3f773309e28fb17dd62a0252026016984d8ab585"
+          }
+        ]
+      },
+      "totalScore": 100
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The artifact path and pending-review result lead the response.",
+        "audience-fit": "Concise Chinese preserves exact project terminology.",
+        "information-design": "Coverage, dependencies, validation, and scope are easy to scan.",
+        "actionability": "The review stop and verified state are explicit.",
+        "signal-to-noise": "The response contains only result, evidence, and next review action."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "a058835c7151f935faa6e6ec83813284dddbb9fab092a9395d59c48775a1c1f2"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "a058835c7151f935faa6e6ec83813284dddbb9fab092a9395d59c48775a1c1f2"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "a058835c7151f935faa6e6ec83813284dddbb9fab092a9395d59c48775a1c1f2"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "a058835c7151f935faa6e6ec83813284dddbb9fab092a9395d59c48775a1c1f2"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260811/reviewer.md",
+            "sha256": "606d48be044eb3e89bdcbfe09e02a97a92b0df58c8afe2cb247fd02407ae9667"
+          },
+          {
+            "path": "evidence/live/v4-20260811/implementer-final.md",
+            "sha256": "a058835c7151f935faa6e6ec83813284dddbb9fab092a9395d59c48775a1c1f2"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260811/tree.raw.log",
+      "sha256": "3449a98f4bc3394d7a677588738775852d3473e6df4f05c1a384bd58c584ee4d"
+    }
+  }
+}

@@ -13,6 +13,10 @@ Skills use Claude Code tool names. When you encounter these in a skill, use your
 | `Read`, `Write`, `Edit` (files) | Use your native file tools |
 | `Bash` (run commands) | Use your native shell tools |
 
+## TodoWrite execution mirror
+
+When `using-helloscholar` requires a `TodoWrite` execution mirror, make Mirror the first `update_plan` call, after Resolve and Verify, and supply the complete current item set. Preserve the mirror's Task identity, status, and synchronization timing; do not replace it with a separate phase plan.
+
 ## Subagent dispatch requires multi-agent support
 
 Add to your Codex config (`~/.codex/config.toml`):

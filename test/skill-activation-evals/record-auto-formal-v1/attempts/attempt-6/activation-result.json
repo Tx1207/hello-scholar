@@ -1,0 +1,25 @@
+{
+  "activationProtocolVersion": 1,
+  "scenarioId": "record-auto-formal-v1",
+  "result": "fail",
+  "expected": "invoked",
+  "recordExperimentInvoked": true,
+  "activationBeforeCommand": false,
+  "measuredCommand": "python3 scripts/benchmark_cache.py --run-dir runs/<run-id>",
+  "measuredCommandObserved": false,
+  "claudeExitCode": 0,
+  "verificationExitCode": 1,
+  "fixtureBaseCommit": "4d2a95691eaf7be7ed644fafc76acf2d8052e829",
+  "skillSnapshots": {
+    "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+    "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+  },
+  "evidence": {
+    "claude-stream.jsonl": "51809298c7766427dcd00a36c9d8e70f7594ae507538cdc87b1316eff97772b7",
+    "claude-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-stderr.log": "8cbbfb8e3423490bf4700dbfa4376c74921bb2a78e05e757bf1e6081039f8bf2",
+    "final-tree.json": "af5c008ea291e08ac6cbca9661453303bf0a201d51083d438e827f1ab68e2903",
+    "git-status.txt": "c0101248073e5d44b3a5612d8a2f1cbc5b4d0748b5401c7a35b86739266aefef"
+  }
+}

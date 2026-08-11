@@ -58,9 +58,13 @@ summary: <当前已知事实>
 
 ## 6. 产物位置
 
-- 预期日志路径:
+- 预期 stdout 路径:
+- 预期 stderr 路径:
 - 预期结果路径:
 - 预期 checkpoint 路径:
+- 实际 stdout 路径:
+- 实际 stderr 路径:
+- 退出码 / signal:
 - Dashboard / tracking URL:
 
 ## 7. 执行事件

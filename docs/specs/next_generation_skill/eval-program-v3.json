@@ -1,8 +1,8 @@
 {
   "programVersion": 1,
   "activeProductSkillCount": 14,
-  "productProposalCaseCount": 41,
-  "pendingProductProposalCaseCount": 40,
+  "productProposalCaseCount": 42,
+  "pendingProductProposalCaseCount": 41,
   "activeProductSkills": [
     {
       "name": "using-helloscholar",
@@ -305,6 +305,71 @@
       ]
     },
     {
+      "batchId": "haiku-v4-wave-7-execution-mirror",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-observed",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-7.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-7.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 1,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, current approved Bundle facts, retained prior Task evidence, safety limits, code, and runnable project tests.",
+          "The project verifier checks only user-visible lifecycle, evidence, and write-boundary facts; tracker state expectations remain evaluator-only."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected tracker sequence, and future messages.",
+          "Reviewer judgments about canonical tracker identity, status transitions, synchronization timing, and user-facing expression quality."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "router-execution-mirror-v4",
+            "change": "The Fixture exposes authoritative T001-T003 evidence and the T004-only authorization without stating the expected TodoWrite or update_plan item sequence."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-wave-7-stale-snapshots",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-observed",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-stale-snapshots.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-stale-snapshots.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 2,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, data sources, safety limits, accepted external contracts, immutable evidence, code, and runnable project tests.",
+          "Artifact verifiers that check observable contracts already stated by the project, Accepted Bundle, or original user request."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected answer, and future messages.",
+          "Reviewer judgments about Skill branch selection, user-facing expression quality, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "generating-tasks-v4-feature-policy-revalidation",
+            "change": "The successor preserves the original Fixture and task-generation boundary while reminting the unrun work as Protocol v4 for canonical Haiku agents."
+          },
+          {
+            "scenarioId": "generating-tasks-v4-migration-revalidation",
+            "change": "The successor preserves the original Fixture and migration-task boundary while reminting the unrun work as Protocol v4 for canonical Haiku agents."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "generating-tasks-v4-feature-policy-revalidation",
+        "generating-tasks-v4-migration-revalidation"
+      ]
+    },
+    {
       "batchId": "haiku-v4-semantic-document-revision",
       "protocolVersion": 4,
       "kind": "baseline-proposal",
@@ -341,14 +406,18 @@
       "batchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
       "protocolVersion": 3,
       "kind": "live-authorization",
-      "status": "pending-user-review",
+      "status": "historical-cancelled-after-haiku-successor",
       "countsTowardProductSkill": false,
       "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v3-generating-tasks-v1.json",
       "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v3-generating-tasks-v1.md",
       "scenarioIds": [
         "generating-tasks-v3-feature-policy",
         "generating-tasks-v3-migration"
-      ]
+      ],
+      "authorizationRecordPaths": {
+        "generating-tasks-v3-feature-policy": "test/skill-evals/generating-tasks-v3-feature-policy/evidence/live/v3-pending-authorization-archive/live-approval.json",
+        "generating-tasks-v3-migration": "test/skill-evals/generating-tasks-v3-migration/evidence/live/v3-pending-authorization-archive/live-approval.json"
+      }
     },
     {
       "batchId": "haiku-v4-manage-specs-live-authorization-batch-v1",
@@ -409,8 +478,8 @@
       "batchId": "haiku-v4-spec-live-authorization-batch-v4",
       "protocolVersion": 4,
       "kind": "live-authorization",
-      "status": "completed-pending-user-review",
-      "countsTowardProductSkill": true,
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
       "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-spec-v4.json",
       "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-spec-v4.md",
       "scenarioIds": [
@@ -418,8 +487,117 @@
         "brainstorming-api-route-v3"
       ],
       "authorizationRecordPaths": {
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/evidence/live/v4-20260805-rerun-8-accepted-record/live-approval.json",
+        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/evidence/live/v4-20260805-rerun-6-accepted-record/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-generating-tasks-revalidation-live-authorization-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-generating-tasks-revalidation.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-generating-tasks-revalidation.md",
+      "scenarioIds": [
+        "generating-tasks-v4-feature-policy-revalidation",
+        "generating-tasks-v4-migration-revalidation"
+      ],
+      "authorizationRecordPaths": {
+        "generating-tasks-v4-feature-policy-revalidation": "test/skill-evals/generating-tasks-v4-feature-policy-revalidation/live-approval.json",
+        "generating-tasks-v4-migration-revalidation": "test/skill-evals/generating-tasks-v4-migration-revalidation/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-stale-snapshot-live-authorization-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-stale-snapshots.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-stale-snapshots.md",
+      "scenarioIds": [
+        "manage-specs-successor-v3",
+        "brainstorming-api-route-v3"
+      ],
+      "authorizationRecordPaths": {
         "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/live-approval.json",
         "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v2",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v2.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v2.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810-v2/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v3",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v3.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v4",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v4.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v4.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260811-v4/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v5",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v5.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v5.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260811-v5-accepted-record/live-approval.json"
       }
     },
     {
