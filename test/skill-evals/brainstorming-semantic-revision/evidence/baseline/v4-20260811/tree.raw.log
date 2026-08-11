@@ -1,0 +1,312 @@
+=== base commit ===
+6fd51a53ce9f1a3220cda24c5e5e2f588bc192c8
+=== committed diff (base..HEAD) ===
+=== index ===
+=== working tree ===
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index 2f7d0c7..f92dc01 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | - | Missing | - | - | - | Rank exact terms and semantic matches through one stable scoring contract |
++| search-ranking | [SPEC-001](search-ranking/SPEC-001-intent-aware-ranking/spec.md) | capability | draft | 3 | Missing | - | Missing | - | - | - | Rank exact phrases, ordinary lexical matches, and semantic matches through one stable scoring contract |
+ | search-ranking | [SPEC-004](search-ranking/SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | - | Missing | - | - | - | Limit repeated sources after relevance ranking |
+diff --git a/hello-scholar/specs/search-ranking/INDEX.md b/hello-scholar/specs/search-ranking/INDEX.md
+index eb6cbb8..9eb936b 100644
+--- a/hello-scholar/specs/search-ranking/INDEX.md
++++ b/hello-scholar/specs/search-ranking/INDEX.md
+@@ -3,5 +3,5 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | accepted | 2 | Missing | - | Missing | - | - | - | Rank exact terms and semantic matches through one stable scoring contract | - |
++| [SPEC-001](SPEC-001-intent-aware-ranking/spec.md) | capability | draft | 3 | Missing | - | Missing | - | - | - | Rank exact phrases, ordinary lexical matches, and semantic matches through one stable scoring contract | - |
+ | [SPEC-004](SPEC-004-result-diversity/spec.md) | capability | accepted | 1 | Missing | - | Missing | - | - | - | Limit repeated sources after relevance ranking | - |
+diff --git a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+index 1831146..bd129bd 100644
+--- a/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
++++ b/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+@@ -5,73 +5,235 @@ id: SPEC-001
+ title: Intent-aware search ranking
+ topic: search-ranking
+ type: capability
+-status: accepted
+-revision: 2
+-summary: Rank exact terms and semantic matches through one stable scoring contract
++status: draft
++revision: 3
++summary: Rank exact phrases, ordinary lexical matches, and semantic matches through one stable scoring contract
+ created: 2026-06-10
+-updated: 2026-07-18
++updated: 2026-08-10
+ supersedes: []
+ superseded_by: null
+ ---
+ # Intent-aware Search Ranking
+ 
+-## 1. Problem
++## 1. Value and Current Decision
+ 
+-Keyword-only ranking misses semantically relevant documents, while unconstrained semantic matches can outrank exact query terms.
++Search results must keep deterministic lexical relevance as the primary signal while recovering semantically relevant documents when lexical evidence is insufficient.
+ 
+-## 2. Goals
++This Spec owns relevance scoring behind the stable `rank_documents` entry. The current decision is to retain the bounded semantic fallback model, add a deterministic bounded lexical bonus for complete-query phrase matches, and raise the semantic fallback threshold from `0.62` to `0.68`.
+ 
+-Own relevance weights for lexical, intent, and freshness signals behind `rank_documents`.
++The public ranking entry, returned document-ID structure, source-diversity behavior, freshness rule, and stable input-order tie behavior remain unchanged.
+ 
+-## 3. Non-goals
++## 2. Problem and Current Facts
+ 
+-Result diversity and pagination are owned elsewhere.
++Keyword-only ranking can miss semantically relevant documents. Unconstrained semantic matches can outrank documents with stronger lexical evidence. Ordinary term matches also need to remain below a deterministic complete-query phrase match.
++
++The current implementation in `src/ranking.py`:
++
++- accepts `documents` and the existing `intent_threshold` argument;
++- computes a bounded semantic contribution only when `intent_score >= intent_threshold`;
++- combines lexical, semantic, and freshness contributions with weights `0.7`, `0.2`, and `0.1`;
++- sorts by descending score and then original input position;
++- returns document IDs as `list[str]`.
++
++The current default semantic threshold is `0.62`. The current `Document` fields are `document_id`, `lexical_score`, `intent_score`, and `freshness_score`. The ranking module has no separate phrase field or query argument.
++
++## 3. Goals and Non-goals
++
++### Goals
++
++- Give a complete-query phrase match higher lexical precedence than an ordinary word-term match.
++- Represent the phrase precedence as a deterministic, bounded bonus within the lexical signal.
++- Raise the default semantic fallback threshold from `0.62` to `0.68`.
++- Preserve the existing ordinary lexical, semantic, and freshness contributions.
++- Preserve the stable public ranking entry and `list[str]` return structure.
++- Preserve stable input-order ordering for equal final scores.
++- Keep source diversity as the independent post-ranking policy owned by `SPEC-004`.
++- Make the revised behavior deterministic and directly testable.
++
++### Non-goals
++
++- No new public ranking parameter.
++- No change to the public return structure.
++- No change to the `Document` public fields required by the ranking entry.
++- No query parsing or phrase detection inside `rank_documents`; phrase detection belongs to the lexical-score producer.
++- No replacement of the bounded semantic fallback with a semantic-only ranker.
++- No change to semantic or freshness weights.
++- No change to freshness calculation or freshness policy.
++- No change to result pagination or source-diversity rules.
++- No stored-data migration.
+ 
+ ## 4. Current State
+ 
+-Revision 2 adds an `intent_score` fallback when lexical score is below the configured threshold.
++Revision 2 uses a bounded semantic intent fallback: `intent_score` contributes only when it meets the configured threshold, currently `0.62`.
++
++The lexical score currently represents the lexical evidence supplied to the ranker. The existing score is:
++
++```text
++lexical_score * 0.7
+++ semantic_contribution * 0.2
+++ freshness_score * 0.1
++```
++
++The current implementation does not expose a separate phrase-match signal.
+ 
+ ## 5. Target Design
+ 
+-The ranking score is the sum of exact-term, semantic intent, and freshness components. Exact terms remain the strongest signal.
++The lexical-score producer deterministically identifies whether the complete query phrase matches and incorporates a bounded phrase bonus into the existing `lexical_score` before calling `rank_documents`.
++
++Conceptually:
++
++```text
++effective_lexical_score =
++    ordinary_lexical_score + bounded_complete_phrase_bonus
++```
++
++For a document without a complete-query phrase match, the bonus is zero. For a document with a complete-query phrase match, the bonus is positive, deterministic, and bounded by the lexical scoring policy. The bonus must establish phrase-match precedence over an otherwise comparable ordinary word-term match without allowing phrase status to replace the ordinary lexical evidence.
++
++`rank_documents` continues to apply the same scoring structure:
++
++```text
++semantic_contribution =
++    intent_score if intent_score >= 0.68 else 0.0
++
++final_score =
++    effective_lexical_score * 0.7
++    + semantic_contribution * 0.2
++    + freshness_score * 0.1
++```
++
++The threshold comparison remains inclusive. An `intent_score` of `0.67` is ignored; an `intent_score` of `0.68` contributes.
++
++Phrase matching is lexical evidence, not semantic evidence. It therefore does not alter the semantic fallback decision and does not receive the semantic weight.
+ 
+ ## 6. Implementation Boundary
+ 
+-Only relevance scoring and its configuration belong to this Spec.
++The lexical-score producer owns:
++
++- deterministic complete-query phrase detection;
++- ordinary word-term scoring;
++- application of the bounded phrase bonus;
++- enforcement of the configured phrase-bonus bound.
++
++`src/ranking.py` owns:
++
++- application of the `0.68` semantic fallback threshold;
++- combination of lexical, semantic, and freshness contributions;
++- descending score ordering;
++- stable input-order tie handling;
++- document-ID return formatting.
++
++`SPEC-004` continues to own any post-ranking per-source cap or diversity transformation. No diversity behavior is changed by this revision.
++
++## 7. Interfaces, Data, and Invariants
++
++The public ranking entry remains:
++
++```text
++rank_documents(documents, intent_threshold=0.68) -> list[str]
++```
++
++The existing entry shape and returned type remain stable. No new public parameter or return field is introduced. The existing `Document` data shape remains sufficient because phrase evidence is incorporated into `lexical_score` before ranking.
++
++Invariants:
++
++1. Complete-query phrase evidence contributes only through the lexical signal.
++2. The phrase bonus is deterministic for the same query and document inputs.
++3. The phrase bonus is bounded and cannot grow without limit as a result of repeated matching.
++4. Ordinary lexical evidence remains part of the effective lexical score.
++5. Semantic evidence contributes only when `intent_score >= 0.68`.
++6. Freshness continues to use its existing score and `0.1` weight.
++7. The lexical, semantic, and freshness weights remain `0.7`, `0.2`, and `0.1`.
++8. Equal final scores preserve original input order.
++9. The ranker returns document IDs only.
++10. Relevance scoring runs before any independent source-diversity policy.
++
++## 8. Options And Decision
++
++### Option A: Add a bounded phrase bonus to `lexical_score`
++
++The lexical-score producer adds a fixed-policy, bounded bonus for a deterministic complete-query phrase match. The ranker and public data shape remain unchanged.
++
++**Decision: Adopt.**
++
++This is the smallest design that expresses phrase precedence without adding a public parameter, changing the return structure, or introducing an implicit phrase channel into `rank_documents`.
++
++### Option B: Add a phrase-match field to `Document`
++
++The ranker would receive separate phrase evidence and calculate the bonus internally.
++
++**Decision: Reject.**
++
++It changes the public data shape and creates a new ranking input despite the requirement to keep the public entry contract unchanged.
++
++### Option C: Add an internal phrase-state mapping or strategy object
++
++Phrase state would be supplied through an additional internal channel while leaving `Document` fields unchanged.
++
++**Decision: Reject.**
++
++The current implementation has no query-context channel for such a mapping. This would add hidden coupling and complexity without improving the public contract.
++
++## 9. Acceptance Criteria
++
++- A complete-query phrase match outranks an otherwise comparable ordinary word-term match.
++- A phrase match does not require a new public parameter.
++- The phrase bonus is bounded and deterministic.
++- Ordinary lexical evidence remains active for all documents.
++- An `intent_score` of `0.67` contributes no semantic score under the default policy.
++- An `intent_score` of `0.68` contributes semantic score under the default policy.
++- A semantic-only result cannot displace stronger phrase lexical evidence solely because the semantic score is high.
++- Freshness continues to participate with its current rule and weight.
++- The public ranking entry and `list[str]` return structure remain unchanged.
++- Equal final scores remain ordered by original input order.
++- Source-diversity behavior remains unchanged and continues to be applied after relevance ranking.
+ 
+-## 7. Interfaces And Data
++## 10. Verification
+ 
+-`rank_documents(query, documents, policy)` returns document IDs ordered by descending score and stable input order for ties.
++Unit tests must cover:
+ 
+-## 8. Invariants And Constraints
++- complete-query phrase match versus ordinary word-term match;
++- bounded phrase bonus behavior;
++- repeated or otherwise non-complete phrase text not receiving the complete-phrase bonus;
++- intent score below the new threshold;
++- intent score exactly at `0.68`;
++- semantic contribution preserving phrase lexical precedence;
++- unchanged freshness contribution;
++- stable input-order ordering for equal scores;
++- unchanged document-ID return structure.
+ 
+-The public function and return type remain stable. Scores are deterministic for the same inputs.
++The full Python test suite must run after implementation. The source diff must confirm that no diversity or freshness policy was changed.
+ 
+-## 9. Options And Decision
++## 11. Migration And Cleanup
+ 
+-Adopt a bounded semantic fallback instead of a semantic-only ranker.
++No persisted data migration is required.
+ 
+-## 10. Acceptance Criteria
++The lexical-score producer and ranking service must be deployed with the same phrase-bonus policy and the new default semantic threshold so that score interpretation remains consistent across the request path.
+ 
+-Exact lexical hits outrank semantic-only hits; intent fallback activates only above its threshold.
++Any obsolete documentation or test language describing `0.62` as the active threshold must be updated. No compatibility alias or parallel scoring path is required because the change is to the active relevance policy and no external stored format changes.
+ 
+-## 11. Verification
++## 12. Rollback
+ 
+-Unit tests cover exact, semantic, freshness, and stable tie behavior.
++Rollback restores:
+ 
+-## 12. Migration And Cleanup
++- the previous bounded phrase-score policy, if deployed independently;
++- the previous semantic fallback default of `0.62`;
++- the prior service build and associated tests.
+ 
+-Configuration changes are deployed with the ranking service; no stored data migration exists.
++Rollback does not require data repair because scores are computed at ranking time and no ranking state is persisted.
+ 
+-## 13. Rollback
++## 13. Evidence
+ 
+-Restore the previous weight values and service build.
++Current evidence:
+ 
+-## 14. Evidence
++- `src/ranking.py` defines the stable ranking entry, score weights, threshold gate, and stable tie ordering.
++- `tests/test_ranking.py` covers exact lexical precedence and threshold rejection below the current `0.62` boundary.
++- `hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md` owns lexical, semantic, and freshness relevance scoring.
++- `hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md` excludes lexical, phrase, semantic, and freshness weights.
+ 
+-`tests/test_ranking.py` and production ranking configuration.
++Revision 3 adds required evidence for phrase precedence, the `0.68` threshold boundary, unchanged freshness behavior, and stable ties.
+ 
+-## 15. Revision History
++## 14. Revision History
+ 
+ - Revision 1: lexical and freshness scoring.
+-- Revision 2: bounded semantic intent fallback at threshold 0.62.
++- Revision 2: bounded semantic intent fallback at threshold `0.62`.
++- Revision 3 (draft): add a deterministic bounded complete-query phrase bonus within lexical scoring and raise the semantic fallback threshold to `0.68`; preserve the public ranking entry, return structure, freshness rule, source-diversity policy, and stable tie behavior.
+=== status including untracked ===
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/search-ranking/INDEX.md
+ M hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+=== final hashes ===
+57c440ce751bb51f9e4016fd40f510d02e4bac8145d560b149cf73c89890b5c8  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/AGENTS.md
+0c585ed829d1d7013c3fe8ed803be9a064a69509f827964d71a889110f62386c  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/hello-scholar/architecture.md
+51140d5fa01e4632790d5d7250dd34ba4c66a4a2f46377b75be5318800440369  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/hello-scholar/specs/INDEX.md
+3b42e5045ea9bba23f7c197965976bc877389b7906c197ace8cdd37c13f8a354  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/hello-scholar/specs/search-ranking/INDEX.md
+ffee1590854b3c794c274420fdfd58e6e9e104641937398655ea76fc6a2765dc  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+1d9e6fe916f13ee39b32763572ec3a40bbd3aec46cd87c6c972eb181646686ec  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md
+d91409a8c9f70bdd822bb2b68ccee9393dfaa4d56b7b8b981d90e3c3296aac60  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/src/ranking.py
+17fa99aae4dc00b93c7f6e790d38557590c8eb5e4e9ad591a90f5f19e7af08d5  /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline/tests/test_ranking.py
+=== runtime artifacts ===

@@ -1,0 +1,120 @@
+{
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-generating-tasks-semantic-revision-haiku-v4-v1",
+  "liveApprovalSha256": "0e137854655cf96a59fd10adf96342c2654b24a565f898a7148b6bfba98743d3",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {"status": "current-explicit-file", "sha256": "47d01e11940af612cbca1ca2117b159433aafa88a81ea1f041cfb4fcaad56b06"}
+  },
+  "agents": {
+    "implementer": {"id": "a2093c229509b2aee", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "ae84fa11f493f05ff", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "baseline-and-authority", "passed": true,
+      "reason": "The complete Tasks, current upstream contracts, source, tests, rules, execution evidence, indexes, and confirmable Git state were read before editing.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}]
+    },
+    {
+      "id": "stable-task-identity", "passed": false,
+      "reason": "T001 and T003 identity boundaries are preserved, but unfinished obsolete T002 remains in the final current Tasks; T003 Work and Completion also remain unchanged despite the frozen contract requiring their update.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}, {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}]
+    },
+    {
+      "id": "new-obligation-and-dag", "passed": false,
+      "reason": "T004 is a valid unused ID greater than the Baseline and confirmable Git history, but retained T002 leaves an obsolete obligation and edge in the rebuilt current graph and generated Index count.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}]
+    },
+    {
+      "id": "revision-and-review-boundary", "passed": true,
+      "reason": "Tasks binds current upstream revisions, advances once, resets exactly to pending-review/null/pending, changes only Tasks plus generated Indexes, and stops without approval or implementation.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}, {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Both approved commands exited 0; docs sync and git diff --check also passed.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "f13d412dc84e423a20dfcb469c67bb03b73dbe1eace3682b21425674a3cf9fec"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Fixture Base, index, working-tree, untracked, final hashes, runtime-artifact state, and exact write scope are recorded.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v1-20260811a PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "f13d412dc84e423a20dfcb469c67bb03b73dbe1eace3682b21425674a3cf9fec"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v1-20260811a node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "f13d412dc84e423a20dfcb469c67bb03b73dbe1eace3682b21425674a3cf9fec"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "40cf253778ede8c9703e2ebde94799a37914ec5f31170bc7206762a47b8a8bb0", "promptSha256": "658b238109c647419068afb70c0b5ca1b466fd96c33386d2c0a7f9bdd5f7e062", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [{"path": "evidence/live/v4-20260811-v1/prompt-round-0.md", "sha256": "658b238109c647419068afb70c0b5ca1b466fd96c33386d2c0a7f9bdd5f7e062"}, {"path": "evidence/live/v4-20260811-v1/interaction.md", "sha256": "f66e9f870b0fcba901c26c269d001a55adc6eda38e75e6eff9e8721326e2dfc2"}]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/prompt-round-0.md", "sha256": "658b238109c647419068afb70c0b5ca1b466fd96c33386d2c0a7f9bdd5f7e062"}, {"path": "evidence/live/v4-20260811-v1/interaction.md", "sha256": "f66e9f870b0fcba901c26c269d001a55adc6eda38e75e6eff9e8721326e2dfc2"}]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"baseline-and-authority": 90, "stable-task-identity": 0, "new-obligation-and-dag": 0, "revision-and-review-boundary": 90},
+      "reasons": {
+        "baseline-and-authority": "Required current and upstream evidence was read and generally reflected, with completion contradicted by the retained obsolete task.",
+        "stable-task-identity": "T001 and the T003 field boundary are preserved, but T002 remains and required T003 Work and Completion changes are absent.",
+        "new-obligation-and-dag": "T004 is a valid fresh ID in confirmable history, but T002 remains current and leaves its obsolete T001 edge in the graph.",
+        "revision-and-review-boundary": "Metadata, upstream bindings, write set, commands, and terminal pending-review state are correct."
+      },
+      "evidence": {
+        "baseline-and-authority": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "stable-task-identity": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "new-obligation-and-dag": [{"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}],
+        "revision-and-review-boundary": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}]
+      },
+      "totalScore": 36.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 0, "audience-fit": 90, "information-design": 0, "actionability": 0, "signal-to-noise": 90},
+      "reasons": {
+        "value-visibility": "The response claims T002 was removed, while the artifact and generated 1/4 count prove it remains.",
+        "audience-fit": "Chinese prose and exact Task identifiers fit the project audience.",
+        "information-design": "The formal current Tasks contract retains obsolete work and is not the requested standalone revision.",
+        "actionability": "Artifact and summary conflict, so a reviewer or executor cannot safely trust the claimed result.",
+        "signal-to-noise": "The response is concise and focused despite its material incorrect completion claims."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "information-design": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "actionability": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "a29bdd15fa833961ca30899d087e0f13d8c4cc41f4f9d554c883dff72f84c481"}]
+      },
+      "totalScore": 36.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"},
+    "index": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"},
+    "untracked": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "24ecae41529b067092efc212c994c7318aa3efad2ea302962ba754d187820ca5"}
+  }
+}

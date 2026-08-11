@@ -1,0 +1,140 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "generating-tasks-semantic-revision",
+  "projectId": "py-feature-policy-tasks-revision",
+  "primarySkill": "generating-tasks",
+  "caseId": "generating-tasks-semantic-revision",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "generating-tasks"
+  ],
+  "skillSources": {
+    "generating-tasks": "skills/generating-tasks"
+  },
+  "skillExpectations": {
+    "generating-tasks": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "baseline-and-authority",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the complete current Tasks, Accepted Spec revision 3, Approved Plan revision 2, source, tests, project rules, and confirmable execution evidence are read before editing, with current Tasks as baseline and upstream documents as authority."
+      },
+      {
+        "id": "stable-task-identity",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm completed valid T001 keeps its ID, checked state, and evidence; unfinished obsolete T002 is removed; T003 keeps its ID while Work, Validation, Completion, and dependencies change; no surviving ID is renumbered and no removed ID is reused."
+      },
+      {
+        "id": "new-obligation-and-dag",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the audit integration result receives an unused ID greater than every Baseline and confirmable historical ID, all current obligations are covered, residual T002 edges disappear, and the rebuilt DAG, frontier, file conflicts, and executable validation are coherent."
+      },
+      {
+        "id": "revision-and-review-boundary",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Tasks binds current Spec and Plan revisions, increments revision, resets approval to pending-review with null approved_revision and pending status, changes only Tasks plus generated indexes, preserves upstream and implementation bytes, and stops without approval or execution."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "rewrites T001 execution history, clears its checkbox, changes its evidence, or assigns its ID to different work",
+      "keeps obsolete T002 or any residual dependency on it",
+      "renumbers T003, reuses T002, or allocates a new ID that is not greater than confirmable history",
+      "fails to reset approval: pending-review, approved_revision: null, and status: pending on the new revision",
+      "creates a fresh template-derived Tasks document that loses valid execution facts or leaves contradictory old/new work",
+      "modifies the Spec, Plan, Architecture, source, tests, packages, Runs, or memory, marks Tasks approved, or begins implementation"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the partially completed Tasks contract, preserve valid execution identity and evidence, remove obsolete work, revise the surviving task, add the new outcome with a fresh ID, rebuild the DAG, and stop at pending review.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "forbidden": [
+      "tasks/",
+      "hello-scholar/memory/",
+      "implementation-report.md",
+      "src/policy-v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Tasks revision request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  }
+}

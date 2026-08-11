@@ -1,0 +1,40 @@
+fixtureBaseCommit 0ba7419a5075907d04f40306fc55410b6a196f56
+
+[final status --short]
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/feature-policy/INDEX.md
+ M hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[final diff --name-only]
+hello-scholar/specs/INDEX.md
+hello-scholar/specs/feature-policy/INDEX.md
+hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[final diff --stat]
+ hello-scholar/specs/INDEX.md                       |  2 +-
+ hello-scholar/specs/feature-policy/INDEX.md        |  2 +-
+ .../SPEC-003-policy-precedence/tasks.md            | 58 ++++++++++++++--------
+ 3 files changed, 39 insertions(+), 23 deletions(-)
+
+[index state]
+No staged changes.
+
+[untracked state]
+No untracked files.
+
+[runtime artifacts]
+No `__pycache__`, `.pyc`, `.pyo`, `.DS_Store`, or `.hello-scholar-install.json` path.
+
+[diff check]
+`git diff --check` exited 0.
+
+[final SHA-256]
+df95d349add8780902a50a5f28a9a067fad20d6bbec9ca28c9350668daa61049  hello-scholar/specs/INDEX.md
+c781d6d01dcfc3a70657eeb88ea818339114cbcb5b3df6724c0816333d243a9c  hello-scholar/specs/feature-policy/INDEX.md
+c874860ea9e5362fa2ed89dd888da95328a535a560b43a2e8d65cd52d6a55777  hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[T002 residual audit]
+No `T002` occurrence remains in final `tasks.md`.
+
+[scope]
+Only the existing Tasks document and two generated Indexes differ from Fixture Base.

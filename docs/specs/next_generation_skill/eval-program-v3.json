@@ -1,8 +1,8 @@
 {
   "programVersion": 1,
   "activeProductSkillCount": 14,
-  "productProposalCaseCount": 37,
-  "pendingProductProposalCaseCount": 36,
+  "productProposalCaseCount": 41,
+  "pendingProductProposalCaseCount": 40,
   "activeProductSkills": [
     {
       "name": "using-helloscholar",
@@ -305,6 +305,39 @@
       ]
     },
     {
+      "batchId": "haiku-v4-semantic-document-revision",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-authorized",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-semantic-document-revision.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-semantic-document-revision.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 4,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, current accepted and approved Bundle documents, execution evidence, code, and runnable project tests.",
+          "Current documents contain ordinary project facts sufficient to distinguish retained, changed, removed, and newly introduced obligations without exposing the evaluator rubric."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected reconciliation, and future messages.",
+          "Reviewer judgments about semantic conservation, stable identity, residual contradictions, and final acceptance."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "generating-tasks-semantic-revision",
+            "change": "The Fixture exposes authentic partial Task state and retained evidence; the exact reconciliation and replacement ID judgment remain evaluator-only."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "manage-specs-semantic-revision",
+        "writing-plans-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ]
+    },
+    {
       "batchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
       "protocolVersion": 3,
       "kind": "live-authorization",
@@ -387,6 +420,159 @@
       "authorizationRecordPaths": {
         "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/live-approval.json",
         "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "manage-specs-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v1/live-approval.json",
+        "manage-specs-semantic-revision": "test/skill-evals/manage-specs-semantic-revision/evidence/live/v4-20260811-v1/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v1/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v2",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v2.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v2.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v2/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v2/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "brainstorming-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v3",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v3.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v3/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v3/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "brainstorming-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v4",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v4.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v4.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v4/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v4/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "brainstorming-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v5",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v5.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v5.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v5/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v5/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "brainstorming-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v6",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v6.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v6.md",
+      "scenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "brainstorming-semantic-revision": "test/skill-evals/brainstorming-semantic-revision/evidence/live/v4-20260811-v6/live-approval.json",
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v6/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "brainstorming-semantic-revision",
+        "generating-tasks-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v7",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": false,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v7.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v7.md",
+      "scenarioIds": [
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/evidence/live/v4-20260811-v7/live-approval.json"
+      },
+      "executedScenarioIds": [
+        "generating-tasks-semantic-revision"
+      ]
+    },
+    {
+      "batchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v8",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "completed-pending-user-review",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-semantic-document-revision-v8.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-semantic-document-revision-v8.md",
+      "scenarioIds": [
+        "generating-tasks-semantic-revision"
+      ],
+      "authorizationRecordPaths": {
+        "generating-tasks-semantic-revision": "test/skill-evals/generating-tasks-semantic-revision/live-approval.json"
       }
     },
     {

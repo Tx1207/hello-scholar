@@ -30,7 +30,7 @@ Create one reviewable, high-level `plan.md` for one Accepted `spec.md`. A Plan e
 
 ## 3. Write the Bundle Plan
 
-Read the matching template in `assets/` before writing. Choose `assets/plan-template.zh_CN.md` when the repository language preference is Chinese; otherwise choose `assets/plan-template.md`. user-readable Plan prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written. Create or revise:
+Choose the write branch before loading a skeleton: templates are only for new Plans. For a new Plan, read the matching template in `assets/`; choose `assets/plan-template.zh_CN.md` when the repository language preference is Chinese, otherwise choose `assets/plan-template.md`. For a revision, read the current `plan.md` in full and use the current `plan.md` as the skeleton; use the matching template only to verify that all 12 sections remain complete. user-readable Plan prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written. Create or revise:
 
 ```text
 hello-scholar/specs/<topic>/SPEC-<number>-<design-name>/plan.md
@@ -51,7 +51,9 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ```
 
-A semantic Plan revision increments `revision`, sets `status: draft`, and updates `updated`. Replace every template prompt with concrete project facts before presenting the file.
+For a semantic Plan revision, the complete current Plan is the **Baseline**, the current Accepted Spec is the **Authority**, and the requested or upstream changes are the **Delta**. Reconcile every existing strategy and Delta change across all 12 sections as `Keep`, `Modify`, `Remove`, `Add`, or `Move`. `Keep` is the default: retain unaffected modules, file boundaries, tests, migration, rollback, and other valid strategy; a point not mentioned by the Delta is not removal authority. Remove superseded paths and residual references, integrate additions where they belong, and reorder only for real dependencies. In this transaction, do not rewrite `tasks.md`.
+
+A semantic Plan revision increments `revision`, sets `status: draft`, and updates `updated`. Replace every template prompt with concrete project facts before presenting a new file.
 
 The body always contains these 12 sections:
 
@@ -72,7 +74,7 @@ The body always contains these 12 sections:
 
 ## 4. Review and hand off
 
-1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps. Make one TDD decision for the whole review: recommend TDD for outcomes involving core algorithms, critical steps or state transitions, critical business flows, or high regression risk, using tests to fix expectations before implementation and reduce AI implementation errors escaping detection; use ordinary validation for the rest. Record the choice in `Test and Experiment Strategy` and `Tasks Generation Rules` so `generating-tasks` can propagate it to the corresponding Tasks.
+1. Self-review the Plan against the Accepted Spec: facts, scope, file boundaries, interfaces, phases, tests, migration, cleanup, rollback, and unresolved design gaps. For a revision, complete a whole-file **semantic conservation** review: every Baseline item and Delta item has one disposition, unaffected valid strategy remains, discarded paths and residual references are absent, and every removal or broad rewrite has Authority. Make one TDD decision for the whole review: recommend TDD for outcomes involving core algorithms, critical steps or state transitions, critical business flows, or high regression risk, using tests to fix expectations before implementation and reduce AI implementation errors escaping detection; use ordinary validation for the rest. Record the choice in `Test and Experiment Strategy` and `Tasks Generation Rules` so `generating-tasks` can propagate it to the corresponding Tasks.
 2. After writing or revising the Plan, run once:
    ```sh
    hello-scholar docs sync

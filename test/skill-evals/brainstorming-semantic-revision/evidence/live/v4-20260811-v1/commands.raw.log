@@ -1,0 +1,30 @@
+$ env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v1-20260811a node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 4
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/search-ranking/INDEX.md
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/plan.md: Spec SPEC-001 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/tasks.md: Spec SPEC-001 has no Tasks
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-004-result-diversity/plan.md: Spec SPEC-004 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-004-result-diversity/tasks.md: Spec SPEC-004 has no Tasks
+[exit 0]
+
+$ env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v1-20260811a PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+[exit 0]
+
+$ env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v1-20260811a node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check
+docs check: specs 2, records 0, indexes 2, errors 0, notices 4
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/search-ranking/INDEX.md
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/plan.md: Spec SPEC-001 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/tasks.md: Spec SPEC-001 has no Tasks
+notice plan-missing hello-scholar/specs/search-ranking/SPEC-004-result-diversity/plan.md: Spec SPEC-004 has no Plan
+notice tasks-missing hello-scholar/specs/search-ranking/SPEC-004-result-diversity/tasks.md: Spec SPEC-004 has no Tasks
+[exit 0]
+
+$ git -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v1-20260811a diff --check
+[exit 0]

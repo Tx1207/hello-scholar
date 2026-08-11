@@ -1,0 +1,167 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "brainstorming-semantic-revision",
+  "projectId": "py-search-ranking-revision",
+  "primarySkill": "brainstorming",
+  "caseId": "brainstorming-semantic-revision",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "brainstorming",
+    "manage-specs"
+  ],
+  "skillSources": {
+    "brainstorming": "skills/brainstorming",
+    "manage-specs": "skills/manage-specs"
+  },
+  "skillExpectations": {
+    "brainstorming": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    },
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "design-before-write",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm current Specs, code, tests, and ownership facts are read before one material question and two or three evidence-backed ranking approaches are compared without project writes."
+      },
+      {
+        "id": "baseline-delta-reconciliation",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the complete current SPEC-001 is treated as the revision baseline: unchanged public entry, return shape, diversity boundary, freshness rule, tie behavior, migration, and rollback remain, while phrase priority and threshold 0.68 are integrated and obsolete 0.62 references disappear."
+      },
+      {
+        "id": "coherent-current-spec",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm one complete revised Spec preserves identity and created metadata, synchronizes design, interfaces, invariants, acceptance, verification, and concise history, and contains no appended amendment or conflicting old/new contract."
+      },
+      {
+        "id": "approval-and-scope",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm no write occurs before exact whole-file approval, then only the existing Spec and CLI-generated indexes change and the flow stops before Plan, Tasks, code, Runs, or unrelated Specs."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "writes a Spec or any project file before the complete revised Spec receives whole-file approval",
+      "rebuilds SPEC-001 from a template, drops an unaffected current decision, or leaves obsolete 0.62 or contradictory ranking text",
+      "creates a duplicate or successor Spec for the same ranking ownership boundary",
+      "appends an isolated amendment instead of producing one coherent Current Spec",
+      "changes source, tests, Architecture, result-diversity Spec, Plan, Tasks, Runs, or memory",
+      "includes future evaluator replies in the first prompt or continues past a real stop condition"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the full current ranking contract, obtain the material design decision, reconcile every retained and changed obligation into one complete reviewed Spec, then write only after whole-file approval.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md",
+      "hello-scholar/specs/search-ranking/SPEC-010-phrase-ranking/spec.md",
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/plan.md",
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/tasks.md",
+      "hello-scholar/memory/",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original design request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the Implementer has read current project facts and asked one material design question without writes",
+        "contentRole": "future-clarification-answer",
+        "message": "短语匹配指完整查询短语的确定性 lexical bonus，不新增公开参数；普通词项、semantic 和 freshness 仍参与原有评分，稳定 tie 规则不变。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "two or three viable approaches and one recommendation have been presented without writes",
+        "contentRole": "future-approach-selection",
+        "message": "选择你推荐的 bounded phrase bonus 方案。请进入 manage-specs 确认现有 owner，并给出一份完整、可独立阅读的修订稿供整份审核；保留未受影响的当前决定，移除被替代内容，现在仍不要写文件。"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "the correct existing owner and one complete reconciled Spec revision have been presented without project writes",
+        "contentRole": "future-whole-spec-approval",
+        "message": "完整修订稿整份审核通过。只把刚才审阅的精确内容写入现有 SPEC-001，更新 revision metadata 和简洁 Revision History，通过 CLI 刷新 Index 并自审，然后停止；不要创建 Plan、Tasks 或实现。"
+      }
+    ]
+  }
+}

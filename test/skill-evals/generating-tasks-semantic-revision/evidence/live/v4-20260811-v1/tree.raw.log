@@ -1,0 +1,42 @@
+fixtureBaseCommit 0971e8e2891df0a106d6b1f7dd2db0634602c568
+
+[final status --short]
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/feature-policy/INDEX.md
+ M hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[final diff --name-only]
+hello-scholar/specs/INDEX.md
+hello-scholar/specs/feature-policy/INDEX.md
+hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[final diff --stat]
+ hello-scholar/specs/INDEX.md                       |  2 +-
+ hello-scholar/specs/feature-policy/INDEX.md        |  2 +-
+ .../SPEC-003-policy-precedence/tasks.md            | 37 +++++++++++++++++-----
+ 3 files changed, 31 insertions(+), 10 deletions(-)
+
+[semantic diff facts]
+- Metadata binds Spec revision 3 and Plan revision 2, advances Tasks revision to 2, and resets pending-review/null/pending.
+- T001 block is byte-identical to the Fixture Base.
+- T002 remains byte-identical in the final Tasks despite the request to remove it.
+- T003 keeps ID, goal, Spec Coverage, Files, Work, and Completion; Depends On changes from T002 to T001 and one Validation line is added.
+- T004 is added with Depends On T003.
+- The resulting document contains four tasks and the generated Indexes report completion 1/4, proving T002 remains current.
+
+[index state]
+No staged changes. The clean Fixture Base index is unchanged.
+
+[untracked and runtime-artifact state]
+No untracked files, `__pycache__` directories, or `.pyc` files.
+
+[diff check]
+`git diff --check` exited 0 with no output.
+
+[final SHA-256]
+c86c7ed35731c793e569d88bc160486b136bc85351648094b7a1fea4eb0b4c1a  hello-scholar/specs/INDEX.md
+052a63eb5ce1283b3337be1b8533c5ee74f81f9f5cd4bcd9829cb13f4108081d  hello-scholar/specs/feature-policy/INDEX.md
+d649e3cf40cb85479f0bbd9b51e87a594e825df9111d3b45ed0de90e6a14c719  hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+
+[scope]
+Only Tasks and two CLI-generated Indexes differ from the Fixture Base. Spec, Plan, Architecture, source, tests, packages, Runs, memory, and Skill files are unchanged.

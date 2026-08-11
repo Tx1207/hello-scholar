@@ -47,10 +47,13 @@ Proceed only when the reply unambiguously confirms the classification and exact 
 
 ### Update Existing Spec
 
-- Keep its ID, Topic, and Bundle path.
-- For a semantic change, increment `revision`, set `status: draft`, update `updated`, and append one `Revision History` entry.
+- Read the current `spec.md` in full. Treat the complete current file as the **Baseline**, the user-approved decision or current upstream contract as the **Authority**, and this request as the **Delta**; a point not mentioned by the Delta remains in force.
+- Before writing, classify every Baseline decision and every Delta change as `Keep`, `Modify`, `Remove`, `Add`, or `Move`. `Keep` is the default. `Remove` requires an explicit decision, direct conflict, replacement, or dependency on removed content.
+- Reconcile the ledger into one complete current Spec. Keep its ID, Topic, Bundle path, and `created`; update affected interfaces, invariants, risks, and acceptance together, and remove residual references to discarded decisions.
+- For a semantic change, increment `revision`, set `status: draft`, update `updated`, and append one `Revision History` entry that summarizes the change without copying superseded prose.
 - A format-only correction keeps the revision unchanged.
 - Modify only that `spec.md`; existing Plan and Tasks may become stale.
+- Finish with a whole-file semantic conservation review: every Baseline item has one disposition, every Delta item is integrated, unaffected content remains, discarded content is absent, and every removal or broad rewrite has Authority.
 
 ### Create Independent Spec
 

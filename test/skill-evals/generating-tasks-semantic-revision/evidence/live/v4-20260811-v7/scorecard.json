@@ -1,0 +1,156 @@
+{
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-generating-tasks-semantic-revision-haiku-v4-v7",
+  "liveApprovalSha256": "ea71b461d271246263cab1283e226d34016c17cb663eb074764c47f9680df944",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "cf51bd6518e1905a1b8129df29a9831b78f0a8f575a7986d398a08f67a5e73b9"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "a2fdc61b38ec67aa2",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "af4418d75fa9a96bf",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "baseline-and-authority",
+      "passed": true,
+      "reason": "Complete upstream and Tasks Baseline were read and field-level dispositions were mostly followed.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+    },
+    {
+      "id": "stable-task-identity",
+      "passed": false,
+      "reason": "T001 and T003 were placed under new phase headings without Delta or explicit Authority.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+    },
+    {
+      "id": "new-obligation-and-dag",
+      "passed": true,
+      "reason": "Fresh T004, complete obligations, and T001-to-T003-to-T004 DAG are coherent.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+    },
+    {
+      "id": "revision-and-review-boundary",
+      "passed": true,
+      "reason": "Metadata, scope, validation, and pending-review stop pass.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Required commands and diff check passed.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Base, scope, diff, index, untracked, runtime, and hashes are recorded.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"}]
+    },
+    {
+      "id": "authorization-binding",
+      "passed": true,
+      "reason": "The deterministic complete Skill tree hash matches the v7 authorization snapshot.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811 node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [{
+      "sender": "user",
+      "contentRole": "current-request",
+      "messageSha256": "16267a270d221eb2cb16d88a3f01c38811b4f07cb770c2761818f1246619c90b",
+      "stopConditionObserved": true,
+      "deliveredAfterPreviousStop": null,
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/interaction.md", "sha256": "0cf381cbcde84f7bc954496f5530026d0c231a71711202cdd9adf9ee3c04d37b"}]
+    }],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [{"path": "evidence/live/v4-20260811-v7/interaction.md", "sha256": "0cf381cbcde84f7bc954496f5530026d0c231a71711202cdd9adf9ee3c04d37b"}]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "baseline-and-authority": 100,
+        "stable-task-identity": 0,
+        "new-obligation-and-dag": 100,
+        "revision-and-review-boundary": 100
+      },
+      "reasons": {
+        "baseline-and-authority": "Baseline and upstream Authority were established.",
+        "stable-task-identity": "Unauthorized new phase framing changes surviving Task placement.",
+        "new-obligation-and-dag": "T004 and DAG pass.",
+        "revision-and-review-boundary": "Metadata, scope, commands, and stop pass."
+      },
+      "evidence": {
+        "baseline-and-authority": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "stable-task-identity": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "new-obligation-and-dag": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "revision-and-review-boundary": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+      },
+      "totalScore": 65.0
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "Result is clear.",
+        "audience-fit": "Language fits.",
+        "information-design": "Artifact is scannable.",
+        "actionability": "Review stop and frontier are explicit.",
+        "signal-to-noise": "No presentation noise."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "information-design": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "actionability": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260811-v7/reviewer.md", "sha256": "98f9a0034b49188eef10504347c136877d3e7d8e60229c04c154ea958415de93"}]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"},
+    "index": {"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"},
+    "untracked": {"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v7/tree.raw.log", "sha256": "3db40f499fdb250398d105af30f3b924f967ba68c4a005f18056b02b1834ffc7"}
+  }
+}

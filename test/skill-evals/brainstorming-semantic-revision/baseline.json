@@ -1,0 +1,204 @@
+{
+  "proposalId": "proposal-brainstorming-semantic-revision-haiku-v4",
+  "scenarioSha256": "8f2d9f225c285e22f21945d2de46ccc622a60c48c0aaf2b3af800308349413ed",
+  "protocolSha256": "7dd7e2130d1dbf964ac63e5fe977064cdf8b6a04f686d5e6f200f1ea96a5d05d",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "summary": "The pre-change Skills preserved scope and waited for whole-file approval, but crossed the first interaction stop and produced a contradictory Current Spec that retained active 0.62 threshold text alongside 0.68.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "brainstorming": {
+      "status": "pre-change-explicit-file",
+      "sha256": "2999c5b8b0661a939c3412a25b30859ebde51f77a26d0393f90b0a52051ad613"
+    },
+    "manage-specs": {
+      "status": "pre-change-explicit-file",
+      "sha256": "24e09788d04e9ddd763549a2c70d682d132528051a97733ef447820f58412c1f"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "6fd51a53ce9f1a3220cda24c5e5e2f588bc192c8",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "Scenario, Protocol, Fixture, shared rubric, approved Proposal, and pre-change Skill snapshot hashes were current before dispatch.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "a084760723e16b6ad711638b5816460a140d872068d710fee75c997884422a71"}]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was synchronized, committed, and clean before round zero.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "a084760723e16b6ad711638b5816460a140d872068d710fee75c997884422a71"}]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "Initial Python tests passed with bytecode disabled.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "a084760723e16b6ad711638b5816460a140d872068d710fee75c997884422a71"}]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "Initial docs sync and docs check completed without errors.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "a084760723e16b6ad711638b5816460a140d872068d710fee75c997884422a71"}]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present before or after the run.",
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "a084760723e16b6ad711638b5816460a140d872068d710fee75c997884422a71"},
+          {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"}
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {"id": "af6a0437ef1a9fb9e", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a860f91425acd7b58", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "design-before-write",
+      "passed": false,
+      "reason": "Current facts were read before writes, but round zero presented approaches before the clarification answer and continued beyond the required material-question stop.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-round-0.md", "sha256": "e09df2a383e450a36ef9f72fb343b0da4af685b3eda59fc324d1575044d30c8f"},
+        {"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}
+      ]
+    },
+    {
+      "id": "baseline-delta-reconciliation",
+      "passed": false,
+      "reason": "The final Spec preserved unaffected decisions but retained non-historical text that describes 0.62 as the current threshold.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}]
+    },
+    {
+      "id": "coherent-current-spec",
+      "passed": false,
+      "reason": "The complete draft contains conflicting active-threshold statements for 0.68 and 0.62.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}]
+    },
+    {
+      "id": "approval-and-scope",
+      "passed": true,
+      "reason": "No project write occurred before whole-file approval, and final changes are limited to the existing Spec and generated indexes.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "2ebeb0ff0bc8716ff355c5630e507477351919098a7650927dc6948879ec9cf3"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"}
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited successfully.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are recorded.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-baseline node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "4214ebc1eefcfd26a1029ffc17c0c85086c7b87c80e36998ea4aef6983382fe2", "promptSha256": "01b3678034f6ffddf6b4883e06fc37ac23c1db69f3e9650c6c22117b8af0f7dc", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "01b3678034f6ffddf6b4883e06fc37ac23c1db69f3e9650c6c22117b8af0f7dc"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "27f5560806304f39dddb0a5d0065e2cdccf40f31530b2fbd620b075478d0e5fb"}
+        ]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-clarification-answer", "messageSha256": "a68846d8ec5bc10163bbe231cf2a2b73f583edf8ba3754ac85f31cf980974710", "promptSha256": "ec84c53bf1089765733b1c590931547536760ae829c660a4f8d3910b9179a797", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-1.md", "sha256": "ec84c53bf1089765733b1c590931547536760ae829c660a4f8d3910b9179a797"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "27f5560806304f39dddb0a5d0065e2cdccf40f31530b2fbd620b075478d0e5fb"}
+        ]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-approach-selection", "messageSha256": "9588733eeaca6c8e5e9bd08d76852e973a1ce3649199479beb4d0ffc46028d45", "promptSha256": "c5fccecbb90b0d53192e483c887dbe194ca93c1e2afedb3cf30389e64e19ae61", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-2.md", "sha256": "c5fccecbb90b0d53192e483c887dbe194ca93c1e2afedb3cf30389e64e19ae61"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "27f5560806304f39dddb0a5d0065e2cdccf40f31530b2fbd620b075478d0e5fb"}
+        ]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-whole-spec-approval", "messageSha256": "2d74ec24bcf42713f28dece9f9617cc457b22fb5f59840e14e7dae10fd9f6b2e", "promptSha256": "38510b037b45c652e45b2f9be1c71bd2388925030a8280461713c361e1055ba1", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-3.md", "sha256": "38510b037b45c652e45b2f9be1c71bd2388925030a8280461713c361e1055ba1"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "27f5560806304f39dddb0a5d0065e2cdccf40f31530b2fbd620b075478d0e5fb"}
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "01b3678034f6ffddf6b4883e06fc37ac23c1db69f3e9650c6c22117b8af0f7dc"},
+        {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "27f5560806304f39dddb0a5d0065e2cdccf40f31530b2fbd620b075478d0e5fb"}
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"design-before-write": 0, "baseline-delta-reconciliation": 0, "coherent-current-spec": 0, "approval-and-scope": 100},
+      "reasons": {
+        "design-before-write": "Facts and ownership were read first, but round zero presented approaches before the clarification answer and crossed the material-question stop.",
+        "baseline-delta-reconciliation": "Unaffected decisions were preserved, but non-historical text still calls 0.62 the current threshold.",
+        "coherent-current-spec": "The complete draft preserves identity and structure but contradicts itself about the active threshold.",
+        "approval-and-scope": "The full draft preceded approval and only the existing Spec plus generated indexes changed."
+      },
+      "evidence": {
+        "design-before-write": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "baseline-delta-reconciliation": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "coherent-current-spec": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "approval-and-scope": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}]
+      },
+      "totalScore": 20
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 90, "information-design": 90, "actionability": 0, "signal-to-noise": 90},
+      "reasons": {
+        "value-visibility": "The opening makes the phrase bonus and 0.68 decision visible.",
+        "audience-fit": "Terminology fits the project, with a minor deduction for misleading stale active-threshold language.",
+        "information-design": "The Spec is structured and standalone, but contradictory threshold statements reduce clarity.",
+        "actionability": "A maintainer cannot safely derive one active threshold from the final document.",
+        "signal-to-noise": "Most sections support review, while stale non-historical 0.62 statements add contradictory noise."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "audience-fit": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "information-design": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "actionability": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}],
+        "signal-to-noise": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a14161083be3b014eea31a096daba12a5f6c07c25a937fa5fab3775bd8249d81"}]
+      },
+      "totalScore": 74
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"},
+    "index": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"},
+    "workingTree": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"},
+    "untracked": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"},
+    "finalHashes": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "55ae6bb666e303b17c2f855d8d76423bc10679991b1b7880068f59e847ce6b83"}
+  }
+}

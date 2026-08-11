@@ -1,0 +1,54 @@
+{
+  "proposalId": "proposal-brainstorming-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-brainstorming-semantic-revision-haiku-v4-v4",
+  "liveApprovalSha256": "4f9ecff1dd7bbeca49f5e5230a00d2c3619b0aa31fa2648988528c866f4494e4",
+  "scenarioSha256": "8f2d9f225c285e22f21945d2de46ccc622a60c48c0aaf2b3af800308349413ed",
+  "protocolSha256": "7dd7e2130d1dbf964ac63e5fe977064cdf8b6a04f686d5e6f200f1ea96a5d05d",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "brainstorming": {"status": "current-explicit-file", "sha256": "37679c6c04d622d14dc74f336e7402882f1a844b9fd33692f9592aa10fe9fe2c"},
+    "manage-specs": {"status": "current-explicit-file", "sha256": "c2dc722474c3b2f6e9d276118f81f4b054d1227bf173d60296abd49e8c1114f5"}
+  },
+  "agents": {
+    "implementer": {"id": "aa8bcafca0157ef5f", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a70a2c21ec4e37b6d", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {"id": "design-before-write", "passed": true, "reason": "Facts, one question, three approaches, and all stops preceded writing.", "evidence": [{"path": "evidence/live/v4-20260811-v4/reviewer.md", "sha256": "88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}]},
+    {"id": "baseline-delta-reconciliation", "passed": false, "reason": "Normative old-threshold references remain, the retained signature contradicts current code, and the phrase-match predicate lacks normalization and boundary semantics.", "evidence": [{"path": "evidence/live/v4-20260811-v4/reviewer.md", "sha256": "88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}]},
+    {"id": "coherent-current-spec", "passed": false, "reason": "The artifact mixes stale threshold text and an inaccurate interface claim with the current contract.", "evidence": [{"path": "evidence/live/v4-20260811-v4/reviewer.md", "sha256": "88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}]},
+    {"id": "approval-and-scope", "passed": true, "reason": "Approval preceded the exact allowed three-file write set.", "evidence": [{"path": "evidence/live/v4-20260811-v4/tree.raw.log", "sha256": "6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"}]},
+    {"id": "protocol-commands-pass", "passed": true, "reason": "Protocol commands, sync, and diff check passed.", "evidence": [{"path": "evidence/live/v4-20260811-v4/commands.raw.log", "sha256": "47e4974364dc3c566c2dd5b5b08c7f2b6d4135d36bf1eab29a29760edb84a358"}]},
+    {"id": "base-to-final-evidence", "passed": true, "reason": "Base, scope, hashes, index, untracked, and runtime states are recorded.", "evidence": [{"path": "evidence/live/v4-20260811-v4/tree.raw.log", "sha256": "6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"}]}
+  ],
+  "commands": [
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v4-20260811b PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v4/commands.raw.log", "sha256": "47e4974364dc3c566c2dd5b5b08c7f2b6d4135d36bf1eab29a29760edb84a358"}]},
+    {"command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check", "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v4-20260811b node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v4/commands.raw.log", "sha256": "47e4974364dc3c566c2dd5b5b08c7f2b6d4135d36bf1eab29a29760edb84a358"}]}
+  ],
+  "interaction": {
+    "rounds": [
+      {"sender":"user","contentRole":"current-request","messageSha256":"4214ebc1eefcfd26a1029ffc17c0c85086c7b87c80e36998ea4aef6983382fe2","promptSha256":"40cb47a179175f04118c078451ac2c0479d39a07bf62e0c7abe8f498443b47e4","stopConditionObserved":true,"deliveredAfterPreviousStop":null,"evidence":[{"path":"evidence/live/v4-20260811-v4/interaction.md","sha256":"a4cb88494a22e1782810684347d9d0521b7638d70b475c93e3f8eeb3a7e5515e"}]},
+      {"sender":"eval-main","contentRole":"future-clarification-answer","messageSha256":"a68846d8ec5bc10163bbe231cf2a2b73f583edf8ba3754ac85f31cf980974710","promptSha256":"5062dc5ad27ef68fce7aed5d0347495470bf7162e3b8a98bd9d0f14f58628a92","stopConditionObserved":true,"deliveredAfterPreviousStop":true,"evidence":[{"path":"evidence/live/v4-20260811-v4/interaction.md","sha256":"a4cb88494a22e1782810684347d9d0521b7638d70b475c93e3f8eeb3a7e5515e"}]},
+      {"sender":"eval-main","contentRole":"future-approach-selection","messageSha256":"9588733eeaca6c8e5e9bd08d76852e973a1ce3649199479beb4d0ffc46028d45","promptSha256":"e17fe755f0091f06e1a6f284b7cc7ecfe5d26064fd3f173c17f0ad23632a04d5","stopConditionObserved":true,"deliveredAfterPreviousStop":true,"evidence":[{"path":"evidence/live/v4-20260811-v4/interaction.md","sha256":"a4cb88494a22e1782810684347d9d0521b7638d70b475c93e3f8eeb3a7e5515e"}]},
+      {"sender":"eval-main","contentRole":"future-whole-spec-approval","messageSha256":"2d74ec24bcf42713f28dece9f9617cc457b22fb5f59840e14e7dae10fd9f6b2e","promptSha256":"9b8380c6379e4e992c817836a621479c75ad5abbb1503673f284f52fa8362e37","stopConditionObserved":true,"deliveredAfterPreviousStop":true,"evidence":[{"path":"evidence/live/v4-20260811-v4/interaction.md","sha256":"a4cb88494a22e1782810684347d9d0521b7638d70b475c93e3f8eeb3a7e5515e"}]}
+    ],
+    "promptProjection":{"rawScenarioVisibleToImplementer":false,"rawProtocolVisibleToImplementer":false,"futureRoundsVisibleToImplementer":false,"evidence":[{"path":"evidence/live/v4-20260811-v4/interaction.md","sha256":"a4cb88494a22e1782810684347d9d0521b7638d70b475c93e3f8eeb3a7e5515e"}]}
+  },
+  "quality": {
+    "behavior": {
+      "scores":{"design-before-write":100,"baseline-delta-reconciliation":0,"coherent-current-spec":0,"approval-and-scope":100},
+      "reasons":{"design-before-write":"All design stops passed.","baseline-delta-reconciliation":"Stale normative threshold text, interface mismatch, and open match predicate remain.","coherent-current-spec":"The saved Current Truth conflicts with project evidence.","approval-and-scope":"Approval and scope passed."},
+      "evidence":{"design-before-write":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"baseline-delta-reconciliation":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"coherent-current-spec":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"approval-and-scope":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}]},
+      "totalScore":40.0
+    },
+    "userValue": {
+      "scores":{"value-visibility":90,"audience-fit":0,"information-design":0,"actionability":0,"signal-to-noise":0},
+      "reasons":{"value-visibility":"Main target is visible.","audience-fit":"Public interface claim is inaccurate.","information-design":"Old/current contracts are mixed.","actionability":"Maintainer must resolve stale values, signature, and predicate.","signal-to-noise":"Repeated stale values create contradiction."},
+      "evidence":{"value-visibility":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"audience-fit":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"information-design":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"actionability":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}],"signal-to-noise":[{"path":"evidence/live/v4-20260811-v4/reviewer.md","sha256":"88480315a4472318f0fc628caf9e6904b64178aa9b24a8a43d251e90f7e6121a"}]},
+      "totalScore":18.0
+    }
+  },
+  "diffEvidence":{"committed":{"path":"evidence/live/v4-20260811-v4/tree.raw.log","sha256":"6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"},"index":{"path":"evidence/live/v4-20260811-v4/tree.raw.log","sha256":"6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"},"workingTree":{"path":"evidence/live/v4-20260811-v4/tree.raw.log","sha256":"6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"},"untracked":{"path":"evidence/live/v4-20260811-v4/tree.raw.log","sha256":"6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"},"finalHashes":{"path":"evidence/live/v4-20260811-v4/tree.raw.log","sha256":"6398ef4978a5075c67d5fc334721abc8fb1af29f2368e6110ea68adfe4091140"}}
+}

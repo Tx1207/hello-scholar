@@ -1,0 +1,8 @@
+# Live interaction record
+
+- Round 0 (`user`, `current-request`): the original request was delivered through the safe prompt. The Implementer read current Specs, Architecture, code, tests, project rules, indexes, and Git state; asked exactly one material question; made no writes; and stopped before approaches.
+- Round 1 (`eval-main`, `future-clarification-answer`): delivered only after the material-question stop. The same Implementer compared three approaches, recommended the bounded phrase bonus with an explicit internal signal, made no writes, and stopped for approach selection.
+- Round 2 (`eval-main`, `future-approach-selection`): delivered only after the approaches stop. The same Implementer classified the change as `Update Existing Spec`, confirmed `SPEC-001` as the existing owner and `SPEC-004` as the unchanged diversity owner, presented one complete Revision 3 draft, made no writes, and stopped for whole-file review.
+- Round 3 (`eval-main`, `future-whole-spec-approval`): delivered only after the complete-draft stop. The same Implementer wrote the selected revision after one permission-compatible retry, refreshed both generated Indexes with the absolute CLI, read back the saved Spec, reconciled the dispositions against the artifact, and stopped without Plan, Tasks, implementation, or unrelated writes.
+
+No future evaluator message was included early. Raw Scenario, raw Protocol, business rubric, hard rejects, expected answer, baseline or prior Live evidence, Reviewer judgment, and the surrounding conversation remained hidden from the Implementer. All four frozen messages were delivered in Protocol order and only after their preceding observable stops.

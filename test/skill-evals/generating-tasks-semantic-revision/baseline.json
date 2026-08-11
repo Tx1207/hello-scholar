@@ -1,0 +1,171 @@
+{
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "result": "fail",
+  "summary": "The pre-change generating-tasks Skill preserved completed execution facts, removed obsolete work, allocated a fresh ID, rebuilt the DAG, reset lifecycle metadata, and stayed within scope, but changed T003 Spec Coverage beyond the explicitly permitted Work, Validation, Completion, and dependency edits.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "generating-tasks": {
+      "status": "pre-change-explicit-file",
+      "sha256": "a42c5a23dd57f53e95bc8f61f82f72326ab2f01faafe629b484da800e289e6a7"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "47539851b8847bc6308b36703ea92dab2426f26b",
+    "checks": [
+      {
+        "id": "fixture-input-hash", "passed": true,
+        "reason": "Scenario, Protocol, Fixture, shared rubric, approved Proposal, and pre-change Skill snapshot hashes were current before dispatch.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "7012e0b8b6d97e90b293f7f2d6e885b5e3987a5fc101b8ac8094bcdd3d1b6cde"}]
+      },
+      {
+        "id": "clean-base", "passed": true,
+        "reason": "The copied Fixture was synchronized, committed, and clean before round zero.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "7012e0b8b6d97e90b293f7f2d6e885b5e3987a5fc101b8ac8094bcdd3d1b6cde"}]
+      },
+      {
+        "id": "initial-tests", "passed": true,
+        "reason": "Initial Python tests passed with bytecode disabled.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "7012e0b8b6d97e90b293f7f2d6e885b5e3987a5fc101b8ac8094bcdd3d1b6cde"}]
+      },
+      {
+        "id": "initial-docs-check", "passed": true,
+        "reason": "Initial docs sync and docs check completed without errors while correctly reporting the stale pre-revision Tasks binding.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "7012e0b8b6d97e90b293f7f2d6e885b5e3987a5fc101b8ac8094bcdd3d1b6cde"}]
+      },
+      {
+        "id": "runtime-artifact-cleanliness", "passed": true,
+        "reason": "No excluded runtime artifacts were present before or after the run.",
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "7012e0b8b6d97e90b293f7f2d6e885b5e3987a5fc101b8ac8094bcdd3d1b6cde"},
+          {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"}
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {"id": "a6e103488ceaaa985", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a4f107e0a21cc7630", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "baseline-and-authority", "passed": true,
+      "reason": "Complete current Tasks, Accepted Spec, Approved Plan, Architecture, execution evidence, source, tests, indexes, rules, and Git state were read before editing.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "bc9d58e4bcbb273c91f2b109ad0adf3270673a3f9d384fa3b3b529bcb22bb5ac"},
+        {"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}
+      ]
+    },
+    {
+      "id": "stable-task-identity", "passed": false,
+      "reason": "T001 execution facts, T002 removal, and T003 ID are correct, but T003 Spec Coverage changes beyond the frozen request's permitted Work, Validation, Completion, and dependency edits.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}]
+    },
+    {
+      "id": "new-obligation-and-dag", "passed": true,
+      "reason": "T004 is greater than the complete historical ID range, covers audit integration, and the rebuilt T001-to-T003-to-T004 DAG has no residual T002 edge or frontier conflict.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "39dbcfe80907b7843997315f2151d30a6391a06468defd21b976b6bca3b21e1e"},
+        {"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}
+      ]
+    },
+    {
+      "id": "revision-and-review-boundary", "passed": true,
+      "reason": "Tasks binds current upstream revisions, advances once, resets exactly to pending-review/null/pending, changes only Tasks plus generated indexes, and stops without approval or implementation.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "39dbcfe80907b7843997315f2151d30a6391a06468defd21b976b6bca3b21e1e"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"}
+      ]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Both approved Protocol commands exited successfully.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "013b50589ef09b9ee37dd78b456dea49fd48fd452a490ed48401a7a5071c4307"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are recorded.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "013b50589ef09b9ee37dd78b456dea49fd48fd452a490ed48401a7a5071c4307"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "013b50589ef09b9ee37dd78b456dea49fd48fd452a490ed48401a7a5071c4307"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "40cf253778ede8c9703e2ebde94799a37914ec5f31170bc7206762a47b8a8bb0", "promptSha256": "bc9d58e4bcbb273c91f2b109ad0adf3270673a3f9d384fa3b3b529bcb22bb5ac", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "bc9d58e4bcbb273c91f2b109ad0adf3270673a3f9d384fa3b3b529bcb22bb5ac"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "9637952260727d9d89304f30b37aec4a018026526dd5170d87c2e1acc885fa25"}
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "bc9d58e4bcbb273c91f2b109ad0adf3270673a3f9d384fa3b3b529bcb22bb5ac"},
+        {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "9637952260727d9d89304f30b37aec4a018026526dd5170d87c2e1acc885fa25"}
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"baseline-and-authority": 100, "stable-task-identity": 0, "new-obligation-and-dag": 100, "revision-and-review-boundary": 100},
+      "reasons": {
+        "baseline-and-authority": "Every required current document, execution fact, and project input is reflected in the revision.",
+        "stable-task-identity": "T003 remains T003 but its Spec Coverage changes outside the explicitly permitted field set.",
+        "new-obligation-and-dag": "T004 and the rebuilt serialized graph satisfy ID, coverage, edge, frontier, and validation constraints.",
+        "revision-and-review-boundary": "Metadata, upstream bindings, write set, and terminal review state are exact."
+      },
+      "evidence": {
+        "baseline-and-authority": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "stable-task-identity": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "new-obligation-and-dag": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "revision-and-review-boundary": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}]
+      },
+      "totalScore": 65
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {
+        "value-visibility": "The response leads with the complete Tasks result and semantic dispositions.",
+        "audience-fit": "Chinese prose and exact Task identifiers fit the review audience.",
+        "information-design": "Tasks, indexes, checks, scope, and terminal state are grouped clearly.",
+        "actionability": "The pending-review stop and lack of implementation are explicit.",
+        "signal-to-noise": "The response is concise and exposes no evaluator-only material."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "audience-fit": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "information-design": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "actionability": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}],
+        "signal-to-noise": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "a22760553e43a5d981282c7f97a8c234b1781e18f283db52830c026e135e6126"}]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"},
+    "index": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"},
+    "workingTree": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"},
+    "untracked": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"},
+    "finalHashes": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "5450b4cee9c686402a804c606eb1307e724db0d7286564fd3b3046e4f6829c61"}
+  }
+}

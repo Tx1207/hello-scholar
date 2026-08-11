@@ -47,10 +47,13 @@ description: 将设计请求归入一个稳定 Spec 身份。创建、修订或�
 
 ### Update Existing Spec
 
-- 保持 ID、Topic 和 Bundle 路径。
-- 语义变化时递增 `revision`，设为 `status: draft`，更新 `updated`，并追加一条 `Revision History`。
+- 完整读取当前 `spec.md`。将当前完整文件作为 **Baseline**，将用户批准的决定或当前上游合同作为 **Authority**，将本次请求作为 **Delta**；Delta 未提及的内容继续有效。
+- 写入前，将每项 Baseline 决定和 Delta 变化归为 `Keep`、`Modify`、`Remove`、`Add` 或 `Move`。默认使用 `Keep`；只有明确决定、直接冲突、替代关系或对已删除内容的依赖才能作为 `Remove` 依据。
+- 将处置账本归并成一份完整的 Current Spec。保持 ID、Topic、Bundle 路径和 `created`；同步更新受影响的接口、不变量、风险和验收，并移除已废弃决定的残余引用。
+- 语义变化时递增 `revision`，设为 `status: draft`，更新 `updated`，并追加一条只概括变化、不复制旧正文的 `Revision History`。
 - 只修正格式时保持 Revision。
 - 只修改该 `spec.md`；现有 Plan 和 Tasks 可以变为 stale。
+- 最后执行整份语义守恒审核：每项 Baseline 恰有一种处置，每项 Delta 都已整合，未受影响内容仍存在，废弃内容已移除，且每项删除或大范围改写都有 Authority。
 
 ### Create Independent Spec
 

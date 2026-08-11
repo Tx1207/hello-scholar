@@ -1,0 +1,37 @@
+fixtureBaseCommit 0817c2c589fc66eb40335ebf23cb3d63e4f1caab
+
+[final status --short]
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/search-ranking/INDEX.md
+ M hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --name-only]
+hello-scholar/specs/INDEX.md
+hello-scholar/specs/search-ranking/INDEX.md
+hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --stat]
+ hello-scholar/specs/INDEX.md                       |   2 +-
+ hello-scholar/specs/search-ranking/INDEX.md        |   2 +-
+ .../SPEC-001-intent-aware-ranking/spec.md          | 252 ++++++++++++++++++---
+ 3 files changed, 225 insertions(+), 31 deletions(-)
+
+[index state]
+No staged changes.
+
+[untracked state]
+No untracked files.
+
+[runtime artifacts]
+No `__pycache__`, `.pyc`, `.pyo`, `.DS_Store`, or `.hello-scholar-install.json` path.
+
+[diff check]
+`git diff --check` exited 0.
+
+[final SHA-256]
+679bfd91b673fe45cc3f88953989bfa4a244462bcd5e4118a4f14c61a9bb76e1  hello-scholar/specs/INDEX.md
+c52a2d8efa641b8280c5a2c26213c95a8fdae5c1c4d07bc0d354f89268e165b3  hello-scholar/specs/search-ranking/INDEX.md
+f83437ba25d9ff21376771497b5a4a3811c101935ad6892dc6fbb59e5dd58bc8  hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[scope]
+Only the approved existing Spec and two generated Indexes differ from Fixture Base.

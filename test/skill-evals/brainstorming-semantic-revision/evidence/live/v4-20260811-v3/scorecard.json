@@ -1,0 +1,60 @@
+{
+  "proposalId": "proposal-brainstorming-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-brainstorming-semantic-revision-haiku-v4-v3",
+  "liveApprovalSha256": "5bdba0a18b8d4c85c751ca06e171ab23949e66c3d23baf9b7d0e680c5168d4b4",
+  "scenarioSha256": "8f2d9f225c285e22f21945d2de46ccc622a60c48c0aaf2b3af800308349413ed",
+  "protocolSha256": "7dd7e2130d1dbf964ac63e5fe977064cdf8b6a04f686d5e6f200f1ea96a5d05d",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "brainstorming": {"status": "current-explicit-file", "sha256": "92eb4dbe06bb9428764f0dcc13354777cc9019180b0eebb8ae1629a8603ccc73"},
+    "manage-specs": {"status": "current-explicit-file", "sha256": "c2dc722474c3b2f6e9d276118f81f4b054d1227bf173d60296abd49e8c1114f5"}
+  },
+  "agents": {
+    "implementer": {"id": "a5550adf56d640ff4", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "ab9845dd865d6fb25", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {"id": "design-before-write", "passed": true, "reason": "Project facts, one material question, and three alternatives preceded writes and stopped correctly.", "evidence": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}]},
+    {"id": "baseline-delta-reconciliation", "passed": false, "reason": "The exact 0.15 bonus is present, but otherwise-comparable ordering lacks input and numeric boundaries, while Current State retains superseded threshold facts as present-tense current text.", "evidence": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}]},
+    {"id": "coherent-current-spec", "passed": false, "reason": "The complete artifact retains required sections, but ordering tests require an invented comparison predicate and Current State ambiguously mixes pre-revision facts with the current contract.", "evidence": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}]},
+    {"id": "approval-and-scope", "passed": true, "reason": "Whole-file approval preceded writes and only the existing Spec plus generated Indexes changed.", "evidence": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}, {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"}]},
+    {"id": "protocol-commands-pass", "passed": true, "reason": "Both Protocol commands, docs sync, and diff check exited 0.", "evidence": [{"path": "evidence/live/v4-20260811-v3/commands.raw.log", "sha256": "380d924456f30a8e98ec46a5c2e02ca2fa945a7da8cfa9413e41c4f5ad1d29dd"}]},
+    {"id": "base-to-final-evidence", "passed": true, "reason": "Base commit, index, working tree, untracked state, hashes, scope, and runtime artifacts are recorded.", "evidence": [{"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"}]}
+  ],
+  "commands": [
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v3-20260811b PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v3/commands.raw.log", "sha256": "380d924456f30a8e98ec46a5c2e02ca2fa945a7da8cfa9413e41c4f5ad1d29dd"}]},
+    {"command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check", "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v3-20260811b node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v3/commands.raw.log", "sha256": "380d924456f30a8e98ec46a5c2e02ca2fa945a7da8cfa9413e41c4f5ad1d29dd"}]}
+  ],
+  "interaction": {
+    "rounds": [
+      {"sender": "user", "contentRole": "current-request", "messageSha256": "4214ebc1eefcfd26a1029ffc17c0c85086c7b87c80e36998ea4aef6983382fe2", "promptSha256": "435daa44e986bc4f19d9f2b407f97927cb1e621b701c84fdc96887ec8a6e6786", "stopConditionObserved": true, "deliveredAfterPreviousStop": null, "evidence": [{"path": "evidence/live/v4-20260811-v3/prompt-round-0.md", "sha256": "435daa44e986bc4f19d9f2b407f97927cb1e621b701c84fdc96887ec8a6e6786"}, {"path": "evidence/live/v4-20260811-v3/interaction.md", "sha256": "7e28778fc4c785c816c9e44846a1a23d2a846f4bd7a675d87193180b32770b0c"}]},
+      {"sender": "eval-main", "contentRole": "future-clarification-answer", "messageSha256": "a68846d8ec5bc10163bbe231cf2a2b73f583edf8ba3754ac85f31cf980974710", "promptSha256": "f21dcd77428735795d2c082b6d98391942249647a62b19d8bc86b053624f6dec", "stopConditionObserved": true, "deliveredAfterPreviousStop": true, "evidence": [{"path": "evidence/live/v4-20260811-v3/prompt-round-1.md", "sha256": "f21dcd77428735795d2c082b6d98391942249647a62b19d8bc86b053624f6dec"}, {"path": "evidence/live/v4-20260811-v3/interaction.md", "sha256": "7e28778fc4c785c816c9e44846a1a23d2a846f4bd7a675d87193180b32770b0c"}]},
+      {"sender": "eval-main", "contentRole": "future-approach-selection", "messageSha256": "9588733eeaca6c8e5e9bd08d76852e973a1ce3649199479beb4d0ffc46028d45", "promptSha256": "6ebf2f49db4771fbe4df91b1f7d8638245a5ca039f992147f5716afee5c8aa9d", "stopConditionObserved": true, "deliveredAfterPreviousStop": true, "evidence": [{"path": "evidence/live/v4-20260811-v3/prompt-round-2.md", "sha256": "6ebf2f49db4771fbe4df91b1f7d8638245a5ca039f992147f5716afee5c8aa9d"}, {"path": "evidence/live/v4-20260811-v3/interaction.md", "sha256": "7e28778fc4c785c816c9e44846a1a23d2a846f4bd7a675d87193180b32770b0c"}]},
+      {"sender": "eval-main", "contentRole": "future-whole-spec-approval", "messageSha256": "2d74ec24bcf42713f28dece9f9617cc457b22fb5f59840e14e7dae10fd9f6b2e", "promptSha256": "3c87b2b5c61dd05372b9ddd10618d141d774998d8d1f8b9328f983e8167be560", "stopConditionObserved": true, "deliveredAfterPreviousStop": true, "evidence": [{"path": "evidence/live/v4-20260811-v3/prompt-round-3.md", "sha256": "3c87b2b5c61dd05372b9ddd10618d141d774998d8d1f8b9328f983e8167be560"}, {"path": "evidence/live/v4-20260811-v3/interaction.md", "sha256": "7e28778fc4c785c816c9e44846a1a23d2a846f4bd7a675d87193180b32770b0c"}]}
+    ],
+    "promptProjection": {"rawScenarioVisibleToImplementer": false, "rawProtocolVisibleToImplementer": false, "futureRoundsVisibleToImplementer": false, "evidence": [{"path": "evidence/live/v4-20260811-v3/prompt-round-0.md", "sha256": "435daa44e986bc4f19d9f2b407f97927cb1e621b701c84fdc96887ec8a6e6786"}, {"path": "evidence/live/v4-20260811-v3/interaction.md", "sha256": "7e28778fc4c785c816c9e44846a1a23d2a846f4bd7a675d87193180b32770b0c"}]}
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"design-before-write": 100, "baseline-delta-reconciliation": 0, "coherent-current-spec": 0, "approval-and-scope": 100},
+      "reasons": {"design-before-write": "All facts and stops passed before writing.", "baseline-delta-reconciliation": "Ordering lacks an exact comparison predicate and Current State retains superseded threshold facts as present truth.", "coherent-current-spec": "The complete artifact still requires an invented material ordering rule and mixes baseline/current threshold language.", "approval-and-scope": "Approval and the three-file scope passed."},
+      "evidence": {"design-before-write": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "baseline-delta-reconciliation": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "coherent-current-spec": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "approval-and-scope": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}]},
+      "totalScore": 40.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 90, "audience-fit": 90, "information-design": 90, "actionability": 0, "signal-to-noise": 90},
+      "reasons": {"value-visibility": "The value is visible early.", "audience-fit": "Language and depth fit.", "information-design": "Standalone structure passes with Current State ambiguity.", "actionability": "Implementation and tests cannot derive otherwise-comparable ordering without guessing.", "signal-to-noise": "The artifact is focused."},
+      "evidence": {"value-visibility": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "audience-fit": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "information-design": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "actionability": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}], "signal-to-noise": [{"path": "evidence/live/v4-20260811-v3/reviewer.md", "sha256": "2016b83c22652d48bc119ca6a097958ce2d6c05146cda07d210aae7f43ddb996"}]},
+      "totalScore": 72.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"},
+    "index": {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"},
+    "untracked": {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v3/tree.raw.log", "sha256": "70332e5a1222fc231aed8e2a86fdb9d4b8751f7efebacc4b8f1e64b183d2b273"}
+  }
+}

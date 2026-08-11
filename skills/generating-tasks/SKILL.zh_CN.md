@@ -58,14 +58,22 @@ description: Decomposition：把 Accepted Spec 及其当前 Approved Plan 拆成
 
 ## 4. 写入一份 Tasks 文档
 
-起草前只读取一个权威模板：
+读取骨架前先选择写入分支。模板只用于新建 Tasks：
 
-- 中文仓库：`assets/tasks-template.zh_CN.md`
-- 其他仓库：`assets/tasks-template.md`
+- **新建文档：** 只读取一个权威模板：中文仓库使用 `assets/tasks-template.zh_CN.md`，其他仓库使用 `assets/tasks-template.md`。
+- **语义修订：** 完整读取当前 `tasks.md` 并将其作为骨架。将当前完整 Tasks 作为 **Baseline**，将当前 Accepted Spec 和 Approved Plan 作为 **Authority**，将其变化或本次执行合同变化作为 **Delta**。Delta 未提及不是删除依据。
+
+语义修订时，写入前按稳定 Task 身份归并：
+
+- 结果仍有效时保留 Task ID、checkbox 和证据。为每个保留的 Task 建立字段级处置图：只修改 Delta 点名或 Authority 明确要求的字段；否则保持其标题、checkbox、证据、`Spec Coverage`、`Files` 和 phase placement 不变。把 phase heading、section heading 及其周边结构分别视为独立 placement：上游 phase 顺序只约束 DAG，本身不授权围绕保留的 Task 新增、改名或移动 heading；新增 Task 也不授权用新结构包裹既有 Task。只有 `Work`、`Validation` 或 `Completion` 改变时，保留 ID 且只修改这些字段。依赖修复只授权必要的 `Depends On` 和 `Parallel` 修改；确有 Authority 要求移动 Task 时也不重新编号。
+- 未完成且不再需要的 Task 从当前合同移除。结果发生实质变化时，移除旧 Task，并使用新 ID 创建替代 Task。
+- 每项替代结果或新增义务使用大于 Baseline 和可确认 Git 历史的 ID。不复用 ID，也不为了连续编号而重新编号。
+- 已完成但被推翻的 Task 不能改写成仿佛过去执行的是新工作。将其从当前执行合同移除，并新建补偿、反向迁移、清理或重新验证 Task；Git 保留过去执行事实。
+- 根据修订后的 Spec 和 Plan 重建义务账本和 DAG。移除残余依赖，再检查覆盖、frontier、并行冲突、文件边界和验证信号。
 
 把 `tasks.md` 写在当前 `spec.md` 和 `plan.md` 同目录。本事务只语义修改 Tasks；Index 变化只能由 CLI 生成。
 
-新文档绑定当前 Spec ID、Spec revision 和 Plan revision，并精确初始化：
+新文档绑定当前 Spec ID、Spec revision 和 Plan revision。先把选定模板作为起始骨架复制，再精确初始化：
 
 ```yaml
 revision: 1
@@ -74,7 +82,15 @@ approved_revision: null
 status: pending
 ```
 
-先把选定模板作为起始骨架复制，再替换占位符。`approval: pending-review` 是审核状态，`status: pending` 是执行状态；两者必须精确保留且彼此独立。出现 Tasks 元数据错误时，在 `tasks.md` 修复这个 pending-review header，不批准 Tasks，也不修改上游文档。
+语义修订绑定当前上游 revision、递增 `revision`、更新 `updated`，并精确重置：
+
+```yaml
+approval: pending-review
+approved_revision: null
+status: pending
+```
+
+`approval: pending-review` 是审核状态，`status: pending` 是执行状态；两者必须精确保留且彼此独立。出现 Tasks 元数据错误时，在 `tasks.md` 修复这个 pending-review header，不批准 Tasks，也不修改上游文档。
 
 只有用户或 Approved Plan 对某个结果明确要求 TDD 时，才在对应 Task 中加入：
 
@@ -95,7 +111,7 @@ status: pending
 
 ## 5. 证明审核候选可用
 
-1. 把每条义务账本记录映射到至少一个 Task，并把每个 Task 反向映射到 Approved Plan。覆盖 AC、回归、迁移、删除、清理、回滚和最终 gate。
+1. 回读保存后的 `tasks.md`，再依据 artifact 和 Baseline diff 核销每项处置：把每条义务账本记录映射到至少一个 Task，并把每个 Task 反向映射到 Approved Plan；对每个保留的 Task，确认每项获授权字段修改都已落盘，且每个归为 `Keep` 的字段、heading、周边结构和 phase placement 均未改变。确认有效执行事实仍存在、废弃 Task 块和残余边已消失，且每项删除、替代或关联调整都有明确 Authority。覆盖 AC、回归、迁移、删除、清理、回滚和最终 gate。回复中的完成声明必须描述回读状态，而不是预期编辑。
 2. 在运行 CLI 前，核对精确的 pending-review header，且每个顶层 `TNNN` 都把 `Spec Coverage`、`Depends On`、`Parallel`、`Files`、`Work`、`Validation` 和 `Completion` 作为自己的字段。该字面合同不完整时，先修复 `tasks.md`。
 3. 检查 ID 唯一、DAG 无环、frontier 冲突、精确路径、接口一致性、命令可执行性、预期信号和禁止范围。
 4. 通过 `hello-scholar` 依次运行 `docs sync`、`docs check`。

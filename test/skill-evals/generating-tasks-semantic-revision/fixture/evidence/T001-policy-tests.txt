@@ -1,0 +1,5 @@
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy
+Date: 2026-08-02
+Result: OK
+Tests: 4
+Conclusion: explicit-deny precedence and tenant override behavior passed.

@@ -1,0 +1,19 @@
+{
+  "liveApprovalId": "live-generating-tasks-semantic-revision-haiku-v4-v4",
+  "liveAuthorizationBatchId": "haiku-v4-semantic-document-revision-live-authorization-batch-v4",
+  "liveAuthorizationBatchSha256": "91e0f4055f2aaacaa608ff9adcf8be9d4116a0c29e7099fc3c910c8f0b017ed1",
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "4a380a1c5954eb552c0a60e56ce528bbaa6528ec14d45a881b3ba2cea1240809",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "d357db67766dec3f2636494d6c54e1c8abd31754311d95bb861ee66d424b8150"
+    }
+  },
+  "replyEvidence": "用户明确授权不断迭代直到完成目标，并允许除最终审核外的其余授权自动通过。本记录将该 blanket execution authorization 应用于随后生成且完整 Hash 绑定的语义文档修订 Live batch；不声称用户逐字引用过后生成 Hash，也不代表接受 Live 输出。"
+}

@@ -1,0 +1,189 @@
+{
+  "proposalId": "proposal-manage-specs-semantic-revision-haiku-v4",
+  "scenarioSha256": "13805d7d7d0ab272c0db5ca176e72be6a3e667266615cb20297c5d1caabc2741",
+  "protocolSha256": "a89d521a94cc74ada7318672a3b623386fa01f7f88512ba13c35b30df30056ea",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "summary": "The pre-change manage-specs Skill selected and confirmed the correct existing owner, preserved identity and scope, and passed the approved checks, but retained a non-historical 0.62 reference in Current State alongside the active 0.68 threshold.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "manage-specs": {
+      "status": "pre-change-explicit-file",
+      "sha256": "24e09788d04e9ddd763549a2c70d682d132528051a97733ef447820f58412c1f"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "2f83895fb5b1a2376831ed6ed2daac5278feef66",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "Scenario, Protocol, Fixture, shared rubric, approved Proposal, and pre-change Skill snapshot hashes were current before dispatch.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bbf1108a81d901d03f952c8ba78b058b83494c1da8de082775757b637fc08160"}]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was synchronized, committed, and clean before round zero.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bbf1108a81d901d03f952c8ba78b058b83494c1da8de082775757b637fc08160"}]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "Initial Python tests passed with bytecode disabled.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bbf1108a81d901d03f952c8ba78b058b83494c1da8de082775757b637fc08160"}]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "Initial docs sync and docs check completed without errors.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bbf1108a81d901d03f952c8ba78b058b83494c1da8de082775757b637fc08160"}]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present before or after the run.",
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bbf1108a81d901d03f952c8ba78b058b83494c1da8de082775757b637fc08160"},
+          {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"}
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {"id": "a2a6c120320189c6f", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "ab06f18b2d61bd16d", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "existing-owner-classification",
+      "passed": true,
+      "reason": "Both Specs, current indexes, Architecture, ranking code, tests, and ownership boundaries were read before one Update Existing Spec classification for SPEC-001.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-round-0.md", "sha256": "c5216cfdff3261d98666299204f32f9af131aed01a676ea8b254138710b8eca1"},
+        {"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}
+      ]
+    },
+    {
+      "id": "identity-and-revision-transaction",
+      "passed": true,
+      "reason": "Exact identity confirmation preceded writing; SPEC-001 retained identity and created metadata while revision advanced once to a draft with concise history.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "046f5805520428b02b68ea3aec86f3d89f69234fce5cff242af823476092723c"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"}
+      ]
+    },
+    {
+      "id": "semantic-conservation",
+      "passed": false,
+      "reason": "The revision retains unaffected decisions and integrates phrase priority and 0.68, but Current State still describes the threshold as changing from 0.62, leaving obsolete non-historical text.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}]
+    },
+    {
+      "id": "scope-and-review-gate",
+      "passed": true,
+      "reason": "Only the confirmed existing Spec and generated indexes changed, and the Spec remained draft for whole-file review.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "cd8f91d314bf57314666e7a888ecb41fad75dcaa74c13508e428753e2dbed965"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"}
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited successfully.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are recorded.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-semantic-revision-baseline PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-semantic-revision-baseline node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "55d57dc2546439a9ec187a3329f07ac636061d6d19e816026b9727c6a60473bc"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "806b9e741d6d19359f1dde9c450a87ca502cc74a5b7fb337977feb6ee5ffd588", "promptSha256": "4c10c54c3005b88cefb7ffd83e4249c37a0aacf585b234c916cdf1be8f38f6a2", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "4c10c54c3005b88cefb7ffd83e4249c37a0aacf585b234c916cdf1be8f38f6a2"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "046f5805520428b02b68ea3aec86f3d89f69234fce5cff242af823476092723c"}
+        ]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-identity-confirmation", "messageSha256": "b148c193143d8fe6b54f5467a6f2c9ffe82a3c50e57ebf21df0df64aa821cefd", "promptSha256": "43c8a63bd82ede7fa38a7b455fe6cef642c19170f0158957f2299f92745760e7", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-1.md", "sha256": "43c8a63bd82ede7fa38a7b455fe6cef642c19170f0158957f2299f92745760e7"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "046f5805520428b02b68ea3aec86f3d89f69234fce5cff242af823476092723c"}
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "4c10c54c3005b88cefb7ffd83e4249c37a0aacf585b234c916cdf1be8f38f6a2"},
+        {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "046f5805520428b02b68ea3aec86f3d89f69234fce5cff242af823476092723c"}
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"existing-owner-classification": 100, "identity-and-revision-transaction": 100, "semantic-conservation": 0, "scope-and-review-gate": 100},
+      "reasons": {
+        "existing-owner-classification": "The Implementer read the required evidence and selected the one correct existing owner before writing.",
+        "identity-and-revision-transaction": "Exact approval preceded writing and all identity and lifecycle fields followed the revision transaction.",
+        "semantic-conservation": "Unaffected decisions were retained, but a material obsolete threshold reference remains outside Revision History.",
+        "scope-and-review-gate": "Only the existing Spec and generated indexes changed, and the draft remained awaiting review."
+      },
+      "evidence": {
+        "existing-owner-classification": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "identity-and-revision-transaction": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "semantic-conservation": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "scope-and-review-gate": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}]
+      },
+      "totalScore": 65
+    },
+    "userValue": {
+      "scores": {"value-visibility": 90, "audience-fit": 90, "information-design": 90, "actionability": 90, "signal-to-noise": 90},
+      "reasons": {
+        "value-visibility": "Phrase priority, 0.68, preserved boundaries, and draft status are visible, with a clarity deduction for the stale reference.",
+        "audience-fit": "Terminology and paths fit the project, but the obsolete threshold weakens precision.",
+        "information-design": "The document is compact and structured, while the conflicting current-state reference impairs Current Truth.",
+        "actionability": "The selected Spec, review state, checks, scope, and remaining semantic cleanup are identifiable.",
+        "signal-to-noise": "The document avoids template noise, but unnecessary current-versus-historical threshold duplication adds review noise."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "audience-fit": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "information-design": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "actionability": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}],
+        "signal-to-noise": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "1372e5e2958db5972d54d4874368b1160237210c3987a3501a470b647f192c04"}]
+      },
+      "totalScore": 90
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"},
+    "index": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"},
+    "workingTree": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"},
+    "untracked": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"},
+    "finalHashes": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "65eaeb3cf0166da612bf168b5094e5c4dc56ca8982ab3270ff5ffd80da4074a0"}
+  }
+}

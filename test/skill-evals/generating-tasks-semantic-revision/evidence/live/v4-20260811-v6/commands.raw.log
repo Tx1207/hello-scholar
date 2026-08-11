@@ -1,0 +1,21 @@
+$ env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v6-20260811 node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs sync
+
+docs sync: written 2, deleted 0, errors 0, notices 0
+[exit 0]
+
+$ env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v6-20260811 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+[exit 0]
+
+$ env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v6-20260811 node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 0
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/feature-policy/INDEX.md
+[exit 0]
+
+$ git -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v6-20260811 diff --check
+[exit 0]

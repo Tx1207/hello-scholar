@@ -1,0 +1,7 @@
+You are a fresh independent Haiku Reviewer for Formal Eval case `manage-specs-semantic-revision` Baseline Observation. Do not modify files.
+
+Read the Scenario, Protocol, shared user-value rubric, approved Proposal, every file in `test/skill-evals/manage-specs-semantic-revision/evidence/baseline/v4-20260811/`, the isolated final workspace `/tmp/hello-scholar-eval-manage-specs-semantic-revision-baseline`, and the pre-change snapshot `/tmp/hello-scholar-eval-snapshots/manage-specs-semantic-revision/manage-specs.md`. Implementer Agent ID is `a2a6c120320189c6f`.
+
+Compare the Base Spec from Git HEAD with the final working-tree Spec. Inspect complete interaction ordering, stop conditions, prompt projection, exact identity transaction, semantic conservation, paths/artifacts, commands, full Git states, and hard rejects. Pay particular attention to every non-historical `0.62` reference, retained public interface/return/diversity/freshness/tie/migration/rollback/evidence decision, concise history, and whether the document is one coherent Current Truth.
+
+Score every business and shared user-value dimension independently with only 0/90/100 and evidence. Recommend `control-pass` only if every hard gate and both score groups pass; otherwise `fail` with failureKind and earliest actionable owner. Return structured result, summary, hard gates, scores/reasons/evidence, interaction, tree/scope, and simultaneous defects. Do not write baseline.json or claim user acceptance.
