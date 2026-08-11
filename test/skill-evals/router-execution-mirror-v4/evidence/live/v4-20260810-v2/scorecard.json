@@ -1,0 +1,118 @@
+{
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4-v2",
+  "liveApprovalSha256": "058683381af89351bea637e6f7849346f416f611270fdd04d5ab72da5d15e721",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "using-helloscholar": {
+      "status": "current-explicit-file",
+      "sha256": "3c31607e0e8d327e3df64de9805acea2217821240f7ec147ec9095a37c9bdb47"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "transport": "Agent",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "transport": "Agent",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "current-contract-recovery",
+      "passed": false,
+      "reason": "No tracker/tool evidence proves formal recovery before implementation.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/reviewer.md",
+          "sha256": "7820fabbd226e605c85d52738994516447ecc96ea59ae6f1f14a7480cdee6e04"
+        }
+      ]
+    },
+    {
+      "id": "canonical-task-mirror",
+      "passed": false,
+      "reason": "No tracker calls or canonical T001-T007 mirror exist.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/implementer-trace.md",
+          "sha256": "56338ffe2fbd440185ce81748c82d550980b5cff14288f6562ef7908ed970bc1"
+        }
+      ]
+    },
+    {
+      "id": "frontier-synchronization",
+      "passed": false,
+      "reason": "No synchronization occurred before T004, after evidence changed, or before reporting.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/implementer-trace.md",
+          "sha256": "56338ffe2fbd440185ce81748c82d550980b5cff14288f6562ef7908ed970bc1"
+        }
+      ]
+    },
+    {
+      "id": "t004-scope-and-evidence",
+      "passed": true,
+      "reason": "T004 boundary, tests, evidence, protected tasks.md, and stop before T005 passed.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/reviewer.md",
+          "sha256": "7820fabbd226e605c85d52738994516447ecc96ea59ae6f1f14a7480cdee6e04"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both Protocol commands exited zero.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/commands.raw.log",
+          "sha256": "3bc9822e34cd57da3f951049123ad9a03237497e1cce3466c3a4836e78cb6e39"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Complete Git and final hash evidence was retained.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v2/tree.raw.log",
+          "sha256": "9e3c29bcecbbe5042a353d853ca36b60aca2ad108b1c16dab4fa8e741a9744b6"
+        }
+      ]
+    }
+  ],
+  "quality": {
+    "behavior": {
+      "scores": {
+        "current-contract-recovery": 0,
+        "canonical-task-mirror": 0,
+        "frontier-synchronization": 0,
+        "t004-scope-and-evidence": 100
+      },
+      "totalScore": 20
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "totalScore": 100
+    }
+  },
+  "evidenceRoot": "evidence/live/v4-20260810-v2"
+}

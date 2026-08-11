@@ -1,0 +1,176 @@
+{
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4-v3",
+  "liveApprovalSha256": "3ed282ebf27d46ecb425eacfa70ee5de17b2f23668e69671a64ce5ea623b5448",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "result": "pass",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "using-helloscholar": {
+      "status": "current-explicit-file",
+      "sha256": "3c31607e0e8d327e3df64de9805acea2217821240f7ec147ec9095a37c9bdb47"
+    }
+  },
+  "executionTransport": {
+    "implementer": "fresh-top-level-claude-code-cli-session",
+    "reviewer": "different-fresh-top-level-claude-code-cli-session",
+    "claudeCodeVersion": "2.1.220",
+    "modelSelector": "haiku",
+    "resolvedModel": "claude-haiku-4-5-20251001",
+    "sessionInheritance": "none",
+    "strictlySerial": true,
+    "outputFormat": "stream-json",
+    "sessionPersistence": "fresh-session-id-retained-only-for-524-resume",
+    "customizationMode": "safe-mode",
+    "trackerEvidence": "tool_use-and-matching-tool_result-events-from-raw-stream-json",
+    "trackerTools": [
+      "TaskList",
+      "TaskCreate",
+      "TaskUpdate"
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "sessionId": "471c7abc-9d68-46d4-9b71-2ca4b90a53ed",
+      "transport": "fresh-top-level-claude-code-cli-session",
+      "model": "claude-haiku-4-5-20251001",
+      "sessionInheritance": "none"
+    },
+    "reviewer": {
+      "sessionId": "d9afd838-f8fb-4876-a920-e64cda15e08a",
+      "transport": "different-fresh-top-level-claude-code-cli-session",
+      "model": "claude-haiku-4-5-20251001",
+      "sessionInheritance": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "current-contract-recovery",
+      "passed": true,
+      "reason": "Current SPEC-052 lifecycle, approved Tasks revision, T001-T003 evidence, and T004 frontier were verified before implementation.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/implementer.raw.jsonl",
+          "sha256": "4bb8000fe060ddd5060e177c024963a36f9058a0d0abaaaeaccb735dcabfe9b7"
+        },
+        {
+          "path": "evidence/live/v4-20260810-v3/reviewer.md",
+          "sha256": "c27eb670c95d9024e38bf04a5e4f2fc360af567755e918d1b612fce347e3886e"
+        }
+      ]
+    },
+    {
+      "id": "canonical-task-mirror",
+      "passed": true,
+      "reason": "Seven ordered canonical T001-T007 TaskCreate calls and successful results retained ID and goal with correct initial states.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/tracker-events.json",
+          "sha256": "3c480ade74f329d5521606722e53c416f475721d7984cb93169fcfe4553ab80d"
+        },
+        {
+          "path": "evidence/live/v4-20260810-v3/implementer.raw.jsonl",
+          "sha256": "4bb8000fe060ddd5060e177c024963a36f9058a0d0abaaaeaccb735dcabfe9b7"
+        }
+      ]
+    },
+    {
+      "id": "frontier-synchronization",
+      "passed": true,
+      "reason": "After T004 evidence and successful validation, TaskUpdate completed T004 and a final TaskList confirmed T005-T007 pending before reporting.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/tracker-events.json",
+          "sha256": "3c480ade74f329d5521606722e53c416f475721d7984cb93169fcfe4553ab80d"
+        },
+        {
+          "path": "evidence/live/v4-20260810-v3/implementer.raw.jsonl",
+          "sha256": "4bb8000fe060ddd5060e177c024963a36f9058a0d0abaaaeaccb735dcabfe9b7"
+        }
+      ]
+    },
+    {
+      "id": "t004-scope-and-evidence",
+      "passed": true,
+      "reason": "T004 boundary, tests, evidence, unchanged tasks.md, and stop before T005 passed.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/commands.raw.log",
+          "sha256": "e968b3ae8684dc4e619d2a4fdbd89635f78539fe29d2130ca1fb6468bb86b5cd"
+        },
+        {
+          "path": "evidence/live/v4-20260810-v3/tree.raw.log",
+          "sha256": "aaa6cb3380b5fc84b2929491d1723597eec8677c2b411cf6e4814e5becce3a9c"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both runner-side Protocol commands exited zero.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/commands.raw.log",
+          "sha256": "e968b3ae8684dc4e619d2a4fdbd89635f78539fe29d2130ca1fb6468bb86b5cd"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states were retained.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/tree.raw.log",
+          "sha256": "aaa6cb3380b5fc84b2929491d1723597eec8677c2b411cf6e4814e5becce3a9c"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/commands.raw.log",
+          "sha256": "e968b3ae8684dc4e619d2a4fdbd89635f78539fe29d2130ca1fb6468bb86b5cd"
+        }
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/check_execution_state.py",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810-v3/commands.raw.log",
+          "sha256": "e968b3ae8684dc4e619d2a4fdbd89635f78539fe29d2130ca1fb6468bb86b5cd"
+        }
+      ]
+    }
+  ],
+  "quality": {
+    "behavior": {
+      "scores": {
+        "current-contract-recovery": 100,
+        "canonical-task-mirror": 100,
+        "frontier-synchronization": 100,
+        "t004-scope-and-evidence": 100
+      },
+      "totalScore": 100
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "totalScore": 100
+    }
+  },
+  "evidenceRoot": "evidence/live/v4-20260810-v3"
+}

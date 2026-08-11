@@ -1,0 +1,283 @@
+{
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4",
+  "liveApprovalSha256": "b368fdd19dbf4d5ae75a3f36fc4de916ddeccf6eb2ac4c8f23d87b2c58899d86",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "using-helloscholar": {
+      "status": "current-explicit-file",
+      "sha256": "dbdc65fc28c24d2fa8a87fa40c297939390e97ecfcdb2c0b448a19c6d55cc4ac"
+    }
+  },
+  "agents": {
+    "implementer": {
+      "id": "ae80e50c76af14447",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "a100747fe8206c2f4",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "current-contract-recovery",
+      "passed": true,
+      "reason": "The Implementer read the current SPEC-052 lifecycle, approved Tasks, and T001-T003 evidence and recovered T004 as the frontier.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/reviewer.md",
+          "sha256": "78305d201031e0f41a4441a3cf4f68580f54063df99c85eaefdc89598c6f9b79"
+        }
+      ]
+    },
+    {
+      "id": "canonical-task-mirror",
+      "passed": false,
+      "reason": "The retained trace records no task/todo tracker calls, so no ordered canonical T001-T007 execution mirror existed before T004.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/implementer-trace.md",
+          "sha256": "e906b345194d6b07d79f91fa1531cb5807aa0b25853961ccb369bb581cdf39df"
+        },
+        {
+          "path": "evidence/live/v4-20260810/reviewer.md",
+          "sha256": "78305d201031e0f41a4441a3cf4f68580f54063df99c85eaefdc89598c6f9b79"
+        }
+      ]
+    },
+    {
+      "id": "frontier-synchronization",
+      "passed": false,
+      "reason": "No tracker synchronization occurred before T004 implementation, after T004 evidence changed, or before the final report.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/implementer-trace.md",
+          "sha256": "e906b345194d6b07d79f91fa1531cb5807aa0b25853961ccb369bb581cdf39df"
+        },
+        {
+          "path": "evidence/live/v4-20260810/reviewer.md",
+          "sha256": "78305d201031e0f41a4441a3cf4f68580f54063df99c85eaefdc89598c6f9b79"
+        }
+      ]
+    },
+    {
+      "id": "t004-scope-and-evidence",
+      "passed": true,
+      "reason": "T004 rejects batches above 50, accepts exactly 50, preserves prior behavior, records current evidence, leaves tasks.md unchanged, and stops before T005.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/commands.raw.log",
+          "sha256": "780e7cb9d296a9d2122f25325fb2007bcf64fa71ba5ab199bfd7a51b86e67c4e"
+        },
+        {
+          "path": "evidence/live/v4-20260810/tree.raw.log",
+          "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited zero in the isolated Fixture.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/commands.raw.log",
+          "sha256": "780e7cb9d296a9d2122f25325fb2007bcf64fa71ba5ab199bfd7a51b86e67c4e"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states were retained from the clean Fixture Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/tree.raw.log",
+          "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-router-execution-mirror-v4-live-r7ab93p1 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/commands.raw.log",
+          "sha256": "780e7cb9d296a9d2122f25325fb2007bcf64fa71ba5ab199bfd7a51b86e67c4e"
+        }
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/check_execution_state.py",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-router-execution-mirror-v4-live-r7ab93p1 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/check_execution_state.py",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/commands.raw.log",
+          "sha256": "780e7cb9d296a9d2122f25325fb2007bcf64fa71ba5ab199bfd7a51b86e67c4e"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request-and-bounded-implementation-authorization",
+        "messageSha256": "e96f1630065886c69e8b7481b8db69b2fee30d1bd3d55ea920a42befad343b8f",
+        "promptSha256": "d879d0590d7c51ffed03c4c3320bb4f0f6c14d62b05dcfe9730a38126609045a",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260810/prompt-round-0.md",
+            "sha256": "d879d0590d7c51ffed03c4c3320bb4f0f6c14d62b05dcfe9730a38126609045a"
+          },
+          {
+            "path": "evidence/live/v4-20260810/interaction.md",
+            "sha256": "f07fc99cf7b3b78296947de7777a9a6702b9c928ea559a3f7a0369b2a7c8e253"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260810/prompt-round-0.md",
+          "sha256": "d879d0590d7c51ffed03c4c3320bb4f0f6c14d62b05dcfe9730a38126609045a"
+        },
+        {
+          "path": "evidence/live/v4-20260810/interaction.md",
+          "sha256": "f07fc99cf7b3b78296947de7777a9a6702b9c928ea559a3f7a0369b2a7c8e253"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "current-contract-recovery": 100,
+        "canonical-task-mirror": 0,
+        "frontier-synchronization": 0,
+        "t004-scope-and-evidence": 100
+      },
+      "reasons": {
+        "current-contract-recovery": "The current Bundle, approved Tasks revision, prior evidence, and T004 frontier were recovered correctly.",
+        "canonical-task-mirror": "No task/todo tracker call or ordered canonical T001-T007 item set exists in the retained trace.",
+        "frontier-synchronization": "No tracker synchronization occurred before T004, after evidence changed, or before reporting.",
+        "t004-scope-and-evidence": "The size boundary, tests, evidence, protected Tasks state, and stop before T005 all passed."
+      },
+      "evidence": {
+        "current-contract-recovery": [
+          {
+            "path": "evidence/live/v4-20260810/reviewer.md",
+            "sha256": "78305d201031e0f41a4441a3cf4f68580f54063df99c85eaefdc89598c6f9b79"
+          }
+        ],
+        "canonical-task-mirror": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-trace.md",
+            "sha256": "e906b345194d6b07d79f91fa1531cb5807aa0b25853961ccb369bb581cdf39df"
+          }
+        ],
+        "frontier-synchronization": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-trace.md",
+            "sha256": "e906b345194d6b07d79f91fa1531cb5807aa0b25853961ccb369bb581cdf39df"
+          }
+        ],
+        "t004-scope-and-evidence": [
+          {
+            "path": "evidence/live/v4-20260810/reviewer.md",
+            "sha256": "78305d201031e0f41a4441a3cf4f68580f54063df99c85eaefdc89598c6f9b79"
+          }
+        ]
+      },
+      "totalScore": 40
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
+      "reasons": {
+        "value-visibility": "The final response leads with the completed T004 result and material changes.",
+        "audience-fit": "Chinese prose preserves exact project, Task, and command names.",
+        "information-design": "Changes, validation, and the deliberate stop are grouped for scanning.",
+        "actionability": "The response clearly states that tasks.md was preserved and T005 was not started.",
+        "signal-to-noise": "The report is concise and contains only implementation, evidence, and scope facts."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-final.md",
+            "sha256": "175188671610c5417888bac8807a23a2ada9d105f492d0ff5ecfdfbc4c6c13a1"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-final.md",
+            "sha256": "175188671610c5417888bac8807a23a2ada9d105f492d0ff5ecfdfbc4c6c13a1"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-final.md",
+            "sha256": "175188671610c5417888bac8807a23a2ada9d105f492d0ff5ecfdfbc4c6c13a1"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-final.md",
+            "sha256": "175188671610c5417888bac8807a23a2ada9d105f492d0ff5ecfdfbc4c6c13a1"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260810/implementer-final.md",
+            "sha256": "175188671610c5417888bac8807a23a2ada9d105f492d0ff5ecfdfbc4c6c13a1"
+          }
+        ]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/live/v4-20260810/tree.raw.log",
+      "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260810/tree.raw.log",
+      "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260810/tree.raw.log",
+      "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260810/tree.raw.log",
+      "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260810/tree.raw.log",
+      "sha256": "2e057bac07b6ecf5c39b52e2b734c07836cf24cbbac4b19e4675d36e32dfbdcc"
+    }
+  }
+}

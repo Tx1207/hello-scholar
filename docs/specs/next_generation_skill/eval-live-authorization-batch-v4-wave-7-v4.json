@@ -1,0 +1,136 @@
+{
+  "manifestVersion": 1,
+  "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v4",
+  "statusAtCreation": "pending-user-review",
+  "authorizationCount": 1,
+  "authorizationSemantics": {
+    "approvedAction": "Authorize Live Implementer and Reviewer execution for exactly the bound 1 Protocol v4 authorizations after the pending authorization records record the user's approval; do not accept Skill output.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "Every valid Red baseline.json byte sequence bound by baseline SHA-256.",
+      "Every current target Skill explicit-file tree bound by its live snapshot SHA-256.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-live-authorization-review-v4-wave-7-v4.md."
+    ],
+    "excludedMutableBytes": [
+      "live-approval.json decision and replyEvidence, which change only after the user approves this Batch ID and Batch SHA-256 while all bound inputs must remain current.",
+      "Live Scorecard and evidence bytes created only by later authorized Live execution.",
+      "Production Skill bytes beyond the explicit current snapshot hashes, which invalidate this authorization when changed."
+    ],
+    "invalidationRule": "Any change to a bound Scenario, Protocol, Fixture, Red Baseline, shared rubric, or current target Skill snapshot requires a new Live authorization Batch SHA-256 and user review before any affected Live run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "authorizations": [
+    {
+      "ordinal": 1,
+      "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4-v4",
+      "scenarioId": "router-execution-mirror-v4",
+      "caseId": "router-execution-mirror-v4",
+      "projectId": "py-batch-processor",
+      "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "authorizationRecordPath": "test/skill-evals/router-execution-mirror-v4/live-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-execution-mirror-v4/scenario.md",
+          "sha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-execution-mirror-v4/protocol.json",
+          "sha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-execution-mirror-v4/fixture",
+          "sha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589"
+        },
+        "baseline": {
+          "path": "test/skill-evals/router-execution-mirror-v4/baseline.json",
+          "sha256": "a1f903d72626722292f17ec68580094c5e999960f0f40648a4f094a372b4e480",
+          "result": "fail",
+          "failureKind": "skill-behavior"
+        }
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+      },
+      "skillSnapshots": {
+        "using-helloscholar": {
+          "status": "current-explicit-file",
+          "sha256": "3c31607e0e8d327e3df64de9805acea2217821240f7ec147ec9095a37c9bdb47"
+        }
+      },
+      "executionTransport": {
+        "implementer": "fresh-top-level-claude-code-cli-session",
+        "reviewer": "different-fresh-top-level-claude-code-cli-session",
+        "claudeCodeVersion": "2.1.220",
+        "resolvedModel": "claude-haiku-4-5-20251001",
+        "sessionInheritance": "none",
+        "strictlySerial": true,
+        "outputFormat": "stream-json",
+        "sessionPersistence": "fresh-session-id-retained-only-for-524-resume",
+        "customizationMode": "safe-mode",
+        "trackerEvidence": "tool_use-and-matching-tool_result-events-from-raw-stream-json",
+        "trackerTools": [
+          "TaskList",
+          "TaskCreate",
+          "TaskUpdate"
+        ]
+      },
+      "criticalPath": "Verify SPEC-052 and its evidence, create the complete T001-T007 tracker before beginning T004, then synchronize T004 completion after fresh validation without touching later Tasks or tasks.md."
+    }
+  ]
+}

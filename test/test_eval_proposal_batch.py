@@ -115,6 +115,7 @@ EXPECTED_FORMAL_BASELINE_BATCH_IDS = (
     "haiku-v4-wave-4-convergence-handoff",
     "haiku-v4-wave-5-explicit-workflows",
     "haiku-v4-wave-6-router",
+    "haiku-v4-wave-7-execution-mirror",
 )
 
 
@@ -366,6 +367,11 @@ def _live_authorization_records(batch: dict) -> list[dict]:
                     "rubricSha256": protocol["userValueRubric"]["sha256"],
                 },
                 "skillSnapshots": live_approval["skillSnapshots"],
+                **(
+                    {"executionTransport": live_approval["executionTransport"]}
+                    if "executionTransport" in live_approval
+                    else {}
+                ),
                 "criticalPath": protocol["criticalPath"],
             }
         )
@@ -450,6 +456,16 @@ def _render_live_authorization_review_details(manifest: dict) -> str:
         for skill, snapshot in sorted(record["skillSnapshots"].items()):
             lines.append(
                 f"- Current Skill snapshot: `{skill}` / `{snapshot['status']}` = `{snapshot['sha256']}`"
+            )
+        transport = record.get("executionTransport")
+        if transport:
+            lines.extend(
+                [
+                    f"- Implementer transport: `{transport['implementer']}`",
+                    f"- Reviewer transport: `{transport['reviewer']}`",
+                    f"- Session inheritance: `{transport['sessionInheritance']}`",
+                    f"- Raw tracker evidence: `{transport['trackerEvidence']}`",
+                ]
             )
         lines.extend(
             [
@@ -638,8 +654,8 @@ class EvalProposalBatchTests(unittest.TestCase):
         ]
         self.assertEqual(expected_skills, program.get("activeProductSkills"))
         self.assertEqual(len(expected_skills), program.get("activeProductSkillCount"))
-        self.assertEqual(37, program.get("productProposalCaseCount"))
-        self.assertEqual(36, program.get("pendingProductProposalCaseCount"))
+        self.assertEqual(38, program.get("productProposalCaseCount"))
+        self.assertEqual(37, program.get("pendingProductProposalCaseCount"))
         self.assertEqual(2, program.get("minimumDistinctProjectsPerAcceptedSkill"))
         for skill in expected_skills:
             self.assertTrue(
@@ -806,6 +822,11 @@ class EvalProposalBatchTests(unittest.TestCase):
                 "haiku-v4-spec-live-authorization-batch-v2",
                 "haiku-v4-spec-live-authorization-batch-v3",
                 "haiku-v4-spec-live-authorization-batch-v4",
+                "haiku-v4-wave-7-execution-mirror-live-authorization-v1",
+                "haiku-v4-wave-7-execution-mirror-live-authorization-v2",
+                "haiku-v4-wave-7-execution-mirror-live-authorization-v3",
+                "haiku-v4-wave-7-execution-mirror-live-authorization-v4",
+                "haiku-v4-wave-7-execution-mirror-live-authorization-v5",
             ],
             [batch.get("batchId") for batch in live_batches],
         )
@@ -815,6 +836,11 @@ class EvalProposalBatchTests(unittest.TestCase):
             historical_spec_batch,
             historical_spec_batch_v3,
             current_spec_batch,
+            historical_execution_mirror_batch,
+            execution_mirror_batch,
+            historical_top_level_execution_mirror_batch,
+            stale_top_level_execution_mirror_batch,
+            top_level_execution_mirror_batch,
         ) = live_batches
         self.assertEqual("pending-user-review", generating_tasks_batch.get("status"))
         self.assertEqual(3, generating_tasks_batch.get("protocolVersion"))
@@ -882,6 +908,85 @@ class EvalProposalBatchTests(unittest.TestCase):
         self.assertEqual(
             set(current_spec_batch["scenarioIds"]),
             set(current_spec_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            historical_execution_mirror_batch.get("status"),
+        )
+        self.assertEqual(4, historical_execution_mirror_batch.get("protocolVersion"))
+        self.assertTrue(historical_execution_mirror_batch.get("countsTowardProductSkill"))
+        self.assertEqual(
+            ["router-execution-mirror-v4"],
+            historical_execution_mirror_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(historical_execution_mirror_batch["scenarioIds"]),
+            set(historical_execution_mirror_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair", execution_mirror_batch.get("status")
+        )
+        self.assertEqual(4, execution_mirror_batch.get("protocolVersion"))
+        self.assertTrue(execution_mirror_batch.get("countsTowardProductSkill"))
+        self.assertEqual(
+            ["router-execution-mirror-v4"],
+            execution_mirror_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(execution_mirror_batch["scenarioIds"]),
+            set(execution_mirror_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            historical_top_level_execution_mirror_batch.get("status"),
+        )
+        self.assertEqual(
+            4, historical_top_level_execution_mirror_batch.get("protocolVersion")
+        )
+        self.assertTrue(
+            historical_top_level_execution_mirror_batch.get("countsTowardProductSkill")
+        )
+        self.assertEqual(
+            ["router-execution-mirror-v4"],
+            historical_top_level_execution_mirror_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(historical_top_level_execution_mirror_batch["scenarioIds"]),
+            set(
+                historical_top_level_execution_mirror_batch[
+                    "authorizationRecordPaths"
+                ]
+            ),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            stale_top_level_execution_mirror_batch.get("status"),
+        )
+        self.assertEqual(4, stale_top_level_execution_mirror_batch.get("protocolVersion"))
+        self.assertTrue(
+            stale_top_level_execution_mirror_batch.get("countsTowardProductSkill")
+        )
+        self.assertEqual(
+            ["router-execution-mirror-v4"],
+            stale_top_level_execution_mirror_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(stale_top_level_execution_mirror_batch["scenarioIds"]),
+            set(stale_top_level_execution_mirror_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "completed-pending-user-review",
+            top_level_execution_mirror_batch.get("status"),
+        )
+        self.assertEqual(4, top_level_execution_mirror_batch.get("protocolVersion"))
+        self.assertTrue(top_level_execution_mirror_batch.get("countsTowardProductSkill"))
+        self.assertEqual(
+            ["router-execution-mirror-v4"],
+            top_level_execution_mirror_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(top_level_execution_mirror_batch["scenarioIds"]),
+            set(top_level_execution_mirror_batch["authorizationRecordPaths"]),
         )
         for live_batch in live_batches:
             self.assertTrue(set(live_batch["scenarioIds"]).issubset(baseline_ids))

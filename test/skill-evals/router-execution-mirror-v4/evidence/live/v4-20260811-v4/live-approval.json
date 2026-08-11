@@ -1,0 +1,36 @@
+{
+  "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4-v4",
+  "liveAuthorizationBatchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v4",
+  "liveAuthorizationBatchSha256": "f92f09bbe94cc9949e6065966633286a03cec6ec09e43bdd5b6b90503d9e838a",
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "a1f903d72626722292f17ec68580094c5e999960f0f40648a4f094a372b4e480",
+  "skillSnapshots": {
+    "using-helloscholar": {
+      "status": "current-explicit-file",
+      "sha256": "3c31607e0e8d327e3df64de9805acea2217821240f7ec147ec9095a37c9bdb47"
+    }
+  },
+  "executionTransport": {
+    "implementer": "fresh-top-level-claude-code-cli-session",
+    "reviewer": "different-fresh-top-level-claude-code-cli-session",
+    "claudeCodeVersion": "2.1.220",
+    "resolvedModel": "claude-haiku-4-5-20251001",
+    "sessionInheritance": "none",
+    "strictlySerial": true,
+    "outputFormat": "stream-json",
+    "sessionPersistence": "fresh-session-id-retained-only-for-524-resume",
+    "customizationMode": "safe-mode",
+    "trackerEvidence": "tool_use-and-matching-tool_result-events-from-raw-stream-json",
+    "trackerTools": [
+      "TaskList",
+      "TaskCreate",
+      "TaskUpdate"
+    ]
+  },
+  "replyEvidence": "用户在展示唯一待批准 Batch ID 与 SHA-256 后回复‘批准继续处理’，批准 haiku-v4-wave-7-execution-mirror-live-authorization-v4 / f92f09bbe94cc9949e6065966633286a03cec6ec09e43bdd5b6b90503d9e838a。"
+}

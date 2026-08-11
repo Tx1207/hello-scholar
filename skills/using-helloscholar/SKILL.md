@@ -47,11 +47,12 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-too
 
 ## Task Continuation
 
-Route progress, completion status, remaining work, or continuation requests to the current Task state, not `converge-to-spec`.
+Route progress, completion status, remaining work, or continuation requests to the current Task state, not `converge-to-spec`. The first platform-tracker write belongs to Mirror, after Resolve and Verify identify the canonical Tasks, and establishes their complete execution mirror.
 
 - **Resolve:** after same-session compaction, resume TodoWrite. In a new conversation, read `hello-scholar/specs/INDEX.md`; a named Bundle only selects the target. Otherwise use the lifecycle gate `accepted / Current / approved / pending|in-progress / incomplete`: one candidate resumes, many wait for a choice, and none stops. Do not guess by time or file order.
 - **Verify:** read the target `tasks.md`; all INDEX gates must still hold and `approved_revision` must equal `revision`. Report and stop on failure. Otherwise report the Bundle, Tasks Revision, and frontier (the first unblocked unchecked Task). A switch changes only the current execution context; only explicit cancellation sets the old Bundle to `cancelled` and excludes it from recovery.
-- **Execute:** after the current request explicitly authorizes implementation, continue the frontier by `Depends On` and track it in TodoWrite. Once all required Tasks have Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
+- **Mirror:** Immediately after Verify, the current main Agent makes the platform tracker the **execution mirror** of `tasks.md`. In Claude Code, use TaskList to recover items, TaskCreate for missing items, and TaskUpdate for status; TodoWrite names the equivalent tracker on other platforms. Every canonical `TNNN` Task appears exactly once in document order with its Task ID and goal: evidence-backed Tasks are `completed`, the active Task is `in_progress`, and other incomplete Tasks are `pending`. Phase summaries or temporary Work substeps never replace these items. Do not begin implementation before the complete mirror exists.
+- **Execute:** after the current request explicitly authorizes implementation, continue the frontier by `Depends On`. Synchronize the mirror after its evidence changes, whenever the frontier changes, and before every progress or completion report; if synchronization fails, stop and report the blocker. Once all required Tasks have Validation and Completion evidence, update `tasks.md` once—checkboxes, `status: completed`, and `updated`—then run `hello-scholar docs sync` once.
 
 ## Architecture Reminder
 
