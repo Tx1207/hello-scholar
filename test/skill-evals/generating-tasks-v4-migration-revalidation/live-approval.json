@@ -1,0 +1,19 @@
+{
+  "liveApprovalId": "live-generating-tasks-v4-migration-revalidation-haiku-v1",
+  "liveAuthorizationBatchId": "haiku-v4-generating-tasks-revalidation-live-authorization-v1",
+  "liveAuthorizationBatchSha256": "bd10f643fd2a9197712c1904c3e83e3b5dfbfb69ae5da1851186646b75ddfac4",
+  "proposalId": "proposal-generating-tasks-v4-migration-revalidation-haiku",
+  "scenarioSha256": "f93f77f40a3b78671f7aa3dc77ffb40cd25fff04a79e7e88c847d32e15d59032",
+  "protocolSha256": "b7ef1a72588a4c42001fe8fb628b49c4552f9195940d4cc47ca026c7bab467a8",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "302125f860a9f508ec2dbca5b1d3d8dc25a68a729d10ba613a8bfa028d59d0da",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "f3cdb7d2d6f341ac2d9d4b2a6df7505889d2243334c6ce2f66209a7912aacfe8"
+    }
+  },
+  "replyEvidence": "用户在批准 stale-snapshot revalidation 后明确要求直接运行、由当前会话自行完成审核且不再为中间阶段反复询问。本记录将该 blanket execution authorization 应用于随后由两份真实 Red Baseline 产生并完整 Hash 绑定的 generating-tasks successor Live Batch；不声称用户逐字引用过该后生成 Hash，也不代表接受 Live 输出。"
+}

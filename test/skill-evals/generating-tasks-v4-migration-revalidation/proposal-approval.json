@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-generating-tasks-v4-migration-revalidation-haiku",
+  "decision": "approved",
+  "scenarioSha256": "f93f77f40a3b78671f7aa3dc77ffb40cd25fff04a79e7e88c847d32e15d59032",
+  "protocolSha256": "b7ef1a72588a4c42001fe8fb628b49c4552f9195940d4cc47ca026c7bab467a8",
+  "fixtureSha256": "776e8dad7591a35621d54eb7234a9c382f87256be98c10775b66a2c51ed3b18e",
+  "replyEvidence": "用户已批准 haiku-v4-wave-7-stale-snapshots / 4f339f0e380bb06de4d9e763aa8490be1cdee4e231cd8143ce1d0aaf4b2a7aa6，并在 2026-08-10 明确回复：批准，直接运行，我想直接看结果，你自己通过审核就行，不需要一直停下来问我。本记录只授权绑定输入的严格串行 Baseline，不代表接受其输出。"
+}

@@ -4,3 +4,4 @@
 /.worktrees/
 /runs/
 /.claude
+/test/__pycache__/

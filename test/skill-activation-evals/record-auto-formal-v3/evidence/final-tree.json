@@ -1,0 +1,90 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b"
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "8c41e1e7c47e246396518380872e39fed19f03c1bb710ab53fb94249ebb29999"
+  },
+  {
+    "path": "benchmark/config.json",
+    "sha256": "0574f73f986213d3e6e72fa5340df5ccb515a0c13a582b08ddbab0532f846b84"
+  },
+  {
+    "path": "benchmark/request-trace.json",
+    "sha256": "9687a7ed639d364244d3d74a5efbcb078bae90bf2f141c446e6c1c5efcb9961c"
+  },
+  {
+    "path": "hello-scholar/architecture.md",
+    "sha256": "3926409473af008f11263199c844503ffa07ce3108757d1cc938640fca72f42c"
+  },
+  {
+    "path": "hello-scholar/specs/INDEX.md",
+    "sha256": "840ce153fd255ab64446e93b57ee1d2d89d33535874c9066ebb002b4bb956618"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/INDEX.md",
+    "sha256": "419489fd865423480c7b44d2b2bd7dbccf5250b4d5caea427c13b7b1975a4e92"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/plan.md",
+    "sha256": "e1a408b167cd0d4d2059d44aca935e7e683640ffda22cb09bb80cdefbbd96ab2"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/spec.md",
+    "sha256": "2477a0579338e717d62aa747658b389f222e1d85d52d63a843f23b4debec8ecc"
+  },
+  {
+    "path": "hello-scholar/specs/cache-admission/SPEC-021-cache-hit-rate/tasks.md",
+    "sha256": "1032bcf2fe5d4b22931f7bcc1077a7ed78755898a2bb1531cfe440374379510c"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/.launch-sentinel",
+    "sha256": "9247a0083fe80a5fa3e9d4bb8b3f2f0ce0a4b565dfdfd909f7e0be2f0d445111"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/logs/benchmark.log",
+    "sha256": "16778221e0a644694be08b980f916b788ff8e3a8319e7e70b9e54833ff6df2d1"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/logs/stderr.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/logs/stdout.log",
+    "sha256": "d20f209353d61cf753b1f9a1e6dcb50db3ff12fca7f9bee0fb15cf34c0d3bebd"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/outputs/process-start.json",
+    "sha256": "338cb3ea32d3407a008a453aec06a4d521a03abb817474934fc5b361458c747d"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/record.md",
+    "sha256": "5857fc4343e50550947d5bd1edc4d226a8899d0e0106de2bc63b26ab6d85fa72"
+  },
+  {
+    "path": "runs/20260811-0648-cache-admission-s17/results/metrics.json",
+    "sha256": "c53088163c0bd16b5cd6ce570e768b009e55ff0abb20831127fdc051b0cfb359"
+  },
+  {
+    "path": "runs/INDEX.md",
+    "sha256": "b3e48121cd45f01407079aff69c33a4e47c2fec4d098ffbdf542df7264f20e59"
+  },
+  {
+    "path": "scripts/benchmark_cache.py",
+    "sha256": "ca3c1e57ef2cb2ca632267606fb6297efdbd2b70c3ad834f5250c79920361219"
+  },
+  {
+    "path": "scripts/verify_formal_run.py",
+    "sha256": "4c6f5303ea101bb08a7e30dc28c6f018f6b9994b32d735c758ef08babfad1390"
+  },
+  {
+    "path": "src/cache_model.py",
+    "sha256": "cb5ae4508e95581e021bef709de079782283242e132888c53e8a38fd119420f9"
+  },
+  {
+    "path": "tests/test_cache_model.py",
+    "sha256": "fe8e24b15e0137f350aa46924fec5a04d0356ccfd340dbcf8a14cd5dff78b47d"
+  }
+]

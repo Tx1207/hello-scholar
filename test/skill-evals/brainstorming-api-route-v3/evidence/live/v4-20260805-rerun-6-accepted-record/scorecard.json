@@ -1,0 +1,138 @@
+{
+  "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
+  "liveApprovalId": "live-brainstorming-api-route-v3-haiku-v4-rerun-3",
+  "liveApprovalSha256": "642dc09dfa9409b068e31cdc63a166e5bdf7e20feb8e8503c9ddce85ec6d2568",
+  "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
+  "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
+  "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
+  "result": "pass",
+  "userDecision": "accepted",
+  "skillSnapshots": {
+    "brainstorming": {"status": "current-explicit-file", "sha256": "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"},
+    "manage-specs": {"status": "current-explicit-file", "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"},
+    "writing-plans": {"status": "current-explicit-file", "sha256": "b2d467994de3690321a9a2951137bd029b0eb6e6ee063253e6f1ea0b6d544e05"}
+  },
+  "agents": {
+    "implementer": {"id": "a69def8f912fbe13b", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a010f837bbec9cc68", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "dialogue-and-alternatives", "passed": true,
+      "reason": "Project and caller evidence preceded exactly one material API question and a three-way comparison with a synchronous recommendation.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+    },
+    {
+      "id": "whole-spec-review", "passed": true,
+      "reason": "One complete seven-core-section Spec was reviewed as a whole before any project write.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+    },
+    {
+      "id": "api-spec-identity", "passed": true,
+      "reason": "The approved independent identity is exactly SPEC-014-public-batch-retrieval-api; the draft, ordered 100-item per-item contract, and generated Indexes are complete.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+    },
+    {
+      "id": "planning-handoff", "passed": true,
+      "reason": "The self-reviewed draft transitioned to writing-plans by naming its owner and inputs without a Plan, Tasks, or implementation.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Every approved Protocol command exited successfully with an explicit Fixture working directory.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 npm test",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa", "promptSha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-0.md", "sha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-clarification-answer", "messageSha256": "2b0ffe0d67ce7ba22c56c50096fee2acbb9ac6a55ed12f48389aae91ddae588f", "promptSha256": "744dad4227e6706f7c359e741d388a4ba705f00fb7394bafbff33e8a0a3cbfb6", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-1.md", "sha256": "744dad4227e6706f7c359e741d388a4ba705f00fb7394bafbff33e8a0a3cbfb6"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-approach-selection", "messageSha256": "0b9891221a348a27617aca1dd2092f5052fbc1d66df7ea6b4e1b3018c2f01429", "promptSha256": "4846685f3d81cd68195f55ac576a9a24b232db8949a8712d6a4bc9503727a1f6", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-2.md", "sha256": "4846685f3d81cd68195f55ac576a9a24b232db8949a8712d6a4bc9503727a1f6"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-spec-identity-decision", "messageSha256": "11837edab2e0cea0ce56a07954985c8d14926b38561d5531c00e0bb31a731732", "promptSha256": "45c890499ddcc2f4870d4464f5917b7ba74875a71ed35fbeb30198f6000f8784", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-3.md", "sha256": "45c890499ddcc2f4870d4464f5917b7ba74875a71ed35fbeb30198f6000f8784"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-whole-spec-approval", "messageSha256": "9758799ef19678741a628ec8bf594874cf6b1201efbd315a3cd1331f431b9204", "promptSha256": "bc97c8ece01d07b5dfd4bb00b570e130b508700269c83534e87b29e0cadef38c", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-4.md", "sha256": "bc97c8ece01d07b5dfd4bb00b570e130b508700269c83534e87b29e0cadef38c"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-0.md", "sha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"dialogue-and-alternatives": 100, "whole-spec-review": 100, "api-spec-identity": 100, "planning-handoff": 100},
+      "reasons": {
+        "dialogue-and-alternatives": "Repository facts, one material question, three alternatives, and the synchronous recommendation all passed.",
+        "whole-spec-review": "One complete seven-core-section Spec was presented as a whole review unit before writing.",
+        "api-spec-identity": "The exact independent identity and approved draft contract are complete.",
+        "planning-handoff": "The saved draft was self-reviewed and handed to writing-plans without creating Plan, Tasks, or implementation."
+      },
+      "evidence": {
+        "dialogue-and-alternatives": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "whole-spec-review": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "api-spec-identity": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "planning-handoff": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      },
+      "totalScore": 100.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {
+        "value-visibility": "The chosen contract, its value, and exact artifact are immediately visible.",
+        "audience-fit": "Chinese interaction retains exact project and API terminology.",
+        "information-design": "Alternatives, whole Spec, verification, and handoff are organized around decisions.",
+        "actionability": "The 100-item contract, validations, and planning inputs are explicit.",
+        "signal-to-noise": "The interaction and Spec stay focused on the approved batch capability."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "information-design": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "actionability": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
+    "index": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
+    "workingTree": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
+    "untracked": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
+    "finalHashes": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"}
+  }
+}
