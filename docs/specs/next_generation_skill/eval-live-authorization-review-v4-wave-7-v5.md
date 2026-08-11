@@ -1,6 +1,6 @@
 # Execution Mirror Haiku v4 Plugin-loaded Live authorization v5
 
-- Status: `completed-pending-user-review`
+- Status: `historical-stale-after-skill-repair`
 - Batch ID: `haiku-v4-wave-7-execution-mirror-live-authorization-v5`
 - Batch SHA-256: `sha256:bbc79d4d57423923d3f9c67c817ea947b1c89a2e042849d2ee41dc49b2100de5`
 - Manifest: [`eval-live-authorization-batch-v4-wave-7-v5.json`](./eval-live-authorization-batch-v4-wave-7-v5.json)

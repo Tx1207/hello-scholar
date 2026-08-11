@@ -1,7 +1,7 @@
 {
-  "liveApprovalId": "live-manage-specs-successor-v3-haiku-v4-rerun-4",
-  "liveAuthorizationBatchId": "haiku-v4-spec-live-authorization-batch-v4",
-  "liveAuthorizationBatchSha256": "7b98814052572680aeaed1f5e1199e190d3862e34d9cca903566ca546465fedd",
+  "liveApprovalId": "live-manage-specs-successor-v3-current-snapshot-v1",
+  "liveAuthorizationBatchId": "haiku-v4-stale-snapshot-live-authorization-v1",
+  "liveAuthorizationBatchSha256": "34c1b95309d29c413b593b97cf4a8d9df73608dc0513d32eb42933e049712684",
   "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
   "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
   "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
@@ -12,8 +12,8 @@
   "skillSnapshots": {
     "manage-specs": {
       "status": "current-explicit-file",
-      "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"
+      "sha256": "4fd6d260c35c8ccb5f19b05cb25df452946137cc18a13571527baee007b75f53"
     }
   },
-  "replyEvidence": "用户已明确授权持续执行 Formal Eval，不需为逐批生成的 Hash 停下来等待审核，并授权最多三个 Haiku Eval Agent 并行。本记录将该 blanket execution authorization 应用于随后生成且完整 Hash 绑定的 haiku-v4-spec-live-authorization-batch-v4；不声称用户逐字引用过该后生成 Hash，也不代表接受 Live 输出。"
+  "replyEvidence": "用户已批准 haiku-v4-stale-snapshot-live-authorization-v1 / 34c1b95309d29c413b593b97cf4a8d9df73608dc0513d32eb42933e049712684，并在 2026-08-10 明确回复：批准，直接运行，我想直接看结果，你自己通过审核就行，不需要一直停下来问我。本记录授权绑定当前 Skill snapshot 的严格串行 Live Eval，不代表接受其输出。"
 }

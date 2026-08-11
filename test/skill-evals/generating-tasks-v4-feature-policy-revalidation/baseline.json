@@ -1,0 +1,347 @@
+{
+  "proposalId": "proposal-generating-tasks-v4-feature-policy-revalidation-haiku",
+  "scenarioSha256": "a4a639c1e740b0c050049de820e570acac677d6405d8ebb924ef98c0077266bf",
+  "protocolSha256": "239cba58666ea63762aeea582b0eac3dd1469376504129bccb91d879b20825fb",
+  "fixtureSha256": "552900ceea3fd669cf55a785143a6e1cc583645a28863365ab74afc286f21315",
+  "result": "fail",
+  "summary": "With generating-tasks intentionally absent, the Implementer produced an invalid Tasks document that omitted required metadata and per-Task fields; the required docs check exited 1 with seven errors.",
+  "failureKind": "skill-behavior",
+  "baselineSkillSnapshots": {
+    "generating-tasks": {
+      "status": "absent",
+      "sha256": null
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "88381176183cdbf375182e762529ed4e06893355",
+    "checks": [
+      {
+        "id": "fixture-input-hash",
+        "passed": true,
+        "reason": "The Fixture tree hash matched the approved Proposal binding before the isolated copy was used.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/environment.md",
+            "sha256": "d1826c74f844e827824ca3a388edba7878814bce543d733c13a1139745692c2a"
+          }
+        ]
+      },
+      {
+        "id": "clean-base",
+        "passed": true,
+        "reason": "The copied Fixture was synchronized, checked, tested, committed, and clean before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/environment.md",
+            "sha256": "d1826c74f844e827824ca3a388edba7878814bce543d733c13a1139745692c2a"
+          },
+          {
+            "path": "evidence/baseline/v4-20260811/preflight.raw.log",
+            "sha256": "0561dea417cf7d012bc24a458468a3fa662de92063943404abc55aad5f956ab6"
+          }
+        ]
+      },
+      {
+        "id": "initial-tests",
+        "passed": true,
+        "reason": "The initial Python test suite passed with bytecode writes disabled before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/preflight.raw.log",
+            "sha256": "0561dea417cf7d012bc24a458468a3fa662de92063943404abc55aad5f956ab6"
+          }
+        ]
+      },
+      {
+        "id": "initial-docs-check",
+        "passed": true,
+        "reason": "The initial absolute docs check passed after indexes were generated and before the Implementer ran.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/preflight.raw.log",
+            "sha256": "0561dea417cf7d012bc24a458468a3fa662de92063943404abc55aad5f956ab6"
+          }
+        ]
+      },
+      {
+        "id": "runtime-artifact-cleanliness",
+        "passed": true,
+        "reason": "No excluded runtime artifacts were present before the first prompt.",
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/environment.md",
+            "sha256": "d1826c74f844e827824ca3a388edba7878814bce543d733c13a1139745692c2a"
+          }
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {
+      "id": "112d3419-7856-4de2-a94a-22cb10a5ee64",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "d249281d-c073-44ff-9133-745e8f1beb62",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
+  },
+  "hardGates": [
+    {
+      "id": "task-document-contract",
+      "passed": false,
+      "reason": "The generated tasks.md uses status draft, omits required revision and approval metadata, and omits required per-Task Spec Coverage and Parallel sections.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/reviewer.md",
+          "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+        },
+        {
+          "path": "evidence/baseline/v4-20260811/commands.raw.log",
+          "sha256": "f1ed68a184d17c491a023c7f76c2316c03ec36b9350c501a0b1a1be64887ab57"
+        }
+      ]
+    },
+    {
+      "id": "coverage-and-dependencies",
+      "passed": true,
+      "reason": "The Reviewer found complete AC, migration, caller-update, cleanup, rollback, regression, and acyclic dependency coverage.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/reviewer.md",
+          "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+        }
+      ]
+    },
+    {
+      "id": "validation-and-tdd-boundary",
+      "passed": true,
+      "reason": "The Reviewer found executable validations and the approved TDD sequence only on Task 1.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/reviewer.md",
+          "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+        }
+      ]
+    },
+    {
+      "id": "scope-discipline",
+      "passed": true,
+      "reason": "The complete final tree shows only the allowed Bundle-local tasks.md as a new file.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/reviewer.md",
+          "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+        },
+        {
+          "path": "evidence/baseline/v4-20260811/tree.raw.log",
+          "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+        }
+      ]
+    },
+    {
+      "id": "protocol-commands-pass",
+      "passed": false,
+      "reason": "The Python suite passed, but the required absolute docs check exited 1 with seven document-contract errors.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/commands.raw.log",
+          "sha256": "f1ed68a184d17c491a023c7f76c2316c03ec36b9350c501a0b1a1be64887ab57"
+        }
+      ]
+    },
+    {
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "The saved evidence covers committed, index, working-tree, untracked, final-hash, runtime-artifact, and whitespace states from the recorded Base commit.",
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/tree.raw.log",
+          "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/commands.raw.log",
+          "sha256": "f1ed68a184d17c491a023c7f76c2316c03ec36b9350c501a0b1a1be64887ab57"
+        }
+      ]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check",
+      "exitCode": 1,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/commands.raw.log",
+          "sha256": "f1ed68a184d17c491a023c7f76c2316c03ec36b9350c501a0b1a1be64887ab57"
+        }
+      ]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "7a1be793a1fa4ad09b285c1522bc5bd11b316451400a5d2518e889cbe0c40846",
+        "promptSha256": "e6ad451f701a2f7c8dcf5d4fc08aada27d00a53dea0eb2374bc28d43da8e97ce",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/baseline/v4-20260811/prompt-round-0.md",
+            "sha256": "e6ad451f701a2f7c8dcf5d4fc08aada27d00a53dea0eb2374bc28d43da8e97ce"
+          },
+          {
+            "path": "evidence/baseline/v4-20260811/interaction.md",
+            "sha256": "4fff1fb5a439af130993dc2e99176cc3e9cc0d05854d53b4f6fa3732f494b10e"
+          },
+          {
+            "path": "evidence/baseline/v4-20260811/implementer-stream.jsonl",
+            "sha256": "06b27283a21d714f8793dcc6c82d7165d847ef3012152e647feb128cbb1c6ef1"
+          }
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {
+          "path": "evidence/baseline/v4-20260811/prompt-round-0.md",
+          "sha256": "e6ad451f701a2f7c8dcf5d4fc08aada27d00a53dea0eb2374bc28d43da8e97ce"
+        },
+        {
+          "path": "evidence/baseline/v4-20260811/interaction.md",
+          "sha256": "4fff1fb5a439af130993dc2e99176cc3e9cc0d05854d53b4f6fa3732f494b10e"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {
+        "task-document-contract": 0,
+        "coverage-and-dependencies": 90,
+        "validation-and-tdd-boundary": 90,
+        "scope-discipline": 100
+      },
+      "reasons": {
+        "task-document-contract": "The generated tasks.md used status draft, omitted the required revision and approval fields, and omitted required per-Task Spec Coverage and Parallel sections.",
+        "coverage-and-dependencies": "The Reviewer found AC-1 through AC-4, migration, caller update, cleanup, rollback, regression, and an acyclic dependency sequence, with only a minor standalone-field presentation defect outside this dimension.",
+        "validation-and-tdd-boundary": "Every Task includes executable validation and observable signals, and the Plan-selected Red-Green-Refactor sequence appears only in Task 1; the material docs-check failure is accounted for by the document-contract gate.",
+        "scope-discipline": "The complete tree evidence shows only the allowed Bundle-local tasks.md as a new file, with no implementation or upstream document changes."
+      },
+      "evidence": {
+        "task-document-contract": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "coverage-and-dependencies": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "validation-and-tdd-boundary": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ]
+      },
+      "totalScore": 69
+    },
+    "userValue": {
+      "scores": {
+        "value-visibility": 0,
+        "audience-fit": 90,
+        "information-design": 0,
+        "actionability": 0,
+        "signal-to-noise": 90
+      },
+      "reasons": {
+        "value-visibility": "The final reply did not disclose that the delivered document fails the required docs check with seven errors.",
+        "audience-fit": "The response is concise Chinese and preserves the paths, AC, TDD, and verification terminology needed by the user.",
+        "information-design": "The retained tasks document lacks required metadata and standard per-Task fields and cannot pass the project document checker.",
+        "actionability": "Although the response stops for review, the invalid Tasks artifact cannot serve as an approved continuation point without repair.",
+        "signal-to-noise": "The final response is concise and relevant, with the main defect being omitted failure evidence rather than excess narration."
+      },
+      "evidence": {
+        "value-visibility": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/baseline/v4-20260811/reviewer.md",
+            "sha256": "2931fe7021e355ba004c5506713839be0b4388a2f8c02b0cf37a805dad99da5a"
+          }
+        ]
+      },
+      "totalScore": 36
+    }
+  },
+  "diffEvidence": {
+    "committed": {
+      "path": "evidence/baseline/v4-20260811/tree.raw.log",
+      "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+    },
+    "index": {
+      "path": "evidence/baseline/v4-20260811/tree.raw.log",
+      "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+    },
+    "workingTree": {
+      "path": "evidence/baseline/v4-20260811/tree.raw.log",
+      "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+    },
+    "untracked": {
+      "path": "evidence/baseline/v4-20260811/tree.raw.log",
+      "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+    },
+    "finalHashes": {
+      "path": "evidence/baseline/v4-20260811/tree.raw.log",
+      "sha256": "e6c355c98251aa0dbac224d33ea4274d1459927250f0227017343593799f8045"
+    }
+  }
+}

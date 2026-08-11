@@ -1,0 +1,68 @@
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 1
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/feature-policy/INDEX.md
+notice tasks-missing hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: Spec SPEC-003 has no Tasks
+[exit 0]
+
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 1
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/feature-policy/INDEX.md
+notice tasks-missing hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md: Spec SPEC-003 has no Tasks
+[exit 0]
+
+$ python3 -B -m unittest discover -s tests
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+[exit 0]
+
+$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /tmp/hello-scholar-eval-generating-tasks-v4-feature-policy-revalidation-live-20260811/.git/
+[exit 0]
+
+$ git config user.name "Hello Scholar Eval"
+[exit 0]
+
+$ git config user.email eval@hello-scholar.local
+[exit 0]
+
+$ git add -A
+[exit 0]
+
+$ git commit -m "Initialize formal eval fixture"
+[master (root-commit) ea16834] Initialize formal eval fixture
+ 8 files changed, 164 insertions(+)
+ create mode 100644 AGENTS.md
+ create mode 100644 hello-scholar/architecture.md
+ create mode 100644 hello-scholar/specs/INDEX.md
+ create mode 100644 hello-scholar/specs/feature-policy/INDEX.md
+ create mode 100644 hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+ create mode 100644 hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+ create mode 100644 src/policy.py
+ create mode 100644 tests/test_policy.py
+[exit 0]
+
+$ git diff --check HEAD
+[exit 0]
+
+$ git status --porcelain=v1 -uall
+[exit 0]
+
+$ git rev-parse HEAD
+ea16834677e4834cfd9ead9e1cccc5b9016f2133
+[exit 0]
+

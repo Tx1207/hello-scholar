@@ -1,138 +1,507 @@
 {
   "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
-  "liveApprovalId": "live-brainstorming-api-route-v3-haiku-v4-rerun-3",
-  "liveApprovalSha256": "642dc09dfa9409b068e31cdc63a166e5bdf7e20feb8e8503c9ddce85ec6d2568",
+  "liveApprovalId": "live-brainstorming-api-route-v3-current-snapshot-v1",
+  "liveApprovalSha256": "3e2fd7e84d7668c373b12ee3925342a1b24b63728a57535652ffe783f962e3e8",
   "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
   "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
   "fixtureSha256": "3c99678936692158ab5a69adfccbdd170e6f11f8e25cbcd4eabd1806779fb457",
   "result": "pass",
-  "userDecision": "accepted",
+  "userDecision": "pending",
   "skillSnapshots": {
-    "brainstorming": {"status": "current-explicit-file", "sha256": "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"},
-    "manage-specs": {"status": "current-explicit-file", "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"},
-    "writing-plans": {"status": "current-explicit-file", "sha256": "b2d467994de3690321a9a2951137bd029b0eb6e6ee063253e6f1ea0b6d544e05"}
+    "brainstorming": {
+      "status": "current-explicit-file",
+      "sha256": "c4094a8328a5d597a5bd0c634c05cf3dd6e15f2ac6f1e114019108acb611f46e"
+    },
+    "manage-specs": {
+      "status": "current-explicit-file",
+      "sha256": "4fd6d260c35c8ccb5f19b05cb25df452946137cc18a13571527baee007b75f53"
+    },
+    "writing-plans": {
+      "status": "current-explicit-file",
+      "sha256": "030228fe933008abe406dbf14124f8bd5b9761a75f3ef8917b381f3117f30bab"
+    }
   },
   "agents": {
-    "implementer": {"id": "a69def8f912fbe13b", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
-    "reviewer": {"id": "a010f837bbec9cc68", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+    "implementer": {
+      "id": "44868113-7303-4c1e-bb5e-1bd6b48a26dd",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    },
+    "reviewer": {
+      "id": "07458333-d74a-4f99-b185-d70868434b36",
+      "model": "claude-haiku-4-5-20251001",
+      "forkTurns": "none"
+    }
   },
   "hardGates": [
     {
-      "id": "dialogue-and-alternatives", "passed": true,
-      "reason": "Project and caller evidence preceded exactly one material API question and a three-way comparison with a synchronous recommendation.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      "id": "dialogue-and-alternatives",
+      "passed": true,
+      "reason": "Project, caller, and interface facts preceded one material question; all three requested approaches were compared before the ordered per-item synchronous recommendation.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0.md",
+          "sha256": "b6ffe8404a52ee117f0a845ff884448843772bae3d463a7ceda5f098a7b58318"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1.md",
+          "sha256": "f99e1386fed613cbdadaab63fa8d8049701d8089d65f6006b9d961968a62d2aa"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+        }
+      ]
     },
     {
-      "id": "whole-spec-review", "passed": true,
-      "reason": "One complete seven-core-section Spec was reviewed as a whole before any project write.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      "id": "whole-spec-review",
+      "passed": true,
+      "reason": "One complete seven-core-section Spec with material conditional sections was presented as one review unit, and no project write occurred before exact whole-document approval.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-3.md",
+          "sha256": "e9cf8f9fa733b11f2c8eea0a3188679ab18d6a00808e8d948aa1c2f7bf127a12"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+        }
+      ]
     },
     {
-      "id": "api-spec-identity", "passed": true,
-      "reason": "The approved independent identity is exactly SPEC-014-public-batch-retrieval-api; the draft, ordered 100-item per-item contract, and generated Indexes are complete.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      "id": "api-spec-identity",
+      "passed": true,
+      "reason": "manage-specs classified an independent identity, stopped read-only, and after both approvals produced draft SPEC-014 at the exact canonical path with current CLI-generated indexes.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-2.md",
+          "sha256": "d1a04fa8df8789461ca0c5498e0378988f9a0bd8e8bb3eb6acf1fa51bd7510bf"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+          "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/specs-INDEX.md",
+          "sha256": "d2dd38b117548a415fbd19fbfd956a28533061c54e29fe0a09a13673e6ce5f7e"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/batch-retrieval-INDEX.md",
+          "sha256": "2f86481dd8cd7ffee82fb4bbacf5e31621ee61dbbc137ab4b69db5c81569a28c"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+        }
+      ]
     },
     {
-      "id": "planning-handoff", "passed": true,
-      "reason": "The self-reviewed draft transitioned to writing-plans by naming its owner and inputs without a Plan, Tasks, or implementation.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+      "id": "planning-handoff",
+      "passed": true,
+      "reason": "The reviewed draft was written, checked, self-reviewed, and handed to writing-plans by owner and input without creating Plan, Tasks, or implementation.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+          "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+          "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+        }
+      ]
     },
     {
-      "id": "protocol-commands-pass", "passed": true,
-      "reason": "Every approved Protocol command exited successfully with an explicit Fixture working directory.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+      "id": "protocol-commands-pass",
+      "passed": true,
+      "reason": "Both approved Protocol commands exited 0 and docs check reported zero errors.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "35194abaa6205c140139576fbdcde642c66eae2671fa7a9bcba1b260dfe010ba"
+        }
+      ]
     },
     {
-      "id": "base-to-final-evidence", "passed": true,
-      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"}]
+      "id": "base-to-final-evidence",
+      "passed": true,
+      "reason": "Evidence records committed, index, working-tree, untracked, final-hash, runtime-artifact, and whitespace states from the clean Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+          "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+        }
+      ]
     }
   ],
   "commands": [
     {
       "command": "npm test",
-      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 npm test",
+      "executedCommand": "npm test",
       "exitCode": 0,
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "35194abaa6205c140139576fbdcde642c66eae2671fa7a9bcba1b260dfe010ba"
+        }
+      ]
     },
     {
       "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
-      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-api-route-v3-live-20260805-070000 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check",
       "exitCode": 0,
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/commands.raw.log", "sha256": "5cb798cbd176f312601297a5832cf05d512ec1aded82998d3ed829d37ae94d49"}]
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "35194abaa6205c140139576fbdcde642c66eae2671fa7a9bcba1b260dfe010ba"
+        }
+      ]
     }
   ],
   "interaction": {
     "rounds": [
       {
-        "sender": "user", "contentRole": "current-request", "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa", "promptSha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
-        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-0.md", "sha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+        "sender": "user",
+        "contentRole": "current-request",
+        "messageSha256": "fd587d39f8f513219828d9fa83258e9e018266859d8bc25364d0dcfb2c3f6cfa",
+        "promptSha256": "e5bd5508dcc800b2e927f95e424c9308d290c004ff92311c5c32d605c688243f",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+            "sha256": "e5bd5508dcc800b2e927f95e424c9308d290c004ff92311c5c32d605c688243f"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0-stream.jsonl",
+            "sha256": "6e244fceee6a6363fd5daf9fbd533b7b09f0818ed6ccec91baf404caaf49197c"
+          }
+        ]
       },
       {
-        "sender": "eval-main", "contentRole": "future-clarification-answer", "messageSha256": "2b0ffe0d67ce7ba22c56c50096fee2acbb9ac6a55ed12f48389aae91ddae588f", "promptSha256": "744dad4227e6706f7c359e741d388a4ba705f00fb7394bafbff33e8a0a3cbfb6", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
-        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-1.md", "sha256": "744dad4227e6706f7c359e741d388a4ba705f00fb7394bafbff33e8a0a3cbfb6"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+        "sender": "eval-main",
+        "contentRole": "future-clarification-answer",
+        "messageSha256": "2b0ffe0d67ce7ba22c56c50096fee2acbb9ac6a55ed12f48389aae91ddae588f",
+        "promptSha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-1.md",
+            "sha256": "e38eeae7486e264a1e250ae7a50c7f7e8f20ca080554306e5a8ab26798175a02"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1-stream.jsonl",
+            "sha256": "c0d029ec9bb4a9daa3c584178a0220d30311ebeaa0db89f8755818803b940134"
+          }
+        ]
       },
       {
-        "sender": "eval-main", "contentRole": "future-approach-selection", "messageSha256": "0b9891221a348a27617aca1dd2092f5052fbc1d66df7ea6b4e1b3018c2f01429", "promptSha256": "4846685f3d81cd68195f55ac576a9a24b232db8949a8712d6a4bc9503727a1f6", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
-        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-2.md", "sha256": "4846685f3d81cd68195f55ac576a9a24b232db8949a8712d6a4bc9503727a1f6"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+        "sender": "eval-main",
+        "contentRole": "future-approach-selection",
+        "messageSha256": "0b9891221a348a27617aca1dd2092f5052fbc1d66df7ea6b4e1b3018c2f01429",
+        "promptSha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-2.md",
+            "sha256": "11e3769c4c9e85bb1514b6ff9ee3769aac49063a964779942cadc5da2b2a8a15"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-2-stream.jsonl",
+            "sha256": "503f21d1b6aa520748140f25615102225ca3388208454fe75d2b1ff8b3ad3735"
+          }
+        ]
       },
       {
-        "sender": "eval-main", "contentRole": "future-spec-identity-decision", "messageSha256": "11837edab2e0cea0ce56a07954985c8d14926b38561d5531c00e0bb31a731732", "promptSha256": "45c890499ddcc2f4870d4464f5917b7ba74875a71ed35fbeb30198f6000f8784", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
-        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-3.md", "sha256": "45c890499ddcc2f4870d4464f5917b7ba74875a71ed35fbeb30198f6000f8784"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+        "sender": "eval-main",
+        "contentRole": "future-spec-identity-decision",
+        "messageSha256": "11837edab2e0cea0ce56a07954985c8d14926b38561d5531c00e0bb31a731732",
+        "promptSha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-3.md",
+            "sha256": "bcdd9c01274235d485791be6d9704d053e9e83fe0bf3bdbfdbc3d1efa81d1ff6"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-3-stream.jsonl",
+            "sha256": "8f1e2433fbe069ef2ec732ade287d1b61b1e179b297c691aef86d4828881bcc9"
+          }
+        ]
       },
       {
-        "sender": "eval-main", "contentRole": "future-whole-spec-approval", "messageSha256": "9758799ef19678741a628ec8bf594874cf6b1201efbd315a3cd1331f431b9204", "promptSha256": "bc97c8ece01d07b5dfd4bb00b570e130b508700269c83534e87b29e0cadef38c", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
-        "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-4.md", "sha256": "bc97c8ece01d07b5dfd4bb00b570e130b508700269c83534e87b29e0cadef38c"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+        "sender": "eval-main",
+        "contentRole": "future-whole-spec-approval",
+        "messageSha256": "9758799ef19678741a628ec8bf594874cf6b1201efbd315a3cd1331f431b9204",
+        "promptSha256": "407b36ebfc1247bafcb3afe3afc570241e5453adae08371e940aa4af1af56642",
+        "stopConditionObserved": true,
+        "deliveredAfterPreviousStop": true,
+        "evidence": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-4.md",
+            "sha256": "407b36ebfc1247bafcb3afe3afc570241e5453adae08371e940aa4af1af56642"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-4-stream.jsonl",
+            "sha256": "7c5ea80bde1dd59c6b82ee64e2d41c07eb1b247a9fa8cd5da62fffb286430cea"
+          }
+        ]
       }
     ],
     "promptProjection": {
       "rawScenarioVisibleToImplementer": false,
       "rawProtocolVisibleToImplementer": false,
       "futureRoundsVisibleToImplementer": false,
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-6/prompt-round-0.md", "sha256": "10e5685337345ba8cef64f3186cf565be9d5995a77d76e45f5b9ccc8c1eb16d8"}, {"path": "evidence/live/v4-20260805-rerun-6/interaction.md", "sha256": "36e0cec11ef1d3a9c1a148618c91f3ddbe92fdabc5da3c53f4ef6777a33be6bb"}]
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+          "sha256": "e5bd5508dcc800b2e927f95e424c9308d290c004ff92311c5c32d605c688243f"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+        }
+      ]
     }
   },
   "quality": {
     "behavior": {
-      "scores": {"dialogue-and-alternatives": 100, "whole-spec-review": 100, "api-spec-identity": 100, "planning-handoff": 100},
+      "scores": {
+        "dialogue-and-alternatives": 100,
+        "whole-spec-review": 100,
+        "api-spec-identity": 100,
+        "planning-handoff": 100
+      },
       "reasons": {
-        "dialogue-and-alternatives": "Repository facts, one material question, three alternatives, and the synchronous recommendation all passed.",
-        "whole-spec-review": "One complete seven-core-section Spec was presented as a whole review unit before writing.",
-        "api-spec-identity": "The exact independent identity and approved draft contract are complete.",
-        "planning-handoff": "The saved draft was self-reviewed and handed to writing-plans without creating Plan, Tasks, or implementation."
+        "dialogue-and-alternatives": "Project, caller, and interface facts preceded one material question; all three requested approaches were compared before the ordered per-item synchronous recommendation.",
+        "whole-spec-review": "One complete seven-core-section Spec with material conditional sections was presented as one review unit, and no project write occurred before exact whole-document approval.",
+        "api-spec-identity": "manage-specs classified an independent identity, stopped read-only, and after both approvals produced draft SPEC-014 at the exact canonical path with current CLI-generated indexes.",
+        "planning-handoff": "The reviewed draft was written, checked, self-reviewed, and handed to writing-plans by owner and input without creating Plan, Tasks, or implementation."
       },
       "evidence": {
-        "dialogue-and-alternatives": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "whole-spec-review": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "api-spec-identity": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "planning-handoff": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+        "dialogue-and-alternatives": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0.md",
+            "sha256": "b6ffe8404a52ee117f0a845ff884448843772bae3d463a7ceda5f098a7b58318"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1.md",
+            "sha256": "f99e1386fed613cbdadaab63fa8d8049701d8089d65f6006b9d961968a62d2aa"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          }
+        ],
+        "whole-spec-review": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-3.md",
+            "sha256": "e9cf8f9fa733b11f2c8eea0a3188679ab18d6a00808e8d948aa1c2f7bf127a12"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          }
+        ],
+        "api-spec-identity": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-2.md",
+            "sha256": "d1a04fa8df8789461ca0c5498e0378988f9a0bd8e8bb3eb6acf1fa51bd7510bf"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/specs-INDEX.md",
+            "sha256": "d2dd38b117548a415fbd19fbfd956a28533061c54e29fe0a09a13673e6ce5f7e"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/batch-retrieval-INDEX.md",
+            "sha256": "2f86481dd8cd7ffee82fb4bbacf5e31621ee61dbbc137ab4b69db5c81569a28c"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "d31083434f74432bad8f953e97b60bf8c794a3dfea042144a3210c31650c03ea"
+          }
+        ],
+        "planning-handoff": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+            "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+          }
+        ]
       },
-      "totalScore": 100.0
+      "totalScore": 100
     },
     "userValue": {
-      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
       "reasons": {
-        "value-visibility": "The chosen contract, its value, and exact artifact are immediately visible.",
-        "audience-fit": "Chinese interaction retains exact project and API terminology.",
-        "information-design": "Alternatives, whole Spec, verification, and handoff are organized around decisions.",
-        "actionability": "The 100-item contract, validations, and planning inputs are explicit.",
-        "signal-to-noise": "The interaction and Spec stay focused on the approved batch capability."
+        "value-visibility": "The recommended decision and saved draft path are immediately visible.",
+        "audience-fit": "Chinese prose preserves exact API, Spec, and Skill terminology.",
+        "information-design": "The complete Spec is structured, standalone, and easy to review later.",
+        "actionability": "The contract, unresolved budget fact, draft status, next owner, and planning input are explicit.",
+        "signal-to-noise": "Every retained section supports design review, validation, or the planning handoff."
       },
       "evidence": {
-        "value-visibility": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "audience-fit": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "information-design": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "actionability": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}],
-        "signal-to-noise": [{"path": "evidence/live/v4-20260805-rerun-6/reviewer.md", "sha256": "c83d14fd39923ee07bfc09fd7c22e5399c043de72f15ccf6bc9103d130524560"}]
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "ef2dfcb7518a3bedbc2ce679d5cc140495d0c594e5561030d45eff30c71422a2"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "d2f9f8299c14830bc2fe6a46c86f26bc6d7815997fc1c3c19f30942e9fc9f6c5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-014-public-batch-retrieval-api.md",
+            "sha256": "5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2"
+          }
+        ]
       },
-      "totalScore": 100.0
+      "totalScore": 100
     }
   },
   "diffEvidence": {
-    "committed": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
-    "index": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
-    "workingTree": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
-    "untracked": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"},
-    "finalHashes": {"path": "evidence/live/v4-20260805-rerun-6/tree.raw.log", "sha256": "c5c97e27de150463f6e8706b3a73afb68877fc921573acb33e5cc9925d0f8614"}
+    "committed": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "2f691d89cd7cac2d92beb818aa4ced58676ec6a68f0abe73d379733c7d3b6296"
+    }
   }
 }

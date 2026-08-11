@@ -1,0 +1,31 @@
+# Config Migration Haiku v4 Revalidation Baseline protocol commands
+$ npm test
+
+> config-format-cli-fixture@1.4.0 test
+> node --test test/*.test.js
+
+✔ show exposes one canonical shape for a legacy profile (65.276885ms)
+✔ legacy output flag still invokes the old writer (47.132278ms)
+✔ compatibility reader normalizes legacy and JSON profiles (2.338585ms)
+✔ writer emits JSON v2 by default (0.689433ms)
+✔ legacy writer remains available during the dual-read window (0.595644ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 225.546027
+exitCode: 0
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 0, errors 7, notices 0
+error invalid-enum hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: status has unsupported value draft
+error missing-canonical-tasks hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: Tasks requires at least one top-level - [ ] TNNN: <plain-language goal> block
+error missing-field hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: tasks requires field approval
+error missing-field hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: tasks requires field approved_revision
+error missing-field hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: tasks requires field created
+error missing-field hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: tasks requires field revision
+error missing-field hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: tasks requires field updated
+docs check failed with 7 errors
+exitCode: 1

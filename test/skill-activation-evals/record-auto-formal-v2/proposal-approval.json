@@ -1,0 +1,13 @@
+{
+  "proposalId": "proposal-record-auto-formal-v2",
+  "decision": "approved",
+  "scenarioSha256": "a8acab82f98b7588ef9b10f36121747a97f9afafc3a475473f959b7ce12d6002",
+  "protocolSha256": "6da79916d621b6eac6961b63b386f55765e25ac7c212e1d5a5d9742e006f7f1c",
+  "fixtureSha256": "69321cbe58d76f3f61143625f3330b4995d85576e852c46ad45f4258babf4d9e",
+  "runnerSha256": "a8572970903a133f4e51d65c2d4165ab955718a33c36703f98b48455e61cb3f4",
+  "catalogSkillSnapshots": {
+    "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+    "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+  },
+  "replyEvidence": "用户此前明确授权连续执行、自行审核、不再为中间阶段停下来询问；本轮又批准了先发布 Hash-bound successor Proposal、再只运行一次 fresh Probe 的实施计划。该 standing execution authorization 应用于 activation-routing-v2 / c7dd941ca85173c968962e6b770700ba3cd1963cd770c6b05e6a9ffef0cd5fb8，不表示用户接受尚未产生的 Probe 输出。"
+}

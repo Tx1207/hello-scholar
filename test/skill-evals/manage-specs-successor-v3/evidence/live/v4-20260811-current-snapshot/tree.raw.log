@@ -1,0 +1,28 @@
+# Manage Specs current-snapshot Live full tree evidence
+fixtureBaseCommit: 8e8fbd0906060aa1d8980fc49c3f07d29226c415
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+M	hello-scholar/specs/INDEX.md
+M	hello-scholar/specs/session-auth/INDEX.md
+M	hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+## untracked files
+hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/session-auth/INDEX.md
+ M hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+?? hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md
+## final regular file hashes outside .git
+29d93a34fbd5d2cbd805a9eb750d23280b382c817ca7f4da70eb06f02cde4f6b  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/AGENTS.md
+f6209979f14131ed52869c25f3e8f05b0211a03ebe574f38193484f9485acc36  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/architecture.md
+e4c9fed3967067ee8e98bdcc00bff0a24fb8bef275f89a7057d263cd07e57c7b  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/specs/INDEX.md
+0ec9129b13244f5ade2cc9ee0e789737283ff4693d090254439d38aeed45ff15  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/specs/session-auth/INDEX.md
+ba908d3f15b0f3c11daafe8c85462880bb821085aa76420529c5bf6dc2c3b108  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+2274c2a4fa4d9e58b1fb1c085a8e64d8a2aee1cedfd8d6cbd6a9d7764c7b7aa0  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/specs/session-auth/SPEC-011-session-audit-events/spec.md
+c0ea8cc9fa747a3f9de2a0cf25b0b7dbc5fa08aa5341efb47483f13067382c5c  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/hello-scholar/specs/session-auth/SPEC-012-signed-stateless-session-tokens/spec.md
+66e61cf69df3fec5c68f771bab45e0857ecbf05e1eb0d88633ecf74ecb8e991a  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/package.json
+b2e2a7ccacfec0d342466e9a83e72601f8ab9735b0af5a983b01bad52f368334  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/src/token-store.js
+0a2dd1986501af1f2a586e258b4d7834d7b78f9040ce2ca57526bf6531a92933  /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/test/token-store.test.js
+## final runtime artifacts outside .git
+## diff whitespace check

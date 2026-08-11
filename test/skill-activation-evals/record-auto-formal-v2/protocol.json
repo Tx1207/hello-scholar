@@ -1,0 +1,93 @@
+{
+  "activationProtocolVersion": 2,
+  "scenarioId": "record-auto-formal-v2",
+  "projectId": "py-cache-benchmark-auto-activation-successor",
+  "caseId": "record-auto-formal-v2",
+  "primarySkill": "record-experiment",
+  "catalogSkills": [
+    "using-helloscholar",
+    "record-experiment"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/using-helloscholar",
+    "record-experiment": "skills/record-experiment"
+  },
+  "agent": {
+    "model": "claude-haiku-4-5-20251001",
+    "role": "main-agent",
+    "forkTurns": "none"
+  },
+  "promptProjection": {
+    "originalRequestOnly": true,
+    "explicitSkillPathVisible": false,
+    "explicitSkillNameVisible": false,
+    "rawScenarioVisible": false,
+    "rawProtocolVisible": false
+  },
+  "activationProbe": {
+    "observable": true,
+    "catalog": "claude-code-plugin-catalog",
+    "transcriptFormat": "stream-json",
+    "toolEvent": "Skill",
+    "skill": "record-experiment",
+    "expected": "invoked",
+    "mustOccurBeforeCommand": "python3 scripts/benchmark_cache.py --run-dir runs/<run-id>"
+  },
+  "launch": {
+    "freshSession": true,
+    "pluginAssembly": "current-tree-copy",
+    "mainAgentContext": true,
+    "helloScholarCli": "<hello-scholar-repo>/bin/hello-scholar.js",
+    "equivalentHelloScholarCliForms": [
+      "node <hello-scholar-repo>/bin/hello-scholar.js docs <operation>",
+      "<hello-scholar-repo>/bin/hello-scholar.js docs <operation>"
+    ],
+    "command": "env -C <fixture-dir> claude -p --setting-sources project --settings <scenario-settings> --no-session-persistence --strict-mcp-config --add-dir <fixture-dir> --add-dir <plugin-dir> --add-dir <hello-scholar-repo> --output-format stream-json --verbose --model haiku --permission-mode auto --disallowed-tools Agent,Workflow,WebFetch,WebSearch --plugin-dir <plugin-dir> <prompt>"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/benchmark_cache.py --dry-run",
+    "python3 scripts/benchmark_cache.py --run-dir runs/<run-id>",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/verify_formal_run.py runs/<run-id>",
+    "<absolute-hello-scholar-cli> docs check",
+    "<absolute-hello-scholar-cli> docs sync"
+  ],
+  "paths": {
+    "allow": [
+      "runs/",
+      "runs/INDEX.md"
+    ],
+    "deny": [
+      "benchmark/",
+      "hello-scholar/specs/",
+      "src/",
+      "tests/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "runs/<run-id>/record.md",
+      "runs/<run-id>/logs/stdout.log",
+      "runs/<run-id>/logs/stderr.log",
+      "runs/<run-id>/outputs/process-start.json",
+      "runs/<run-id>/results/metrics.json",
+      "runs/INDEX.md"
+    ],
+    "forbidden": [
+      "run.json",
+      "README.md",
+      "report.md",
+      "summary.md",
+      "final-report.md"
+    ]
+  },
+  "hardRejects": [
+    "does not invoke record-experiment through the Skill tool",
+    "launches before record.md exists",
+    "launches more than once",
+    "omits raw stdout, raw stderr, exit status, structured metrics, or CLI-generated runs/INDEX.md",
+    "changes source, tests, benchmark inputs, or parameters",
+    "receives an explicit Skill name or path in the prompt"
+  ],
+  "criticalPath": "Discover record-experiment from the platform catalog, invoke it before launch, create the minimum reproducible Record, run the fixed benchmark once, retain raw process and result evidence, and generate runs/INDEX.md through an authorized absolute CLI form."
+}

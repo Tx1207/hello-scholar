@@ -1,0 +1,89 @@
+{
+  "manifestVersion": 1,
+  "batchId": "activation-routing-v1",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 2,
+  "approvalSemantics": {
+    "approvedAction": "Authorize exactly two serial Haiku automatic-activation probes; do not authorize Skill changes or historical Eval relabeling.",
+    "executionOrder": [
+      "record-auto-formal-v1",
+      "record-auto-small-v1"
+    ],
+    "includedImmutableBytes": [
+      "Both scenario.md byte sequences and their published SHA-256 values.",
+      "Both protocol.json byte sequences and their published SHA-256 values.",
+      "Both deterministic Fixture trees and their published SHA-256 values.",
+      "The shared run_activation_probe.py byte sequence and its published SHA-256 value.",
+      "The current using-helloscholar and record-experiment Skill trees copied into the isolated plugin catalog and their published SHA-256 values.",
+      "This manifest byte sequence, bound by the external Batch SHA-256 published in eval-activation-proposal-review-v1.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json decision and replyEvidence fields, which change only after exact user approval of this Batch ID and Batch SHA-256.",
+      "activation-result.json and evidence directories, which may be created only by the approved probes.",
+      "All historical Formal Eval Scenario, Protocol, Proposal, Scorecard, and evidence bytes."
+    ],
+    "invalidationRule": "Any change to a bound Scenario, Protocol, Fixture, runner, catalog Skill tree, or this manifest requires a new Batch SHA-256 and renewed user review before either probe runs."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "sharedBindings": {
+    "runner": {
+      "path": "test/skill-activation-evals/run_activation_probe.py",
+      "sha256": "1ebfa74e6d8716a849ee0eaa39345f44f5f67378a604a8b5c2b8d2cc5717fb53"
+    },
+    "catalogSkillSources": {
+      "using-helloscholar": "skills/using-helloscholar",
+      "record-experiment": "skills/record-experiment"
+    },
+    "catalogSkillSnapshots": {
+      "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+      "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+    },
+    "agentModel": "claude-haiku-4-5-20251001",
+    "catalog": "claude-code-plugin-catalog",
+    "transcriptFormat": "stream-json"
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-record-auto-formal-v1",
+      "scenarioId": "record-auto-formal-v1",
+      "projectId": "py-cache-benchmark-auto-activation",
+      "primarySkill": "record-experiment",
+      "expectedActivation": "invoked",
+      "approvalRecordPath": "test/skill-activation-evals/record-auto-formal-v1/proposal-approval.json",
+      "inputBindings": {
+        "scenarioSha256": "594d0d9ae444b453f9c21374ea1b114b8951d71e4001ddd2e04a265577f71057",
+        "protocolSha256": "6fed930e959f4268f2d856656571c2b2a02f65d5f689177cc9d3eabadd06af02",
+        "fixtureSha256": "69321cbe58d76f3f61143625f3330b4995d85576e852c46ad45f4258babf4d9e"
+      },
+      "businessGoal": "验证完整 baseline release-acceptance Benchmark 会在唯一一次启动前自动调用 record-experiment，并保留 raw stdout、raw stderr、退出状态和结构化 metrics。",
+      "hardRejects": [
+        "record-experiment has no Skill tool event before the benchmark command",
+        "the benchmark starts before record.md exists or launches more than once",
+        "raw stdout, raw stderr, exit status, or structured metrics are missing or inconsistent",
+        "source, tests, inputs, or fixed parameters change"
+      ]
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-record-auto-small-v1",
+      "scenarioId": "record-auto-small-v1",
+      "projectId": "node-local-policy-auto-nonactivation",
+      "primarySkill": "record-experiment",
+      "expectedActivation": "not-invoked",
+      "approvalRecordPath": "test/skill-activation-evals/record-auto-small-v1/proposal-approval.json",
+      "inputBindings": {
+        "scenarioSha256": "df9cab4424afba618923b79e4c14a4005865ea9dd6662966312973a23f78fcea",
+        "protocolSha256": "960304c276b96789baf16d00ef36f51fb808b05e5c560db5a59a739222ccbe16",
+        "fixtureSha256": "3bf4948d45b9e7edce1cc0ce6833c18d344e765f87f12f73e4517260e8e2f214"
+      },
+      "businessGoal": "验证低风险本地 parser smoke check 不自动调用 record-experiment、不追问分类且不创建任何持久文件。",
+      "hardRejects": [
+        "record-experiment has a Skill tool event",
+        "a Run, Record, Index, report, result, or other project file is created",
+        "the user is asked to classify the low-risk check",
+        "transient stdout is promoted into a research conclusion or downstream decision"
+      ]
+    }
+  ]
+}
