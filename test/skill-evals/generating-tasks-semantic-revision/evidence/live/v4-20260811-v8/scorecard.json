@@ -1,0 +1,69 @@
+{
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-generating-tasks-semantic-revision-haiku-v4-v8",
+  "liveApprovalSha256": "63c03c84c9d365b1312766ac0967ea36e29788bf3f97ba8e73bd0be68c7181fb",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "result": "pass",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "generating-tasks": {
+      "status": "current-explicit-file",
+      "sha256": "f8da9092a92560babb3f77f3d347d958e5cf5f6ea605800837436ca269023ed9"
+    }
+  },
+  "agents": {
+    "implementer": {"id": "acc3aca3a236fab8b", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a52159d5730522dce", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {"id": "baseline-and-authority", "passed": true, "reason": "Complete Baseline, Authority, project facts, and execution evidence were read and reconciled.", "evidence": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]},
+    {"id": "stable-task-identity", "passed": true, "reason": "T001 is preserved, T002 removed, and T003 retains every unauthorized field and structural placement while authorized fields and dependency change.", "evidence": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]},
+    {"id": "new-obligation-and-dag", "passed": true, "reason": "Fresh T004, complete obligations, and T001-to-T003-to-T004 DAG are coherent.", "evidence": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]},
+    {"id": "revision-and-review-boundary", "passed": true, "reason": "Metadata, scope, validation, protected bytes, and pending-review stop pass.", "evidence": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]},
+    {"id": "protocol-commands-pass", "passed": true, "reason": "Required commands and diff check passed.", "evidence": [{"path": "evidence/live/v4-20260811-v8/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]},
+    {"id": "base-to-final-evidence", "passed": true, "reason": "Base, scope, diff, headings, index, untracked, runtime, and hashes are recorded.", "evidence": [{"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"}]},
+    {"id": "authorization-binding", "passed": true, "reason": "The deterministic complete Skill tree hash matches the v8 authorization snapshot.", "evidence": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]}
+  ],
+  "commands": [
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v8-20260811 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v8/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]},
+    {"command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check", "executedCommand": "env -C /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v8-20260811 node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check", "exitCode": 0, "evidence": [{"path": "evidence/live/v4-20260811-v8/commands.raw.log", "sha256": "a0e039c0003dbbf4edb65e120f699897a83792a4acb2133b131d444396e4107a"}]}
+  ],
+  "interaction": {
+    "rounds": [{"sender": "user", "contentRole": "current-request", "messageSha256": "40cf253778ede8c9703e2ebde94799a37914ec5f31170bc7206762a47b8a8bb0", "promptSha256": "051b7a27ba26118584041e8b736408ff14c645d78b13982586ef0d36689bdd74", "stopConditionObserved": true, "deliveredAfterPreviousStop": null, "evidence": [{"path": "evidence/live/v4-20260811-v8/interaction.md", "sha256": "41df946e7783924c856deaf918db19c931b8346c1a76ea530136782e5652cc41"}]}],
+    "promptProjection": {"rawScenarioVisibleToImplementer": false, "rawProtocolVisibleToImplementer": false, "futureRoundsVisibleToImplementer": false, "evidence": [{"path": "evidence/live/v4-20260811-v8/interaction.md", "sha256": "41df946e7783924c856deaf918db19c931b8346c1a76ea530136782e5652cc41"}]}
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"baseline-and-authority": 100, "stable-task-identity": 100, "new-obligation-and-dag": 100, "revision-and-review-boundary": 100},
+      "reasons": {"baseline-and-authority": "Every required source of truth is reflected in the final revision.", "stable-task-identity": "All surviving Task fields and structural placement obey exact Authority.", "new-obligation-and-dag": "T004 and the rebuilt DAG satisfy every obligation.", "revision-and-review-boundary": "Metadata, scope, validation, and review stop are exact."},
+      "evidence": {
+        "baseline-and-authority": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "stable-task-identity": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "new-obligation-and-dag": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "revision-and-review-boundary": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]
+      },
+      "totalScore": 100.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {"value-visibility": "The result is immediately visible.", "audience-fit": "Language and exact technical terms fit the user.", "information-design": "The artifact and response are standalone and scannable.", "actionability": "The review stop and frontier are explicit.", "signal-to-noise": "No irrelevant narration or evaluator leakage remains."},
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "information-design": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "actionability": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260811-v8/reviewer.md", "sha256": "f935700190314d169fa440a72a0be77f512e11612a5a0bbaebffaaea18a99a0e"}]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"},
+    "index": {"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"},
+    "untracked": {"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v8/tree.raw.log", "sha256": "1228beeb506e3deb9735cfc1be342da65c5d1e72a96b7e14ef57ab41c976b15c"}
+  }
+}

@@ -30,7 +30,7 @@ description: 当用户需要为已 Accepted 的 Spec 编写可审核实施 Plan 
 
 ## 3. 写入 Bundle Plan
 
-写入前先读取 `assets/` 的对应模板。根据仓库语言偏好选择：中文使用 `assets/plan-template.zh_CN.md`，否则使用 `assets/plan-template.md`。用户可读的 Plan 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。创建或修订：
+读取骨架前先选择写入分支：模板只用于新建 Plan。新建 Plan 时读取 `assets/` 的对应模板；根据仓库语言偏好选择：中文使用 `assets/plan-template.zh_CN.md`，否则使用 `assets/plan-template.md`。修订时完整读取当前 `plan.md` 并将当前 `plan.md` 作为骨架；对应模板只用于检查全部 12 节仍然完整。用户可读的 Plan 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。创建或修订：
 
 ```text
 hello-scholar/specs/<topic>/SPEC-<number>-<design-name>/plan.md
@@ -51,7 +51,9 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ```
 
-语义 Plan 修订会递增 `revision`、将 `status` 设为 `draft` 并更新 `updated`。向用户展示前，将全部模板提示替换为具体项目事实。
+语义 Plan 修订时，将当前完整 Plan 作为 **Baseline**，将当前 Accepted Spec 作为 **Authority**，将本次请求或上游变化作为 **Delta**。对全部 12 节中的既有策略和 Delta 变化逐项使用 `Keep`、`Modify`、`Remove`、`Add` 或 `Move`。默认使用 `Keep`：保留未受影响的模块、文件边界、测试、迁移、回滚和其他有效策略；Delta 未提及不是删除依据。移除被替代路径及残余引用，将新增内容归入正确位置，并且只按真实依赖重排。本事务不改写 `tasks.md`。
+
+语义 Plan 修订会递增 `revision`、将 `status` 设为 `draft` 并更新 `updated`。新建文件向用户展示前，将全部模板提示替换为具体项目事实。
 
 正文固定包含 12 节：
 
@@ -72,7 +74,7 @@ updated: YYYY-MM-DD
 
 ## 4. 审核与交接
 
-1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。整份审核只进行一次 TDD 判断：核心算法、关键步骤或状态转换、关键业务流程及高回归风险的实施结果推荐 TDD，用测试在实现前固定预期，降低 AI 实现错误漏检；其余使用普通验证。把选择记录到 Plan 的 `Test and Experiment Strategy` 与 `Tasks Generation Rules`，供 `generating-tasks` 传播到对应 Tasks。
+1. 对照 Accepted Spec 自审 Plan：事实、范围、文件边界、接口、阶段、测试、迁移、清理、回滚与未决设计缺口。修订时完成整份**语义守恒**审核：每项 Baseline 和 Delta 恰有一种处置，未受影响的有效策略仍存在，废弃路径及残余引用已移除，且每项删除或大范围改写都有 Authority。整份审核只进行一次 TDD 判断：核心算法、关键步骤或状态转换、关键业务流程及高回归风险的实施结果推荐 TDD，用测试在实现前固定预期，降低 AI 实现错误漏检；其余使用普通验证。把选择记录到 Plan 的 `Test and Experiment Strategy` 与 `Tasks Generation Rules`，供 `generating-tasks` 传播到对应 Tasks。
 2. 写入或修订 Plan 后运行一次：
    ```sh
    hello-scholar docs sync

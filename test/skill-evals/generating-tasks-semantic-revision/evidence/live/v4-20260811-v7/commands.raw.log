@@ -1,0 +1,11 @@
+$ PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+exit=0
+
+$ node <hello-scholar-repo>/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 0
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/feature-policy/INDEX.md
+exit=0
+
+$ git diff --check <Fixture-Base>
+exit=0

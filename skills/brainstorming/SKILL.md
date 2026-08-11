@@ -31,7 +31,7 @@ Synthesize a complete proposed design that covers the affected modules, interfac
 
 Obtain user approval before any Spec write. Shared understanding does not approve the design; approval of the design does not classify a Spec, accept a Spec, approve a Plan, approve Tasks, or authorize implementation.
 
-**Completion:** the user-approved design content is specific enough to fill a complete Spec without inventing material decisions.
+**Completion:** every approved behavior is closed with the values or formulas, boundary cases, and observable acceptance signals needed to implement and test it. Any ordering or precedence promise names the compared inputs and gives the exact predicate or inequality that decides the order. Every derived classification or match names its source inputs, normalization, boundary rules, and scope, including case handling and token boundaries for text. The Spec writer and implementer can proceed without inventing a material decision.
 
 ```dot
 digraph brainstorming {
@@ -62,9 +62,9 @@ Invoke `$manage-specs` with the design context before writing. It returns exactl
 
 Use its classification, confirmation gate, selected Bundle path, and current identity. `$manage-specs` owns the initial `hello-scholar docs check`, so this Skill does not repeat it. This owner transition is a hard stop: if `$manage-specs` is unavailable, cannot be read, or does not return a complete classification and canonical path, do not classify or write the Spec yourself. Do not duplicate its ID allocation, revision, successor, slug, or Index logic. If it returns `Need Human Classification`, stop for that decision. If its selected classification requires confirmation, get confirmation of the complete path before writing; an ID- or Topic-only reply is not path approval.
 
-Read the selected template from `skills/manage-specs/assets/`: use `spec-template.zh_CN.md` for a Chinese repository language preference; otherwise use `spec-template.md`. user-readable Spec prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written.
+For `Create Independent Spec` or the new Spec in `Create Successor Spec`, read the selected template from `skills/manage-specs/assets/`: use `spec-template.zh_CN.md` for a Chinese repository language preference; otherwise use `spec-template.md`. For those branches, templates are only for new Specs. For `Update Existing Spec`, read the current `spec.md` in full and use the current `spec.md` as the skeleton; do not rebuild it from a template. user-readable Spec prose follows the repository language preference; do not infer its language from the task prompt. Preserve code symbols, field names, paths, commands, and template-required headings as written.
 
-Write or revise the selected Bundle file. For `Create Successor Spec`, also make only the linked old `spec.md` update required by `$manage-specs`:
+Write or revise the selected Bundle file. For `Update Existing Spec`, the complete current file is the **Baseline**, the user-approved design is the **Authority**, and its changes are the **Delta**. Reconcile every Baseline decision and Delta change as `Keep`, `Modify`, `Remove`, `Add`, or `Move`; `Keep` is the default, and not mentioned by the Delta is not removal authority. Integrate the result across the seven sections, updating affected interfaces, invariants, risks, and acceptance together rather than appending a patch. For `Create Successor Spec`, also make only the linked old `spec.md` update required by `$manage-specs`:
 
 ```text
 hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
@@ -92,11 +92,11 @@ hello-scholar docs sync
 
 ## 5. Self-review and whole-file review
 
-Review the saved Spec for all seven core sections, any necessary conditional section, placeholders, contradictions, ambiguity, scope, acceptance evidence, language, and agreement with the `manage-specs` classification, ID, revision, and Bundle path. Correct only the selected draft, then run `hello-scholar docs sync` once.
+Read back the saved Spec, then review all seven core sections, any necessary conditional section, placeholders, contradictions, ambiguity, scope, acceptance evidence, language, and agreement with the `manage-specs` classification, ID, revision, and Bundle path. Every normative factual claim must agree with the project evidence read in this design run. For `Update Existing Spec`, close the whole-file **semantic conservation** ledger against the saved artifact: every `Keep` remains; every `Modify`, `Add`, and `Move` is present in its intended section; and every `Remove`, superseded value, and old interface is absent from normative current sections and residual references except concise `Revision History`. Every removal or broad rewrite must have Authority. Express rollback through the restorable revision, build, or state rather than restating a superseded contract as a current instruction. Correct only the selected draft, then run `hello-scholar docs sync` once.
 
 Present the complete file for one whole-file user review. On explicit acceptance of that exact revision, set `status: accepted`, then run `hello-scholar docs sync` once. Stop if the user requests design-only work. Classification confirmation is not Spec acceptance.
 
-**Completion:** the result is either an explicit review stop, a corrected draft awaiting review, or an accepted current Spec.
+**Completion:** the result is either an explicit review stop, a corrected draft awaiting review, or an accepted current Spec. When the exact revision received explicit whole-file acceptance, the saved artifact and generated Indexes identify that revision as `status: accepted`; no current metadata, heading, history entry, or response still labels it draft or proposed.
 
 ## 6. Route after acceptance
 

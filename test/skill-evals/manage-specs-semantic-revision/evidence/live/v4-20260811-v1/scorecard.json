@@ -1,0 +1,124 @@
+{
+  "proposalId": "proposal-manage-specs-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-manage-specs-semantic-revision-haiku-v4-v1",
+  "liveApprovalSha256": "625fbe9ffae94508ceee07c602c0c19de825303694940a5e473b2b66397099eb",
+  "scenarioSha256": "13805d7d7d0ab272c0db5ca176e72be6a3e667266615cb20297c5d1caabc2741",
+  "protocolSha256": "a89d521a94cc74ada7318672a3b623386fa01f7f88512ba13c35b30df30056ea",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "pass",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "manage-specs": {"status": "current-explicit-file", "sha256": "c2dc722474c3b2f6e9d276118f81f4b054d1227bf173d60296abd49e8c1114f5"}
+  },
+  "agents": {
+    "implementer": {"id": "ac8f4780205fb3a09", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a2c035fb39dd581f2", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "existing-owner-classification", "passed": true,
+      "reason": "Both Specs, indexes, Architecture, code, tests, and ownership boundaries were read before Update Existing Spec and the exact SPEC-001 identity were proposed without writes.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}]
+    },
+    {
+      "id": "identity-and-revision-transaction", "passed": true,
+      "reason": "Exact identity confirmation preceded writing; ID, Topic, path, and created stayed stable while revision advanced once, status remained draft, date updated, and history stayed concise.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}]
+    },
+    {
+      "id": "semantic-conservation", "passed": true,
+      "reason": "The current revision retains interface, return, diversity and pagination boundary, freshness, deterministic tie, migration, rollback, and evidence decisions; integrates phrase priority and 0.68; and removes every 0.62 reference. The Reviewer noted only a minor wording omission for the prior lexical-below-threshold phrasing.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}]
+    },
+    {
+      "id": "scope-and-review-gate", "passed": true,
+      "reason": "Only the confirmed existing Spec and two CLI-generated Indexes changed, and the complete revision remains draft awaiting whole-file review.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}, {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"}]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Both approved commands exited 0; docs sync refreshed exactly two Indexes and git diff --check passed.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "5536242a5abbeddcd9326216dfa538c38f0887e66edf7edde20d85fdccec6272"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Fixture Base, index, working-tree, untracked, final hashes, runtime-artifact state, and exact final scope are recorded.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-semantic-revision-live-v1-20260811a PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "5536242a5abbeddcd9326216dfa538c38f0887e66edf7edde20d85fdccec6272"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-semantic-revision-live-v1-20260811a node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/commands.raw.log", "sha256": "5536242a5abbeddcd9326216dfa538c38f0887e66edf7edde20d85fdccec6272"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "806b9e741d6d19359f1dde9c450a87ca502cc74a5b7fb337977feb6ee5ffd588", "promptSha256": "c4cc56389e64732e17e5491c0967be5d50cfd030b759a0c4d823bf6a907c97dd", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [{"path": "evidence/live/v4-20260811-v1/prompt-round-0.md", "sha256": "c4cc56389e64732e17e5491c0967be5d50cfd030b759a0c4d823bf6a907c97dd"}, {"path": "evidence/live/v4-20260811-v1/interaction.md", "sha256": "5127404da497e60a2d4cb788243c027a09855af238050dd19fbb92f7d450b5ed"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-identity-confirmation", "messageSha256": "b148c193143d8fe6b54f5467a6f2c9ffe82a3c50e57ebf21df0df64aa821cefd", "promptSha256": "f70279802f7c790376a75bbbe1c0fc9331ceba6cd6b07173a1cd7d734f8b6b94", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260811-v1/prompt-round-1.md", "sha256": "f70279802f7c790376a75bbbe1c0fc9331ceba6cd6b07173a1cd7d734f8b6b94"}, {"path": "evidence/live/v4-20260811-v1/interaction.md", "sha256": "5127404da497e60a2d4cb788243c027a09855af238050dd19fbb92f7d450b5ed"}]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [{"path": "evidence/live/v4-20260811-v1/prompt-round-0.md", "sha256": "c4cc56389e64732e17e5491c0967be5d50cfd030b759a0c4d823bf6a907c97dd"}, {"path": "evidence/live/v4-20260811-v1/interaction.md", "sha256": "5127404da497e60a2d4cb788243c027a09855af238050dd19fbb92f7d450b5ed"}]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"existing-owner-classification": 100, "identity-and-revision-transaction": 100, "semantic-conservation": 90, "scope-and-review-gate": 100},
+      "reasons": {
+        "existing-owner-classification": "The correct current owner was grounded in both Specs and project evidence before writing.",
+        "identity-and-revision-transaction": "Identity confirmation and every revision lifecycle field followed the approved transaction.",
+        "semantic-conservation": "All material retained and changed obligations are represented with no 0.62 residue; only the previous lexical-below-threshold wording is less explicit.",
+        "scope-and-review-gate": "The final draft remains pending whole-file review and only the allowed Spec and generated Indexes changed."
+      },
+      "evidence": {
+        "existing-owner-classification": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "identity-and-revision-transaction": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "semantic-conservation": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "scope-and-review-gate": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}]
+      },
+      "totalScore": 96.5
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {
+        "value-visibility": "The revised owner and semantic changes are immediately visible.",
+        "audience-fit": "Chinese prose retains exact project paths and technical terms.",
+        "information-design": "The result is concise, scannable, and points to one standalone complete draft.",
+        "actionability": "The draft review state and deliberate stop are explicit.",
+        "signal-to-noise": "The result stays focused on decisions, scope, checks, and review state."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "information-design": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "actionability": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260811-v1/reviewer.md", "sha256": "7779ddaf78a2e1bd851f800e3c1fe342f819d2ee49c3a2e6f0553a430d529e08"}]
+      },
+      "totalScore": 100.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"},
+    "index": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"},
+    "untracked": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v1/tree.raw.log", "sha256": "d19d95e83ef61d6fa1127610190ad0520e0f10b954bc650fdb40b86935428910"}
+  }
+}

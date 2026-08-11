@@ -1,0 +1,119 @@
+fixture-base 74a2f7b8fec3b3bac7290fac6edd54455b18acf7
+--- committed base-to-final name-status ---
+M	hello-scholar/specs/INDEX.md
+M	hello-scholar/specs/feature-policy/INDEX.md
+M	hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+--- index ---
+--- working tree ---
+M	hello-scholar/specs/INDEX.md
+M	hello-scholar/specs/feature-policy/INDEX.md
+M	hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+--- untracked ---
+--- status ---
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/feature-policy/INDEX.md
+ M hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+--- exact tasks diff ---
+diff --git a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+index 194f6e2..2e5e50e 100644
+--- a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
++++ b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+@@ -2,17 +2,19 @@
+ schema: 1
+ kind: tasks
+ spec: SPEC-003
+-spec_revision: 2
+-plan_revision: 1
+-revision: 1
+-approval: approved
+-approved_revision: 1
+-status: in-progress
++spec_revision: 3
++plan_revision: 2
++revision: 2
++approval: pending-review
++approved_revision: null
++status: pending
+ created: 2026-07-31
+-updated: 2026-08-02
++updated: 2026-08-11
+ ---
+ # Feature Policy Precedence Tasks
+ 
++## Phase 1: Preserve accepted precedence behavior
++
+ - [x] T001: Implement explicit-deny precedence
+   - Spec Coverage: AC-1 and AC-2
+   - Depends On: None
+@@ -30,31 +32,45 @@ updated: 2026-08-02
+   - Evidence:
+     - `evidence/T001-policy-tests.txt` recorded 4 passing focused tests on 2026-08-02.
+ 
+-- [ ] T002: Add standalone global-default compatibility coverage
+-  - Spec Coverage: AC-3 and AC-4
++## Phase 2: Migrate callers and remove the temporary constructor
++
++- [ ] T003: Complete constructor migration and cleanup
++  - Spec Coverage: Migration, cleanup, and rollback
+   - Depends On: T001
+   - Parallel: No
+   - Files:
+-    - `tests/test_policy_defaults.py`
++    - `src/policy.py`
++    - `tests/test_policy.py`
++    - `tests/test_policy_migration.py`
+   - Work:
+-    1. Add a separate default-only regression module.
++    1. Update every remaining construction site in `tests/` from dictionary compatibility input to the approved `PolicyRules` object, preserving the empty explicit-deny set for existing dictionaries.
++    2. Run an executable search for the temporary dictionary constructor, then remove that constructor from `PolicyEngine` only after the search shows no remaining caller.
++    3. Keep the no-op audit callback default and the `evaluate(feature, tenant) -> bool` interface unchanged while updating migration coverage.
+   - Validation:
+-    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy_defaults`; expected `OK`.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy tests.test_policy_migration`; expected `OK`.
++    - `grep -R "PolicyEngine({" src tests`; expected no legacy dictionary-constructor call sites.
+   - Completion:
+-    - A separate default compatibility module passes.
++    - All repository callers construct the approved policy object, the temporary dictionary constructor is absent, and migration tests pass.
++    - The no-op callback compatibility boundary and boolean `evaluate(feature, tenant)` contract remain available; if rollback is required, callback integration can be reverted without reverting the completed precedence behavior.
+ 
+-- [ ] T003: Complete constructor migration and cleanup
+-  - Spec Coverage: Migration, cleanup, and rollback
+-  - Depends On: T002
++## Phase 3: Integrate the audit callback
++
++- [ ] T004: Add one post-selection audit callback for every evaluation
++  - Spec Coverage: AC-3, AC-4, AC-5, Target Design, Verification
++  - Depends On: T003
+   - Parallel: No
+   - Files:
+     - `src/policy.py`
+     - `tests/test_policy.py`
+-    - `tests/test_policy_migration.py`
++    - `tests/test_policy_audit.py`
+   - Work:
+-    1. Move remaining callers to `PolicyRules`.
+-    2. Remove dictionary compatibility after the caller search is empty.
++    1. Add the optional `audit(feature, tenant, source, result)` constructor callback with a no-op default, without changing `evaluate(feature, tenant) -> bool` or rule precedence.
++    2. Invoke the callback exactly once after each selected result, passing `explicit-deny`, `tenant`, or `global-default` and the returned boolean.
++    3. Add focused callback source and count assertions for explicit deny, tenant rule, global default, and unknown-feature fallback; retain the existing compatibility assertions.
+   - Validation:
+-    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests`; expected `OK`.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy tests.test_policy_audit`; expected `OK` with callback source and exactly-once assertions passing.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests`; expected the full suite to pass.
++    - `git diff --check`; expected no whitespace errors.
+   - Completion:
+-    - Full tests pass and no legacy dictionary constructor remains.
++    - Every evaluation returns the established boolean result and emits exactly one audit event with the selected source and result.
++    - Existing callers work without an audit argument, no persistence/networking/Architecture files are touched, and reverting callback wiring plus audit tests leaves precedence and migrated callers intact.
+--- final hashes ---
+785a315de608bdca7b8548d253a01f5728f01513ec266392f07895d845dbbabd  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/AGENTS.md
+a0ebdfb0e8aaf35baf8a11c8aeeda447f9dba5721f9023ef9d8a900a899b4cba  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/evidence/T001-policy-tests.txt
+caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/architecture.md
+df95d349add8780902a50a5f28a9a067fad20d6bbec9ca28c9350668daa61049  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/specs/INDEX.md
+c781d6d01dcfc3a70657eeb88ea818339114cbcb5b3df6724c0816333d243a9c  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/specs/feature-policy/INDEX.md
+7855517d05e51aa78c28fd4cbc931ba0b7b3aa9368b4b511e3a28c76bf1dc35a  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+d8a9b85ffa8a6b5dab624398c50c0b4b250b1fb13cf80757da0f3e43121b9f74  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+56309352c94a95f59e89358ffdc98f8697668e350af8efb0636c84b6ad547e0a  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/src/policy.py
+33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-live-v7-20260811/tests/test_policy.py
+--- runtime artifacts ---

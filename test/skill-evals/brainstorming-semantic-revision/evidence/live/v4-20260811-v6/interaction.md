@@ -1,0 +1,8 @@
+# Live interaction record
+
+- Round 0: the Implementer read current Specs, code, tests, rules, Git state, and baseline evidence; compared approaches; then asked who computes and supplies the phrase signal. No project write occurred. A plain Python baseline command created cache files; the evaluator removed only those confirmed runtime artifacts before continuing.
+- Round 1: after the frozen clarification, the same Implementer compared three additive-bonus data-flow approaches and recommended an explicit internal bonus, then stopped for selection. No project write occurred.
+- Round 2: after selection, the same Implementer classified `Update Existing Spec`, retained `SPEC-001`, and produced a complete revision. Whole-file approval was withheld while artifact review corrected normative old-value residuals, rollback, an open predicate, nonexistent Architecture evidence, comparison boundaries, and temporary absolute evidence paths. All corrections remained zero-write. The final exact revision was `status: accepted`, fixed bonus `0.15`, exact predicate and comparison, real target interface, concise history, and prior-state rollback.
+- Round 3: only after the exact revision passed whole-file review did the evaluator deliver the frozen approval. The same Implementer wrote the existing Spec, refreshed two generated Indexes, read back accepted status, ran no-bytecode tests, and stopped without Plan, Tasks, source, tests, Architecture, Runs, or memory edits.
+
+No raw Scenario, Protocol, rubric, hard reject, expected answer, Baseline, prior Live evidence, future reply, or surrounding conversation was disclosed. Frozen future messages were delivered only after real stops. Artifact evidence controls completion claims.

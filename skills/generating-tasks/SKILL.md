@@ -58,14 +58,22 @@ Give rollback, final integration, and cleanup their own Tasks when they have dis
 
 ## 4. Write one Tasks document
 
-Before drafting, read exactly one authoritative template:
+Choose the write branch before loading a skeleton. Templates are only for new Tasks:
 
-- Chinese repository: `assets/tasks-template.zh_CN.md`
-- Other repository: `assets/tasks-template.md`
+- **New document:** read exactly one authoritative template: `assets/tasks-template.zh_CN.md` for a Chinese repository, otherwise `assets/tasks-template.md`.
+- **Semantic revision:** read the current `tasks.md` in full and use it as the skeleton. Treat the complete current Tasks as the **Baseline**, the current Accepted Spec and Approved Plan as the **Authority**, and their changes or the requested execution-contract changes as the **Delta**. A point not mentioned by the Delta is not removal authority.
+
+For a semantic revision, reconcile stable Task identity before writing:
+
+- Keep the Task ID, checkbox and evidence when its outcome remains valid. Build a field-level disposition map for every surviving Task: edit only fields named by the Delta or explicitly required by Authority, and keep its title, checkbox, evidence, `Spec Coverage`, `Files`, and phase placement unchanged otherwise. Treat phase and section headings and their surrounding structural context as independent placements: an upstream phase sequence constrains the DAG but does not by itself authorize adding, relabeling, or moving headings around surviving Tasks, and adding a Task does not authorize wrapping existing Tasks in new structure. If only `Work`, `Validation`, or `Completion` changes, keep the ID and edit only those fields. Dependency repair authorizes only the necessary `Depends On` and `Parallel` edits. Do not renumber a Task when an authorized move is required.
+- Remove an unfinished Task that is no longer required. When its outcome materially changes, remove it and create the replacement with a new ID.
+- Allocate every replacement or new obligation an ID greater than the Baseline and confirmable Git history. Do not reuse IDs or renumber them for continuity.
+- A completed but invalidated Task is not rewritten as if it performed the new work. Remove it from the current execution contract and create a new compensation, reverse-migration, cleanup, or revalidation Task; Git preserves the prior execution fact.
+- Rebuild the obligation ledger and DAG from the revised Spec and Plan. Remove residual dependencies, then recheck coverage, frontier, parallel conflicts, file boundaries, and validation signals.
 
 Write `tasks.md` beside the current `spec.md` and `plan.md`. This transaction semantically edits only Tasks; generated Index changes come only from the CLI.
 
-For a new document, bind the current Spec ID, Spec revision, and Plan revision, and initialize exactly:
+For a new document, bind the current Spec ID, Spec revision, and Plan revision. Copy the chosen template as the starting skeleton, then initialize exactly:
 
 ```yaml
 revision: 1
@@ -74,7 +82,15 @@ approved_revision: null
 status: pending
 ```
 
-Copy the chosen template as the starting skeleton before replacing placeholders. `approval: pending-review` is the review state and `status: pending` is the execution state; keep both exact and separate. A Tasks metadata error means repair that pending-review header in `tasks.md`, not approve Tasks or change an upstream document.
+For a semantic revision, bind the current upstream revisions, increment `revision`, update `updated`, and reset exactly:
+
+```yaml
+approval: pending-review
+approved_revision: null
+status: pending
+```
+
+`approval: pending-review` is the review state and `status: pending` is the execution state; keep both exact and separate. A Tasks metadata error means repair that pending-review header in `tasks.md`, not approve Tasks or change an upstream document.
 
 When the user or the approved Plan explicitly requires TDD for a specific outcome, add only to that Task:
 
@@ -95,7 +111,7 @@ Use exactly `PYTHONDONTWRITEBYTECODE=1 python3 -B ...` for every Python command 
 
 ## 5. Prove the review candidate
 
-1. Audit every ledger entry against at least one Task and every Task against the approved Plan. Include ACs, regressions, migration, deletion, cleanup, rollback, and final gates.
+1. Read back the saved `tasks.md`, then close every disposition against the artifact and Baseline diff: audit every ledger entry against at least one Task and every Task against the approved Plan; for each surviving Task, confirm every authorized field edit is present and every field, heading, surrounding structure, and phase placement classified `Keep` is unchanged. Confirm valid execution facts remain, discarded Task blocks and residual edges are absent, and every removal, replacement, or associated adjustment has explicit Authority. Include ACs, regressions, migration, deletion, cleanup, rollback, and final gates. Response claims must describe this read-back state rather than intended edits.
 2. Before the CLI, verify the exact pending-review header and that every top-level `TNNN` has `Spec Coverage`, `Depends On`, `Parallel`, `Files`, `Work`, `Validation`, and `Completion` as its own fields. Repair `tasks.md` until this literal contract is complete.
 3. Check unique IDs, DAG acyclicity, frontier conflicts, exact paths, interface consistency, command executability, expected signals, and forbidden scope.
 4. Run `docs sync`, then `docs check`, with `hello-scholar`.

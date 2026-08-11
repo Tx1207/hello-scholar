@@ -1,0 +1,40 @@
+fixtureBaseCommit 38b40b2430c62ba4731222f25df28942fcc00578
+
+[final status --short]
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/search-ranking/INDEX.md
+ M hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --name-only]
+hello-scholar/specs/INDEX.md
+hello-scholar/specs/search-ranking/INDEX.md
+hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --stat]
+ hello-scholar/specs/INDEX.md                       |   2 +-
+ hello-scholar/specs/search-ranking/INDEX.md        |   2 +-
+ .../SPEC-001-intent-aware-ranking/spec.md          | 249 ++++++++++++++++++---
+ 3 files changed, 224 insertions(+), 29 deletions(-)
+
+[index state]
+No staged changes.
+
+[untracked state]
+No untracked files.
+
+[runtime artifacts]
+No `__pycache__`, `.pyc`, `.pyo`, `.DS_Store`, or `.hello-scholar-install.json` path.
+
+[diff check]
+`git diff --check` exited 0.
+
+[final SHA-256]
+d533383bb452dacd5f664201370e87e1f4deae45ffc330cac2724221a978ec2a  hello-scholar/specs/INDEX.md
+8446d8219e91d5882ca78837a51d41fba85c1dadf0147c22456f125cb4f0f9fe  hello-scholar/specs/search-ranking/INDEX.md
+6f1ea29a1584be9ca22f6896b9b2b15d805ff9551dd5b5cb372cb1bf0e91abe4  hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final Spec obsolete-value audit]
+The final Spec's only `0.62` occurrence is line 271 in concise `Revision History`. The unchanged source default remains outside this design-only write scope.
+
+[scope]
+Only the approved existing Spec and two generated Indexes differ from Fixture Base.

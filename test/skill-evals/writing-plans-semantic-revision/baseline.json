@@ -1,0 +1,170 @@
+{
+  "proposalId": "proposal-writing-plans-semantic-revision-haiku-v4",
+  "scenarioSha256": "a497fb3b79a543acb4c2254e62aa897444204fe97f43892302201ede27718095",
+  "protocolSha256": "24f2f43adf15b6cebb2056bdb79e2119dc6ec6c8931d4ec6feabe16893232a97",
+  "fixtureSha256": "d3c775621421fe28c9da4ec1836515299089bc8f8ac1d0774c014cd03899fd58",
+  "result": "control-pass",
+  "summary": "The pre-change writing-plans Skill reconciled the accepted Spec revision 3 and complete Plan baseline into one coherent 12-section draft, preserving unaffected strategy, integrating every audit callback implication, and respecting the Plan-only transaction boundary.",
+  "baselineSkillSnapshots": {
+    "writing-plans": {
+      "status": "pre-change-explicit-file",
+      "sha256": "b649468855198859b0915fc7640c5e8f094d2443b3eb5df11c780f0db5b8b120"
+    }
+  },
+  "environment": {
+    "passed": true,
+    "fixtureBaseCommit": "ee7f78421435a250446569bf6fed664b204e44b7",
+    "checks": [
+      {
+        "id": "fixture-input-hash", "passed": true,
+        "reason": "Scenario, Protocol, Fixture, shared rubric, approved Proposal, and pre-change Skill snapshot hashes were current before dispatch.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bd95611ddb563fa1c5b0f78f5732806473dfb493fc0d4b7c982ef2cc5d641980"}]
+      },
+      {
+        "id": "clean-base", "passed": true,
+        "reason": "The copied Fixture was synchronized, committed, and clean before round zero.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bd95611ddb563fa1c5b0f78f5732806473dfb493fc0d4b7c982ef2cc5d641980"}]
+      },
+      {
+        "id": "initial-tests", "passed": true,
+        "reason": "Initial Python tests passed with bytecode disabled.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bd95611ddb563fa1c5b0f78f5732806473dfb493fc0d4b7c982ef2cc5d641980"}]
+      },
+      {
+        "id": "initial-docs-check", "passed": true,
+        "reason": "Initial docs sync and docs check completed without errors while correctly reporting the stale pre-revision Plan binding.",
+        "evidence": [{"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bd95611ddb563fa1c5b0f78f5732806473dfb493fc0d4b7c982ef2cc5d641980"}]
+      },
+      {
+        "id": "runtime-artifact-cleanliness", "passed": true,
+        "reason": "No excluded runtime artifacts were present before or after the run.",
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/environment.md", "sha256": "bd95611ddb563fa1c5b0f78f5732806473dfb493fc0d4b7c982ef2cc5d641980"},
+          {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"}
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "implementer": {"id": "a729a962136c6ec46", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "a20d1f9edf0a9e58c", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "current-source-reading", "passed": true,
+      "reason": "The result directly reflects Architecture, accepted SPEC-003 revision 3, the complete Plan baseline, source, tests, rules, indexes, and Git state without reopening accepted design.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "8bc279d3ab1153ba56a56fba54d21981b500aa9716a6b97cfa087ccd31ebcde2"},
+        {"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}
+      ]
+    },
+    {
+      "id": "twelve-section-reconciliation", "passed": true,
+      "reason": "All 12 sections remain complete, every unaffected strategy is retained, every audit callback implication is integrated, and stale bindings are absent.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}]
+    },
+    {
+      "id": "plan-lifecycle", "passed": true,
+      "reason": "The Plan advances to revision 2, binds Spec revision 3, preserves created metadata, remains draft, and reads as one coherent strategy.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "0e10038e15559399d0420d96fda89ee3b612e0940ab06785a59e55f718b903d1"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"}
+      ]
+    },
+    {
+      "id": "transaction-boundary", "passed": true,
+      "reason": "Only plan.md and two generated indexes changed; Tasks and all protected upstream and implementation files remain untouched, with no approval or execution.",
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/implementer-final.md", "sha256": "0e10038e15559399d0420d96fda89ee3b612e0940ab06785a59e55f718b903d1"},
+        {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"}
+      ]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Both approved Protocol commands exited successfully.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "9e4268fe1b2e52394fe4e7a8403bd846fa4ce6022bacac2a560f4572e319ac7e"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are recorded.",
+      "evidence": [{"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "9e4268fe1b2e52394fe4e7a8403bd846fa4ce6022bacac2a560f4572e319ac7e"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/baseline/v4-20260811/commands.raw.log", "sha256": "9e4268fe1b2e52394fe4e7a8403bd846fa4ce6022bacac2a560f4572e319ac7e"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "fef6ff279771ec7c69e847f165df676470c7e25d833c5b7e7a4e0cd47dd4e07b", "promptSha256": "8bc279d3ab1153ba56a56fba54d21981b500aa9716a6b97cfa087ccd31ebcde2", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [
+          {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "8bc279d3ab1153ba56a56fba54d21981b500aa9716a6b97cfa087ccd31ebcde2"},
+          {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "0f0743917d34ed441abbdd1d82c5dfd38eb7d353a74539001a160b30210232a9"}
+        ]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [
+        {"path": "evidence/baseline/v4-20260811/prompt-round-0.md", "sha256": "8bc279d3ab1153ba56a56fba54d21981b500aa9716a6b97cfa087ccd31ebcde2"},
+        {"path": "evidence/baseline/v4-20260811/interaction.md", "sha256": "0f0743917d34ed441abbdd1d82c5dfd38eb7d353a74539001a160b30210232a9"}
+      ]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"current-source-reading": 100, "twelve-section-reconciliation": 100, "plan-lifecycle": 100, "transaction-boundary": 100},
+      "reasons": {
+        "current-source-reading": "The artifact directly reflects every required source and honors the Spec-authority and Plan-baseline boundary.",
+        "twelve-section-reconciliation": "All sections and unaffected decisions remain, while the callback delta is integrated without stale references.",
+        "plan-lifecycle": "The revision fields and integrated draft strategy exactly satisfy the lifecycle contract.",
+        "transaction-boundary": "The exact permitted write set is observed and later lifecycle work remains gated."
+      },
+      "evidence": {
+        "current-source-reading": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "twelve-section-reconciliation": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "plan-lifecycle": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "transaction-boundary": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}]
+      },
+      "totalScore": 100
+    },
+    "userValue": {
+      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "reasons": {
+        "value-visibility": "The revision, callback integration, preserved strategy, and review stop are immediately visible.",
+        "audience-fit": "The Plan uses the exact accepted project identifiers and interfaces.",
+        "information-design": "The document is standalone and complete across all required sections.",
+        "actionability": "Review, approval, implementation, and later Tasks boundaries are explicit.",
+        "signal-to-noise": "The Plan contains only concrete strategy, boundaries, and verification details."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "audience-fit": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "information-design": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "actionability": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}],
+        "signal-to-noise": [{"path": "evidence/baseline/v4-20260811/reviewer.md", "sha256": "ee41aa7daa326d1f7392b80e45bff2dd05261a78edb27e2e0867048357e2ccf4"}]
+      },
+      "totalScore": 100
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"},
+    "index": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"},
+    "workingTree": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"},
+    "untracked": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"},
+    "finalHashes": {"path": "evidence/baseline/v4-20260811/tree.raw.log", "sha256": "802a2bb34a1b622c752d8d4b0dda7d135fa951b91a00fecfc10a0d567f596404"}
+  }
+}

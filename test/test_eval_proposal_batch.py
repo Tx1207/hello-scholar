@@ -115,6 +115,7 @@ EXPECTED_FORMAL_BASELINE_BATCH_IDS = (
     "haiku-v4-wave-4-convergence-handoff",
     "haiku-v4-wave-5-explicit-workflows",
     "haiku-v4-wave-6-router",
+    "haiku-v4-semantic-document-revision",
 )
 
 
@@ -638,8 +639,8 @@ class EvalProposalBatchTests(unittest.TestCase):
         ]
         self.assertEqual(expected_skills, program.get("activeProductSkills"))
         self.assertEqual(len(expected_skills), program.get("activeProductSkillCount"))
-        self.assertEqual(37, program.get("productProposalCaseCount"))
-        self.assertEqual(36, program.get("pendingProductProposalCaseCount"))
+        self.assertEqual(41, program.get("productProposalCaseCount"))
+        self.assertEqual(40, program.get("pendingProductProposalCaseCount"))
         self.assertEqual(2, program.get("minimumDistinctProjectsPerAcceptedSkill"))
         for skill in expected_skills:
             self.assertTrue(
@@ -806,6 +807,14 @@ class EvalProposalBatchTests(unittest.TestCase):
                 "haiku-v4-spec-live-authorization-batch-v2",
                 "haiku-v4-spec-live-authorization-batch-v3",
                 "haiku-v4-spec-live-authorization-batch-v4",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v1",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v2",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v3",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v4",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v5",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v6",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v7",
+                "haiku-v4-semantic-document-revision-live-authorization-batch-v8",
             ],
             [batch.get("batchId") for batch in live_batches],
         )
@@ -815,6 +824,14 @@ class EvalProposalBatchTests(unittest.TestCase):
             historical_spec_batch,
             historical_spec_batch_v3,
             current_spec_batch,
+            semantic_revision_batch_v1,
+            semantic_revision_batch_v2,
+            semantic_revision_batch_v3,
+            semantic_revision_batch_v4,
+            semantic_revision_batch_v5,
+            semantic_revision_batch_v6,
+            semantic_revision_batch_v7,
+            semantic_revision_batch_v8,
         ) = live_batches
         self.assertEqual("pending-user-review", generating_tasks_batch.get("status"))
         self.assertEqual(3, generating_tasks_batch.get("protocolVersion"))
@@ -882,6 +899,149 @@ class EvalProposalBatchTests(unittest.TestCase):
         self.assertEqual(
             set(current_spec_batch["scenarioIds"]),
             set(current_spec_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v1.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v1.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v1.get("countsTowardProductSkill"))
+        self.assertEqual(
+            [
+                "brainstorming-semantic-revision",
+                "manage-specs-semantic-revision",
+                "generating-tasks-semantic-revision",
+            ],
+            semantic_revision_batch_v1.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v1["scenarioIds"]),
+            set(semantic_revision_batch_v1["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v2.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v2.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v2.get("countsTowardProductSkill"))
+        expected_semantic_revision_reruns = [
+            "brainstorming-semantic-revision",
+            "generating-tasks-semantic-revision",
+        ]
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v2.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v2["scenarioIds"]),
+            set(semantic_revision_batch_v2["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            ["brainstorming-semantic-revision"],
+            semantic_revision_batch_v2.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v3.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v3.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v3.get("countsTowardProductSkill"))
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v3.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v3["scenarioIds"]),
+            set(semantic_revision_batch_v3["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            ["brainstorming-semantic-revision"],
+            semantic_revision_batch_v3.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v4.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v4.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v4.get("countsTowardProductSkill"))
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v4.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v4["scenarioIds"]),
+            set(semantic_revision_batch_v4["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            ["brainstorming-semantic-revision"],
+            semantic_revision_batch_v4.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v5.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v5.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v5.get("countsTowardProductSkill"))
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v5.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v5["scenarioIds"]),
+            set(semantic_revision_batch_v5["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            ["brainstorming-semantic-revision"],
+            semantic_revision_batch_v5.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v6.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v6.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v6.get("countsTowardProductSkill"))
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v6.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v6["scenarioIds"]),
+            set(semantic_revision_batch_v6["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            expected_semantic_revision_reruns,
+            semantic_revision_batch_v6.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "historical-stale-after-skill-repair",
+            semantic_revision_batch_v7.get("status"),
+        )
+        self.assertEqual(4, semantic_revision_batch_v7.get("protocolVersion"))
+        self.assertFalse(semantic_revision_batch_v7.get("countsTowardProductSkill"))
+        self.assertEqual(
+            ["generating-tasks-semantic-revision"],
+            semantic_revision_batch_v7.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v7["scenarioIds"]),
+            set(semantic_revision_batch_v7["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            ["generating-tasks-semantic-revision"],
+            semantic_revision_batch_v7.get("executedScenarioIds"),
+        )
+        self.assertEqual(
+            "completed-pending-user-review", semantic_revision_batch_v8.get("status")
+        )
+        self.assertEqual(4, semantic_revision_batch_v8.get("protocolVersion"))
+        self.assertTrue(semantic_revision_batch_v8.get("countsTowardProductSkill"))
+        self.assertEqual(
+            ["generating-tasks-semantic-revision"],
+            semantic_revision_batch_v8.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(semantic_revision_batch_v8["scenarioIds"]),
+            set(semantic_revision_batch_v8["authorizationRecordPaths"]),
         )
         for live_batch in live_batches:
             self.assertTrue(set(live_batch["scenarioIds"]).issubset(baseline_ids))
@@ -1012,7 +1172,14 @@ class EvalProposalBatchTests(unittest.TestCase):
                         live_approval.get("liveAuthorizationBatchSha256"),
                     )
                     if batch["status"] == "historical-stale-after-skill-repair":
-                        scorecard_path = live_approval_path.parent / "scorecard.json"
+                        executed_scenario_ids = batch.get(
+                            "executedScenarioIds", batch["scenarioIds"]
+                        )
+                        scorecard_path = (
+                            live_approval_path.parent / "scorecard.json"
+                            if record["scenarioId"] in executed_scenario_ids
+                            else None
+                        )
                     elif batch["status"] == "completed-pending-user-review":
                         scorecard_path = EVAL_ROOT / record["scenarioId"] / "scorecard.json"
                     else:
@@ -1032,7 +1199,7 @@ class EvalProposalBatchTests(unittest.TestCase):
                             scorecard.get("userDecision"),
                             {"pending", "accepted", "rejected"},
                         )
-                    else:
+                    elif batch["status"] != "historical-stale-after-skill-repair":
                         self.assertFalse(
                             (EVAL_ROOT / record["scenarioId"] / "scorecard.json").exists()
                         )

@@ -1,0 +1,148 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "manage-specs-semantic-revision",
+  "projectId": "py-search-ranking-owner",
+  "primarySkill": "manage-specs",
+  "caseId": "manage-specs-semantic-revision",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "manage-specs"
+  ],
+  "skillSources": {
+    "manage-specs": "skills/manage-specs"
+  },
+  "skillExpectations": {
+    "manage-specs": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "existing-owner-classification",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm both Specs, current indexes, code, tests, and ownership boundaries are read and the request is classified as Update Existing Spec for SPEC-001 before any write."
+      },
+      {
+        "id": "identity-and-revision-transaction",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm exact identity approval precedes the write; SPEC-001 keeps ID, Topic, Bundle path, and created metadata while revision, draft status, updated date, and concise Revision History are updated once."
+      },
+      {
+        "id": "semantic-conservation",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm all unaffected public interface, return type, diversity boundary, freshness, deterministic tie, migration, rollback, and evidence decisions remain; phrase priority and threshold 0.68 are integrated into affected sections; obsolete 0.62 references and residual contradictions are removed."
+      },
+      {
+        "id": "scope-and-review-gate",
+        "weight": 15,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only the existing Spec and generated indexes change, the revised Spec remains draft for whole-file review, and no duplicate Spec, downstream document, implementation, Run, or memory artifact appears."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "creates a second or successor Spec for the existing ranking problem",
+      "writes before exact existing identity confirmation or changes ID, Topic, Bundle path, or created metadata",
+      "uses a template to replace the current Spec, loses an unaffected current decision, or retains obsolete 0.62 text",
+      "appends a contradictory patch rather than one coherent current revision",
+      "modifies source, tests, diversity Spec, Architecture, Plan, Tasks, Runs, or memory",
+      "marks the revised Spec accepted without a separate whole-file review"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Classify the current ranking owner, obtain exact identity confirmation, then reconcile the complete existing Spec into one draft revision without losing unaffected decisions.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/search-ranking/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/search-ranking/SPEC-004-result-diversity/spec.md",
+      "hello-scholar/specs/search-ranking/SPEC-010-phrase-ranking/spec.md",
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/plan.md",
+      "hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/tasks.md",
+      "hello-scholar/memory/",
+      "implementation-report.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original documentation request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      },
+      {
+        "sender": "eval-main",
+        "stopCondition": "one evidence-backed classification and exact existing Spec identity have been proposed without writes",
+        "contentRole": "future-identity-confirmation",
+        "message": "确认 `Update Existing Spec`，目标是 `hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md`。请以当前完整文件为基线完成 revision，保持未受影响决定，清除被替代内容，运行 CLI 刷新 Index，并将完整 draft 交给我审核；不要创建其他文档或实现。"
+      }
+    ]
+  }
+}

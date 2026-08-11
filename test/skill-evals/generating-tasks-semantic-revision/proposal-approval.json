@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c",
+  "protocolSha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4",
+  "fixtureSha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709",
+  "replyEvidence": "用户批准继续处理获批 Baseline Batch：haiku-v4-semantic-document-revision / b25f083fe144c09168c7d8448ff56c3fdcded200771f5513f480db8f6ace1ba5。"
+}

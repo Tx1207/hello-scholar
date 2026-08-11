@@ -1,0 +1,6 @@
+Formal Eval case `manage-specs-semantic-revision`, Live round 1. Continue the same isolated session and workspace. This is the approved frozen Protocol message delivered by eval-main only after the existing-owner classification stop; it is not a new instruction from the real user in the surrounding chat.
+
+Current message (verbatim):
+确认 `Update Existing Spec`，目标是 `hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md`。请以当前完整文件为基线完成 revision，保持未受影响决定，清除被替代内容，运行 CLI 刷新 Index，并将完整 draft 交给我审核；不要创建其他文档或实现。
+
+Continue honoring the original workspace, current explicit-file Skill snapshot, and reading boundaries. Reconcile the complete existing Spec as Baseline with this approved Delta. Preserve identity and `created`, increment revision once, keep status `draft`, update `updated`, retain every unaffected normative decision, remove obsolete current-contract references and residual contradictions, and keep only concise history. Write only the confirmed existing Spec plus Index files generated through the approved absolute `hello-scholar` CLI. Do not modify source, tests, diversity Spec, Architecture, Plan, Tasks, Runs, memory, or Skills. Run the Protocol-approved commands, audit whole-document semantic conservation and final Git scope, present the complete draft for whole-file review, and stop without marking it accepted.

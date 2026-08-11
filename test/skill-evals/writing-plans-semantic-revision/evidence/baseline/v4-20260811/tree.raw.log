@@ -1,0 +1,133 @@
+=== base commit ===
+ee7f78421435a250446569bf6fed664b204e44b7
+=== committed diff (base..HEAD) ===
+=== index ===
+=== working tree ===
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index 57873c1..cc951ce 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| feature-policy | [SPEC-003](feature-policy/SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Stale](feature-policy/SPEC-003-policy-precedence/plan.md) | approved | Missing | - | - | - | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback |
++| feature-policy | [SPEC-003](feature-policy/SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](feature-policy/SPEC-003-policy-precedence/plan.md) | draft | Missing | - | - | - | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback |
+diff --git a/hello-scholar/specs/feature-policy/INDEX.md b/hello-scholar/specs/feature-policy/INDEX.md
+index 6fc434f..8258901 100644
+--- a/hello-scholar/specs/feature-policy/INDEX.md
++++ b/hello-scholar/specs/feature-policy/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-003](SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Stale](SPEC-003-policy-precedence/plan.md) | approved | Missing | - | - | - | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback | - |
++| [SPEC-003](SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](SPEC-003-policy-precedence/plan.md) | draft | Missing | - | - | - | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback | - |
+diff --git a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+index 43bcf80..798c048 100644
+--- a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
++++ b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+@@ -2,63 +2,67 @@
+ schema: 1
+ kind: plan
+ spec: SPEC-003
+-spec_revision: 2
+-revision: 1
+-status: approved
+-title: Feature policy precedence implementation plan
+-summary: Add explicit deny with one compatibility migration and bounded cleanup
++spec_revision: 3
++revision: 2
++status: draft
++title: Feature policy precedence and audit callback implementation plan
++summary: Add explicit-deny precedence, preserve the compatibility migration, and emit one selected-rule audit callback per evaluation
+ created: 2026-07-29
+-updated: 2026-07-30
++updated: 2026-08-11
+ ---
+-# Feature Policy Precedence Plan
++# Feature Policy Precedence And Audit Callback Plan
+ 
+ ## 1. Implementation Goal
+ 
+-Implement `SPEC-003` revision 2 without changing `evaluate(feature, tenant) -> bool`.
++Implement `SPEC-003` revision 3 while preserving `evaluate(feature, tenant) -> bool`. The implementation will select explicit deny, tenant rule, or global default in that order and invoke the injected `audit(feature, tenant, source, result)` callback exactly once after every evaluation, using the selected source without exposing evaluation details through the boolean API.
+ 
+ ## 2. Scope
+ 
+-Add explicit-deny precedence and migrate legacy constructor callers. Persistent storage, networking, and Architecture are excluded.
++Add explicit-deny precedence, migrate legacy constructor callers to the policy object, and add the post-selection audit callback. Persistent policy storage, remote configuration, network audit delivery, packaging, and Architecture changes remain excluded. The Plan covers all accepted behavior and verification in AC-1 through AC-5; no Spec decision is reopened.
+ 
+ ## 3. Technical Strategy
+ 
+-Introduce `PolicyRules` and make `PolicyEngine` select explicit deny, tenant rule, then global default.
++Introduce `PolicyRules` to hold global defaults, tenant rules, and the explicit-deny set. Make `PolicyEngine` select explicit deny, tenant rule, then global default, retaining the selected `source` and boolean `result` locally until the callback is invoked once after selection. Accept an optional injected audit callback and use a no-op default so existing callers remain compatible. Keep the temporary dictionary compatibility path only during constructor migration; dictionary inputs load with an empty explicit-deny set and the same no-op callback behavior.
+ 
+ ## 4. Affected Modules
+ 
+-`PolicyRules` and `PolicyEngine` live in `src/policy.py`; behavior and migration tests live under `tests/`.
++`PolicyRules` and `PolicyEngine` remain in `src/policy.py`; precedence, callback count/source/result, boolean compatibility, and migration behavior remain covered under `tests/`. No other modules or runtime boundaries are affected.
+ 
+ ## 5. File Change Boundaries
+ 
+-Modify `src/policy.py` and `tests/test_policy.py`; add `tests/test_policy_migration.py`. Must not touch Architecture, packaging, networking, or persistent storage.
++- **Modify:** `src/policy.py` for `PolicyRules`, precedence selection, optional audit callback injection, no-op default, and temporary constructor compatibility; `tests/test_policy.py` for every precedence branch, callback source/count/result, and public boolean compatibility.
++- **Add:** `tests/test_policy_migration.py` for legacy dictionary loading, migrated `PolicyRules` construction, and the cleanup gate's caller-compatibility evidence.
++- **Move or Migrate:** Existing constructor call sites from dictionary inputs to `PolicyRules` within the repository; no file moves are needed.
++- **Delete:** The temporary dictionary compatibility constructor path only after all repository callers are migrated and executable gates pass.
++- **Must Not Touch:** `hello-scholar/architecture.md`, packaging, networking, persistent storage, and unrelated source or test files. Do not create or modify `tasks.md`.
+ 
+ ## 6. Interface Changes
+ 
+-Preserve `evaluate(feature, tenant) -> bool`. Add `PolicyRules` construction while retaining a temporary dictionary compatibility path.
++Preserve the stable public interface `evaluate(feature, tenant) -> bool` and its boolean return values. Add `PolicyRules` construction with explicit-deny data, and add an optional injected audit callback with the signature `audit(feature, tenant, source, result)`; the no-op default is the compatibility boundary for existing callers. The callback is invoked after rule selection exactly once per evaluation, with `source` equal to `explicit-deny`, `tenant`, or `global-default`. Remove the superseded temporary dictionary compatibility path only after migration; do not replace the callback default with a required argument.
+ 
+ ## 7. Implementation Phases
+ 
+-1. **Precedence behavior with explicit TDD:** For AC-1 and AC-2, add focused tests, observe the explicit-deny failure, implement deny before tenant and default, then refactor while green.
+-2. **Default and public compatibility:** Cover AC-3 and AC-4 with ordinary regression tests.
+-3. **Constructor migration:** Add migration tests, update all callers to `PolicyRules`, then remove dictionary compatibility after an empty caller search.
+-4. **Final verification:** Run the full Python suite, legacy-constructor search, and `git diff --check`.
++1. **Precedence behavior and audit evidence with explicit TDD:** For AC-1, AC-2, and AC-5, add focused tests first for explicit deny, tenant override, global fallback, callback source/count/result, and callback execution after selection; observe the explicit-deny or missing-callback failures, implement selection followed by exactly one callback, then refactor while green.
++2. **Default and public compatibility:** Cover AC-3 and AC-4 with ordinary regression tests, including the no-op callback default and unchanged `evaluate(feature, tenant) -> bool` behavior.
++3. **Constructor migration:** Add migration tests, update all callers to `PolicyRules`, preserve dictionary loading with an empty explicit-deny set during the transition, and remove only the temporary dictionary compatibility path after an empty caller search. Keep the no-op callback default.
++4. **Final verification:** Run the full Python suite without writing bytecode into the project tree, verify callback source/count/result and legacy-constructor search, run `hello-scholar docs sync`, and run `git diff --check`.
+ 
+ ## 8. Test and Experiment Strategy
+ 
+-Use Red-Green-Refactor only for explicit-deny precedence. Use ordinary regression for default behavior and migration.
++Use Red-Green-Refactor for the critical precedence and audit-observation outcomes: tests must establish each selected source, prove the callback is called exactly once after selection, and prove the callback receives the returned boolean. Use ordinary regression for global-default behavior, the no-op callback compatibility boundary, dictionary migration, and unchanged public return values. Run the full Python suite with bytecode disabled and use focused static searches plus `git diff --check`; no external experiment or network audit delivery is required.
+ 
+ ## 9. Migration Sequence
+ 
+-Add `PolicyRules`, retain compatibility, migrate callers, then remove compatibility after executable gates pass.
++Add `PolicyRules` and the optional callback with a no-op default; retain dictionary loading with an empty explicit-deny set and the temporary compatibility path; migrate all repository callers to `PolicyRules`; add and pass callback and migration tests; remove the temporary dictionary compatibility path only after the caller search is empty and the full suite passes. The no-op callback remains in the final public constructor boundary.
+ 
+ ## 10. Cleanup
+ 
+-Delete the dictionary constructor only after full tests and an empty caller search.
++Delete the temporary dictionary constructor compatibility path after the full test suite, migration checks, callback checks, and empty caller search pass. Remove obsolete compatibility-only tests or fixtures only when they assert the deleted path; retain tests for dictionary loading during migration if that behavior remains an accepted compatibility boundary. Do not remove the no-op audit callback default, explicit-deny data, or selected-source test coverage.
+ 
+ ## 11. Rollback
+ 
+-Revert `src/policy.py`, `tests/test_policy.py`, and `tests/test_policy_migration.py` together. No persistent data is affected.
++If the audit wiring fails verification, revert the audit callback parameter, selected-source callback invocation, and its focused tests while retaining the accepted explicit-deny `PolicyRules`, migrated constructor call sites, and boolean API. If the broader change must be reverted, revert `src/policy.py`, `tests/test_policy.py`, and `tests/test_policy_migration.py` together; no persistent data, network delivery, or Architecture change requires rollback.
+ 
+ ## 12. Tasks Generation Rules
+ 
+-Map every AC to a Task. Preserve TDD only for precedence. Separate migration, caller updates, cleanup, and final regression where evidence differs; do not mark shared `src/policy.py` writers parallel.
++Map AC-1 through AC-5 to independently reviewable Tasks and preserve traceability to the accepted Spec revision 3. Keep TDD only for the precedence and critical audit-observation outcomes; propagate ordinary validation for default, compatibility, migration, cleanup, and final regression Tasks. Separate audit callback contract/tests, constructor migration, caller updates, compatibility cleanup, and final verification where evidence differs; do not mark shared `src/policy.py` writers parallel. Tasks must not approve the Plan, modify `tasks.md` during this revision, or begin implementation before explicit Plan approval and normal task generation.
+=== status including untracked ===
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/feature-policy/INDEX.md
+ M hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+=== final hashes ===
+785a315de608bdca7b8548d253a01f5728f01513ec266392f07895d845dbbabd  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/AGENTS.md
+caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/hello-scholar/architecture.md
+8d5f6ca08c223f260407d65a08400ea4e820863badd608f65afaaae2baf500f5  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/hello-scholar/specs/INDEX.md
+6e4be581d6ffdf8c7e83a92096e21216cbe9d66a56922bfee2507f43cc9ab300  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/hello-scholar/specs/feature-policy/INDEX.md
+92920192e772d737cf0ffd698e0821b6edeb09936659cb94aaa5d14bceccdaa5  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+d8a9b85ffa8a6b5dab624398c50c0b4b250b1fb13cf80757da0f3e43121b9f74  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/src/policy.py
+33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae  /tmp/hello-scholar-eval-writing-plans-semantic-revision-baseline/tests/test_policy.py
+=== runtime artifacts ===

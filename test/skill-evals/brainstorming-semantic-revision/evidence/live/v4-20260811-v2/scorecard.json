@@ -1,0 +1,136 @@
+{
+  "proposalId": "proposal-brainstorming-semantic-revision-haiku-v4",
+  "liveApprovalId": "live-brainstorming-semantic-revision-haiku-v4-v2",
+  "liveApprovalSha256": "aac9af86b2a60b48e1d144e7af0faeadbbfd0775aefd302e35b77b7ebed3ebcd",
+  "scenarioSha256": "8f2d9f225c285e22f21945d2de46ccc622a60c48c0aaf2b3af800308349413ed",
+  "protocolSha256": "7dd7e2130d1dbf964ac63e5fe977064cdf8b6a04f686d5e6f200f1ea96a5d05d",
+  "fixtureSha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58",
+  "result": "fail",
+  "userDecision": "pending",
+  "skillSnapshots": {
+    "brainstorming": {"status": "current-explicit-file", "sha256": "1b6e1254d3f9c29fb0a7384267462de0cbcf83c6e1dcbbbd0ed74ddbc8fcd225"},
+    "manage-specs": {"status": "current-explicit-file", "sha256": "c2dc722474c3b2f6e9d276118f81f4b054d1227bf173d60296abd49e8c1114f5"}
+  },
+  "agents": {
+    "implementer": {"id": "a8bad765066bac296", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"},
+    "reviewer": {"id": "afbf9997cf243aed8", "model": "claude-haiku-4-5-20251001", "forkTurns": "none"}
+  },
+  "hardGates": [
+    {
+      "id": "design-before-write", "passed": true,
+      "reason": "Current project and ownership facts preceded exactly one material question, then three approaches and one recommendation were presented without writes and at the required stops.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}]
+    },
+    {
+      "id": "baseline-delta-reconciliation", "passed": false,
+      "reason": "The saved Spec retains unaffected decisions and removes obsolete normative 0.62 text, but it gives only a 0.15 upper bound and no concrete phrase bonus or dominance inequality, so the required phrase-over-ordinary ordering remains under-specified.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}]
+    },
+    {
+      "id": "coherent-current-spec", "passed": false,
+      "reason": "Identity, metadata, sections, threshold 0.68, and retained contracts are coherent, but the central phrase-bonus behavior cannot be independently implemented or acceptance-tested without inventing a material value or ordering rule.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}]
+    },
+    {
+      "id": "approval-and-scope", "passed": true,
+      "reason": "The complete draft preceded the frozen whole-file approval, and the final write set is exactly the existing Spec plus two CLI-generated Indexes.",
+      "evidence": [
+        {"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"},
+        {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"}
+      ]
+    },
+    {
+      "id": "protocol-commands-pass", "passed": true,
+      "reason": "Both approved Protocol commands exited 0; docs sync refreshed both generated Indexes and git diff --check passed.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/commands.raw.log", "sha256": "379851274f2d52d8ea93dc34216587c20ad977efb1e9fbd1b5f585a7a7e237f7"}]
+    },
+    {
+      "id": "base-to-final-evidence", "passed": true,
+      "reason": "Fixture Base, index, working-tree, untracked, final hashes, allowed write scope, and runtime-artifact state are recorded.",
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"}]
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v2-20260811a PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/commands.raw.log", "sha256": "379851274f2d52d8ea93dc34216587c20ad977efb1e9fbd1b5f585a7a7e237f7"}]
+    },
+    {
+      "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
+      "executedCommand": "env -C /tmp/hello-scholar-eval-brainstorming-semantic-revision-live-v2-20260811a node /xsb/hello-scholar/.claude/worktrees/document-revision-contract-v2/bin/hello-scholar.js docs check",
+      "exitCode": 0,
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/commands.raw.log", "sha256": "379851274f2d52d8ea93dc34216587c20ad977efb1e9fbd1b5f585a7a7e237f7"}]
+    }
+  ],
+  "interaction": {
+    "rounds": [
+      {
+        "sender": "user", "contentRole": "current-request", "messageSha256": "4214ebc1eefcfd26a1029ffc17c0c85086c7b87c80e36998ea4aef6983382fe2", "promptSha256": "ec0b58156023cbf9617a47f9b2a02161ccf4411734807cf9cca973c38a43d4af", "stopConditionObserved": true, "deliveredAfterPreviousStop": null,
+        "evidence": [{"path": "evidence/live/v4-20260811-v2/prompt-round-0.md", "sha256": "ec0b58156023cbf9617a47f9b2a02161ccf4411734807cf9cca973c38a43d4af"}, {"path": "evidence/live/v4-20260811-v2/interaction.md", "sha256": "e56defe43be687cd41cd6f6f806d1f15c41567d9f933f465f97c4147f8e0c8f4"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-clarification-answer", "messageSha256": "a68846d8ec5bc10163bbe231cf2a2b73f583edf8ba3754ac85f31cf980974710", "promptSha256": "517440913e46f313c483edef99d6308500ab5f61a0c328ab1ae5d8d544a1c8a0", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260811-v2/prompt-round-1.md", "sha256": "517440913e46f313c483edef99d6308500ab5f61a0c328ab1ae5d8d544a1c8a0"}, {"path": "evidence/live/v4-20260811-v2/interaction.md", "sha256": "e56defe43be687cd41cd6f6f806d1f15c41567d9f933f465f97c4147f8e0c8f4"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-approach-selection", "messageSha256": "9588733eeaca6c8e5e9bd08d76852e973a1ce3649199479beb4d0ffc46028d45", "promptSha256": "e98cb85c4c936fd0daf70f937251033ad6eadd0932e5d29b3ab748464036cb0e", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260811-v2/prompt-round-2.md", "sha256": "e98cb85c4c936fd0daf70f937251033ad6eadd0932e5d29b3ab748464036cb0e"}, {"path": "evidence/live/v4-20260811-v2/interaction.md", "sha256": "e56defe43be687cd41cd6f6f806d1f15c41567d9f933f465f97c4147f8e0c8f4"}]
+      },
+      {
+        "sender": "eval-main", "contentRole": "future-whole-spec-approval", "messageSha256": "2d74ec24bcf42713f28dece9f9617cc457b22fb5f59840e14e7dae10fd9f6b2e", "promptSha256": "dfb7993e755f19a225bc55bb392ff14adef2bde02bc963d295c88f1bf2011f6e", "stopConditionObserved": true, "deliveredAfterPreviousStop": true,
+        "evidence": [{"path": "evidence/live/v4-20260811-v2/prompt-round-3.md", "sha256": "dfb7993e755f19a225bc55bb392ff14adef2bde02bc963d295c88f1bf2011f6e"}, {"path": "evidence/live/v4-20260811-v2/interaction.md", "sha256": "e56defe43be687cd41cd6f6f806d1f15c41567d9f933f465f97c4147f8e0c8f4"}]
+      }
+    ],
+    "promptProjection": {
+      "rawScenarioVisibleToImplementer": false,
+      "rawProtocolVisibleToImplementer": false,
+      "futureRoundsVisibleToImplementer": false,
+      "evidence": [{"path": "evidence/live/v4-20260811-v2/prompt-round-0.md", "sha256": "ec0b58156023cbf9617a47f9b2a02161ccf4411734807cf9cca973c38a43d4af"}, {"path": "evidence/live/v4-20260811-v2/interaction.md", "sha256": "e56defe43be687cd41cd6f6f806d1f15c41567d9f933f465f97c4147f8e0c8f4"}]
+    }
+  },
+  "quality": {
+    "behavior": {
+      "scores": {"design-before-write": 100, "baseline-delta-reconciliation": 0, "coherent-current-spec": 0, "approval-and-scope": 100},
+      "reasons": {
+        "design-before-write": "Project evidence preceded one material question, three alternatives, and the recommendation, with every pre-write stop honored.",
+        "baseline-delta-reconciliation": "The artifact preserves unaffected decisions and removes active 0.62 text, but the selected phrase Delta is incomplete because neither a fixed bonus nor an ordering inequality is specified.",
+        "coherent-current-spec": "One structurally complete revision preserves identity and metadata, but its central phrase-ordering acceptance cannot be implemented or verified without inventing a material decision.",
+        "approval-and-scope": "The complete draft was approved before writing and only the allowed Spec plus generated Indexes changed."
+      },
+      "evidence": {
+        "design-before-write": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "baseline-delta-reconciliation": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "coherent-current-spec": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "approval-and-scope": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}]
+      },
+      "totalScore": 40.0
+    },
+    "userValue": {
+      "scores": {"value-visibility": 90, "audience-fit": 90, "information-design": 90, "actionability": 0, "signal-to-noise": 90},
+      "reasons": {
+        "value-visibility": "The phrase priority and 0.68 decision are visible near the front.",
+        "audience-fit": "Language and technical depth fit the project context.",
+        "information-design": "The complete standalone section structure is usable, with only minor repetition.",
+        "actionability": "An implementer cannot determine the required fixed phrase bonus or dominance behavior without guessing a material ranking decision.",
+        "signal-to-noise": "Obsolete active 0.62 text is absent and retained sections support review or action, although some goals and invariants repeat."
+      },
+      "evidence": {
+        "value-visibility": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "audience-fit": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "information-design": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "actionability": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}],
+        "signal-to-noise": [{"path": "evidence/live/v4-20260811-v2/reviewer.md", "sha256": "7a47d7b6abe2ab851ffa05b92940a1c8406457c5da2f0998b45675f45e76d9f4"}]
+      },
+      "totalScore": 72.0
+    }
+  },
+  "diffEvidence": {
+    "committed": {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"},
+    "index": {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"},
+    "workingTree": {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"},
+    "untracked": {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"},
+    "finalHashes": {"path": "evidence/live/v4-20260811-v2/tree.raw.log", "sha256": "a158ecbcf675fcd37ab1dfeed64ee80e8aefef205c053ecfec2a79d1a31d5285"}
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "writing-plans-semantic-revision",
+  "projectId": "py-feature-policy-plan-revision",
+  "primarySkill": "writing-plans",
+  "caseId": "writing-plans-semantic-revision",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "writing-plans"
+  ],
+  "skillSources": {
+    "writing-plans": "skills/writing-plans"
+  },
+  "skillExpectations": {
+    "writing-plans": {
+      "branch": "enter",
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "forkTurns": "none",
+    "model": "claude-haiku-4-5-20251001"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, run docs sync, docs check, and initial Python tests with bytecode disabled, initialize Git, commit every resulting fixture file, and verify a clean tree before the first prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "current-source-reading",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Architecture, accepted SPEC-003 revision 3, the complete approved Plan revision 1, source, tests, and project rules are read before revising, with the Spec treated as authority and current Plan as baseline."
+      },
+      {
+        "id": "twelve-section-reconciliation",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm all 12 Plan sections remain complete; unaffected modules, boundaries, precedence, migration, cleanup, TDD choice, and strategy are preserved; audit callback changes are integrated into affected interface, phase, test, migration, cleanup, and rollback material; stale Spec revision 2 references disappear."
+      },
+      {
+        "id": "plan-lifecycle",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm Plan revision increments to 2, binds SPEC-003 revision 3, remains draft, preserves created metadata, and reads as one coherent implementation strategy rather than a replacement template or appended amendment."
+      },
+      {
+        "id": "transaction-boundary",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm only plan.md and generated indexes change, tasks.md is neither created nor modified, upstream and implementation bytes remain unchanged, and the flow stops for whole-file Plan review without approval or execution."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "rebuilds the Plan from a template and loses an unaffected current strategy or section",
+      "retains stale SPEC-003 revision 2 bindings or omits required audit callback implications",
+      "appends an amendment while leaving contradictory old strategy in place",
+      "creates or modifies tasks.md, source, tests, Spec, Architecture, Runs, packages, or memory",
+      "marks the revised Plan approved or begins implementation",
+      "changes the existing public boolean API or invents a product decision outside Accepted SPEC-003 revision 3"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Read the complete current Plan and revised accepted Spec, preserve every unaffected strategy, integrate the local audit callback delta across all affected sections, and stop with one draft Plan without touching Tasks.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "node <hello-scholar-repo>/bin/hello-scholar.js docs check"
+  ],
+  "paths": {
+    "allow": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "deny": [
+      "src/",
+      "tests/",
+      "runs/",
+      "hello-scholar/memory/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md",
+      "hello-scholar/specs/INDEX.md",
+      "hello-scholar/specs/feature-policy/INDEX.md"
+    ],
+    "forbidden": [
+      "hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md",
+      "hello-scholar/memory/",
+      "implementation-report.md",
+      "src/policy-v2.py"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "the original Plan revision request is delivered",
+        "contentRole": "current-request",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  }
+}

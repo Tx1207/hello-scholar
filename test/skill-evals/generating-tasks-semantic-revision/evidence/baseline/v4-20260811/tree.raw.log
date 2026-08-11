@@ -1,0 +1,119 @@
+=== base commit ===
+47539851b8847bc6308b36703ea92dab2426f26b
+=== committed diff (base..HEAD) ===
+=== index ===
+=== working tree ===
+diff --git a/hello-scholar/specs/INDEX.md b/hello-scholar/specs/INDEX.md
+index c15f2bb..e8befcc 100644
+--- a/hello-scholar/specs/INDEX.md
++++ b/hello-scholar/specs/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Topic | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| feature-policy | [SPEC-003](feature-policy/SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](feature-policy/SPEC-003-policy-precedence/plan.md) | approved | [Stale](feature-policy/SPEC-003-policy-precedence/tasks.md) | approved | in-progress | 1/3 (33%) | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback |
++| feature-policy | [SPEC-003](feature-policy/SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](feature-policy/SPEC-003-policy-precedence/plan.md) | approved | [Current](feature-policy/SPEC-003-policy-precedence/tasks.md) | pending-review | pending | 1/3 (33%) | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback |
+diff --git a/hello-scholar/specs/feature-policy/INDEX.md b/hello-scholar/specs/feature-policy/INDEX.md
+index 7288bfd..0f668e1 100644
+--- a/hello-scholar/specs/feature-policy/INDEX.md
++++ b/hello-scholar/specs/feature-policy/INDEX.md
+@@ -3,4 +3,4 @@
+ 
+ | Spec | Type | Spec Status | Revision | Plan | Plan Status | Tasks | Tasks Approval | Tasks Status | Completion | Summary | Relations |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| [SPEC-003](SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](SPEC-003-policy-precedence/plan.md) | approved | [Stale](SPEC-003-policy-precedence/tasks.md) | approved | in-progress | 1/3 (33%) | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback | - |
++| [SPEC-003](SPEC-003-policy-precedence/spec.md) | capability | accepted | 3 | [Current](SPEC-003-policy-precedence/plan.md) | approved | [Current](SPEC-003-policy-precedence/tasks.md) | pending-review | pending | 1/3 (33%) | Evaluate explicit deny tenant allow and global default in one deterministic order with an audit callback | - |
+diff --git a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+index 194f6e2..e2f2966 100644
+--- a/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
++++ b/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+@@ -2,14 +2,14 @@
+ schema: 1
+ kind: tasks
+ spec: SPEC-003
+-spec_revision: 2
+-plan_revision: 1
+-revision: 1
+-approval: approved
+-approved_revision: 1
+-status: in-progress
++spec_revision: 3
++plan_revision: 2
++revision: 2
++approval: pending-review
++approved_revision: null
++status: pending
+ created: 2026-07-31
+-updated: 2026-08-02
++updated: 2026-08-11
+ ---
+ # Feature Policy Precedence Tasks
+ 
+@@ -30,31 +30,37 @@ updated: 2026-08-02
+   - Evidence:
+     - `evidence/T001-policy-tests.txt` recorded 4 passing focused tests on 2026-08-02.
+ 
+-- [ ] T002: Add standalone global-default compatibility coverage
+-  - Spec Coverage: AC-3 and AC-4
++- [ ] T003: Complete constructor migration and cleanup
++  - Spec Coverage: AC-3, AC-4, Migration, cleanup, and rollback
+   - Depends On: T001
+   - Parallel: No
+   - Files:
+-    - `tests/test_policy_defaults.py`
++    - `src/policy.py`
++    - `tests/test_policy.py`
++    - `tests/test_policy_migration.py`
+   - Work:
+-    1. Add a separate default-only regression module.
++    1. Update remaining test callers to construct `PolicyRules` while retaining the no-op audit callback default for existing `evaluate(feature, tenant)` callers.
++    2. Search the repository for the temporary dictionary constructor and remove it from `src/policy.py` only after no caller remains.
+   - Validation:
+-    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy_defaults`; expected `OK`.
++    - `grep -R "PolicyEngine(" src tests`; expected no legacy dictionary-constructor call sites after migration.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests`; expected `OK`.
+   - Completion:
+-    - A separate default compatibility module passes.
++    - All callers use `PolicyRules`, the temporary dictionary constructor is absent, the no-op audit callback remains the compatibility default, and the full test suite passes.
+ 
+-- [ ] T003: Complete constructor migration and cleanup
+-  - Spec Coverage: Migration, cleanup, and rollback
+-  - Depends On: T002
++- [ ] T004: Integrate the audit callback after rule selection
++  - Spec Coverage: AC-5, Verification, and rollback
++  - Depends On: T003
+   - Parallel: No
+   - Files:
+     - `src/policy.py`
+     - `tests/test_policy.py`
+-    - `tests/test_policy_migration.py`
++    - `tests/test_policy_audit.py`
+   - Work:
+-    1. Move remaining callers to `PolicyRules`.
+-    2. Remove dictionary compatibility after the caller search is empty.
++    1. Add the optional `audit(feature, tenant, source, result)` callback to `PolicyEngine` construction with a no-op default and leave `evaluate(feature, tenant) -> bool` unchanged.
++    2. Invoke the callback exactly once after selecting explicit-deny, tenant, or global-default and add focused tests for each source, result, and callback count.
+   - Validation:
+-    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests`; expected `OK`.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_policy_audit`; expected `OK` with one callback event per evaluation and the expected source/result tuple.
++    - `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests`; expected `OK` with the public boolean API unchanged.
++    - `git diff --check`; expected no whitespace errors.
+   - Completion:
+-    - Full tests pass and no legacy dictionary constructor remains.
++    - Every evaluation reports the selected source exactly once through the injected callback, existing callers still receive a boolean with the no-op default, and the focused and full checks pass.
+=== status including untracked ===
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/feature-policy/INDEX.md
+ M hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+=== final hashes ===
+785a315de608bdca7b8548d253a01f5728f01513ec266392f07895d845dbbabd  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/AGENTS.md
+a0ebdfb0e8aaf35baf8a11c8aeeda447f9dba5721f9023ef9d8a900a899b4cba  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/evidence/T001-policy-tests.txt
+caa22e479fccdb673fb42615d8d4e3b0b78c61fa48a00494b7fb07cf57458495  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/architecture.md
+df95d349add8780902a50a5f28a9a067fad20d6bbec9ca28c9350668daa61049  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/specs/INDEX.md
+c781d6d01dcfc3a70657eeb88ea818339114cbcb5b3df6724c0816333d243a9c  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/specs/feature-policy/INDEX.md
+7855517d05e51aa78c28fd4cbc931ba0b7b3aa9368b4b511e3a28c76bf1dc35a  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/plan.md
+d8a9b85ffa8a6b5dab624398c50c0b4b250b1fb13cf80757da0f3e43121b9f74  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/spec.md
+4d05056563f5e0374f28d356e46bf7e30aa2bae46941a851bf5ea1198074fca7  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/hello-scholar/specs/feature-policy/SPEC-003-policy-precedence/tasks.md
+fe4caca2ac9af6cfcc2a3d58e1797ae5a4124fd25206454cae706a632d7959ef  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/src/policy.py
+33982f7c9a501144a2a7994f699bd56ead448b440294bb2ede75d304c6dea7ae  /tmp/hello-scholar-eval-generating-tasks-semantic-revision-baseline/tests/test_policy.py
+=== runtime artifacts ===

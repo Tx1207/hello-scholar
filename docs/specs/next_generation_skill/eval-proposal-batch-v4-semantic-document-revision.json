@@ -1,0 +1,433 @@
+{
+  "manifestVersion": 1,
+  "batchId": "haiku-v4-semantic-document-revision",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 4,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 4 Protocol v4 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v4-semantic-document-revision.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 4,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, current accepted and approved Bundle documents, execution evidence, code, and runnable project tests.",
+      "Current documents contain ordinary project facts sufficient to distinguish retained, changed, removed, and newly introduced obligations without exposing the evaluator rubric."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected reconciliation, and future messages.",
+      "Reviewer judgments about semantic conservation, stable identity, residual contradictions, and final acceptance."
+    ],
+    "materialCorrections": [
+      {
+        "scenarioId": "generating-tasks-semantic-revision",
+        "change": "The Fixture exposes authentic partial Task state and retained evidence; the exact reconciliation and replacement ID judgment remain evaluator-only."
+      }
+    ],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-brainstorming-semantic-revision-haiku-v4",
+      "scenarioId": "brainstorming-semantic-revision",
+      "caseId": "brainstorming-semantic-revision",
+      "projectId": "py-search-ranking-revision",
+      "primarySkill": "brainstorming",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/brainstorming-semantic-revision/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/brainstorming-semantic-revision/scenario.md",
+          "sha256": "8f2d9f225c285e22f21945d2de46ccc622a60c48c0aaf2b3af800308349413ed"
+        },
+        "protocol": {
+          "path": "test/skill-evals/brainstorming-semantic-revision/protocol.json",
+          "sha256": "7dd7e2130d1dbf964ac63e5fe977064cdf8b6a04f686d5e6f200f1ea96a5d05d"
+        },
+        "fixture": {
+          "path": "test/skill-evals/brainstorming-semantic-revision/fixture",
+          "sha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58"
+        }
+      },
+      "businessGoal": "搜索排序需要调整：短语完全匹配应当高于普通词项匹配，语义回退阈值从 0.62 提高到 0.68。请先结合当前 Spec、代码和测试确认影响，比较可行设计并给出建议；公开入口、返回结构、多样性策略和现有 freshness 规则都不变。在我批准完整修订稿前不要写文件，也不要开始 Plan 或实现。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "design-before-write",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm current Specs, code, tests, and ownership facts are read before one material question and two or three evidence-backed ranking approaches are compared without project writes."
+          },
+          {
+            "id": "baseline-delta-reconciliation",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the complete current SPEC-001 is treated as the revision baseline: unchanged public entry, return shape, diversity boundary, freshness rule, tie behavior, migration, and rollback remain, while phrase priority and threshold 0.68 are integrated and obsolete 0.62 references disappear."
+          },
+          {
+            "id": "coherent-current-spec",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm one complete revised Spec preserves identity and created metadata, synchronizes design, interfaces, invariants, acceptance, verification, and concise history, and contains no appended amendment or conflicting old/new contract."
+          },
+          {
+            "id": "approval-and-scope",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm no write occurs before exact whole-file approval, then only the existing Spec and CLI-generated indexes change and the flow stops before Plan, Tasks, code, Runs, or unrelated Specs."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "writes a Spec or any project file before the complete revised Spec receives whole-file approval",
+          "rebuilds SPEC-001 from a template, drops an unaffected current decision, or leaves obsolete 0.62 or contradictory ranking text",
+          "creates a duplicate or successor Spec for the same ranking ownership boundary",
+          "appends an isolated amendment instead of producing one coherent Current Spec",
+          "changes source, tests, Architecture, result-diversity Spec, Plan, Tasks, Runs, or memory",
+          "includes future evaluator replies in the first prompt or continues past a real stop condition"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the full current ranking contract, obtain the material design decision, reconcile every retained and changed obligation into one complete reviewed Spec, then write only after whole-file approval."
+    },
+    {
+      "ordinal": 2,
+      "proposalId": "proposal-manage-specs-semantic-revision-haiku-v4",
+      "scenarioId": "manage-specs-semantic-revision",
+      "caseId": "manage-specs-semantic-revision",
+      "projectId": "py-search-ranking-owner",
+      "primarySkill": "manage-specs",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/manage-specs-semantic-revision/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/manage-specs-semantic-revision/scenario.md",
+          "sha256": "13805d7d7d0ab272c0db5ca176e72be6a3e667266615cb20297c5d1caabc2741"
+        },
+        "protocol": {
+          "path": "test/skill-evals/manage-specs-semantic-revision/protocol.json",
+          "sha256": "a89d521a94cc74ada7318672a3b623386fa01f7f88512ba13c35b30df30056ea"
+        },
+        "fixture": {
+          "path": "test/skill-evals/manage-specs-semantic-revision/fixture",
+          "sha256": "601297aca42041bc282182104d09ea95c2ce0a575b729b2a6cc84e4629415f58"
+        }
+      },
+      "businessGoal": "在开始实现前，请把设计文档更新为当前方案：短语完全匹配权重高于普通词项，语义回退阈值改成 0.68。公开 `rank_documents` 入口、返回结构、多样性边界、freshness 规则和稳定 tie 行为都继续保留。请确认应更新哪个 Spec，等我确认身份后再完成修订并刷新 Index；不要创建新 Spec、Plan、Tasks 或修改代码。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "existing-owner-classification",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm both Specs, current indexes, code, tests, and ownership boundaries are read and the request is classified as Update Existing Spec for SPEC-001 before any write."
+          },
+          {
+            "id": "identity-and-revision-transaction",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm exact identity approval precedes the write; SPEC-001 keeps ID, Topic, Bundle path, and created metadata while revision, draft status, updated date, and concise Revision History are updated once."
+          },
+          {
+            "id": "semantic-conservation",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm all unaffected public interface, return type, diversity boundary, freshness, deterministic tie, migration, rollback, and evidence decisions remain; phrase priority and threshold 0.68 are integrated into affected sections; obsolete 0.62 references and residual contradictions are removed."
+          },
+          {
+            "id": "scope-and-review-gate",
+            "weight": 15,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm only the existing Spec and generated indexes change, the revised Spec remains draft for whole-file review, and no duplicate Spec, downstream document, implementation, Run, or memory artifact appears."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "creates a second or successor Spec for the existing ranking problem",
+          "writes before exact existing identity confirmation or changes ID, Topic, Bundle path, or created metadata",
+          "uses a template to replace the current Spec, loses an unaffected current decision, or retains obsolete 0.62 text",
+          "appends a contradictory patch rather than one coherent current revision",
+          "modifies source, tests, diversity Spec, Architecture, Plan, Tasks, Runs, or memory",
+          "marks the revised Spec accepted without a separate whole-file review"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Classify the current ranking owner, obtain exact identity confirmation, then reconcile the complete existing Spec into one draft revision without losing unaffected decisions."
+    },
+    {
+      "ordinal": 3,
+      "proposalId": "proposal-writing-plans-semantic-revision-haiku-v4",
+      "scenarioId": "writing-plans-semantic-revision",
+      "caseId": "writing-plans-semantic-revision",
+      "projectId": "py-feature-policy-plan-revision",
+      "primarySkill": "writing-plans",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/writing-plans-semantic-revision/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/writing-plans-semantic-revision/scenario.md",
+          "sha256": "a497fb3b79a543acb4c2254e62aa897444204fe97f43892302201ede27718095"
+        },
+        "protocol": {
+          "path": "test/skill-evals/writing-plans-semantic-revision/protocol.json",
+          "sha256": "24f2f43adf15b6cebb2056bdb79e2119dc6ec6c8931d4ec6feabe16893232a97"
+        },
+        "fixture": {
+          "path": "test/skill-evals/writing-plans-semantic-revision/fixture",
+          "sha256": "d3c775621421fe28c9da4ec1836515299089bc8f8ac1d0774c014cd03899fd58"
+        }
+      },
+      "businessGoal": "请根据当前 Accepted `SPEC-003` revision 3 修订现有 `plan.md`。只把新增的 audit callback 义务归并到受影响的接口、第一阶段、测试和回滚中；仍有效的模块、文件边界、显式 deny 优先级、兼容迁移、cleanup gate、TDD 选择和其他策略都保留。删除被新 revision 替代的旧绑定，整理成完整 12 节 Plan 后保持 `draft` 给我整份审核。不要创建或修改 `tasks.md`，也不要开始实现。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "current-source-reading",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm Architecture, accepted SPEC-003 revision 3, the complete approved Plan revision 1, source, tests, and project rules are read before revising, with the Spec treated as authority and current Plan as baseline."
+          },
+          {
+            "id": "twelve-section-reconciliation",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm all 12 Plan sections remain complete; unaffected modules, boundaries, precedence, migration, cleanup, TDD choice, and strategy are preserved; audit callback changes are integrated into affected interface, phase, test, migration, cleanup, and rollback material; stale Spec revision 2 references disappear."
+          },
+          {
+            "id": "plan-lifecycle",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm Plan revision increments to 2, binds SPEC-003 revision 3, remains draft, preserves created metadata, and reads as one coherent implementation strategy rather than a replacement template or appended amendment."
+          },
+          {
+            "id": "transaction-boundary",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm only plan.md and generated indexes change, tasks.md is neither created nor modified, upstream and implementation bytes remain unchanged, and the flow stops for whole-file Plan review without approval or execution."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "rebuilds the Plan from a template and loses an unaffected current strategy or section",
+          "retains stale SPEC-003 revision 2 bindings or omits required audit callback implications",
+          "appends an amendment while leaving contradictory old strategy in place",
+          "creates or modifies tasks.md, source, tests, Spec, Architecture, Runs, packages, or memory",
+          "marks the revised Plan approved or begins implementation",
+          "changes the existing public boolean API or invents a product decision outside Accepted SPEC-003 revision 3"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the complete current Plan and revised accepted Spec, preserve every unaffected strategy, integrate the local audit callback delta across all affected sections, and stop with one draft Plan without touching Tasks."
+    },
+    {
+      "ordinal": 4,
+      "proposalId": "proposal-generating-tasks-semantic-revision-haiku-v4",
+      "scenarioId": "generating-tasks-semantic-revision",
+      "caseId": "generating-tasks-semantic-revision",
+      "projectId": "py-feature-policy-tasks-revision",
+      "primarySkill": "generating-tasks",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/generating-tasks-semantic-revision/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/generating-tasks-semantic-revision/scenario.md",
+          "sha256": "ceb2af5764fe97942deb559d679df8962a3331158fb4d74beab88861de8bcb3c"
+        },
+        "protocol": {
+          "path": "test/skill-evals/generating-tasks-semantic-revision/protocol.json",
+          "sha256": "f44103d65009cd2b0c23a6c5d26eebcb4d2aa5d8aad0019cd4a14bdadd71aeb4"
+        },
+        "fixture": {
+          "path": "test/skill-evals/generating-tasks-semantic-revision/fixture",
+          "sha256": "635abafdeff28c8816a16e982ba940499188d8a68a1cf837b234bd557adc9709"
+        }
+      },
+      "businessGoal": "请根据当前 Accepted Spec 和 Approved Plan 修订现有 `tasks.md`：保留已完成且仍有效的 `T001`、checkbox 和证据；删除未完成且已废弃的 `T002`；`T003` 目标不变，只更新 Work、Validation 和 Completion；为新增 audit integration 使用新的更大 Task ID。修复依赖图并把整份 Tasks 重置为 pending-review，等我审核。不要改写过去执行事实，不要重排或复用 ID，也不要开始实施。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "baseline-and-authority",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the complete current Tasks, Accepted Spec revision 3, Approved Plan revision 2, source, tests, project rules, and confirmable execution evidence are read before editing, with current Tasks as baseline and upstream documents as authority."
+          },
+          {
+            "id": "stable-task-identity",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm completed valid T001 keeps its ID, checked state, and evidence; unfinished obsolete T002 is removed; T003 keeps its ID while Work, Validation, Completion, and dependencies change; no surviving ID is renumbered and no removed ID is reused."
+          },
+          {
+            "id": "new-obligation-and-dag",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the audit integration result receives an unused ID greater than every Baseline and confirmable historical ID, all current obligations are covered, residual T002 edges disappear, and the rebuilt DAG, frontier, file conflicts, and executable validation are coherent."
+          },
+          {
+            "id": "revision-and-review-boundary",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm Tasks binds current Spec and Plan revisions, increments revision, resets approval to pending-review with null approved_revision and pending status, changes only Tasks plus generated indexes, preserves upstream and implementation bytes, and stops without approval or execution."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "rewrites T001 execution history, clears its checkbox, changes its evidence, or assigns its ID to different work",
+          "keeps obsolete T002 or any residual dependency on it",
+          "renumbers T003, reuses T002, or allocates a new ID that is not greater than confirmable history",
+          "fails to reset approval: pending-review, approved_revision: null, and status: pending on the new revision",
+          "creates a fresh template-derived Tasks document that loses valid execution facts or leaves contradictory old/new work",
+          "modifies the Spec, Plan, Architecture, source, tests, packages, Runs, or memory, marks Tasks approved, or begins implementation"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Read the partially completed Tasks contract, preserve valid execution identity and evidence, remove obsolete work, revise the surviving task, add the new outcome with a fresh ID, rebuild the DAG, and stop at pending review."
+    }
+  ]
+}

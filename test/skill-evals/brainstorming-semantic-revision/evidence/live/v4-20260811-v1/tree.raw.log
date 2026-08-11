@@ -1,0 +1,37 @@
+fixtureBaseCommit 1e1ff13cb792084938a3ec0c14ac24b26dd136ec
+
+[final status --short]
+ M hello-scholar/specs/INDEX.md
+ M hello-scholar/specs/search-ranking/INDEX.md
+ M hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --name-only]
+hello-scholar/specs/INDEX.md
+hello-scholar/specs/search-ranking/INDEX.md
+hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[final diff --stat]
+ hello-scholar/specs/INDEX.md                       |   2 +-
+ hello-scholar/specs/search-ranking/INDEX.md        |   2 +-
+ .../SPEC-001-intent-aware-ranking/spec.md          | 105 +++++++++++++++++----
+ 3 files changed, 90 insertions(+), 19 deletions(-)
+
+[index state]
+No staged changes. `git ls-files -s` retained the clean Fixture Base index entries.
+
+[untracked state]
+No untracked files after runtime-artifact cleanup.
+
+[runtime artifacts]
+No `__pycache__` directory and no `.pyc` file after cleanup.
+
+[diff check]
+`git diff --check` exited 0 with no output.
+
+[final SHA-256]
+149550c6fc582affffa6dc27acb4ade316f59bece5c111fd0b5b76f29036db74  hello-scholar/specs/INDEX.md
+a79b246ac59ee83a4db884e8fec5cc621ccb5d259937d83e8bd41a593c5175b7  hello-scholar/specs/search-ranking/INDEX.md
+d2cc8da5a2abdf67e82ee196014f9e302f501869bb5e3eb8e1c3e529c3db9f3b  hello-scholar/specs/search-ranking/SPEC-001-intent-aware-ranking/spec.md
+
+[scope]
+Only the approved existing Spec and two CLI-generated Indexes differ from the Fixture Base. Source, tests, Architecture, `SPEC-004`, Plan, Tasks, Runs, memory, and Skill files are unchanged.

@@ -31,7 +31,7 @@ description: 当请求需要为新能力、材料性的外部行为、接口或�
 
 在写入任何 Spec 前取得用户批准。确认共同理解不等于设计获批；设计获批也不等于完成 Spec 分类、不等于 Spec accepted、不等于 Plan 或 Tasks 获批，也不授权实施。
 
-**完成条件：** 用户已批准的设计内容足以填入完整 Spec，无需凭空补充材料性决定。
+**完成条件：** 每项获批行为都已确定实施与测试所需的数值或公式、边界情况和可观察验收信号。任何排序或优先级承诺都必须点明被比较的输入，并给出决定顺序的精确谓词或不等式。每项派生分类或匹配都必须说明来源输入、归一化、边界规则和作用范围；文本还要说明大小写处理与 token boundary。Spec 编写者和实施者无需凭空补充材料性决定即可继续。
 
 ```dot
 digraph brainstorming {
@@ -62,9 +62,9 @@ digraph brainstorming {
 
 使用它返回的分类、确认门、Bundle 路径和当前身份。初始 `hello-scholar docs check` 由 `$manage-specs` 负责，本 Skill 不重复执行。这个 owner 转交是硬停止点：若 `$manage-specs` 不可用、无法读取，或没有返回完整分类和 canonical 路径，不能自行分类或写入 Spec。不要复制其 ID 分配、Revision、继任关系、slug 或 Index 逻辑。若返回 `Need Human Classification`，停在该决定；若选定分类需要确认，写入前先取得完整路径确认，只批准 ID 或 Topic 不属于路径批准。
 
-读取 `skills/manage-specs/assets/` 中选定的模板：仓库语言偏好为中文时用 `spec-template.zh_CN.md`，否则用 `spec-template.md`。用户可读的 Spec 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。
+对于 `Create Independent Spec` 或 `Create Successor Spec` 中的新 Spec，读取 `skills/manage-specs/assets/` 中选定的模板：仓库语言偏好为中文时用 `spec-template.zh_CN.md`，否则用 `spec-template.md`。模板只用于新建 Spec。对于 `Update Existing Spec`，完整读取当前 `spec.md` 并将当前 `spec.md` 作为骨架；不根据模板重建。用户可读的 Spec 正文遵循仓库语言偏好；不要根据任务提示语言推断。代码符号、字段名、路径、命令和模板要求的标题保持原样。
 
-写入或修订选定的 Bundle 文件。若为 `Create Successor Spec`，还只进行 `$manage-specs` 要求的关联旧 `spec.md` 更新：
+写入或修订选定的 Bundle 文件。对于 `Update Existing Spec`，将当前完整文件作为 **Baseline**，将用户批准的设计作为 **Authority**，将其中的变化作为 **Delta**。将每项 Baseline 决定和 Delta 变化归为 `Keep`、`Modify`、`Remove`、`Add` 或 `Move`；默认使用 `Keep`，Delta 未提及不是删除依据。将结果归并到七个章节中，同步更新受影响的接口、不变量、风险和验收，而不是在末尾追加补丁。若为 `Create Successor Spec`，还只进行 `$manage-specs` 要求的关联旧 `spec.md` 更新：
 
 ```text
 hello-scholar/specs/<topic-id>/SPEC-NNN-<design-name>/spec.md
@@ -92,11 +92,11 @@ hello-scholar docs sync
 
 ## 5. 自审与整份文件审核
 
-检查保存的 Spec 是否含全部七个核心章节、必要条件章节、占位符、矛盾、歧义、范围、验收依据、语言，以及与 `manage-specs` 分类、ID、revision 和 Bundle 路径是否一致。只修正选定 draft，然后运行一次 `hello-scholar docs sync`。
+回读保存后的 Spec，再检查全部七个核心章节、必要条件章节、占位符、矛盾、歧义、范围、验收依据、语言，以及与 `manage-specs` 分类、ID、revision 和 Bundle 路径是否一致。每项规范性事实陈述都必须与本轮设计读取的项目证据一致。对于 `Update Existing Spec`，依据保存的 artifact 核销整份**语义守恒**账本：每项 `Keep` 仍存在；每项 `Modify`、`Add` 和 `Move` 已进入预定章节；每项 `Remove`、被替代值和旧接口都已从规范性当前章节和残余引用中消失，简洁 `Revision History` 除外。每项删除或大范围改写都必须有 Authority。回滚通过可恢复的 revision、build 或 state 表达，而不是将被替代合同重新写成当前指令。只修正选定 draft，然后运行一次 `hello-scholar docs sync`。
 
 将完整文件交给用户进行一次整份文件审核。用户明确接受该精确 revision 后，设为 `status: accepted`，再运行一次 `hello-scholar docs sync`；若用户只要求完成设计则停止。分类确认不等于 Spec accepted。
 
-**完成条件：** 结果是明确的审核停止点、等待审核的已修正 draft，或 accepted 的 Current Spec。
+**完成条件：** 结果是明确的审核停止点、等待审核的已修正 draft，或 accepted 的 Current Spec。精确 revision 已获得明确整份接受时，保存的 artifact 和生成的 Index 必须将该 revision 标识为 `status: accepted`；当前 metadata、标题、历史条目和回复都不得继续将其标为 draft 或 proposed。
 
 ## 6. Accepted 后路由
 
