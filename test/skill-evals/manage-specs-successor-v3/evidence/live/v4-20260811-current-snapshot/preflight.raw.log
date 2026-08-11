@@ -1,0 +1,73 @@
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 4
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/session-auth/INDEX.md
+notice plan-missing hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/plan.md: Spec SPEC-005 has no Plan
+notice tasks-missing hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/tasks.md: Spec SPEC-005 has no Tasks
+notice plan-missing hello-scholar/specs/session-auth/SPEC-011-session-audit-events/plan.md: Spec SPEC-011 has no Plan
+notice tasks-missing hello-scholar/specs/session-auth/SPEC-011-session-audit-events/tasks.md: Spec SPEC-011 has no Tasks
+[exit 0]
+
+$ npm test
+
+> test
+> node --test test/*.test.js
+
+✔ opaque token verifies until expiry or revocation (1.552659ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111.369345
+[exit 0]
+
+$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /tmp/hello-scholar-eval-manage-specs-successor-v3-current-live-20260811/.git/
+[exit 0]
+
+$ git config user.name "Hello Scholar Eval"
+[exit 0]
+
+$ git config user.email eval@hello-scholar.local
+[exit 0]
+
+$ git add -A
+[exit 0]
+
+$ git commit -m "Initialize formal eval fixture"
+[master (root-commit) 8e8fbd0] Initialize formal eval fixture
+ 9 files changed, 195 insertions(+)
+ create mode 100644 AGENTS.md
+ create mode 100644 hello-scholar/architecture.md
+ create mode 100644 hello-scholar/specs/INDEX.md
+ create mode 100644 hello-scholar/specs/session-auth/INDEX.md
+ create mode 100644 hello-scholar/specs/session-auth/SPEC-005-opaque-session-tokens/spec.md
+ create mode 100644 hello-scholar/specs/session-auth/SPEC-011-session-audit-events/spec.md
+ create mode 100644 package.json
+ create mode 100644 src/token-store.js
+ create mode 100644 test/token-store.test.js
+[exit 0]
+
+$ git diff --check HEAD
+[exit 0]
+
+$ git status --porcelain=v1 -uall
+[exit 0]
+
+$ git rev-parse HEAD
+8e8fbd0906060aa1d8980fc49c3f07d29226c415
+[exit 0]
+

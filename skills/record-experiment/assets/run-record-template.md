@@ -58,9 +58,13 @@ summary: <current known facts only>
 
 ## 6. Artifact Locations
 
-- Intended log path:
+- Intended stdout path:
+- Intended stderr path:
 - Intended result path:
 - Intended checkpoint path:
+- Actual stdout path:
+- Actual stderr path:
+- Exit code / signal:
 - Dashboard / tracking URL:
 
 ## 7. Execution Events

@@ -14,6 +14,7 @@ from skill_eval_contract import (
     SONNET_EVAL_AGENT_MODEL,
     TERRA_EVAL_AGENT_MODEL,
     sha256_file,
+    sha256_historical_skill_snapshot,
     sha256_tree,
 )
 
@@ -28,6 +29,19 @@ DETAILS_END = "<!-- END GENERATED PROPOSAL DETAILS -->"
 LEGACY_V3_BATCH_ID = "generating-tasks-sonnet-v3-proposals-batch-v1"
 LEGACY_V3_BATCH_SHA256 = (
     "4f39d2a323c6e262850c9ffb76a54c25caaed06213d39ca0c4790a822bc82c0e"
+)
+REVALIDATION_BASELINE_BATCH_ID = "haiku-v4-wave-7-stale-snapshots"
+REVALIDATION_LIVE_BATCH_ID = "haiku-v4-stale-snapshot-live-authorization-v1"
+GENERATING_TASKS_REVALIDATION_LIVE_BATCH_ID = (
+    "haiku-v4-generating-tasks-revalidation-live-authorization-v1"
+)
+REVALIDATION_SUCCESSOR_SCENARIOS = (
+    "generating-tasks-v4-feature-policy-revalidation",
+    "generating-tasks-v4-migration-revalidation",
+)
+REVALIDATION_LIVE_SCENARIOS = (
+    "manage-specs-successor-v3",
+    "brainstorming-api-route-v3",
 )
 V2_BATCH = {
     "batchId": "next-generation-skill-protocol-v2-proposals-batch-v2",
@@ -115,6 +129,7 @@ EXPECTED_FORMAL_BASELINE_BATCH_IDS = (
     "haiku-v4-wave-4-convergence-handoff",
     "haiku-v4-wave-5-explicit-workflows",
     "haiku-v4-wave-6-router",
+    REVALIDATION_BASELINE_BATCH_ID,
 )
 
 
@@ -786,6 +801,86 @@ class EvalProposalBatchTests(unittest.TestCase):
                 skill,
             )
 
+    def test_stale_snapshot_revalidation_uses_new_haiku_contracts(self) -> None:
+        """Keep historical runs intact while new Haiku approvals bind current inputs."""
+
+        program = _load_v3_program()
+        batches = {batch["batchId"]: batch for batch in _v3_batches(program)}
+
+        baseline_batch = batches[REVALIDATION_BASELINE_BATCH_ID]
+        self.assertEqual("approved-baseline-observed", baseline_batch["status"])
+        self.assertEqual(4, baseline_batch["protocolVersion"])
+        self.assertFalse(baseline_batch["countsTowardProductSkill"])
+        self.assertEqual(
+            list(REVALIDATION_SUCCESSOR_SCENARIOS),
+            baseline_batch["scenarioIds"],
+        )
+        for scenario_id in REVALIDATION_SUCCESSOR_SCENARIOS:
+            scenario_dir = EVAL_ROOT / scenario_id
+            protocol = _load_json(scenario_dir / "protocol.json")
+            approval = _load_json(scenario_dir / "proposal-approval.json")
+            self.assertEqual(HAIKU_EVAL_AGENT_MODEL, protocol["agents"]["model"])
+            self.assertEqual("approved", approval["decision"])
+            self.assertIsInstance(approval["replyEvidence"], str)
+            self.assertTrue(approval["replyEvidence"].strip())
+            baseline_path = scenario_dir / "baseline.json"
+            allowed_names = {
+                "fixture",
+                "proposal-approval.json",
+                "protocol.json",
+                "scenario.md",
+                "baseline.json",
+                "evidence",
+                "live-approval.json",
+                "scorecard.json",
+            }
+            self.assertTrue(
+                {path.name for path in scenario_dir.iterdir()} <= allowed_names,
+                scenario_id,
+            )
+            if baseline_path.exists():
+                baseline = _load_json(baseline_path)
+                self.assertIn(baseline["result"], {"fail", "control-pass"})
+                self.assertEqual(
+                    "absent",
+                    baseline["baselineSkillSnapshots"]["generating-tasks"]["status"],
+                )
+            else:
+                self.assertFalse((scenario_dir / "evidence").exists())
+                self.assertFalse((scenario_dir / "live-approval.json").exists())
+                self.assertFalse((scenario_dir / "scorecard.json").exists())
+
+        live_batch = batches[REVALIDATION_LIVE_BATCH_ID]
+        self.assertEqual("completed-pending-user-review", live_batch["status"])
+        self.assertEqual(4, live_batch["protocolVersion"])
+        self.assertFalse(live_batch["countsTowardProductSkill"])
+        self.assertEqual(list(REVALIDATION_LIVE_SCENARIOS), live_batch["scenarioIds"])
+        self.assertEqual(
+            set(REVALIDATION_LIVE_SCENARIOS),
+            set(live_batch["authorizationRecordPaths"]),
+        )
+        for scenario_id, record_path in live_batch["authorizationRecordPaths"].items():
+            scenario_dir = EVAL_ROOT / scenario_id
+            record = _load_json(_repo_path(record_path, record_path))
+            protocol = _load_json(scenario_dir / "protocol.json")
+            self.assertEqual("approved", record["decision"])
+            self.assertIsInstance(record["replyEvidence"], str)
+            self.assertTrue(record["replyEvidence"].strip())
+            self.assertEqual(sha256_file(scenario_dir / "baseline.json"), record["baselineSha256"])
+            self.assertEqual(
+                {
+                    skill: {
+                        "status": protocol["skillExpectations"][skill]["liveLoad"],
+                        "sha256": sha256_historical_skill_snapshot(
+                            REPO_ROOT,
+                            protocol["skillSources"][skill],
+                        ),
+                    }
+                    for skill in protocol["targetSkills"]
+                },
+                record["skillSnapshots"],
+            )
+
     def test_v3_nonbaseline_batches_are_explicit_and_noncounting(self) -> None:
         program = _load_v3_program()
         batches = _v3_batches(program)
@@ -806,6 +901,8 @@ class EvalProposalBatchTests(unittest.TestCase):
                 "haiku-v4-spec-live-authorization-batch-v2",
                 "haiku-v4-spec-live-authorization-batch-v3",
                 "haiku-v4-spec-live-authorization-batch-v4",
+                GENERATING_TASKS_REVALIDATION_LIVE_BATCH_ID,
+                REVALIDATION_LIVE_BATCH_ID,
             ],
             [batch.get("batchId") for batch in live_batches],
         )
@@ -815,8 +912,13 @@ class EvalProposalBatchTests(unittest.TestCase):
             historical_spec_batch,
             historical_spec_batch_v3,
             current_spec_batch,
+            generating_tasks_revalidation_live_batch,
+            revalidation_live_batch,
         ) = live_batches
-        self.assertEqual("pending-user-review", generating_tasks_batch.get("status"))
+        self.assertEqual(
+            "historical-cancelled-after-haiku-successor",
+            generating_tasks_batch.get("status"),
+        )
         self.assertEqual(3, generating_tasks_batch.get("protocolVersion"))
         self.assertFalse(generating_tasks_batch.get("countsTowardProductSkill"))
         self.assertEqual(
@@ -871,10 +973,10 @@ class EvalProposalBatchTests(unittest.TestCase):
             set(historical_spec_batch_v3["authorizationRecordPaths"]),
         )
         self.assertEqual(
-            "completed-pending-user-review", current_spec_batch.get("status")
+            "historical-stale-after-skill-repair", current_spec_batch.get("status")
         )
         self.assertEqual(4, current_spec_batch.get("protocolVersion"))
-        self.assertTrue(current_spec_batch.get("countsTowardProductSkill"))
+        self.assertFalse(current_spec_batch.get("countsTowardProductSkill"))
         self.assertEqual(
             ["manage-specs-successor-v3", "brainstorming-api-route-v3"],
             current_spec_batch.get("scenarioIds"),
@@ -882,6 +984,36 @@ class EvalProposalBatchTests(unittest.TestCase):
         self.assertEqual(
             set(current_spec_batch["scenarioIds"]),
             set(current_spec_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "completed-pending-user-review",
+            generating_tasks_revalidation_live_batch.get("status"),
+        )
+        self.assertEqual(4, generating_tasks_revalidation_live_batch.get("protocolVersion"))
+        self.assertFalse(
+            generating_tasks_revalidation_live_batch.get("countsTowardProductSkill")
+        )
+        self.assertEqual(
+            list(REVALIDATION_SUCCESSOR_SCENARIOS),
+            generating_tasks_revalidation_live_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(generating_tasks_revalidation_live_batch["scenarioIds"]),
+            set(generating_tasks_revalidation_live_batch["authorizationRecordPaths"]),
+        )
+        self.assertEqual(
+            "completed-pending-user-review",
+            revalidation_live_batch.get("status"),
+        )
+        self.assertEqual(4, revalidation_live_batch.get("protocolVersion"))
+        self.assertFalse(revalidation_live_batch.get("countsTowardProductSkill"))
+        self.assertEqual(
+            list(REVALIDATION_LIVE_SCENARIOS),
+            revalidation_live_batch.get("scenarioIds"),
+        )
+        self.assertEqual(
+            set(revalidation_live_batch["scenarioIds"]),
+            set(revalidation_live_batch["authorizationRecordPaths"]),
         )
         for live_batch in live_batches:
             self.assertTrue(set(live_batch["scenarioIds"]).issubset(baseline_ids))
@@ -959,7 +1091,10 @@ class EvalProposalBatchTests(unittest.TestCase):
                     batch["reviewPath"], f"{batch['batchId']}.reviewPath"
                 )
                 manifest = _load_json(manifest_path)
-                if batch["status"] != "historical-stale-after-skill-repair":
+                if batch["status"] not in {
+                    "historical-stale-after-skill-repair",
+                    "historical-cancelled-after-haiku-successor",
+                }:
                     self.assertEqual(_expected_live_authorization_manifest(batch), manifest)
                 self.assertEqual(
                     _canonical_json(manifest), manifest_path.read_text(encoding="utf-8")
@@ -984,6 +1119,7 @@ class EvalProposalBatchTests(unittest.TestCase):
                     "approved-live-authorized": "approved",
                     "completed-pending-user-review": "approved",
                     "historical-stale-after-skill-repair": "approved",
+                    "historical-cancelled-after-haiku-successor": "pending",
                     "pending-user-review": "pending",
                 }[batch["status"]]
                 for record in manifest["authorizations"]:

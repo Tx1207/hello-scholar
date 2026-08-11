@@ -1,7 +1,7 @@
 {
-  "liveApprovalId": "live-brainstorming-api-route-v3-haiku-v4-rerun-3",
-  "liveAuthorizationBatchId": "haiku-v4-spec-live-authorization-batch-v4",
-  "liveAuthorizationBatchSha256": "7b98814052572680aeaed1f5e1199e190d3862e34d9cca903566ca546465fedd",
+  "liveApprovalId": "live-brainstorming-api-route-v3-current-snapshot-v1",
+  "liveAuthorizationBatchId": "haiku-v4-stale-snapshot-live-authorization-v1",
+  "liveAuthorizationBatchSha256": "34c1b95309d29c413b593b97cf4a8d9df73608dc0513d32eb42933e049712684",
   "proposalId": "proposal-brainstorming-api-route-v3-haiku-v4",
   "scenarioSha256": "ec3e98b060831934be5c6117fc9001efa36c984b9f607b40ef2d83a8123e9f6a",
   "protocolSha256": "e5315f1d94ed43ec69071e81ec6c9035f803bafeba6c897418d6f890f61650cd",
@@ -12,16 +12,16 @@
   "skillSnapshots": {
     "brainstorming": {
       "status": "current-explicit-file",
-      "sha256": "3ef4002ba6295d65b4733e183f07bfdb9f9a3452641d982914ab5f1342755796"
+      "sha256": "c4094a8328a5d597a5bd0c634c05cf3dd6e15f2ac6f1e114019108acb611f46e"
     },
     "manage-specs": {
       "status": "current-explicit-file",
-      "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"
+      "sha256": "4fd6d260c35c8ccb5f19b05cb25df452946137cc18a13571527baee007b75f53"
     },
     "writing-plans": {
       "status": "current-explicit-file",
-      "sha256": "b2d467994de3690321a9a2951137bd029b0eb6e6ee063253e6f1ea0b6d544e05"
+      "sha256": "030228fe933008abe406dbf14124f8bd5b9761a75f3ef8917b381f3117f30bab"
     }
   },
-  "replyEvidence": "用户已明确授权持续执行 Formal Eval，不需为逐批生成的 Hash 停下来等待审核，并授权最多三个 Haiku Eval Agent 并行。本记录将该 blanket execution authorization 应用于随后生成且完整 Hash 绑定的 haiku-v4-spec-live-authorization-batch-v4；不声称用户逐字引用过该后生成 Hash，也不代表接受 Live 输出。"
+  "replyEvidence": "用户已批准 haiku-v4-stale-snapshot-live-authorization-v1 / 34c1b95309d29c413b593b97cf4a8d9df73608dc0513d32eb42933e049712684，并在 2026-08-10 明确回复：批准，直接运行，我想直接看结果，你自己通过审核就行，不需要一直停下来问我。本记录授权绑定当前 Skill snapshot 的严格串行 Live Eval，不代表接受其输出。"
 }

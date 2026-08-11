@@ -5,15 +5,17 @@
 | Situation | Decision | Reason |
 |---|---|---|
 | Fix one invalid row, add a tiny supplemental cache, combine a manifest, or print a future launch command | No record | Prepared input, record at launch |
-| `--help`, import check, config parse, unit test, static check, or smoke test with no durable output | No record | Engineering evidence is not a Run |
-| A smoke test or tiny eval writes metrics or a result file | Full record | Small durable research evidence is still evidence |
-| Train, eval, benchmark, ablate, reproduce, or export model predictions | Full record | A new experiment identity crosses a durable evidence boundary |
+| `--help`, import check, config parse, unit test, static check, or smoke test with no retained evidence | No record | Engineering evidence is not a Run |
+| A local smoke test or tiny eval has no formal, cost, or retained-evidence signal | No record | Small low-risk experiments run directly and need no later backfill |
+| A full/baseline/release Benchmark or Eval, full training, expensive GPU/remote job, or retained predictions/results/checkpoints | Full record | Strong signals establish a formal evidence boundary before launch |
 | Query an existing Run's tmux, TensorBoard, latest loss, or known checkpoints | No record | Read-only unless it reveals a material event |
 | Discover completion, OOM, a new artifact path, or a citeable metric on an existing Run | Append event | Preserve the durable change in the same identity |
 | A completed valid eval underperforms baseline | Full record or Append event | Keep `completed` and make a non-adoption decision |
 | A report becomes durable research material | Full record | Preserve input, upstream, and derived-artifact provenance |
 
-## 1. Formal Benchmark prelaunch
+Do not trigger from a command name alone: `python eval.py` can be a scratch check or a formal baseline Eval. Use the user's formal/cost/retention intent. If a low-risk request is ambiguous, run it directly without asking. Ask only when production-data use, irreversibility, or significant cost is unclear.
+
+## 1. Formal Benchmark prelaunch and capture
 
 Before launching:
 
@@ -21,21 +23,23 @@ Before launching:
 python eval.py --config configs/base.yaml --seed 0 --split test
 ```
 
-Create `runs/20260803-0900-baseline-eval-s0/record.md` with `status: planned`, the exact command, CWD, config, seed, expected `logs/baseline-eval-s0.log`, expected `results/baseline-eval-s0.json`, expected and failure signals, and a stop rule. This is a formal prelaunch Record: do not launch until those facts exist.
+Create `runs/20260803-0900-baseline-eval-s0/record.md` with `status: planned`, the exact command, CWD, config, seed, intended `logs/stdout.log`, intended `logs/stderr.log`, intended `results/baseline-eval-s0.json`, expected and failure signals, and a stop rule. This is a formal prelaunch Record: do not launch until those facts exist.
 
-## 2. Qualified exploration with bounded backfill
+Execute the documented command once through a capture method that preserves separate raw streams and the original exit status. Record the actual stdout/stderr paths and exit code or signal. Do not run it bare and rerun it to fill missing logs.
 
-A quick exploratory script may start before its Record only after proving all of these facts: no production-data modification, irreversible operation, public API change, or persistent-format change; an explicit 15-minute and $5 cap; isolation in an existing temporary directory; and no direct use of the result in the formal path.
+## 2. Small experiment without a Record
 
-Create `runs/20260803-1015-cache-probe/record.md` before session close, conclusion, a dependent Spec, a dependent experiment, merge, or external sharing. If the probe begins to change a persistent format or its result will support formal acceptance, stop and create the formal Record first.
+A developer asks to run a local 20-example smoke eval to check that a config parses and the pipeline reaches inference. No baseline/release claim, expensive GPU or remote work, retained output, acceptance evidence, production data, or irreversible operation is present.
 
-## 3. Exploration that does not qualify
+Run it directly. State `No record` because it is a low-risk small experiment. Its observation remains temporary; do not create a Record at session close or before later discussion. If formal evidence is later needed, run a subsequent formal experiment with a prelaunch Record.
 
-A request to try a dataset conversion that changes a persistent format is not qualified exploration. Create a planned formal Record with command, CWD, intended logs/results, and stop rule before starting. Do not treat urgency as evidence that the formal gate is optional.
+## 3. Unclear safety fact
+
+A request says “run the full evaluation against production data” but does not establish whether it writes to production or incurs a significant remote charge. Ask only for the missing safety fact. Once safe execution and formal scope are known, create the prelaunch Record; do not ask merely whether the user wants documentation.
 
 ## 4. Existing Run read-only query
 
-An existing `runs/20260803-0900-baseline-eval-s0/record.md` already records its log and TensorBoard URL. For “Show the latest loss” or “Is tmux still alive?”, read the existing evidence and answer. Do not create another Run or write an event unless the query discovers a material milestone, error, terminal state, or user-requested durable snapshot.
+An existing `runs/20260803-0900-baseline-eval-s0/record.md` already records its logs and TensorBoard URL. For “Show the latest loss” or “Is tmux still alive?”, read the existing evidence and answer. Do not create another Run or write an event unless the query discovers a material milestone, error, terminal state, or user-requested durable snapshot.
 
 ## 5. Same-minute identity collisions
 
@@ -62,7 +66,7 @@ decision: retry-smaller-batch
 summary: CUDA OOM during validation; no usable metrics were produced.
 ```
 
-Put the concise error, log path, attempted configuration, and next action in the terminal sections. Keep the full error log under the Run's `logs/` directory.
+Put the concise error, attempted configuration, `logs/stdout.log`, `logs/stderr.log`, exit code or signal, and next action in the terminal sections. Keep the full raw output under the Run's `logs/` directory.
 
 ## 7. Valid negative result
 
@@ -78,10 +82,14 @@ The Key Results, Observations, and Conclusion explain the comparison and caveats
 
 ## 8. Derived report provenance
 
-Before creating a durable comparison report from existing predictions, create or recover the upstream Run Record. In the report Run, list:
+Before creating a durable comparison report from retained predictions, recover their upstream provenance in a Run Record. This records the retained inputs rather than backfilling a disposable probe. In the report Run, list:
 
 - Input artifacts: `outputs/model_a_predictions.jsonl`; `outputs/model_b_predictions.jsonl`
 - Upstream Run ID: `20260803-1300-model-inference-s0`
 - Derived artifacts: `results/prediction-comparison.html`; `results/prediction-comparison.zip`
 
-Use `Unknown` with a reason for unrecoverable upstream launch facts. A quick prediction export that loads a checkpoint and writes outputs is a Full record before launch.
+Use `Unknown` with a reason for unrecoverable upstream launch facts. A prediction export that writes retained outputs is a Full record before launch; a disposable local probe with no retained-evidence signal remains No record.
+
+## 9. Remote job evidence
+
+For a remote submission, retain local submission stdout/stderr and its exit status under the local Run, plus the remote job ID or URI. Link remote logs and artifacts by their actual URI. Add local paths only after intentional download; do not imply that remote files were captured locally.

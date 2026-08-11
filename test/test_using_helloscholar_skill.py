@@ -12,7 +12,7 @@ ROUTER_FORWARD_TEST_PROMPT = f"""Use the skill router at {SKILL_DIR}.
 
 Read its `SKILL.md` first. Then answer this task without editing files:
 
-A user asks: "I am about to run `python eval.py --config configs/baseline.yaml --seed 0`; what hello-scholar skill should I check before launching?"
+A user asks: "I am about to launch the full baseline Eval on a remote GPU and retain predictions for release acceptance: `python eval.py --config configs/baseline.yaml --seed 0`; what hello-scholar skill should I check before launching?"
 
 Return a concise answer that names the applicable skill and explains whether the router applies only to superpowers skills or all hello-scholar skill groups.
 """
@@ -66,6 +66,52 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
             hello-scholar skill library, not only superpowers skills.
             """,
         )
+
+    def test_experiment_routing_records_only_clear_large_runs(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+
+        self.assertIn("## Experiment Routing", english)
+        self.assertIn("## 实验路由", chinese)
+        for term in (
+            "Small",
+            "local",
+            "smoke",
+            "no retained evidence",
+            "run directly",
+            "formal",
+            "baseline",
+            "release",
+            "full training",
+            "GPU",
+            "remote",
+            "retained evidence",
+            "record-experiment",
+            "do not ask",
+        ):
+            self.assertIn(term, english)
+        for term in (
+            "小型",
+            "本地",
+            "smoke",
+            "不保留证据",
+            "直接运行",
+            "正式",
+            "baseline",
+            "release",
+            "完整训练",
+            "GPU",
+            "远程",
+            "保留证据",
+            "record-experiment",
+            "不询问",
+        ):
+            self.assertIn(term, chinese)
+        self.assertIn("command name", english)
+        self.assertIn("命令名", chinese)
+        for text in (english, chinese):
+            for name in ("eval", "benchmark", "experiment"):
+                self.assertIn(f"`{name}`", text)
 
     def test_task_progress_resumes_execution_instead_of_convergence(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")

@@ -1,0 +1,29 @@
+# Brainstorming current-snapshot Live full tree evidence
+fixtureBaseCommit: c6035c6272d88fe82f805b72e8289c331460aeea
+## fixtureBaseCommit..HEAD committed diff
+## HEAD index diff
+## HEAD working tree diff
+M	hello-scholar/specs/INDEX.md
+## untracked files
+hello-scholar/specs/batch-retrieval/INDEX.md
+hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/spec.md
+## porcelain status including untracked files
+ M hello-scholar/specs/INDEX.md
+?? hello-scholar/specs/batch-retrieval/INDEX.md
+?? hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/spec.md
+## final regular file hashes outside .git
+6606ca664a6ead172208582c391951f8a789dbb654e4612c97469b7f166fa30d  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/AGENTS.md
+28c3f4b7952a181334595f7291009805468c093350ba8d699ba27b8dfa1a6199  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/clients/export-client.js
+61c2a1474288ea53a7f3ed088f7b451b2794cd343659e8a48c836a9ca63db939  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/architecture.md
+d2dd38b117548a415fbd19fbfd956a28533061c54e29fe0a09a13673e6ce5f7e  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/INDEX.md
+2f86481dd8cd7ffee82fb4bbacf5e31621ee61dbbc137ab4b69db5c81569a28c  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/batch-retrieval/INDEX.md
+5d7ade8dbeb9056ef9f70c56843b87ac075a27263ee757e046ddcf03c128d4b2  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/batch-retrieval/SPEC-014-public-batch-retrieval-api/spec.md
+91a4ae15ff1064636f65a526512b3c869fb1c85d3d83737b1a7ae32311a08049  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/request-control/INDEX.md
+dcc0e795b8f763ea5486da3b6f43dc192f434be76892e858d18c9889265a52ad  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/request-control/SPEC-013-retrieval-rate-limits/spec.md
+2687ad848e5815a567eb41c40bb12524173ff121a5bc98ce78934617e05ca55c  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/storage-consistency/INDEX.md
+c8088db2c1efe4037c95e224bc3fb92912a1afe9644841a9e8e50565358d93b3  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/hello-scholar/specs/storage-consistency/SPEC-007-replica-read-consistency/spec.md
+5fcba8a66ed3f2e1a38838eb68c816abe27b73e799e542f39b9add24b6be8824  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/package.json
+dfff6a6b8660e8f30fbabc38d8f26256eee7ddedf827ac39a0ffc0a624611cff  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/src/retrieval-service.js
+8e5d75cbaaef23854737f2e4f8c2e60948163c5fa0cd9da3b1023cd6c4d7cbd3  /tmp/hello-scholar-eval-brainstorming-api-route-v3-current-live-20260811/test/retrieval-service.test.js
+## final runtime artifacts outside .git
+## diff whitespace check

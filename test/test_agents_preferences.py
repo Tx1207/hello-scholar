@@ -269,8 +269,9 @@ class AgentPreferenceTests(unittest.TestCase):
         self.assertIn("paths", english)
         self.assertIn("commands", english)
         self.assertIn("template-required headings", english)
-        self.assertIn("choose language according to context and user requirements", english)
-        self.assertIn("use Chinese as the default language", english)
+        self.assertIn("first use the language specified by the user for the current task", english)
+        self.assertIn("follow the target file's or project's existing primary language", english)
+        self.assertIn("default language: Chinese", english)
 
         self.assertIn("Skill 写入的用户可读文档", chinese)
         self.assertIn("代码符号", chinese)
@@ -279,7 +280,8 @@ class AgentPreferenceTests(unittest.TestCase):
         self.assertIn("路径", chinese)
         self.assertIn("命令", chinese)
         self.assertIn("模板要求的标题", chinese)
-        self.assertIn("根据上下文和用户需求确定语言", chinese)
+        self.assertIn("优先使用用户为当前任务指定的语言", chinese)
+        self.assertIn("沿用目标文件或项目现有的主要语言", chinese)
         self.assertIn("默认语言：中文", chinese)
 
     def test_record_experiment_skill_repeats_project_language_preference(self) -> None:

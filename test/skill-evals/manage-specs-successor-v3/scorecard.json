@@ -1,26 +1,26 @@
 {
   "proposalId": "proposal-manage-specs-successor-v3-haiku-v4",
-  "liveApprovalId": "live-manage-specs-successor-v3-haiku-v4-rerun-4",
-  "liveApprovalSha256": "c1b55bf3e665de3c8904fee145e8c36e96e09d2acb1729241428ed772e5b87a8",
+  "liveApprovalId": "live-manage-specs-successor-v3-current-snapshot-v1",
+  "liveApprovalSha256": "e44cb530df25db8c1c1fa8d2a5109f6564aa5aeaba23f727b7f9e5a4cd5e505f",
   "scenarioSha256": "60174a93e1a97990eb978618cb954d201adc1e8495ab169e140d804316b113f0",
   "protocolSha256": "82de007040e561ce2313d1bf673c112d9fb766908b09193024b9bb6c868036d1",
   "fixtureSha256": "202a6aeba2f752411ea59e1e6ed0f715015f5d686757d39b420ed26d92a9ddfe",
   "result": "pass",
-  "userDecision": "accepted",
+  "userDecision": "pending",
   "skillSnapshots": {
     "manage-specs": {
       "status": "current-explicit-file",
-      "sha256": "2c4e013ed1a0ded9841e0af94699bb547bb3150b653b443b04c00cb6347dac82"
+      "sha256": "4fd6d260c35c8ccb5f19b05cb25df452946137cc18a13571527baee007b75f53"
     }
   },
   "agents": {
     "implementer": {
-      "id": "aa05c5436084361ea",
+      "id": "735bb8c0-57fe-4f54-af1c-ed97cdc361c5",
       "model": "claude-haiku-4-5-20251001",
       "forkTurns": "none"
     },
     "reviewer": {
-      "id": "aec3b4e994c2f7a86",
+      "id": "cc7d72fe-05ab-40a2-a8e4-93e8cde07947",
       "model": "claude-haiku-4-5-20251001",
       "forkTurns": "none"
     }
@@ -29,52 +29,140 @@
     {
       "id": "identity-classification",
       "passed": true,
-      "reason": "Store-backed verification replacement was correctly classified as a successor while audit ownership stayed separate.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      "reason": "The Implementer classified the store-backed-to-signed-token change as a successor design and left SPEC-011 as the unchanged audit owner.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0.md",
+          "sha256": "18fff2c5d7dc18765099c3a86703f651f3c65d919d9661b24a32f54c86f83ce7"
+        }
+      ]
     },
     {
       "id": "approval-gate",
       "passed": true,
-      "reason": "Round zero stopped read-only and all writes followed the exact successor approval.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      "reason": "Round 0 compared the plausible identities and stopped read-only; the exact successor approval arrived only in Round 1.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "5769ff2d85771d4676642e79d25f9bf3461f17e96088aff044f25634d99d7950"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+          "sha256": "4c44315ae5151df74d9ee6e37bc9cbc7b3bd96e3c18d5959022b7b239020b761"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-1.md",
+          "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0-stream.jsonl",
+          "sha256": "2f217f659aff21889a382c16318d2ce1b91a885462ba356084e309f75fb2d1b4"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1-stream.jsonl",
+          "sha256": "e3f79b9f4ca335bb2a5b493ad86aab216109da18a556da74ab7a8682fcf79e9f"
+        }
+      ]
     },
     {
       "id": "supersession-integrity",
       "passed": true,
-      "reason": "SPEC-012 has the exact signed-stateless-session-tokens identity and reciprocal, non-self, acyclic links with SPEC-005.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      "reason": "Draft SPEC-012 has a distinct identity and reciprocal, non-self, acyclic supersession metadata with SPEC-005; it remains draft.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-005-opaque-session-tokens.md",
+          "sha256": "ba908d3f15b0f3c11daafe8c85462880bb821085aa76420529c5bf6dc2c3b108"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-012-signed-stateless-session-tokens.md",
+          "sha256": "c0ea8cc9fa747a3f9de2a0cf25b0b7dbc5fa08aa5341efb47483f13067382c5c"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/session-auth-INDEX.md",
+          "sha256": "0ec9129b13244f5ade2cc9ee0e789737283ff4693d090254439d38aeed45ff15"
+        }
+      ]
     },
     {
       "id": "scope-discipline",
       "passed": true,
-      "reason": "Only both relationship-bearing Specs and CLI-generated Indexes changed; audit ownership and runtime remained unchanged.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+      "reason": "Only SPEC-005, new SPEC-012, and two CLI-generated Indexes changed; audit ownership and runtime files remained untouched.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+          "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+          "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/specs-INDEX.md",
+          "sha256": "e4c9fed3967067ee8e98bdcc00bff0a24fb8bef275f89a7057d263cd07e57c7b"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/artifacts/session-auth-INDEX.md",
+          "sha256": "0ec9129b13244f5ade2cc9ee0e789737283ff4693d090254439d38aeed45ff15"
+        }
+      ]
     },
     {
       "id": "protocol-commands-pass",
       "passed": true,
-      "reason": "Every approved Protocol command exited successfully with explicit Fixture working directories.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+      "reason": "Both approved Protocol commands exited 0 and docs check reported zero errors.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "d12edb290cfe57c79bcfcd3b20cd198d6ffbc8cba9c22e78c053f8cf07a1c9b0"
+        }
+      ]
     },
     {
       "id": "base-to-final-evidence",
       "passed": true,
-      "reason": "Committed, index, working-tree, untracked, final-hash, and runtime-artifact states are saved from the clean Fixture Base.",
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"}]
+      "reason": "Evidence records committed, index, working-tree, untracked, final-hash, runtime-artifact, and whitespace states from the clean Base.",
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+          "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+        }
+      ]
     }
   ],
   "commands": [
     {
       "command": "npm test",
-      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-successor-v3-live-20260805-050000 npm test",
+      "executedCommand": "npm test",
       "exitCode": 0,
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "d12edb290cfe57c79bcfcd3b20cd198d6ffbc8cba9c22e78c053f8cf07a1c9b0"
+        }
+      ]
     },
     {
       "command": "node <hello-scholar-repo>/bin/hello-scholar.js docs check",
-      "executedCommand": "env -C /tmp/hello-scholar-eval-manage-specs-successor-v3-live-20260805-050000 node /xsb/hello-scholar/.worktrees/next-generation-skill/bin/hello-scholar.js docs check",
+      "executedCommand": "node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check",
       "exitCode": 0,
-      "evidence": [{"path": "evidence/live/v4-20260805-rerun-8/commands.raw.log", "sha256": "3ceb34b6810ab8aa05fad1ab5aa00b3d6507f0c4015e7c9bbcd9ec648aa0aabe"}]
+      "evidence": [
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/commands.raw.log",
+          "sha256": "d12edb290cfe57c79bcfcd3b20cd198d6ffbc8cba9c22e78c053f8cf07a1c9b0"
+        }
+      ]
     }
   ],
   "interaction": {
@@ -83,12 +171,22 @@
         "sender": "user",
         "contentRole": "current-request",
         "messageSha256": "27391cdf035ce3e443a07302315182c57ec52fe8ed768c7d357e0bceba6f9bb7",
-        "promptSha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24",
+        "promptSha256": "4c44315ae5151df74d9ee6e37bc9cbc7b3bd96e3c18d5959022b7b239020b761",
         "stopConditionObserved": true,
         "deliveredAfterPreviousStop": null,
         "evidence": [
-          {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-0.md", "sha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24"},
-          {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+            "sha256": "4c44315ae5151df74d9ee6e37bc9cbc7b3bd96e3c18d5959022b7b239020b761"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "5769ff2d85771d4676642e79d25f9bf3461f17e96088aff044f25634d99d7950"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0-stream.jsonl",
+            "sha256": "2f217f659aff21889a382c16318d2ce1b91a885462ba356084e309f75fb2d1b4"
+          }
         ]
       },
       {
@@ -99,8 +197,18 @@
         "stopConditionObserved": true,
         "deliveredAfterPreviousStop": true,
         "evidence": [
-          {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-1.md", "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"},
-          {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-1.md",
+            "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "5769ff2d85771d4676642e79d25f9bf3461f17e96088aff044f25634d99d7950"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1-stream.jsonl",
+            "sha256": "e3f79b9f4ca335bb2a5b493ad86aab216109da18a556da74ab7a8682fcf79e9f"
+          }
         ]
       }
     ],
@@ -109,52 +217,197 @@
       "rawProtocolVisibleToImplementer": false,
       "futureRoundsVisibleToImplementer": false,
       "evidence": [
-        {"path": "evidence/live/v4-20260805-rerun-8/prompt-round-0.md", "sha256": "e65ed8010834832b0e2a9104a9ceeb58e7decb01f2524c72a540c78123a3db24"},
-        {"path": "evidence/live/v4-20260805-rerun-8/interaction.md", "sha256": "f79b69321b406f4ec6948d3333e00e242990c09cc0eadb251be32b975e3bc5e2"}
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+          "sha256": "4c44315ae5151df74d9ee6e37bc9cbc7b3bd96e3c18d5959022b7b239020b761"
+        },
+        {
+          "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+          "sha256": "5769ff2d85771d4676642e79d25f9bf3461f17e96088aff044f25634d99d7950"
+        }
       ]
     }
   },
   "quality": {
     "behavior": {
-      "scores": {"identity-classification": 100, "approval-gate": 100, "supersession-integrity": 100, "scope-discipline": 100},
+      "scores": {
+        "identity-classification": 100,
+        "approval-gate": 100,
+        "supersession-integrity": 100,
+        "scope-discipline": 100
+      },
       "reasons": {
-        "identity-classification": "The replacement lifecycle and unchanged audit owner were correctly identified.",
-        "approval-gate": "No project write preceded the exact successor approval.",
-        "supersession-integrity": "The exact successor identity and reciprocal acyclic relationship are complete.",
-        "scope-discipline": "Only the two required Specs and two generated Indexes changed."
+        "identity-classification": "The Implementer classified the store-backed-to-signed-token change as a successor design and left SPEC-011 as the unchanged audit owner.",
+        "approval-gate": "Round 0 compared the plausible identities and stopped read-only; the exact successor approval arrived only in Round 1.",
+        "supersession-integrity": "Draft SPEC-012 has a distinct identity and reciprocal, non-self, acyclic supersession metadata with SPEC-005; it remains draft.",
+        "scope-discipline": "Only SPEC-005, new SPEC-012, and two CLI-generated Indexes changed; audit ownership and runtime files remained untouched."
       },
       "evidence": {
-        "identity-classification": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "approval-gate": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "supersession-integrity": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "scope-discipline": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+        "identity-classification": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0.md",
+            "sha256": "18fff2c5d7dc18765099c3a86703f651f3c65d919d9661b24a32f54c86f83ce7"
+          }
+        ],
+        "approval-gate": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/interaction.md",
+            "sha256": "5769ff2d85771d4676642e79d25f9bf3461f17e96088aff044f25634d99d7950"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-0.md",
+            "sha256": "4c44315ae5151df74d9ee6e37bc9cbc7b3bd96e3c18d5959022b7b239020b761"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/prompt-round-1.md",
+            "sha256": "5426225fbbc800b18f3e2f00f5fd8cbcd6b2c8183637b2bb8a552e2df1c51079"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-0-stream.jsonl",
+            "sha256": "2f217f659aff21889a382c16318d2ce1b91a885462ba356084e309f75fb2d1b4"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-round-1-stream.jsonl",
+            "sha256": "e3f79b9f4ca335bb2a5b493ad86aab216109da18a556da74ab7a8682fcf79e9f"
+          }
+        ],
+        "supersession-integrity": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-005-opaque-session-tokens.md",
+            "sha256": "ba908d3f15b0f3c11daafe8c85462880bb821085aa76420529c5bf6dc2c3b108"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/SPEC-012-signed-stateless-session-tokens.md",
+            "sha256": "c0ea8cc9fa747a3f9de2a0cf25b0b7dbc5fa08aa5341efb47483f13067382c5c"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/session-auth-INDEX.md",
+            "sha256": "0ec9129b13244f5ade2cc9ee0e789737283ff4693d090254439d38aeed45ff15"
+          }
+        ],
+        "scope-discipline": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+            "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/specs-INDEX.md",
+            "sha256": "e4c9fed3967067ee8e98bdcc00bff0a24fb8bef275f89a7057d263cd07e57c7b"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/artifacts/session-auth-INDEX.md",
+            "sha256": "0ec9129b13244f5ade2cc9ee0e789737283ff4693d090254439d38aeed45ff15"
+          }
+        ]
       },
-      "totalScore": 100.0
+      "totalScore": 100
     },
     "userValue": {
-      "scores": {"value-visibility": 100, "audience-fit": 100, "information-design": 100, "actionability": 100, "signal-to-noise": 100},
+      "scores": {
+        "value-visibility": 100,
+        "audience-fit": 100,
+        "information-design": 100,
+        "actionability": 100,
+        "signal-to-noise": 100
+      },
       "reasons": {
-        "value-visibility": "The successor result and all affected paths are immediately visible.",
-        "audience-fit": "Chinese prose retains exact token fields and document terms.",
-        "information-design": "Changes, checks, and exclusions are clearly organized.",
-        "actionability": "The created relationship and verification state are explicit.",
-        "signal-to-noise": "The response stays focused on the authorized transaction."
+        "value-visibility": "The result begins with the created draft Spec and relationship changes.",
+        "audience-fit": "Concise Chinese preserves exact Spec identities and technical terms.",
+        "information-design": "The response separates changed artifacts from verification and remains easy to scan.",
+        "actionability": "The draft status, reciprocal relation, verification result, and unchanged areas are explicit.",
+        "signal-to-noise": "The response retains only result, relevant fields, generated indexes, and verification."
       },
       "evidence": {
-        "value-visibility": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "audience-fit": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "information-design": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "actionability": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}],
-        "signal-to-noise": [{"path": "evidence/live/v4-20260805-rerun-8/reviewer.md", "sha256": "25f8d7020c0f18d8a9885c4f958558377ae718c0317512271b83c823567164e9"}]
+        "value-visibility": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "76ec2f65223694d8099ca8f38744f51d4ee28fc7957fa4a14e10a544d5b38942"
+          }
+        ],
+        "audience-fit": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "76ec2f65223694d8099ca8f38744f51d4ee28fc7957fa4a14e10a544d5b38942"
+          }
+        ],
+        "information-design": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "76ec2f65223694d8099ca8f38744f51d4ee28fc7957fa4a14e10a544d5b38942"
+          }
+        ],
+        "actionability": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "76ec2f65223694d8099ca8f38744f51d4ee28fc7957fa4a14e10a544d5b38942"
+          }
+        ],
+        "signal-to-noise": [
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/reviewer.md",
+            "sha256": "fc54995e5876b48938ab5a55de540494c225d4130c1e64715b5e44548ce807b5"
+          },
+          {
+            "path": "evidence/live/v4-20260811-current-snapshot/implementer-final.md",
+            "sha256": "76ec2f65223694d8099ca8f38744f51d4ee28fc7957fa4a14e10a544d5b38942"
+          }
+        ]
       },
-      "totalScore": 100.0
+      "totalScore": 100
     }
   },
   "diffEvidence": {
-    "committed": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
-    "index": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
-    "workingTree": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
-    "untracked": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"},
-    "finalHashes": {"path": "evidence/live/v4-20260805-rerun-8/tree.raw.log", "sha256": "40b8b5f25b72c4062d43af0476bb2f37d18f1923012f2042ef5ea705a7e25407"}
+    "committed": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+    },
+    "index": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+    },
+    "workingTree": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+    },
+    "untracked": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+    },
+    "finalHashes": {
+      "path": "evidence/live/v4-20260811-current-snapshot/tree.raw.log",
+      "sha256": "52283de2ace452d0dbe5aeeafa2226a22b33eee40b0b77c1a5278ae261a6383c"
+    }
   }
 }

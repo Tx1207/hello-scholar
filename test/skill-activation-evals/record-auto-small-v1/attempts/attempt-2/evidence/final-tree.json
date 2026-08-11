@@ -1,0 +1,30 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "3d3f79ce8893eaf9944a027553f21265cb1e535a842f048473b72ed712926a3d"
+  },
+  {
+    "path": "fixtures/policy.json",
+    "sha256": "d3865357565bb1cbcf125f3afb1308490767624198936358dd7bbeeb6a5b0771"
+  },
+  {
+    "path": "package.json",
+    "sha256": "c3ed8b6e59975ab968d276c1865d4adfcbd2633e9894e821f2eab26faf856b8a"
+  },
+  {
+    "path": "scripts/check-policy.mjs",
+    "sha256": "c1a8098da26c86d6328d27dad0851f1c28d89bfddd4d6d67aac227aac5534dd0"
+  },
+  {
+    "path": "scripts/verify-local-check.mjs",
+    "sha256": "6f8c6a1fb900b25cdf834952a9971473ea069279403e768fe8b5e490ab99be0d"
+  },
+  {
+    "path": "src/policy.mjs",
+    "sha256": "2f2ac82a5f3078746d44fb9e991e8a18e1b2795f556f6966b3778ec20b6d09d3"
+  },
+  {
+    "path": "test/policy.test.mjs",
+    "sha256": "46d23ab659ff5c1d7deb697fb209e15f7240a2fc5d0c2423af718243e97aaf04"
+  }
+]

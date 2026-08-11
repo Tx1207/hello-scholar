@@ -45,6 +45,10 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-too
 
 **Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
 
+## Experiment Routing
+
+Small, local, or smoke experiments with no retained evidence run directly without `record-experiment`. Clearly formal, baseline, release, full training, GPU, remote, or retained evidence work invokes `record-experiment` before launch. A command name such as `eval`, `benchmark`, or `experiment` is not enough by itself. For ambiguous low-risk work, run directly and do not ask; ask only when production-data use, an irreversible operation, or significant cost is unclear.
+
 ## Task Continuation
 
 Route progress, completion status, remaining work, or continuation requests to the current Task state, not `converge-to-spec`.
