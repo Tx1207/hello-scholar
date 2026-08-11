@@ -1,0 +1,25 @@
+# Config Migration Haiku v4 Revalidation Live protocol commands
+$ npm test
+
+> config-format-cli-fixture@1.4.0 test
+> node --test test/*.test.js
+
+✔ show exposes one canonical shape for a legacy profile (67.251814ms)
+✔ legacy output flag still invokes the old writer (55.490939ms)
+✔ compatibility reader normalizes legacy and JSON profiles (2.385876ms)
+✔ writer emits JSON v2 by default (0.707354ms)
+✔ legacy writer remains available during the dual-read window (0.603194ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 231.757339
+exitCode: 0
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 0
+index Stale hello-scholar/specs/INDEX.md
+index Stale hello-scholar/specs/config-format/INDEX.md
+exitCode: 0

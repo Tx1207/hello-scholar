@@ -1,0 +1,24 @@
+# Live v4 Environment
+
+- Scenario: `router-execution-mirror-v4`
+- Protocol: v4 / `claude-haiku-4-5-20251001`
+- Execution transport: fresh top-level Claude Code CLI sessions, not Agent subagents
+- Claude Code version: `2.1.220`
+- Isolated Fixture: `/tmp/hello-scholar-eval-router-execution-mirror-v4-live-v4-x0c19fyh`
+- Fixture Base commit: `0a05acf778b0e189589cafd9c00495335952ca19`
+- Scenario SHA-256: `b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2`
+- Protocol SHA-256: `cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee`
+- Fixture SHA-256: `2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589`
+- Baseline SHA-256: `a1f903d72626722292f17ec68580094c5e999960f0f40648a4f094a372b4e480`
+- Live authorization: `haiku-v4-wave-7-execution-mirror-live-authorization-v4`
+- Live authorization batch SHA-256: `f92f09bbe94cc9949e6065966633286a03cec6ec09e43bdd5b6b90503d9e838a`
+- Live authorization decision: `approved`
+- Current Skill snapshot path: `/tmp/hello-scholar-skill-router-execution-mirror-v4-live-v4-jg0c1j8v`
+- Current Skill snapshot SHA-256: `3c31607e0e8d327e3df64de9805acea2217821240f7ec147ec9095a37c9bdb47`
+- Initial tests: `3/3` passed
+- Initial Git state: clean
+- Runtime artifacts before prompt: none
+- Implementer session ID: `d5afeee8-c8c8-4108-be3a-c1e1b0695d8f`
+- Implementer model: `claude-haiku-4-5-20251001`
+- Implementer session inheritance: none
+- Raw tracker evidence source: `implementer.raw.jsonl`; final prose is not used as tracker evidence.

@@ -1,0 +1,6 @@
+Task: T002 Preserve input order in results
+Validation: PASS
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_batch_processor.BatchProcessorTests.test_preserves_result_order
+Signal: 1 test passed
+Completion: PASS
+Observed: Result indexes and values retain input order.

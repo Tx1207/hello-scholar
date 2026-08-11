@@ -12,7 +12,7 @@ ROUTER_FORWARD_TEST_PROMPT = f"""Use the skill router at {SKILL_DIR}.
 
 Read its `SKILL.md` first. Then answer this task without editing files:
 
-A user asks: "I am about to run `python eval.py --config configs/baseline.yaml --seed 0`; what hello-scholar skill should I check before launching?"
+A user asks: "I am about to launch the full baseline Eval on a remote GPU and retain predictions for release acceptance: `python eval.py --config configs/baseline.yaml --seed 0`; what hello-scholar skill should I check before launching?"
 
 Return a concise answer that names the applicable skill and explains whether the router applies only to superpowers skills or all hello-scholar skill groups.
 """
@@ -67,6 +67,52 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
             """,
         )
 
+    def test_experiment_routing_records_only_clear_large_runs(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+
+        self.assertIn("## Experiment Routing", english)
+        self.assertIn("## 实验路由", chinese)
+        for term in (
+            "Small",
+            "local",
+            "smoke",
+            "no retained evidence",
+            "run directly",
+            "formal",
+            "baseline",
+            "release",
+            "full training",
+            "GPU",
+            "remote",
+            "retained evidence",
+            "record-experiment",
+            "do not ask",
+        ):
+            self.assertIn(term, english)
+        for term in (
+            "小型",
+            "本地",
+            "smoke",
+            "不保留证据",
+            "直接运行",
+            "正式",
+            "baseline",
+            "release",
+            "完整训练",
+            "GPU",
+            "远程",
+            "保留证据",
+            "record-experiment",
+            "不询问",
+        ):
+            self.assertIn(term, chinese)
+        self.assertIn("command name", english)
+        self.assertIn("命令名", chinese)
+        for text in (english, chinese):
+            for name in ("eval", "benchmark", "experiment"):
+                self.assertIn(f"`{name}`", text)
+
     def test_task_progress_resumes_execution_instead_of_convergence(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
@@ -98,6 +144,66 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
         )[0]
         self.assertNotIn("hello-scholar docs check", english_continuation)
         self.assertNotIn("hello-scholar docs check", chinese_continuation)
+
+    def test_live_tracker_mirrors_every_canonical_task(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+        codex = (SKILL_DIR / "references" / "codex-tools.md").read_text(encoding="utf-8")
+
+        for text in (english, chinese):
+            for required in (
+                "<SUBAGENT-STOP>",
+                "execution mirror",
+                "`TNNN`",
+                "TodoWrite",
+                "TaskList",
+                "TaskCreate",
+                "TaskUpdate",
+                "`pending`",
+                "`in_progress`",
+                "`completed`",
+            ):
+                self.assertIn(required, text)
+
+        for required in (
+            "current main Agent",
+            "Immediately after Verify",
+            "Every canonical `TNNN` Task",
+            "document order",
+            "Task ID and goal",
+            "complete mirror exists",
+            "after its evidence changes",
+            "before every progress or completion report",
+            "Phase summaries or temporary Work substeps",
+            "first platform-tracker write belongs to Mirror",
+            "after Resolve and Verify identify the canonical Tasks",
+            "complete execution mirror",
+        ):
+            self.assertIn(required, english)
+
+        for required in (
+            "当前主 Agent",
+            "核验后立即",
+            "每个 canonical `TNNN` Task",
+            "文档顺序",
+            "Task ID 与目标",
+            "完整 mirror 建立前",
+            "证据变化后",
+            "每次进度或完成汇报前",
+            "阶段摘要或临时 Work 子步骤",
+            "平台 tracker 的首次写入属于镜像",
+            "先定位并核验 canonical Tasks",
+            "完整 execution mirror",
+        ):
+            self.assertIn(required, chinese)
+
+        self.assertIn("`TodoWrite` execution mirror", codex)
+        self.assertIn("`update_plan`", codex)
+        self.assertIn("Mirror the first `update_plan` call", codex)
+        self.assertIn("after Resolve and Verify", codex)
+        self.assertIn("complete current item set", codex)
+        self.assertIn("identity, status, and synchronization timing", codex)
+        self.assertIn("separate phase plan", codex)
 
     def test_routers_resolve_bundle_from_index_lifecycle(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")

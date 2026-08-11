@@ -1,0 +1,6 @@
+{
+  "capacity": 3,
+  "minimum_hit_rate": 0.45,
+  "seed": 17,
+  "trace": "benchmark/request-trace.json"
+}

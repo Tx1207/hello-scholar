@@ -123,6 +123,25 @@ class RecordExperimentV2ContractTests(unittest.TestCase):
             self.assertIn("decision: pending", front_matter)
             self.assertEqual(sections, tuple(re.findall(r"(?m)^## \d+\. .+$", text)))
 
+        english_template = TEMPLATES[0].read_text(encoding="utf-8")
+        chinese_template = TEMPLATES[1].read_text(encoding="utf-8")
+        for term in (
+            "Intended stdout path:",
+            "Intended stderr path:",
+            "Actual stdout path:",
+            "Actual stderr path:",
+            "Exit code / signal:",
+        ):
+            self.assertIn(term, english_template)
+        for term in (
+            "预期 stdout 路径:",
+            "预期 stderr 路径:",
+            "实际 stdout 路径:",
+            "实际 stderr 路径:",
+            "退出码 / signal:",
+        ):
+            self.assertIn(term, chinese_template)
+
     def test_lifecycle_and_evidence_rules_are_current(self) -> None:
         """Purpose: preserve reproducible evidence while replacing retired lifecycle values; Input: Skill and field-guide text; Output: none; Errors: assertion failure identifies a missing lifecycle or terminal-evidence rule."""
 
@@ -142,47 +161,56 @@ class RecordExperimentV2ContractTests(unittest.TestCase):
         self.assertIn("completed", material)
         self.assertIn("failed", material)
 
-    def test_formal_and_exploration_timing_are_co_located(self) -> None:
-        """Purpose: protect formal prelaunch evidence while permitting bounded isolated exploration; Input: bilingual Skill texts; Output: none; Errors: assertion failure identifies an unconditional gate or unsafe exploration bypass."""
+    def test_large_runs_are_prelaunch_and_small_runs_need_no_backfill(self) -> None:
+        """Protect prelaunch evidence for clear large Runs without delaying low-risk small experiments."""
 
         english = SKILL_FILES[0].read_text(encoding="utf-8")
         chinese = SKILL_FILES[1].read_text(encoding="utf-8")
         for term in (
             "Formal prelaunch record",
-            "Qualified exploration backfill",
             "Full record",
             "Append event",
             "No record",
-            "production-data",
+            "Default to No record",
+            "small experiment",
+            "baseline",
+            "release",
+            "full training",
+            "GPU",
+            "remote",
+            "retained",
+            "production data",
             "irreversible",
-            "public API",
-            "persistent format",
-            "time and cost cap",
-            "session close",
-            "dependent Spec",
-            "dependent experiment",
-            "external sharing",
+            "significant cost",
+            "Do not ask",
         ):
             self.assertIn(term, english)
         for term in (
             "正式事前记录",
-            "探索限时补录",
             "完整记录",
             "追加事件",
             "不记录",
+            "默认不记录",
+            "小实验",
+            "baseline",
+            "release",
+            "完整训练",
+            "GPU",
+            "远程",
+            "保留",
             "生产数据",
             "不可逆",
-            "公共 API",
-            "持久格式",
-            "时间和成本上限",
-            "关闭会话",
-            "依赖结果的 Spec",
-            "依赖实验",
-            "对外分享",
+            "显著费用",
+            "不询问",
         ):
             self.assertIn(term, chinese)
+        for text in (english, chinese):
+            self.assertNotIn("Qualified exploration backfill", text)
+            self.assertNotIn("探索限时补录", text)
+            self.assertNotIn("session close", text)
+            self.assertNotIn("关闭会话", text)
         self.assertIn("does not create a Worktree automatically", english)
-        self.assertIn("不因进入探索路径自动创建 Worktree", chinese)
+        self.assertIn("不自动创建 Worktree", chinese)
 
     def test_user_outcome_reports_durable_record_state(self) -> None:
         """Purpose: require a concise user-facing result after each evidence decision; Input: bilingual Skill texts; Output: none; Errors: assertion failure identifies a missing decision, path, validation, or launch outcome."""

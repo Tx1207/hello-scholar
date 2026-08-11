@@ -1,0 +1,5 @@
+formal-run-valid
+docs check: specs 1, records 1, indexes 3, errors 0, notices 0
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/cache-admission/INDEX.md
+index Current runs/INDEX.md

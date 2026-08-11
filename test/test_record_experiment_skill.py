@@ -581,18 +581,52 @@ def validate_scenario_result(
 
 
 class RecordExperimentSkillStaticTests(unittest.TestCase):
-    def test_frontmatter_description_has_only_real_provenance_branches(self) -> None:
+    def test_frontmatter_description_names_large_experiment_triggers(self) -> None:
+        english_text = SKILL_MD.read_text(encoding="utf-8")
+        chinese_text = SKILL_ZH.read_text(encoding="utf-8")
+        self.assertRegex(english_text, r'(?m)^description: ".+"$')
+        self.assertRegex(chinese_text, r'(?m)^description: ".+"$')
         english = skill_description(SKILL_MD).lower()
-        chinese = skill_description(SKILL_ZH)
+        chinese = skill_description(SKILL_ZH).lower()
 
-        for term in ("provenance", "formal", "exploration", "existing run"):
+        for term in (
+            "formal",
+            "costly",
+            "retained-evidence",
+            "baseline",
+            "release",
+            "benchmark",
+            "eval",
+            "full training",
+            "gpu",
+            "remote job",
+            "checkpoints",
+            "predictions",
+            "results",
+            "existing run",
+        ):
             self.assertIn(term, english)
-        for term in ("provenance", "正式", "探索", "已有 run"):
-            self.assertIn(term, chinese.lower())
-        for term in ("monitoring", "log monitoring", "open tensorboard", "latest loss"):
+        for term in (
+            "正式",
+            "昂贵",
+            "保留证据",
+            "baseline",
+            "release",
+            "benchmark",
+            "eval",
+            "完整训练",
+            "gpu",
+            "远程 job",
+            "checkpoints",
+            "predictions",
+            "results",
+            "已有 run",
+        ):
+            self.assertIn(term, chinese)
+        for term in ("exploration", "backfill", "monitoring", "open tensorboard", "latest loss"):
             self.assertNotIn(term, english)
 
-    def test_skill_co_locates_granularity_and_timing(self) -> None:
+    def test_skill_defaults_small_experiments_to_no_record_without_backfill(self) -> None:
         english = SKILL_MD.read_text(encoding="utf-8")
         chinese = SKILL_ZH.read_text(encoding="utf-8")
 
@@ -601,7 +635,12 @@ class RecordExperimentSkillStaticTests(unittest.TestCase):
             "Append event",
             "No record",
             "Formal prelaunch record",
-            "Qualified exploration backfill",
+            "Default to No record",
+            "small experiment",
+            "Do not ask",
+            "production data",
+            "irreversible",
+            "significant cost",
             "runs/<run-id>/record.md",
             "docs check",
             "docs sync",
@@ -612,12 +651,51 @@ class RecordExperimentSkillStaticTests(unittest.TestCase):
             "追加事件",
             "不记录",
             "正式事前记录",
-            "探索限时补录",
+            "默认不记录",
+            "小实验",
+            "不询问",
+            "生产数据",
+            "不可逆",
+            "显著费用",
             "runs/<run-id>/record.md",
             "docs check",
             "docs sync",
         ):
             self.assertIn(term, chinese)
+        for text in (english, chinese):
+            self.assertNotIn("Qualified exploration backfill", text)
+            self.assertNotIn("探索限时补录", text)
+            self.assertNotIn("session close", text)
+            self.assertNotIn("关闭会话", text)
+
+    def test_recorded_runs_retain_raw_process_evidence(self) -> None:
+        english = SKILL_MD.read_text(encoding="utf-8")
+        chinese = SKILL_ZH.read_text(encoding="utf-8")
+        templates = (
+            RUN_TEMPLATE.read_text(encoding="utf-8"),
+            RUN_TEMPLATE_ZH.read_text(encoding="utf-8"),
+        )
+
+        for term in ("raw stdout", "raw stderr", "exit code", "stdout.log", "stderr.log"):
+            self.assertIn(term, english.lower())
+        for term in ("原始 stdout", "原始 stderr", "退出码", "stdout.log", "stderr.log"):
+            self.assertIn(term, chinese)
+        for term in (
+            "Intended stdout path:",
+            "Intended stderr path:",
+            "Actual stdout path:",
+            "Actual stderr path:",
+            "Exit code / signal:",
+        ):
+            self.assertIn(term, templates[0])
+        for term in (
+            "预期 stdout 路径:",
+            "预期 stderr 路径:",
+            "实际 stdout 路径:",
+            "实际 stderr 路径:",
+            "退出码 / signal:",
+        ):
+            self.assertIn(term, templates[1])
 
     def test_identity_distinguishes_launch_paths_from_runtime_events(self) -> None:
         english = SKILL_MD.read_text(encoding="utf-8")
@@ -652,12 +730,14 @@ class RecordExperimentSkillStaticTests(unittest.TestCase):
 
         for term in ("model or checkpoint", "derived report", "Unknown", "valid negative result"):
             self.assertIn(term, english)
+        self.assertIn("recover provenance for those retained inputs", english)
         for term in ("model 或 checkpoint", "派生报告", "Unknown", "有效负结果"):
             self.assertIn(term, chinese)
+        self.assertIn("为这些已保留输入恢复 provenance", chinese)
         self.assertIn("CUDA OOM", examples)
         self.assertIn("do-not-adopt", examples)
         self.assertIn("does not create a Worktree automatically", english)
-        self.assertIn("不因进入探索路径自动创建 Worktree", chinese)
+        self.assertIn("不自动创建 Worktree", chinese)
 
     def test_templates_use_canonical_front_matter_and_localized_sections(self) -> None:
         for template, sections in ((RUN_TEMPLATE, ENGLISH_SECTIONS), (RUN_TEMPLATE_ZH, CHINESE_SECTIONS)):

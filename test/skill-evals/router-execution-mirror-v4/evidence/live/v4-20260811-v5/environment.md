@@ -1,0 +1,31 @@
+# Live v5 Environment
+
+- Scenario: `router-execution-mirror-v4`
+- Protocol: v4 / `claude-haiku-4-5-20251001`
+- Execution transport: fresh top-level Claude Code CLI sessions, not Agent subagents
+- Claude Code version: `2.1.220`
+- Isolated Fixture: `/tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna`
+- Fixture Base commit: `b60d6c5308ad603d77aa09f57a7ace537174e6dc`
+- Scenario SHA-256: `b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2`
+- Protocol SHA-256: `cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee`
+- Fixture SHA-256: `2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589`
+- Baseline SHA-256: `a1f903d72626722292f17ec68580094c5e999960f0f40648a4f094a372b4e480`
+- Live authorization: `haiku-v4-wave-7-execution-mirror-live-authorization-v5`
+- Live authorization batch SHA-256: `bbc79d4d57423923d3f9c67c817ea947b1c89a2e042849d2ee41dc49b2100de5`
+- Live authorization decision: `approved`
+- Current Skill snapshot plugin: `/tmp/hello-scholar-skill-router-execution-mirror-v4-live-v5-_43uso9x/plugin`
+- Current Skill snapshot SHA-256: `d8c5a854831f4625c9c810ceb22952aeacae66d04c668c7aa4989211081b4814`
+- Plugin validation: strict pass
+- Initial tests: `3/3` passed
+- Initial Git state: clean
+- Runtime artifacts before prompt: none
+- Implementer session ID: `c3a24034-9999-4c15-9c16-93938f9e6c6f`
+- Implementer model: `claude-haiku-4-5-20251001`
+- Implementer session inheritance: none; the same session was resumed after permission-only non-execution
+- Reviewer session ID: `492ab01a-a15a-46e2-a8a6-ad6ff34ffa45`
+- Reviewer model: `claude-haiku-4-5-20251001`
+- Reviewer session inheritance: none
+- Strict serialization: Reviewer started only after Implementer completion and runner-side evidence capture
+- Skill-load evidence: init exposes `hello-scholar-eval-snapshot:using-helloscholar`; the successful first `Skill` tool call precedes all tracker writes
+- Raw tracker evidence source: `implementer.raw.jsonl`; final prose is not used as tracker evidence
+- Command permission recovery: exact Protocol commands were allowlisted after non-interactive permission denials; no broad bypass was used

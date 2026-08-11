@@ -1,0 +1,8 @@
+{
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "decision": "approved",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "replyEvidence": "用户精确批准 Baseline Proposal：haiku-v4-wave-7-execution-mirror / 8f578a192da79b52cc541d19e60a740d02fb7f8fc2462955dea8a275f2aa3561"
+}

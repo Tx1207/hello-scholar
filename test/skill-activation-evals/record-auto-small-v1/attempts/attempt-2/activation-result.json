@@ -1,0 +1,25 @@
+{
+  "activationProtocolVersion": 1,
+  "scenarioId": "record-auto-small-v1",
+  "result": "pass",
+  "expected": "not-invoked",
+  "recordExperimentInvoked": false,
+  "activationBeforeCommand": null,
+  "measuredCommand": "node scripts/check-policy.mjs",
+  "measuredCommandObserved": true,
+  "claudeExitCode": 0,
+  "verificationExitCode": 0,
+  "fixtureBaseCommit": "9911b8001a5d2cf923434d66bd63de9ac0091d99",
+  "skillSnapshots": {
+    "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+    "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+  },
+  "evidence": {
+    "claude-stream.jsonl": "f182eb805d1302bb97900511c938dec233c20779a144becf2e9a00c9aa378389",
+    "claude-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-stdout.log": "54864cfc303782992fdbfac584e772f02e261402e9e9d183712a61cfc8d723ad",
+    "verification-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-tree.json": "2b2eb86d12cdf744de23baf64264195f92b3dc64afa713548c2e0781db287ab0",
+    "git-status.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

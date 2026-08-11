@@ -1,0 +1,63 @@
+=== BASE COMMIT ===
+b60d6c5308ad603d77aa09f57a7ace537174e6dc
+=== HEAD ===
+b60d6c5308ad603d77aa09f57a7ace537174e6dc
+=== STATUS SHORT ===
+ M src/batch_processor.py
+ M tests/test_batch_processor.py
+?? evidence/T004-validation.txt
+=== DIFF COMMITTED ===
+=== DIFF INDEX ===
+=== DIFF WORKING TREE ===
+diff --git a/src/batch_processor.py b/src/batch_processor.py
+index 9c7a1c6..f3e5ff4 100644
+--- a/src/batch_processor.py
++++ b/src/batch_processor.py
+@@ -2,6 +2,9 @@
+ 
+ 
+ def process_batch(items: list[object]) -> list[dict[str, object]]:
++    if len(items) > 50:
++        raise ValueError("batch cannot contain more than 50 items")
++
+     results: list[dict[str, object]] = []
+     for index, item in enumerate(items):
+         if not isinstance(item, str):
+diff --git a/tests/test_batch_processor.py b/tests/test_batch_processor.py
+index 06009ec..e28fcc6 100644
+--- a/tests/test_batch_processor.py
++++ b/tests/test_batch_processor.py
+@@ -35,6 +35,17 @@ class BatchProcessorTests(unittest.TestCase):
+             process_batch(["ok", 3, "still-ok"]),
+         )
+ 
++    def test_accepts_exactly_50_items(self) -> None:
++        self.assertEqual(50, len(process_batch(["item"] * 50)))
++
++    def test_rejects_51_items_before_processing(self) -> None:
++        class TrackingItems(list[object]):
++            def __iter__(self):
++                raise AssertionError("batch was processed before size validation")
++
++        with self.assertRaises(ValueError):
++            process_batch(TrackingItems(["item"] * 51))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+=== UNTRACKED ===
+evidence/T004-validation.txt
+=== FINAL FILE HASHES ===
+79e7543a9f528f2e41376fd0d147a09caa0854d8d4d20633bd1c02dabab3bfd4  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/AGENTS.md
+1bdbb76f777a34111d7bb4c52ce0f2ee09cd3f6d84244573dae38b05aa0e9bd8  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/evidence/T001-validation.txt
+97af7f4ad77d75f46bd10fd663964aa128d5d8295289a3858cbaef4034813bef  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/evidence/T002-validation.txt
+016fc87011bc6bfd6f16344ddec772a670f4e92e9eec34f3aa7bc784083d2793  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/evidence/T003-validation.txt
+6e909f0a092daf7fb6c43c097d68f5b7870f96d851c600c0ce3ba26cc588ed7d  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/evidence/T004-validation.txt
+1419dacbf936dbd25aabba0f27cfe29b4c50ce90ee3c37178c4abc166358bf79  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/hello-scholar/specs/INDEX.md
+eb8cf6eaac88fd7e98a2b6327e39b105abe9eef9a0ba61013794f3f439a96c46  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/plan.md
+f19862693e1f9abed809df127af52895d98101b1cbc4fea7db091b3711e57ff8  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/spec.md
+665190f25728b0c48cb49376555eadf7e418e93307075515f2ca236969a8ace9  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/tasks.md
+42a7a019776127de77fbaa63266026674b7ad7fa1ea5434db363ab8ebff5dac4  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/scripts/check_execution_state.py
+f2bbe857b6abcbd52438a27f8e687f04f569a3e651ec5a5564355e1276b74c87  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/src/batch_processor.py
+c234d2d742f9e29bb42b0d40afd39b3aa5abfe55886b1e1138ff689f99373c47  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v5-ep_ithna/tests/test_batch_processor.py
+=== RUNTIME ARTIFACTS ===

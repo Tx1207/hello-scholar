@@ -1,0 +1,13 @@
+{
+  "proposalId": "proposal-record-auto-formal-v1",
+  "decision": "approved",
+  "scenarioSha256": "594d0d9ae444b453f9c21374ea1b114b8951d71e4001ddd2e04a265577f71057",
+  "protocolSha256": "6fed930e959f4268f2d856656571c2b2a02f65d5f689177cc9d3eabadd06af02",
+  "fixtureSha256": "69321cbe58d76f3f61143625f3330b4995d85576e852c46ad45f4258babf4d9e",
+  "runnerSha256": "1ebfa74e6d8716a849ee0eaa39345f44f5f67378a604a8b5c2b8d2cc5717fb53",
+  "catalogSkillSnapshots": {
+    "using-helloscholar": "3de502204b1649a2f547d77c87cb43295b91de45d0382641d9c896b6f7fbae74",
+    "record-experiment": "e3e31fbcd9d5cf2bcdbe9c6192fcb1edf4aab18fe4538849edd90080907588f2"
+  },
+  "replyEvidence": "用户要求运行实际 subagent 测试，并要求测试前先调用 writing-great-skills 审核；审核已完成并修复 provenance/backfill 冲突。activation-routing-v1 / e1279c8ed9642226552ca7dab4fc121f0de66b8d872bb8751bb08db0e3b4934a"
+}

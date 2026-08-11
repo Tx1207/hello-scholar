@@ -1,0 +1,178 @@
+{
+  "manifestVersion": 1,
+  "batchId": "haiku-v4-wave-7-execution-mirror",
+  "statusAtCreation": "pending-user-review",
+  "proposalCount": 1,
+  "approvalSemantics": {
+    "approvedAction": "Authorize Baseline Observation for exactly the bound 1 Protocol v4 Proposals; do not accept Skill output or authorize Live Eval.",
+    "includedImmutableBytes": [
+      "Every scenario.md byte sequence bound by scenario SHA-256.",
+      "Every protocol.json byte sequence bound by protocol SHA-256.",
+      "Every Fixture file path and byte sequence bound by the deterministic Fixture tree SHA-256 contract.",
+      "The shared user-value-rubric.json byte sequence bound by its SHA-256.",
+      "This canonical manifest byte sequence bound by the external Batch SHA-256 published in eval-proposal-review-v4-wave-7.md."
+    ],
+    "excludedMutableBytes": [
+      "proposal-approval.json bytes; their pending input hashes must already match this manifest, while decision and replyEvidence change only after the user approves this Batch ID and Batch SHA-256.",
+      "Baseline, Scorecard, and evidence bytes created only by later authorized stages.",
+      "The historical Protocol v1 framework-e2e-paged-cache directory and its saved Baseline evidence.",
+      "Production Skill bytes, which are evaluated only after a real Red Baseline."
+    ],
+    "invalidationRule": "Any semantic change to a bound Scenario, Protocol, Fixture, shared rubric, or this manifest requires a new Batch SHA-256 and a new user review before any affected run."
+  },
+  "fixtureTreeHashContract": "SHA-256 over each sorted fixture-relative POSIX path, NUL, file bytes, and NUL; .git, __pycache__, .DS_Store, and .hello-scholar-install.json are excluded.",
+  "fixtureDisclosureReview": {
+    "reviewedProposalCount": 1,
+    "implementerVisible": [
+      "Real project language, dependencies, public interfaces, current approved Bundle facts, retained prior Task evidence, safety limits, code, and runnable project tests.",
+      "The project verifier checks only user-visible lifecycle, evidence, and write-boundary facts; tracker state expectations remain evaluator-only."
+    ],
+    "evaluatorOnly": [
+      "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected tracker sequence, and future messages.",
+      "Reviewer judgments about canonical tracker identity, status transitions, synchronization timing, and user-facing expression quality."
+    ],
+    "materialCorrections": [
+      {
+        "scenarioId": "router-execution-mirror-v4",
+        "change": "The Fixture exposes authoritative T001-T003 evidence and the T004-only authorization without stating the expected TodoWrite or update_plan item sequence."
+      }
+    ],
+    "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+  },
+  "sharedUserValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+    "rubricId": "hello-scholar-user-value-v1",
+    "rubricVersion": 1,
+    "dimensions": [
+      {
+        "id": "value-visibility",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The result, decision, or document value is visible before process narration, so the user can identify what changed and why it matters without reconstructing the agent's work."
+      },
+      {
+        "id": "audience-fit",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Language, terminology, and technical depth match the user's request and project context; necessary technical names remain exact, while evaluator or agent-internal jargon is translated or omitted."
+      },
+      {
+        "id": "information-design",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "The answer is easy to scan, and any formal document remains understandable and usable when read later without the surrounding chat."
+      },
+      {
+        "id": "actionability",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Decisions, unresolved facts, owner, next action, or deliberate stop point are explicit enough for the user or next agent to continue without guessing."
+      },
+      {
+        "id": "signal-to-noise",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Every retained section helps understanding, review, or action; boilerplate, repeated conclusions, evaluation narration, and unrelated detail do not bury the useful signal."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material user-facing requirement is missing, misleading, buried, or unusable.",
+      "90": "The user can quickly understand and use the result; only a minor presentation issue remains.",
+      "100": "The result makes its value immediately visible and is precise, natural, standalone, and free of noise."
+    }
+  },
+  "proposals": [
+    {
+      "ordinal": 1,
+      "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+      "scenarioId": "router-execution-mirror-v4",
+      "caseId": "router-execution-mirror-v4",
+      "projectId": "py-batch-processor",
+      "primarySkill": "using-helloscholar",
+      "agentModel": "claude-haiku-4-5-20251001",
+      "countsTowardProductSkill": true,
+      "approvalRecordPath": "test/skill-evals/router-execution-mirror-v4/proposal-approval.json",
+      "inputBindings": {
+        "scenario": {
+          "path": "test/skill-evals/router-execution-mirror-v4/scenario.md",
+          "sha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2"
+        },
+        "protocol": {
+          "path": "test/skill-evals/router-execution-mirror-v4/protocol.json",
+          "sha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee"
+        },
+        "fixture": {
+          "path": "test/skill-evals/router-execution-mirror-v4/fixture",
+          "sha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589"
+        }
+      },
+      "businessGoal": "继续 `SPEC-052` 的当前执行。T001–T003 已经有 Validation 和 Completion 证据，T004 是当前 frontier；这轮只完成 T004 并汇报，T005–T007 保持 pending。按现有批准 Tasks 执行，不要提前更新 `tasks.md`，也不要继续后续 Task。",
+      "businessRubric": {
+        "dimensions": [
+          {
+            "id": "current-contract-recovery",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the Implementer verifies the named SPEC-052 lifecycle and derives T001-T003 completion plus T004 frontier from current Tasks and evidence before implementation."
+          },
+          {
+            "id": "canonical-task-mirror",
+            "weight": 35,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm the tool trace creates one ordered tracker item for every canonical T001-T007 Task with its ID and goal, marking T001-T003 completed, T004 active when execution starts, and T005-T007 pending rather than replacing them with a phase plan."
+          },
+          {
+            "id": "frontier-synchronization",
+            "weight": 25,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm tracker calls occur before T004 implementation and again after T004 Validation and Completion evidence changes, with the final progress report preceded by T004 completed and T005-T007 still pending."
+          },
+          {
+            "id": "t004-scope-and-evidence",
+            "weight": 20,
+            "critical": true,
+            "minimum": 90,
+            "criterion": "Confirm T004 rejects batches above 50 while preserving exactly-50 and existing behavior, records current Validation and Completion evidence, leaves tasks.md unchanged, and does not execute T005-T007."
+          }
+        ],
+        "minimumTotal": 90,
+        "scoreAnchors": {
+          "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+          "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+          "100": "Every observable requirement is directly supported by interaction, tool trace, artifact, tree, and command evidence with no defect."
+        },
+        "hardRejects": [
+          "starts T004 without first creating a complete canonical T001-T007 tracker",
+          "uses phase summaries or temporary Work substeps instead of the seven canonical Task items",
+          "marks any Task status contrary to the current Validation, Completion, active execution, or pending state",
+          "omits synchronization after T004 evidence changes or reports progress before synchronizing it",
+          "modifies tasks.md, executes T005-T007, writes outside T004 Files, or claims completion without current command and tree evidence",
+          "scores tracker behavior from final prose without retained tool-call evidence"
+        ]
+      },
+      "sharedUserValue": {
+        "rubricId": "hello-scholar-user-value-v1",
+        "rubricPath": "test/skill-evals/user-value-rubric.json",
+        "rubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+        "dimensionIds": [
+          "value-visibility",
+          "audience-fit",
+          "information-design",
+          "actionability",
+          "signal-to-noise"
+        ]
+      },
+      "criticalPath": "Verify SPEC-052 and its evidence, create the complete T001-T007 tracker before beginning T004, then synchronize T004 completion after fresh validation without touching later Tasks or tasks.md."
+    }
+  ]
+}

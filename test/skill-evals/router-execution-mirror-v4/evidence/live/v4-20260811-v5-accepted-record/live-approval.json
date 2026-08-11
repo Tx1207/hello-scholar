@@ -1,0 +1,37 @@
+{
+  "liveApprovalId": "live-router-execution-mirror-v4-haiku-v4-v5",
+  "liveAuthorizationBatchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v5",
+  "liveAuthorizationBatchSha256": "bbc79d4d57423923d3f9c67c817ea947b1c89a2e042849d2ee41dc49b2100de5",
+  "proposalId": "proposal-router-execution-mirror-v4-haiku-v4",
+  "scenarioSha256": "b40180c68051ac5f69bb5f6ac5064c5d82fe3ea66265aeaeafa7ad92a77e02e2",
+  "protocolSha256": "cb5c1cb1d3a2d49931864440ed992b0c718fbce504425727385596b8cce71eee",
+  "fixtureSha256": "2b06e75e2fa7aa2940a259d97ce3e468b15d1252dbe9f031504fc3a6e7d31589",
+  "decision": "approved",
+  "userValueRubricSha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4",
+  "baselineSha256": "a1f903d72626722292f17ec68580094c5e999960f0f40648a4f094a372b4e480",
+  "skillSnapshots": {
+    "using-helloscholar": {
+      "status": "current-explicit-file",
+      "sha256": "d8c5a854831f4625c9c810ceb22952aeacae66d04c668c7aa4989211081b4814"
+    }
+  },
+  "executionTransport": {
+    "implementer": "fresh-top-level-claude-code-cli-session",
+    "reviewer": "different-fresh-top-level-claude-code-cli-session",
+    "claudeCodeVersion": "2.1.220",
+    "resolvedModel": "claude-haiku-4-5-20251001",
+    "sessionInheritance": "none",
+    "strictlySerial": true,
+    "outputFormat": "stream-json",
+    "sessionPersistence": "fresh-session-id-retained-only-for-524-resume",
+    "customizationMode": "isolated-settings-plus-explicit-plugin",
+    "skillLoadEvidence": "init-namespaced-skill-and-successful-first-skill-tool-use",
+    "trackerEvidence": "tool_use-and-matching-tool_result-events-from-raw-stream-json",
+    "trackerTools": [
+      "TaskList",
+      "TaskCreate",
+      "TaskUpdate"
+    ]
+  },
+  "replyEvidence": "用户明确授权：‘不断迭代直到达成我们的目标，你在这个过程中可以自动授权，直到完成目标吗，交给我审核即可’。该授权允许在既定 execution-mirror Formal Eval 范围内生成并批准新的 immutable Batch、运行严格串行的顶层 Haiku Implementer/Reviewer 并继续迭代；不接受 Skill 输出，最终 userDecision 保持 pending 交由用户审核。"
+}

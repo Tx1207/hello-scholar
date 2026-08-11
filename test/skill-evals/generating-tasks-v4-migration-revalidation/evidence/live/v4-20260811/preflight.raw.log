@@ -1,0 +1,90 @@
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs sync
+docs sync: written 2, deleted 0, errors 0, notices 1
+written hello-scholar/specs/INDEX.md
+written hello-scholar/specs/config-format/INDEX.md
+notice tasks-missing hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: Spec SPEC-014 has no Tasks
+[exit 0]
+
+$ node /xsb/hello-scholar/.claude/worktrees/record-experiment-routing/bin/hello-scholar.js docs check
+docs check: specs 1, records 0, indexes 2, errors 0, notices 1
+index Current hello-scholar/specs/INDEX.md
+index Current hello-scholar/specs/config-format/INDEX.md
+notice tasks-missing hello-scholar/specs/config-format/SPEC-014-json-config-migration/tasks.md: Spec SPEC-014 has no Tasks
+[exit 0]
+
+$ npm test
+
+> config-format-cli-fixture@1.4.0 test
+> node --test test/*.test.js
+
+✔ show exposes one canonical shape for a legacy profile (74.676576ms)
+✔ legacy output flag still invokes the old writer (51.613901ms)
+✔ compatibility reader normalizes legacy and JSON profiles (2.419915ms)
+✔ writer emits JSON v2 by default (0.695482ms)
+✔ legacy writer remains available during the dual-read window (0.594137ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 235.116321
+[exit 0]
+
+$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /tmp/hello-scholar-eval-generating-tasks-v4-migration-revalidation-live-20260811/.git/
+[exit 0]
+
+$ git config user.name "Hello Scholar Eval"
+[exit 0]
+
+$ git config user.email eval@hello-scholar.local
+[exit 0]
+
+$ git add -A
+[exit 0]
+
+$ git commit -m "Initialize formal eval fixture"
+[master (root-commit) 37a5d22] Initialize formal eval fixture
+ 18 files changed, 440 insertions(+)
+ create mode 100644 AGENTS.md
+ create mode 100644 config/migration-state.json
+ create mode 100644 config/profiles/east.properties
+ create mode 100644 config/profiles/west.json
+ create mode 100644 hello-scholar/architecture.md
+ create mode 100644 hello-scholar/specs/INDEX.md
+ create mode 100644 hello-scholar/specs/config-format/INDEX.md
+ create mode 100644 hello-scholar/specs/config-format/SPEC-014-json-config-migration/plan.md
+ create mode 100644 hello-scholar/specs/config-format/SPEC-014-json-config-migration/spec.md
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+ create mode 100644 src/cli.js
+ create mode 100644 src/config-store.js
+ create mode 100644 src/legacy-writer.js
+ create mode 100644 test/cli.test.js
+ create mode 100644 test/config-store.test.js
+ create mode 100644 vendor/legacy-properties-codec/index.js
+ create mode 100644 vendor/legacy-properties-codec/package.json
+[exit 0]
+
+$ git diff --check HEAD
+[exit 0]
+
+$ git status --porcelain=v1 -uall
+[exit 0]
+
+$ git rev-parse HEAD
+37a5d227eb8583786db2a79468d1518506b225e1
+[exit 0]
+
