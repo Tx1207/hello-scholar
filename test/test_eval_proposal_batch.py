@@ -878,8 +878,9 @@ class EvalProposalBatchTests(unittest.TestCase):
         )
         for scenario_id, record_path in live_batch["authorizationRecordPaths"].items():
             scenario_dir = EVAL_ROOT / scenario_id
-            record = _load_json(_repo_path(record_path, record_path))
-            scorecard = _load_json(scenario_dir / "scorecard.json")
+            live_approval_path = _repo_path(record_path, record_path)
+            record = _load_json(live_approval_path)
+            scorecard = _load_json(live_approval_path.parent / "scorecard.json")
             self.assertEqual("approved", record["decision"])
             self.assertIsInstance(record["replyEvidence"], str)
             self.assertTrue(record["replyEvidence"].strip())

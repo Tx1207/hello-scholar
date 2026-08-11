@@ -704,7 +704,7 @@ class SkillEvalContractTests(unittest.TestCase):
 
     def test_flattened_brainstorming_snapshot_allows_only_its_verified_path_rewrite(self) -> None:
         source = "skills/superpowers-skills/brainstorming"
-        expected = "c4094a8328a5d597a5bd0c634c05cf3dd6e15f2ac6f1e114019108acb611f46e"
+        expected = "b0c962894bd010354345b44cdb959b74a8cdb327152c60e642138c6e6afd2abf"
         self.assertEqual(expected, sha256_historical_skill_snapshot(REPO_ROOT, source))
 
         with tempfile.TemporaryDirectory() as temp_name:

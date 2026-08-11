@@ -504,8 +504,8 @@
         "generating-tasks-v4-migration-revalidation"
       ],
       "authorizationRecordPaths": {
-        "generating-tasks-v4-feature-policy-revalidation": "test/skill-evals/generating-tasks-v4-feature-policy-revalidation/live-approval.json",
-        "generating-tasks-v4-migration-revalidation": "test/skill-evals/generating-tasks-v4-migration-revalidation/live-approval.json"
+        "generating-tasks-v4-feature-policy-revalidation": "test/skill-evals/generating-tasks-v4-feature-policy-revalidation/evidence/live/v4-20260811/live-approval.json",
+        "generating-tasks-v4-migration-revalidation": "test/skill-evals/generating-tasks-v4-migration-revalidation/evidence/live/v4-20260811/live-approval.json"
       }
     },
     {
@@ -521,8 +521,8 @@
         "brainstorming-api-route-v3"
       ],
       "authorizationRecordPaths": {
-        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/live-approval.json",
-        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/live-approval.json"
+        "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/evidence/live/v4-20260811-current-snapshot/live-approval.json",
+        "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/evidence/live/v4-20260811-current-snapshot/live-approval.json"
       }
     },
     {
