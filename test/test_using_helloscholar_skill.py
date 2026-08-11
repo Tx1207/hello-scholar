@@ -99,6 +99,66 @@ class UsingHelloScholarSkillTests(unittest.TestCase):
         self.assertNotIn("hello-scholar docs check", english_continuation)
         self.assertNotIn("hello-scholar docs check", chinese_continuation)
 
+    def test_live_tracker_mirrors_every_canonical_task(self) -> None:
+        english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+        chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")
+        codex = (SKILL_DIR / "references" / "codex-tools.md").read_text(encoding="utf-8")
+
+        for text in (english, chinese):
+            for required in (
+                "<SUBAGENT-STOP>",
+                "execution mirror",
+                "`TNNN`",
+                "TodoWrite",
+                "TaskList",
+                "TaskCreate",
+                "TaskUpdate",
+                "`pending`",
+                "`in_progress`",
+                "`completed`",
+            ):
+                self.assertIn(required, text)
+
+        for required in (
+            "current main Agent",
+            "Immediately after Verify",
+            "Every canonical `TNNN` Task",
+            "document order",
+            "Task ID and goal",
+            "complete mirror exists",
+            "after its evidence changes",
+            "before every progress or completion report",
+            "Phase summaries or temporary Work substeps",
+            "first platform-tracker write belongs to Mirror",
+            "after Resolve and Verify identify the canonical Tasks",
+            "complete execution mirror",
+        ):
+            self.assertIn(required, english)
+
+        for required in (
+            "当前主 Agent",
+            "核验后立即",
+            "每个 canonical `TNNN` Task",
+            "文档顺序",
+            "Task ID 与目标",
+            "完整 mirror 建立前",
+            "证据变化后",
+            "每次进度或完成汇报前",
+            "阶段摘要或临时 Work 子步骤",
+            "平台 tracker 的首次写入属于镜像",
+            "先定位并核验 canonical Tasks",
+            "完整 execution mirror",
+        ):
+            self.assertIn(required, chinese)
+
+        self.assertIn("`TodoWrite` execution mirror", codex)
+        self.assertIn("`update_plan`", codex)
+        self.assertIn("Mirror the first `update_plan` call", codex)
+        self.assertIn("after Resolve and Verify", codex)
+        self.assertIn("complete current item set", codex)
+        self.assertIn("identity, status, and synchronization timing", codex)
+        self.assertIn("separate phase plan", codex)
+
     def test_routers_resolve_bundle_from_index_lifecycle(self) -> None:
         english = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
         chinese = (SKILL_DIR / "SKILL.zh_CN.md").read_text(encoding="utf-8")

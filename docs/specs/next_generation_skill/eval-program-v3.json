@@ -1,8 +1,8 @@
 {
   "programVersion": 1,
   "activeProductSkillCount": 14,
-  "productProposalCaseCount": 37,
-  "pendingProductProposalCaseCount": 36,
+  "productProposalCaseCount": 38,
+  "pendingProductProposalCaseCount": 37,
   "activeProductSkills": [
     {
       "name": "using-helloscholar",
@@ -305,6 +305,36 @@
       ]
     },
     {
+      "batchId": "haiku-v4-wave-7-execution-mirror",
+      "protocolVersion": 4,
+      "kind": "baseline-proposal",
+      "status": "approved-baseline-observed",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-proposal-batch-v4-wave-7.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-proposal-review-v4-wave-7.md",
+      "fixtureDisclosureReview": {
+        "reviewedProposalCount": 1,
+        "implementerVisible": [
+          "Real project language, dependencies, public interfaces, current approved Bundle facts, retained prior Task evidence, safety limits, code, and runnable project tests.",
+          "The project verifier checks only user-visible lifecycle, evidence, and write-boundary facts; tracker state expectations remain evaluator-only."
+        ],
+        "evaluatorOnly": [
+          "The raw Scenario outside its exact Original User Request projection, the full Protocol, business rubric, hard rejects, expected tracker sequence, and future messages.",
+          "Reviewer judgments about canonical tracker identity, status transitions, synchronization timing, and user-facing expression quality."
+        ],
+        "materialCorrections": [
+          {
+            "scenarioId": "router-execution-mirror-v4",
+            "change": "The Fixture exposes authoritative T001-T003 evidence and the T004-only authorization without stating the expected TodoWrite or update_plan item sequence."
+          }
+        ],
+        "runtimeArtifactRule": "Fixture inputs reject __pycache__, .pyc, .pyo, .DS_Store, and .hello-scholar-install.json even where the deterministic tree hash ignores a runtime name."
+      },
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ]
+    },
+    {
       "batchId": "generating-tasks-sonnet-v3-live-authorization-batch-v1",
       "protocolVersion": 3,
       "kind": "live-authorization",
@@ -387,6 +417,81 @@
       "authorizationRecordPaths": {
         "manage-specs-successor-v3": "test/skill-evals/manage-specs-successor-v3/live-approval.json",
         "brainstorming-api-route-v3": "test/skill-evals/brainstorming-api-route-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v1",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v2",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v2.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v2.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810-v2/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v3",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v3.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v3.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260810-v3/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v4",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "historical-stale-after-skill-repair",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v4.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v4.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/evidence/live/v4-20260811-v4/live-approval.json"
+      }
+    },
+    {
+      "batchId": "haiku-v4-wave-7-execution-mirror-live-authorization-v5",
+      "protocolVersion": 4,
+      "kind": "live-authorization",
+      "status": "completed-pending-user-review",
+      "countsTowardProductSkill": true,
+      "manifestPath": "docs/specs/next_generation_skill/eval-live-authorization-batch-v4-wave-7-v5.json",
+      "reviewPath": "docs/specs/next_generation_skill/eval-live-authorization-review-v4-wave-7-v5.md",
+      "scenarioIds": [
+        "router-execution-mirror-v4"
+      ],
+      "authorizationRecordPaths": {
+        "router-execution-mirror-v4": "test/skill-evals/router-execution-mirror-v4/live-approval.json"
       }
     },
     {

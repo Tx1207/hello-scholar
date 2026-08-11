@@ -1,0 +1,101 @@
+=== FIXTURE BASE COMMIT ===
+2dcbf2c068a4d3c9cacffc12022189ffdc14254d
+=== COMMITTED DIFF BASE..HEAD ===
+diff --git a/src/batch_processor.py b/src/batch_processor.py
+index 9c7a1c6..49c9e0b 100644
+--- a/src/batch_processor.py
++++ b/src/batch_processor.py
+@@ -2,6 +2,9 @@
+ 
+ 
+ def process_batch(items: list[object]) -> list[dict[str, object]]:
++    if len(items) > 50:
++        raise ValueError("batch must contain at most 50 items")
++
+     results: list[dict[str, object]] = []
+     for index, item in enumerate(items):
+         if not isinstance(item, str):
+diff --git a/tests/test_batch_processor.py b/tests/test_batch_processor.py
+index 06009ec..a832b04 100644
+--- a/tests/test_batch_processor.py
++++ b/tests/test_batch_processor.py
+@@ -35,6 +35,19 @@ class BatchProcessorTests(unittest.TestCase):
+             process_batch(["ok", 3, "still-ok"]),
+         )
+ 
++    def test_accepts_exactly_50_items(self) -> None:
++        items = ["item"] * 50
++
++        self.assertEqual(50, len(process_batch(items)))
++
++    def test_rejects_51_items_before_processing(self) -> None:
++        class ExplodingItems(list[object]):
++            def __iter__(self):
++                raise AssertionError("items were processed")
++
++        with self.assertRaisesRegex(ValueError, "at most 50"):
++            process_batch(ExplodingItems(["item"] * 51))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+=== INDEX ===
+=== WORKING TREE ===
+diff --git a/src/batch_processor.py b/src/batch_processor.py
+index 9c7a1c6..49c9e0b 100644
+--- a/src/batch_processor.py
++++ b/src/batch_processor.py
+@@ -2,6 +2,9 @@
+ 
+ 
+ def process_batch(items: list[object]) -> list[dict[str, object]]:
++    if len(items) > 50:
++        raise ValueError("batch must contain at most 50 items")
++
+     results: list[dict[str, object]] = []
+     for index, item in enumerate(items):
+         if not isinstance(item, str):
+diff --git a/tests/test_batch_processor.py b/tests/test_batch_processor.py
+index 06009ec..a832b04 100644
+--- a/tests/test_batch_processor.py
++++ b/tests/test_batch_processor.py
+@@ -35,6 +35,19 @@ class BatchProcessorTests(unittest.TestCase):
+             process_batch(["ok", 3, "still-ok"]),
+         )
+ 
++    def test_accepts_exactly_50_items(self) -> None:
++        items = ["item"] * 50
++
++        self.assertEqual(50, len(process_batch(items)))
++
++    def test_rejects_51_items_before_processing(self) -> None:
++        class ExplodingItems(list[object]):
++            def __iter__(self):
++                raise AssertionError("items were processed")
++
++        with self.assertRaisesRegex(ValueError, "at most 50"):
++            process_batch(ExplodingItems(["item"] * 51))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+=== UNTRACKED ===
+evidence/T004-validation.txt
+=== STATUS ===
+ M src/batch_processor.py
+ M tests/test_batch_processor.py
+?? evidence/T004-validation.txt
+=== FINAL HASHES ===
+79e7543a9f528f2e41376fd0d147a09caa0854d8d4d20633bd1c02dabab3bfd4  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/AGENTS.md
+1bdbb76f777a34111d7bb4c52ce0f2ee09cd3f6d84244573dae38b05aa0e9bd8  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/evidence/T001-validation.txt
+97af7f4ad77d75f46bd10fd663964aa128d5d8295289a3858cbaef4034813bef  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/evidence/T002-validation.txt
+016fc87011bc6bfd6f16344ddec772a670f4e92e9eec34f3aa7bc784083d2793  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/evidence/T003-validation.txt
+fece1ff6cd735865d7e845a73be32cce1932c36af35c9bc63e35c32782b19f0b  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/evidence/T004-validation.txt
+1419dacbf936dbd25aabba0f27cfe29b4c50ce90ee3c37178c4abc166358bf79  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/hello-scholar/specs/INDEX.md
+eb8cf6eaac88fd7e98a2b6327e39b105abe9eef9a0ba61013794f3f439a96c46  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/plan.md
+f19862693e1f9abed809df127af52895d98101b1cbc4fea7db091b3711e57ff8  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/spec.md
+665190f25728b0c48cb49376555eadf7e418e93307075515f2ca236969a8ace9  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/hello-scholar/specs/batch-processing/SPEC-052-batch-limit/tasks.md
+42a7a019776127de77fbaa63266026674b7ad7fa1ea5434db363ab8ebff5dac4  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/scripts/check_execution_state.py
+55a730e5c6abd17abad862bebed525f987ae145a75dae60c8dbb49f2b4555945  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/src/batch_processor.py
+b49d47bc410275f3fa79a3278c88c296f5ae8e63b3f4b9f315cff33a6993d107  /tmp/hello-scholar-eval-router-execution-mirror-v4-live-v2-lC4zJIOT/tests/test_batch_processor.py
+=== RUNTIME ARTIFACTS ===

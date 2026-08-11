@@ -1,0 +1,6 @@
+Task: T003 Isolate per-item validation failures
+Validation: PASS
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest tests.test_batch_processor.BatchProcessorTests.test_invalid_item_does_not_abort_neighbors
+Signal: 1 test passed
+Completion: PASS
+Observed: Invalid item types return one error result while valid neighbors continue in order.

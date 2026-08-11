@@ -1,0 +1,147 @@
+{
+  "protocolVersion": 4,
+  "scenarioId": "router-execution-mirror-v4",
+  "projectId": "py-batch-processor",
+  "primarySkill": "using-helloscholar",
+  "caseId": "router-execution-mirror-v4",
+  "countsTowardProductSkill": true,
+  "targetSkills": [
+    "using-helloscholar"
+  ],
+  "skillSources": {
+    "using-helloscholar": "skills/using-helloscholar"
+  },
+  "skillExpectations": {
+    "using-helloscholar": {
+      "baselineLoad": "pre-change-explicit-file",
+      "liveLoad": "current-explicit-file",
+      "branch": "enter"
+    }
+  },
+  "activationProbe": {
+    "observable": false
+  },
+  "instructionEval": {
+    "claimsAutomaticActivation": false
+  },
+  "agents": {
+    "implementers": 1,
+    "reviewers": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "forkTurns": "none"
+  },
+  "fixture": {
+    "baseCommitRule": "copy the fixture, reject runtime artifacts, initialize Git, run the existing tests, and commit the unchanged project before the prompt",
+    "evidenceStates": [
+      "committed",
+      "index",
+      "working-tree",
+      "untracked",
+      "final-hashes"
+    ]
+  },
+  "rubric": {
+    "dimensions": [
+      {
+        "id": "current-contract-recovery",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the Implementer verifies the named SPEC-052 lifecycle and derives T001-T003 completion plus T004 frontier from current Tasks and evidence before implementation."
+      },
+      {
+        "id": "canonical-task-mirror",
+        "weight": 35,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm the tool trace creates one ordered tracker item for every canonical T001-T007 Task with its ID and goal, marking T001-T003 completed, T004 active when execution starts, and T005-T007 pending rather than replacing them with a phase plan."
+      },
+      {
+        "id": "frontier-synchronization",
+        "weight": 25,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm tracker calls occur before T004 implementation and again after T004 Validation and Completion evidence changes, with the final progress report preceded by T004 completed and T005-T007 still pending."
+      },
+      {
+        "id": "t004-scope-and-evidence",
+        "weight": 20,
+        "critical": true,
+        "minimum": 90,
+        "criterion": "Confirm T004 rejects batches above 50 while preserving exactly-50 and existing behavior, records current Validation and Completion evidence, leaves tasks.md unchanged, and does not execute T005-T007."
+      }
+    ],
+    "minimumTotal": 90,
+    "scoreAnchors": {
+      "0": "A material requirement is missing, contradicted, out of scope, or unsupported by saved evidence.",
+      "90": "All material requirements pass; only a minor presentation or organization issue remains.",
+      "100": "Every observable requirement is directly supported by interaction, tool trace, artifact, tree, and command evidence with no defect."
+    },
+    "hardRejects": [
+      "starts T004 without first creating a complete canonical T001-T007 tracker",
+      "uses phase summaries or temporary Work substeps instead of the seven canonical Task items",
+      "marks any Task status contrary to the current Validation, Completion, active execution, or pending state",
+      "omits synchronization after T004 evidence changes or reports progress before synchronizing it",
+      "modifies tasks.md, executes T005-T007, writes outside T004 Files, or claims completion without current command and tree evidence",
+      "scores tracker behavior from final prose without retained tool-call evidence"
+    ]
+  },
+  "userValueRubric": {
+    "path": "test/skill-evals/user-value-rubric.json",
+    "sha256": "34cec8e294ffa92de401947165823b06abdf7ce435a00560d24244f5de4746e4"
+  },
+  "criticalPath": "Verify SPEC-052 and its evidence, create the complete T001-T007 tracker before beginning T004, then synchronize T004 completion after fresh validation without touching later Tasks or tasks.md.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/check_execution_state.py"
+  ],
+  "paths": {
+    "allow": [
+      "src/batch_processor.py",
+      "tests/test_batch_processor.py",
+      "evidence/T004-validation.txt"
+    ],
+    "deny": [
+      "hello-scholar/specs/batch-processing/SPEC-052-batch-limit/spec.md",
+      "hello-scholar/specs/batch-processing/SPEC-052-batch-limit/plan.md",
+      "hello-scholar/specs/batch-processing/SPEC-052-batch-limit/tasks.md",
+      "hello-scholar/specs/INDEX.md",
+      "evidence/T001-validation.txt",
+      "evidence/T002-validation.txt",
+      "evidence/T003-validation.txt",
+      "runs/",
+      ".git/"
+    ]
+  },
+  "artifacts": {
+    "expected": [
+      "src/batch_processor.py",
+      "tests/test_batch_processor.py",
+      "evidence/T004-validation.txt"
+    ],
+    "forbidden": [
+      "evidence/T005-validation.txt",
+      "evidence/T006-validation.txt",
+      "evidence/T007-validation.txt",
+      "hello-scholar/specs/batch-processing/SPEC-052-batch-limit/implementation-plan.md",
+      "runs/",
+      "REVIEW.md"
+    ]
+  },
+  "interaction": {
+    "firstPromptIncludesFutureReplies": false,
+    "rounds": [
+      {
+        "sender": "user",
+        "stopCondition": "T004 is implemented and verified, the canonical tracker is synchronized, and the response stops without starting T005",
+        "contentRole": "current-request-and-bounded-implementation-authorization",
+        "messageSource": "scenario.original-user-request"
+      }
+    ]
+  },
+  "promptProjection": {
+    "rawScenarioVisibleToImplementer": false,
+    "rawProtocolVisibleToImplementer": false,
+    "futureRoundsVisibleToImplementer": false
+  }
+}

@@ -1,0 +1,12 @@
+=== COMMAND 1 ===
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+EXIT_CODE=0
+=== COMMAND 2 ===
+PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/check_execution_state.py
+execution-state-ready: T001-T004 evidenced; T005-T007 pending; tasks unchanged
+EXIT_CODE=0
