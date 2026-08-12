@@ -93,12 +93,12 @@ Strong success criteria let you loop independently. Weak success criteria requir
 
 ## 9. Code Comments
 
-**Comments are a guide for reviewers who did not implement the code: use plain, concrete language to explain what the code does, its main flow, why it works that way, and what happens on failure.**
+**Comments help readers who did not implement the code understand information that the code itself cannot fully express but that affects decisions about use and maintenance.**
 
-- For modules, classes, and functions involving business rules, state changes, I/O, or multiple stages, summarize their responsibility, main flow, and caller-observable results or side effects at the entry point; before key branches and non-obvious handling, explain the relevant constraints, design rationale, and failure impact.
-- Match comment depth to the code's complexity and risk. Let naming and structure express obvious local steps; use comments for business meaning and information the code cannot express by itself. Simple code needs no comments.
-- Write comments in the language selected by “Language preference” under “User Preferences”; retain code identifiers, technical terms, and API names in their original form without changing the comments' main language.
-- When behavior, constraints, side effects, or failure semantics change, update the related comments. Treat disagreement among comments, code, and tests as a defect.
+- At the entry point of modules, classes, and functions with a distinct responsibility, describe their responsibility boundaries, caller contract, and caller-observable results, side effects, and failure behavior.
+- In multi-stage flows, briefly state before each stage the goal it serves in completing the overall operation; beside the relevant code, explain the reasons for and effects of important branches, constraints, invariants, execution order, fallbacks, or special handling. An entry-point overview does not replace these local explanations.
+- Let code and names express directly visible operations; use comments to add purpose, rationale, and consequences. Use the smallest comment that resolves a real ambiguity; let adjacent code share one explanation, explain each fact only once, and do not invent unsupported rationale.
+- Before finishing, review from the perspective of a reader who did not implement the code: entry-point and nearby comments should cover significant contracts and behavior that cannot be readily confirmed from the code alone; remove syntax narration, duplication, outdated explanations, or comments inconsistent with the implementation.
 
 ## 10. Communication
 
