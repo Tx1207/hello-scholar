@@ -1,19 +1,22 @@
 # record-experiment examples
 
-## Common decision cheatsheet
+## Preservation decisions
 
 | Situation | Decision | Reason |
 |---|---|---|
-| Fix one invalid row, add a tiny supplemental cache, combine a manifest, or print a future launch command | No record | Prepared input, record at launch |
-| `--help`, import check, config parse, unit test, static check, or smoke test with no retained evidence | No record | Engineering evidence is not a Run |
-| A local smoke test or tiny eval has no formal, cost, or retained-evidence signal | No record | Small low-risk experiments run directly and need no later backfill |
-| A full/baseline/release Benchmark or Eval, full training, expensive GPU/remote job, or retained predictions/results/checkpoints | Full record | Strong signals establish a formal evidence boundary before launch |
+| Fix one invalid row, prepare a manifest, or print a future launch command | No record | Ordinary preparation is task work; record a later execution when its evidence has preservation value |
+| `--help`, import check, config parse, unit test, static check, or startup smoke | No record | Preserve relevant verification in the task or existing logs |
+| An authorized GPU or remote smoke only checks connectivity or startup | No record | Cost and hardware do not by themselves give the result research or recovery value |
+| A tiny controlled comparison will determine the next research choice | Full record | The comparison needs traceable conditions and results regardless of its size |
+| Training, Benchmark, Eval, or prediction export supplies research or adoption evidence | Full record | Preserve evidence that later conclusions or experiments will depend on |
+| Preparation or a failure establishes a recoverable artifact or consequential resource boundary | Full record when that use is real | Record what supports reproduction, recovery, or the resource decision |
 | Query an existing Run's tmux, TensorBoard, latest loss, or known checkpoints | No record | Report discoveries without expanding a read-only request |
 | Discover completion, OOM, a new artifact path, or a citeable metric while authorized to maintain an existing Run | Append event | Preserve the durable change in the same identity within existing write authorization |
-| A completed valid eval underperforms baseline | Full record or Append event | Keep `completed` and make a non-adoption decision |
-| A report becomes durable research material | Full record | Preserve input, upstream, and derived-artifact provenance |
+| A completed valid eval underperforms baseline | Full record or Append event | Keep `completed`, explain the comparison, and record only decisions actually made |
+| Write a research note, weekly report, or summary of already computed results | No record | Cite the existing evidence; writing creates no new experimental execution |
+| A derived calculation produces new research evidence from existing predictions | Full record | Preserve inputs, calculation conditions, upstream provenance, and the new result |
 
-Do not trigger from a command name alone: `python eval.py` can be a scratch check or a formal baseline Eval. Use the user's formal/cost/retention intent. If a low-risk request is ambiguous, run it directly without asking. Ask only when production-data use, irreversibility, or significant cost is unclear.
+Use the stated purpose and later evidence use. If low-risk work has no indicated preservation need, proceed within the original task without asking for a recording preference. Clarify only missing facts that change execution authorization, such as production writes, irreversibility, or significant cost.
 
 ## 1. Formal Benchmark prelaunch and capture
 
@@ -27,11 +30,13 @@ Create `runs/20260803-0900-baseline-eval-s0/record.md` with `status: planned`, t
 
 Execute the documented command once through a capture method that preserves separate raw streams and the original exit status. Record the actual stdout/stderr paths and exit code or signal. Do not run it bare and rerun it to fill missing logs.
 
-## 2. Small experiment without a Record
+## 2. Similar executions, different evidence value
 
-A developer asks to run a local 20-example smoke eval to check that a config parses and the pipeline reaches inference. No baseline/release claim, expensive GPU or remote work, retained output, acceptance evidence, production data, or irreversible operation is present.
+A developer asks for a 20-example smoke to check config parsing and reach inference. The authorized command happens to use a remote GPU and writes temporary predictions. No subsequent comparison, recovery step, or research decision depends on those outputs. Run it within the existing authorization, report executability and relevant diagnostics, and do not create a Record.
 
-Run it directly without automatically creating a Record. If the user later asks to preserve that experiment, follow the retrospective guidance in [status-and-fields.md](status-and-fields.md); recording existing evidence does not require another execution.
+Another 20-example run compares two preprocessing choices on a fixed diagnostic set to decide which implementation to investigate next. Preserve it because the decision depends on its actual inputs and comparison. Explain that a diagnostic set supports this narrow choice; it does not establish general model quality. The resource cost and sample count did not decide the recording boundary.
+
+If preservation of an already executed experiment is later requested, follow [status-and-fields.md](status-and-fields.md). Recording existing evidence does not require another execution.
 
 ## 3. Unclear safety fact
 
@@ -62,7 +67,7 @@ A CUDA OOM after validation is evidence:
 status: failed
 started: 2026-08-03T12:00:00Z
 completed: 2026-08-03T12:04:00Z
-decision: retry-smaller-batch
+decision: pending
 summary: CUDA OOM during validation; no usable metrics were produced.
 ```
 
@@ -70,7 +75,7 @@ Put the concise error, attempted configuration, `logs/stdout.log`, `logs/stderr.
 
 ## 7. Valid negative result
 
-When a valid eval scores 81.2 against a baseline of 82.0, record:
+Suppose a valid, comparable eval scores 81.2 against a baseline of 82.0, and the main agent's decision is to retain the baseline for now:
 
 ```yaml
 status: completed
@@ -78,17 +83,17 @@ decision: do-not-adopt
 summary: The configured ablation underperformed the baseline on the same split.
 ```
 
-The Key Results, Observations, and Conclusion explain the comparison and caveats. This is a valid negative result, not a failed Run.
+Explain the compared conditions, observed values, and interpretation limit near the start of the Record. The Run is completed, while adoption is a separate decision. If no adoption decision was made, retain `decision: pending`; do not conclude general inferiority or statistical significance from this single comparison.
 
-## 8. Derived report provenance
+## 8. Derived calculation and written synthesis
 
-Before creating a durable comparison report from retained predictions, recover their upstream provenance in a Run Record. In the report Run, list:
+A new calculation derives subgroup error rates from retained predictions for a research decision. In that calculation's Record, preserve its actual command and conditions, relevant upstream provenance, and artifacts such as:
 
 - Input artifacts: `outputs/model_a_predictions.jsonl`; `outputs/model_b_predictions.jsonl`
 - Upstream Run ID: `20260803-1300-model-inference-s0`
-- Derived artifacts: `results/prediction-comparison.html`; `results/prediction-comparison.zip`
+- Derived artifacts: `results/subgroup-error-rates.json`
 
-Use `Unknown` with a reason for unrecoverable upstream launch facts. A prediction export that writes retained outputs is a Full record before launch; a disposable local probe with no retained-evidence signal remains No record.
+Use `Unknown` with a reason for unrecoverable upstream facts; cite original evidence where it exists, without forcing a speculative upstream Record. Writing a research note or weekly report from those already computed rates uses the existing result and Run as sources. It does not create another Run. A disposable local prediction probe remains ordinary verification.
 
 ## 9. Remote job evidence
 

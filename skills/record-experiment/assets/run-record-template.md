@@ -14,23 +14,20 @@ summary: <current known facts only>
 
 # <human-readable title>
 
-## 1. Purpose
+## 1. Current Findings and Interpretation
 
-- Purpose:
+<Lead with the actual result and what it supports. While planned or running, state that results are unavailable or partial. Explain the decisive evidence, validity and comparison limits, and any actual decision or unresolved next choice. Do not turn an expected result into an observation or a recommendation into an adopted decision.>
 
-## 2. Hypothesis
+- Key measurements and conditions:
+- Supporting result or error evidence:
+- What this Run establishes and leaves unresolved:
+- Decision already made or pending; next action and reason:
 
-- Hypothesis:
+## 2. Question and Comparison
 
-## 3. Experimental Variables
+<State the question this execution addresses and link the owning Spec or protocol when one exists. An exploratory question may have no mature hypothesis. Explain what changed relative to the baseline or prior conditions, which controls make interpretation possible, and what would count as supporting, negative, or inconclusive evidence.>
 
-- Variables:
-
-## 4. Controls
-
-- Controls:
-
-## 5. Execution Information
+## 3. Execution Information
 
 - Exact command:
 - CWD:
@@ -55,7 +52,7 @@ summary: <current known facts only>
 - Failure signal:
 - Stop rule:
 
-## 6. Artifact Locations
+## 4. Artifact Locations
 
 - Intended stdout path:
 - Intended stderr path:
@@ -63,35 +60,14 @@ summary: <current known facts only>
 - Intended checkpoint path:
 - Actual stdout path:
 - Actual stderr path:
+- Actual result path:
+- Actual checkpoint path:
 - Exit code / signal:
 - Dashboard / tracking URL:
 
-## 7. Execution Events
+## 5. Material Execution Events
+
+<Record changes that affect interpretation or recovery, including actual launch, effective configuration deviations, failures, interruptions, and completion. Keep full logs in their actual locations. Repeated polling without a meaningful change needs no event.>
 
 | Time | Event | Observation | Action |
 |---|---|---|---|
-
-## 8. Key Results
-
-- Metrics:
-- Result files:
-- Best checkpoint:
-
-## 9. Observations
-
-- Observations:
-- Failure evidence:
-- Validity notes:
-
-## 10. Conclusion
-
-- Conclusion:
-- Caveats:
-
-## 11. Decision
-
-- Decision:
-
-## 12. Next Actions
-
-- Next action:

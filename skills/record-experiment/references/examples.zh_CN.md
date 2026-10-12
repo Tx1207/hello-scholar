@@ -1,8 +1,30 @@
 # record-experiment 场景参考
 
-## 普通小实验
+## 判断保留价值
 
-20 条样本的本地 smoke eval 只用于确认配置可解析、pipeline 能到 inference，且没有正式结论、昂贵资源、远程 job、保留产物、生产数据或不可逆操作时，直接运行，不自动创建 Record。用户后来要求保存该实验时，按 [status-and-fields.zh_CN.md](status-and-fields.zh_CN.md) 的补记说明处理；保存现有证据不要求再执行一次。
+| 情况 | 处理 | 理由 |
+| --- | --- | --- |
+| 修复一行输入、准备 manifest、打印未来命令 | 不建 Record | 普通准备属于任务工作；之后的实际执行有证据价值时再记录 |
+| `--help`、import、配置、单元测试、静态检查、启动 smoke | 不建 Record | 相关验证留在任务或已有日志 |
+| 已授权的 GPU 或远程 smoke 只检查连接与启动 | 不建 Record | 成本和硬件本身不产生研究或恢复价值 |
+| 很小的受控比较将决定下一项研究选择 | 建 Record | 选择依赖可追查的条件与结果，规模不影响这一用途 |
+| 训练、Benchmark、Eval 或预测导出提供研究或采用证据 | 建 Record | 后续结论或实验依赖这些证据 |
+| 准备或失败确定了可恢复产物或重要资源边界 | 实际有该用途时建 Record | 保存支持复现、恢复或资源判断的内容 |
+| 查询已有 Run 的 tmux、TensorBoard、loss 或 checkpoint | 不建 Record | 只读查询不扩大成写入 |
+| 已授权维护 Run 时发现完成、OOM、重要产物或指标 | 更新同一 Record | 新事实仍属于同一次执行 |
+| 有效运行结果低于 baseline | 建 Record 或更新原 Record | 保持 `completed`，解释比较，只记真实发生的决定 |
+| 写研究笔记、周报或已有结果的摘要 | 不建 Record | 引用已有证据，写作不产生新实验执行 |
+| 从预测中派生新的科研计算结果 | 建 Record | 保留输入、计算条件、上游来源和新结果 |
+
+根据目标与后续证据用途判断。低风险工作没有明确保留需求时按原任务继续，不询问记录偏好。只有生产写入、不可逆影响或显著成本等事实会改变执行授权时才澄清。
+
+## 相似执行，不同证据用途
+
+20 条样本的 smoke 只确认配置能解析、pipeline 能到 inference，已授权的命令恰好使用远程 GPU 并生成临时预测。后续比较、恢复或研究决定不依赖这些输出时，按授权执行，报告可执行性与相关诊断，不建 Record。
+
+另一次同样使用 20 条样本的运行，在固定诊断集上比较两种预处理，结果用于选择下一项值得研究的实现。应保存真实输入与比较条件，并说明诊断集只支持这一局部选择，不能证明模型整体质量。资源和样本数没有决定记录边界。
+
+用户后来要求保存已执行实验时，按 [status-and-fields.zh_CN.md](status-and-fields.zh_CN.md) 的补记说明处理；保存已有证据不要求再执行一次。
 
 ## 正式 Benchmark
 
@@ -20,8 +42,16 @@
 
 ## 失败与有效负结果
 
-CUDA OOM 且没有可用指标时使用 `failed`，保留命令、尝试配置、stdout/stderr、退出状态和下一动作。运行有效结束但指标低于 baseline 时使用 `completed`，记录比较、局限和不采纳决定。
+CUDA OOM 且没有预期可用指标时使用 `failed`，保留命令、尝试配置、stdout/stderr、真实时间、退出状态和已知下一步。资源上限可以是有用发现，算法假设仍可能未被检验。
 
-## 派生报告和远程 job
+假设有效且可比的 eval 得到 81.2，baseline 为 82.0，主 Agent 已决定暂时保留 baseline，可写 `status: completed` 和 `decision: do-not-adopt`。在 Record 开头解释比较条件、观察值和结论边界。采用决定尚未发生时保持 `decision: pending`；不从这次比较推断普遍劣势或统计显著性。
 
-持久派生报告记录输入产物、上游 Run ID 和新产物；无法恢复的上游事实写 `Unknown` 并说明原因。远程提交保留本地提交 stdout/stderr、退出状态和 remote job ID/URI；下载发生前不得写成已经存在的本地路径。
+## 派生计算与文字综合
+
+从已有预测计算分组错误率，用于科研决定时，为该计算记录实际命令与条件、相关上游来源和新产物，例如输入 `outputs/model_a_predictions.jsonl`、`outputs/model_b_predictions.jsonl`，上游 Run ID 和新结果 `results/subgroup-error-rates.json`。
+
+无法恢复的上游事实写 `Unknown` 并说明原因，引用原始证据所在位置，不强求推测的上游 Record。根据已算出的错误率写研究笔记或周报，直接引用结果与已有 Run，不另建 Run。可丢弃的本地预测探测仍属于普通验证。
+
+## 远程 job
+
+远程提交保留本地提交 stdout/stderr、退出状态和真实 remote job ID/URI。远程日志与产物按真实 URI 引用；实际下载发生后才能添加本地路径。
