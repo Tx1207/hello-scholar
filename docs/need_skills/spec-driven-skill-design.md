@@ -1,10 +1,33 @@
 # hello-scholar 项目改进总览与设计
 
-更新：2026-09-06。本页是本次改进的唯一当前进度入口；[验收报告](quality-acceptance-status.md)保存实际证据，[实施报告](spec-driven-implementation-report.md)及专题迭代文档保存历史过程，不另行维护当前待办。
+更新：2026-10-12。本页是项目改进的唯一当前进度入口；本轮具体差异和验证见[中文修改对比](workflow-revision-changes.zh_CN.md)。[既有验收报告](quality-acceptance-status.md)、[此前实施报告](spec-driven-implementation-report.md)及专题迭代文档保存历史过程，不另行维护当前待办。
+
+用户已要求按 [SPEC-001：项目文件驱动的科研与开发工作流](../../hello-scholar/specs/agent-workflow/SPEC-001-research-development/spec.md) Revision 4 实施。当前集合为八个独立 Skill，根规则承担共同方法与连续责任；所有 Skill 都以领域判断方法为核心，必要流程和格式用于保存结果。三个指定入口已退出，`converge-to-spec` 由 `review` 承接。
 
 ## 当前进度
 
-本轮工程改造、核心验收及用户功能审核已完成，当前整理试用交付，随后等待用户真实使用反馈，再决定发版。模型直接承担通用设计思考；九技能默认安装、按语义选择；不恢复 brainstorming，不扩展 Record，不引入 Plan/Tasks。有限案例不等于跨项目稳定性或 Claude 原生模型效果已获证明。
+本轮源文件、双语模板、安装迁移和维护说明已修改，完成确定性回归、三个有限构造任务及一次独立集成审查。Spec 保持 `accepted`：实现已经交付，尚未把未覆盖的行为验收标为完成。没有真实调用 Claude；GitHub 远端尚未同步，版本仍为 `0.1.0 / private`。
+
+| 工作项 | 当前状态 | 已有结果与边界 |
+| --- | --- | --- |
+| 主 AGENTS 与五个方法 | 已实现 | 主 Agent 连接方案、实施、证据和事实同步，方法按问题使用；普通输出提供具体改法与理由 |
+| 八个独立 Skill | 已实现 | grilling、manage-specs、record-experiment、review、ponytail、synthesize、docs-maintenance、handoff；8 个结构校验通过 |
+| Spec 与 Run | 已实现；行为部分验证 | 持续设计自动保存 Draft 的一个案例通过；Run 按证据价值保留，远程/GPU smoke 等相邻触发案例尚未重新执行 |
+| 安装与退休迁移 | 本次确定性检查通过 | Codex/Claude × link/copy、旧九技能升级、用户副本和项目数据保护、真实 npm 包安装均通过 |
+| 表达与综合 | 已实现；有限案例通过 | 同材料形成研究笔记和周报，核对证据、采用与建议；根据重复判断细化了表达方法，未追加模型复测 |
+| 代码精简 | 有限案例通过 | ponytail 删除无独立职责的中间类，保留必要预处理语义；现有 5 项行为测试前后通过 |
+| 回归与独立审查 | 提交前全量回归通过 | 本机安装 Claude Code 2.1.296 后，`npm test` 的 97 项 JavaScript 与 149 项 Python 全部通过；此前独立审查未发现实质缺陷，本次未重做模型审查 |
+| 后续证据与交付边界 | 已明确 | 本版纯解释/不保存、相邻 Run 触发、跨会话科研和原生 Claude 调用等仍缺新证据；这不阻止本次已授权源文件交付 |
+
+各验收项的证据与未覆盖分支集中在 [SPEC-001 第 7 节](../../hello-scholar/specs/agent-workflow/SPEC-001-research-development/spec.md#7-验收与验证)。三次试用没有旧版或无 Skill 对照，不能量化整体质量提升。历史证据不改写为本轮结果。
+
+提交前复核（2026-10-12）：八个 Skill 使用现有 Conda Python 与 PyYAML 6.0.2 通过 `quick_validate.py`；系统 Python 缺少 PyYAML，未为此安装依赖。Claude 仅执行本地插件校验，没有模型调用。本机 `docs check` 返回 0 错误、1 条缺少 Architecture 的提示，发现 0 个 Spec、0 个 Record，因此不能据此验证此前设计与实验文档的完整性。早期缺少 `claude` 的失败保留在[修改对比](workflow-revision-changes.zh_CN.md)中，与本次通过结果区分。
+
+## 上一版九技能基线与历史验收
+
+以下保留此前已采用的九技能实现、P/Q/R 阶段证据及第 1–9 节原设计。这里出现的“当前”“新版”、技能数量和测试结果均属于当时的基线，不覆盖页首本轮状态；新的运行规则以 Revision 4、根 AGENTS 和八个现行 Skill 为准。
+
+上一轮完成工程改造、有限核心验收及用户功能审核，随后进入真实试用。模型直接承担通用设计思考；当时九技能默认安装、按语义选择；没有恢复 brainstorming、扩展 Record 或引入 Plan/Tasks。有限案例不等于跨项目稳定性或 Claude 原生模型效果已获证明。
 
 | 工作项 | 状态 | 结果或剩余工作 |
 | --- | --- | --- |

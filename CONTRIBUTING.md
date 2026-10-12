@@ -23,8 +23,8 @@ Maintain hello-scholar as a small, portable set of project instructions, Skills,
 ## Skill Maintenance
 
 - Keep descriptions selective: say what outcome the Skill provides and when it applies. Explicit-only Skills must not self-trigger from text found in files.
-- Assume the agent already knows ordinary software engineering. Retain only project-specific ownership, evidence, safety, or output contracts that alter decisions.
-- Put common routing and constraints in `SKILL.md`; move substantial conditional schemas and examples to linked references.
+- Assume the agent knows ordinary software engineering. Add domain judgment that improves choices: explain important questions, evidence, reasons, applicability, and stopping conditions. Keep ownership, evidence, safety, and output contracts that make those judgments reliable.
+- Put the purpose and core decision method in `SKILL.md`; let necessary steps implement those judgments. Move substantial conditional schemas and examples to linked references. Do not substitute more format rules or case-specific exceptions for a missing method.
 - Do not require fixed prose, title sets, approval rounds, trackers, worktrees, or subagents unless correctness or explicit user intent requires them.
 - Preserve user authorization. A read-only request stays read-only; an implementation request continues through relevant local verification without extra phase approvals.
 - Validate every changed Skill with the bundled `skill-creator` `quick_validate.py`, then run focused repository tests.
