@@ -1,14 +1,28 @@
 ---
 name: grilling
-description: Stress-test a plan, decision, or idea through pointed questions when the user wants an interactive challenge to their reasoning or assumptions.
+description: Clarify a goal, idea, plan, or decision through focused dialogue when unresolved assumptions or tradeoffs could change the choice. Works independently of a project or Spec.
 ---
 
 # Grilling
 
-Challenge the user's reasoning until the decisions that materially affect the current goal are explicit. Do not attempt to exhaust every imaginable future branch.
+Help the user make a defensible choice by finding the uncertainty that matters most. Work from the desired outcome: a proposed tool, feature, or experiment may be a means rather than the goal. Distinguish observed facts, real constraints, preferences, and assumptions inherited from the first proposal.
 
-Establish factual context yourself from available files and tools. Ask the user only for judgments they own. Before each question, check whether the supplied facts or prior answers already settle it; do not reopen an answered distinction without new conflicting evidence. Each round, choose the highest-impact unresolved decision whose prerequisites are known, ask one direct question, offer a recommended answer, and explain its principal tradeoff. Give concise mutually exclusive options when options improve the decision.
+## Find the decision that changes the approach
 
-Use answers to update which decision matters next. Surface hidden assumptions, counterexamples, failure conditions, opportunity costs, and evidence that would change the recommendation. Do not dispatch subagents, create trackers, or modify project files unless the user separately authorizes those actions.
+Establish factual context from the supplied material and available files or tools. Ask the user for choices they own or facts you cannot obtain. Trace dependencies between decisions: settle the prerequisite before asking about consequences that depend on it. Prioritize a question by how much its answer could change the recommendation, scope, or success criteria, rather than by how easy it is to ask.
 
-Stop when the material decisions for the stated goal are understood, the user asks to stop, or a required fact cannot be obtained. Summarize the resulting decisions and remaining uncertainty without forcing a final confirmation question.
+For each unresolved assumption, consider what would follow if it were false. Use a concrete alternative, counterexample, or failure condition to expose a meaningful tradeoff. Challenge the reasoning without requiring the user to defend a preference as an objective fact. When project evidence already resolves a question, state the finding and move on.
+
+## Question and update
+
+Each round, ask one direct question whose prerequisites are known. Briefly explain why it changes the choice; offer a recommendation and its main tradeoff when the available evidence supports one. Use concise, mutually exclusive options when they make the decision easier. Do not invent a recommendation for an unknown personal preference.
+
+Use the answer to revise the emerging decision and select the next question. Do not reopen an answered distinction without new conflicting evidence. When useful, state the implication immediately: which approach is now viable, ruled out, or still uncertain, and why. This keeps the user from having to reconstruct the reasoning at the end.
+
+Stop when remaining answers would not change the choice, implementation, or acceptance; when the user asks to stop; or when a necessary fact cannot be obtained. In the last case, identify what depends on that fact and what can still proceed. Do not exhaust hypothetical future branches or force a final confirmation round.
+
+## Return a usable decision
+
+Summarize the current choice, its decisive reasons, meaningful constraints, and unresolved questions with their consequences. Separate accepted decisions from recommendations. Include a concrete next action when it follows from the discussion; a generic promise to investigate is not a decision.
+
+Standalone questioning writes no project files and requires no project, Spec, tracker, or subagent. In an ongoing authorized project task, return these findings to the main agent, which preserves durable decisions in the existing design owner and continues the original task. Questioning does not add a new save-approval phase or authorize implementation that the user did not request.
