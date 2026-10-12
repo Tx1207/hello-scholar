@@ -6,7 +6,7 @@ const { Readable, Writable } = require("node:stream");
 const test = require("node:test");
 
 const { formatSummary, main, parseArgs, usageText } = require("../src/cli");
-const { directoryDigest } = require("../src/fs-ops");
+const { directoryDigest, installSkillCopy, installSkillLink } = require("../src/fs-ops");
 const {
   hasInstructionBlock,
   removeInstructionBlock,
@@ -24,14 +24,19 @@ const { discoverSkills, parseSkillName } = require("../src/skill-discovery");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
 const CURRENT_SKILLS = [
-  "converge-to-spec",
-  "crash-audit",
   "docs-maintenance",
   "grilling",
   "handoff",
-  "landing",
   "manage-specs",
+  "ponytail",
   "record-experiment",
+  "review",
+  "synthesize",
+];
+const NEWLY_RETIRED_SKILLS = [
+  "converge-to-spec",
+  "crash-audit",
+  "landing",
   "takeoff",
 ];
 
@@ -94,6 +99,62 @@ function markerPath(target) {
 
 function writeCopyMarker(target, metadata) {
   fs.writeFileSync(markerPath(target), `${JSON.stringify(metadata, null, 2)}\n`, "utf8");
+}
+
+function prepareUpgradeFixture(tempRoot, tool, mode) {
+  const repoRoot = path.join(tempRoot, "source");
+  const projectRoot = path.join(tempRoot, "project");
+  const toolRoot = tool === "codex" ? ".agents" : ".claude";
+  const instructionFile = tool === "codex" ? "AGENTS.md" : "CLAUDE.md";
+  const skillRoot = path.join(projectRoot, toolRoot, "skills");
+  fs.mkdirSync(repoRoot);
+  fs.mkdirSync(projectRoot);
+  const rules = fs.readFileSync(path.join(REPO_ROOT, "AGENTS.md"), "utf8");
+  fs.writeFileSync(path.join(repoRoot, "AGENTS.md"), rules);
+  fs.writeFileSync(path.join(projectRoot, instructionFile),
+    upsertInstructionBlock("# User rules\nKeep this project content.\n", tool, rules));
+
+  // Produce the previous nine installations with the real ownership-writing primitives.
+  const previousNames = [
+    "docs-maintenance", "grilling", "handoff", "manage-specs", "record-experiment",
+    ...NEWLY_RETIRED_SKILLS,
+  ];
+  for (const name of previousNames) {
+    const sourceDir = path.join(repoRoot, "skills", name);
+    const target = path.join(skillRoot, name);
+    fs.mkdirSync(sourceDir, { recursive: true });
+    fs.writeFileSync(path.join(sourceDir, "SKILL.md"), `---\nname: ${name}\n---\nPrevious version.\n`);
+    if (mode === "link") {
+      installSkillLink(sourceDir, target);
+    } else {
+      installSkillCopy(sourceDir, target, { source: sourceDir, mode, tool });
+    }
+  }
+
+  // Upgrade the same source location: old links become dangling, while copy baselines survive.
+  for (const name of NEWLY_RETIRED_SKILLS) {
+    fs.rmSync(path.join(repoRoot, "skills", name), { recursive: true });
+  }
+  for (const name of CURRENT_SKILLS) {
+    fs.cpSync(path.join(REPO_ROOT, "skills", name), path.join(repoRoot, "skills", name),
+      { recursive: true });
+  }
+  const documents = {
+    "hello-scholar/specs/research/SPEC-007-study/spec.md": "# Existing research design\nKeep the comparison criteria.\n",
+    "runs/20261012-baseline/record.md": "# Existing Run\nKeep the actual conditions and results.\n",
+  };
+  for (const [relativePath, text] of Object.entries(documents)) {
+    const target = path.join(projectRoot, relativePath);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, text);
+  }
+  return { repoRoot, projectRoot, skillRoot, documents };
+}
+
+function assertProjectDocuments(projectRoot, documents) {
+  for (const [relativePath, text] of Object.entries(documents)) {
+    assert.equal(fs.readFileSync(path.join(projectRoot, relativePath), "utf8"), text);
+  }
 }
 
 test("parseArgs accepts only the existing complete-set install commands", () => {
@@ -167,7 +228,7 @@ test("instruction replacement and removal preserve text beside blocks at file bo
   }
 });
 
-test("discovery returns exactly the nine retained Skills and no retired name", () => {
+test("discovery returns exactly the eight independent Skills and no retired name", () => {
   const names = listSkillNames();
   assert.deepEqual(names, CURRENT_SKILLS);
   assert.deepEqual(names.filter((name) => RETIRED_SKILLS.includes(name)), []);
@@ -192,7 +253,6 @@ test("fresh link install uses root AGENTS.md and installs all current Skills", (
     assert.match(agentsText, /HELLO-SCHOLAR:BEGIN codex/);
     assert.ok(agentsText.includes(portableText));
     assert.match(agentsText, /# User Rules/);
-    assert.match(agentsText, /Write code that will not need to be rewritten/);
     assert.doesNotMatch(agentsText, /npm test|Current repository language: Chinese|hello-scholar Repository Guide/);
     assert.equal(fs.existsSync(path.join(projectRoot, ".agents", ".hello-scholar-install.json")), false);
 
@@ -296,7 +356,7 @@ test("unchanged CLI reinstall is automatic and does not duplicate instructions",
       projectRoot, repoRoot: REPO_ROOT, stdin: io.stdin, stdout: io.stdout,
     });
     assert.doesNotMatch(io.getOutput(), /Type "yes"/);
-    assert.match(io.getOutput(), /updated 9/);
+    assert.match(io.getOutput(), new RegExp(`updated ${CURRENT_SKILLS.length}`));
     const agentsText = fs.readFileSync(path.join(projectRoot, "AGENTS.md"), "utf8");
     assert.equal(countMatches(agentsText, /HELLO-SCHOLAR:BEGIN codex/g), 1);
   } finally {
@@ -379,7 +439,7 @@ test("modified and unknown-baseline managed copies are preserved until approved"
     const modifiedTarget = path.join(projectRoot, ".claude", "skills", "handoff");
     const modifiedSkill = path.join(modifiedTarget, "SKILL.md");
     fs.appendFileSync(modifiedSkill, "\nuser edit\n", "utf8");
-    const legacyTarget = path.join(projectRoot, ".claude", "skills", "landing");
+    const legacyTarget = path.join(projectRoot, ".claude", "skills", "grilling");
     const legacyMarker = JSON.parse(fs.readFileSync(markerPath(legacyTarget), "utf8"));
     delete legacyMarker.baselineDigest;
     writeCopyMarker(legacyTarget, legacyMarker);
@@ -450,7 +510,7 @@ test("an unowned current target blocks the whole install and is never approvable
     );
     assert.equal(fs.readFileSync(path.join(target, "SKILL.md"), "utf8"), "custom\n");
     assert.equal(fs.existsSync(path.join(projectRoot, "AGENTS.md")), false);
-    assert.equal(fs.existsSync(path.join(projectRoot, ".agents", "skills", "landing")), false);
+    assert.equal(fs.existsSync(path.join(projectRoot, ".agents", "skills", "review")), false);
   } finally {
     fs.rmSync(projectRoot, { recursive: true, force: true });
   }
@@ -512,11 +572,118 @@ test("retired clean copies are removed but modified retired copies require appro
   }
 });
 
+test("CLI upgrade retires all four replaced names and retains grilling, Spec and Run", async (t) => {
+  for (const tool of ["codex", "claude"]) {
+    for (const mode of ["link", "copy"]) {
+      const tempRoot = makeTempProject();
+      try {
+        const fixture = prepareUpgradeFixture(tempRoot, tool, mode);
+        const { repoRoot, projectRoot, skillRoot, documents } = fixture;
+        if (mode === "link") {
+          for (const name of NEWLY_RETIRED_SKILLS) {
+            const target = path.join(skillRoot, name);
+            assert.equal(fs.existsSync(target), false);
+            assert.equal(fs.lstatSync(target).isSymbolicLink(), true);
+          }
+        }
+        const io = makeCliIo();
+        await main(["install", tool, "--mode", mode], {
+          repoRoot, projectRoot, stdin: io.stdin, stdout: io.stdout,
+        });
+        assert.doesNotMatch(io.getOutput(), /Type "yes"/);
+        assert.match(io.getOutput(), /installed 3, updated 5, removed 4, skipped 0/);
+        assert.deepEqual(fs.readdirSync(skillRoot).sort(), CURRENT_SKILLS);
+        for (const name of CURRENT_SKILLS) {
+          const target = path.join(skillRoot, name);
+          assert.equal(fs.lstatSync(target).isSymbolicLink(), mode === "link");
+          assert.deepEqual(fs.readFileSync(path.join(target, "SKILL.md")),
+            fs.readFileSync(path.join(repoRoot, "skills", name, "SKILL.md")));
+        }
+        assertProjectDocuments(projectRoot, documents);
+        const uninstallIo = makeCliIo();
+        await main(["uninstall", tool], {
+          repoRoot, projectRoot, stdin: uninstallIo.stdin, stdout: uninstallIo.stdout,
+        });
+        assert.deepEqual(fs.readdirSync(skillRoot), []);
+        assertProjectDocuments(projectRoot, documents);
+        t.diagnostic(`${tool}/${mode}: nine-to-eight upgrade and uninstall preserve project documents`);
+      } finally {
+        fs.rmSync(tempRoot, { recursive: true, force: true });
+      }
+    }
+  }
+});
+
+test("modified newly retired copies are preserved until the existing CLI approval", async () => {
+  const tempRoot = makeTempProject();
+  try {
+    const { repoRoot, projectRoot, skillRoot, documents } = prepareUpgradeFixture(tempRoot, "claude", "copy");
+    const grillingBefore = fs.readFileSync(path.join(skillRoot, "grilling", "SKILL.md"));
+    for (const name of NEWLY_RETIRED_SKILLS) {
+      fs.appendFileSync(path.join(skillRoot, name, "SKILL.md"), "User customization.\n");
+    }
+    const unknownBaseline = path.join(skillRoot, "takeoff");
+    const marker = JSON.parse(fs.readFileSync(markerPath(unknownBaseline), "utf8"));
+    delete marker.baselineDigest;
+    writeCopyMarker(unknownBaseline, marker);
+    const declined = makeCliIo("no\n");
+    await main(["install", "claude", "--mode", "copy"], {
+      repoRoot, projectRoot, stdin: declined.stdin, stdout: declined.stdout,
+    });
+    assert.match(declined.getOutput(), /install claude cancelled/);
+    for (const name of NEWLY_RETIRED_SKILLS) {
+      assert.ok(declined.getOutput().includes(`conflict managed-content-conflict .claude/skills/${name}:`));
+      assert.match(fs.readFileSync(path.join(skillRoot, name, "SKILL.md"), "utf8"), /User customization/);
+    }
+    assert.deepEqual(fs.readFileSync(path.join(skillRoot, "grilling", "SKILL.md")), grillingBefore);
+    assert.equal(fs.existsSync(path.join(skillRoot, "review")), false);
+    assertProjectDocuments(projectRoot, documents);
+
+    const approved = makeCliIo("yes\n");
+    await main(["install", "claude", "--mode", "copy"], {
+      repoRoot, projectRoot, stdin: approved.stdin, stdout: approved.stdout,
+    });
+    assert.equal(countMatches(approved.getOutput(), /Type "yes"/g), 1);
+    assert.deepEqual(fs.readdirSync(skillRoot).sort(), CURRENT_SKILLS);
+    assertProjectDocuments(projectRoot, documents);
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
+test("foreign directories using newly retired names block CLI upgrade without deletion", async () => {
+  const tempRoot = makeTempProject();
+  try {
+    const { repoRoot, projectRoot, skillRoot, documents } = prepareUpgradeFixture(tempRoot, "codex", "copy");
+    const grillingBefore = fs.readFileSync(path.join(skillRoot, "grilling", "SKILL.md"));
+    for (const name of NEWLY_RETIRED_SKILLS) {
+      const target = path.join(skillRoot, name);
+      fs.rmSync(target, { recursive: true });
+      fs.mkdirSync(target);
+      fs.writeFileSync(path.join(target, "SKILL.md"), "Unrelated user Skill.\n");
+    }
+    const io = makeCliIo("yes\n");
+    await assert.rejects(main(["install", "codex"], {
+      repoRoot, projectRoot, stdin: io.stdin, stdout: io.stdout,
+    }), InstallConflictError);
+    assert.doesNotMatch(io.getOutput(), /Type "yes"/);
+    for (const name of NEWLY_RETIRED_SKILLS) {
+      assert.ok(io.getOutput().includes(`conflict unowned-target .agents/skills/${name}:`));
+      assert.equal(fs.readFileSync(path.join(skillRoot, name, "SKILL.md"), "utf8"), "Unrelated user Skill.\n");
+    }
+    assert.deepEqual(fs.readFileSync(path.join(skillRoot, "grilling", "SKILL.md")), grillingBefore);
+    assert.equal(fs.existsSync(path.join(skillRoot, "review")), false);
+    assertProjectDocuments(projectRoot, documents);
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
 test("other-source retired links are preserved and block mutation", async () => {
   const projectRoot = makeTempProject();
   const otherSource = makeTempProject();
   try {
-    const target = path.join(projectRoot, ".agents", "skills", "writing-plans");
+    const target = path.join(projectRoot, ".agents", "skills", "converge-to-spec");
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.symlinkSync(otherSource, target, "dir");
     const io = makeCliIo("yes\n");
@@ -526,7 +693,7 @@ test("other-source retired links are preserved and block mutation", async () => 
       }),
       InstallConflictError
     );
-    assert.match(io.getOutput(), /conflict unowned-target \.agents\/skills\/writing-plans/);
+    assert.match(io.getOutput(), /conflict unowned-target \.agents\/skills\/converge-to-spec/);
     assert.doesNotMatch(io.getOutput(), /Type "yes"/);
     assert.equal(fs.realpathSync(target), fs.realpathSync(otherSource));
     assert.equal(fs.existsSync(path.join(projectRoot, "AGENTS.md")), false);
@@ -554,7 +721,7 @@ test("uninstall removes unchanged owned assets and preserves modified user conte
     assert.ok(fs.existsSync(modifiedTarget));
     assert.match(fs.readFileSync(claudePath, "utf8"), /user block edit/);
     assert.match(fs.readFileSync(claudePath, "utf8"), /# User Rules/);
-    assert.equal(fs.existsSync(path.join(projectRoot, ".claude", "skills", "landing")), false);
+    assert.equal(fs.existsSync(path.join(projectRoot, ".claude", "skills", "review")), false);
     assert.equal(fs.existsSync(path.join(projectRoot, ".claude", ".hello-scholar-install.json")), false);
   } finally {
     fs.rmSync(projectRoot, { recursive: true, force: true });

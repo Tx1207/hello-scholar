@@ -8,6 +8,10 @@ const { discoverSkills } = require("../src/skill-discovery");
 
 const ROOT = path.resolve(__dirname, "..");
 const MARKER = ".hello-scholar-install.json";
+const CURRENT_SKILLS = [
+  "docs-maintenance", "grilling", "handoff", "manage-specs",
+  "ponytail", "record-experiment", "review", "synthesize",
+];
 
 // Keep paths and bytes, including empty directories, independent of the source lifetime.
 function readTree(root, omitMarker = false, relative = "") {
@@ -51,6 +55,7 @@ test("local npm tarball installs independently with complete rules and resources
     const skills = discoverSkills(ROOT).map(({ name, sourceDir }) => ({
       name, directory: path.basename(sourceDir), contents: readTree(sourceDir),
     }));
+    assert.deepEqual(skills.map((skill) => skill.name).sort(), CURRENT_SKILLS);
     const runtime = new Map(["bin", "src", "skills"].map((name) => [name, readTree(path.join(ROOT, name))]));
 
     // Exercise the real manifest against excluded sentinels without copying local runs or data.

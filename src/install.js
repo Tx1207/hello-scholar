@@ -21,7 +21,11 @@ const { discoverSkills } = require("./skill-discovery");
 
 const RETIRED_SKILLS = [
   "brainstorming",
+  "converge-to-spec",
+  "crash-audit",
   "generating-tasks",
+  "landing",
+  "takeoff",
   "test-driven-development",
   "using-git-worktrees",
   "using-helloscholar",

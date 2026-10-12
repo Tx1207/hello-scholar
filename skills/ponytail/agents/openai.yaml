@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail"
+  short_description: "Simplify necessary code without losing real contracts"
+  default_prompt: "Use $ponytail to simplify this change while preserving required behavior and checking the affected paths."

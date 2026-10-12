@@ -1,4 +1,0 @@
-interface:
-  display_name: "Landing"
-  short_description: "Ground bold ideas into feasible, testable directions"
-  default_prompt: "Use $landing to reshape this direction around real constraints, evidence, and clear stop rules."

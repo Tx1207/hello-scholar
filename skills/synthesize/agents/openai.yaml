@@ -1,0 +1,4 @@
+interface:
+  display_name: "Synthesize"
+  short_description: "Turn evidence and notes into useful understanding"
+  default_prompt: "Use $synthesize to organize these materials into a concise research summary with supported conclusions and reusable lessons."

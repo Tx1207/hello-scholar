@@ -4,6 +4,7 @@
 from pathlib import Path
 import re
 import unittest
+from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,15 +12,18 @@ SKILLS = ROOT / "skills"
 CURRENT = {
     "manage-specs",
     "record-experiment",
-    "converge-to-spec",
+    "review",
     "docs-maintenance",
     "handoff",
     "grilling",
-    "crash-audit",
-    "takeoff",
-    "landing",
+    "ponytail",
+    "synthesize",
 }
 RETIRED = {
+    "converge-to-spec",
+    "crash-audit",
+    "landing",
+    "takeoff",
     "brainstorming",
     "writing-plans",
     "generating-tasks",
@@ -43,7 +47,7 @@ def frontmatter_name(text: str) -> str:
 
 
 class SkillCatalogTests(unittest.TestCase):
-    def test_catalog_contains_exactly_nine_default_skills(self) -> None:
+    def test_catalog_contains_exactly_eight_default_skills(self) -> None:
         discovered = {
             path.parent.name for path in SKILLS.glob("*/SKILL.md") if path.is_file()
         }
@@ -71,14 +75,18 @@ class SkillCatalogTests(unittest.TestCase):
             mirror = resource.with_name(f"{resource.stem}.zh_CN.md")
             self.assertTrue(mirror.is_file(), str(resource.relative_to(ROOT)))
 
-    def test_dialogue_skills_keep_question_and_combination_contracts(self) -> None:
-        grilling = (SKILLS / "grilling" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("one direct question", grilling)
-        self.assertIn("Do not dispatch subagents", grilling)
-        takeoff = (SKILLS / "takeoff" / "SKILL.md").read_text(encoding="utf-8")
-        landing = (SKILLS / "landing" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("same request", takeoff)
-        self.assertIn("joint takeoff-and-landing", landing)
+    def test_entrypoint_resources_are_available_in_an_independent_install(self) -> None:
+        for name in CURRENT:
+            skill_root = (SKILLS / name).resolve()
+            for entry in skill_root.glob("SKILL*.md"):
+                for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", entry.read_text(encoding="utf-8")):
+                    parsed = urlsplit(target)
+                    if parsed.scheme or not parsed.path:
+                        continue
+                    resource = (entry.parent / unquote(parsed.path)).resolve()
+                    with self.subTest(skill=name, target=target):
+                        self.assertTrue(resource.is_relative_to(skill_root))
+                        self.assertTrue(resource.is_file())
 
 
 if __name__ == "__main__":

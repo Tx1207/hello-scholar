@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review"
+  short_description: "Challenge designs, code, and evidence independently"
+  default_prompt: "Use $review to examine this proposal or change for consequential gaps, with evidence and the smallest repair direction."

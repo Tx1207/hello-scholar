@@ -53,13 +53,13 @@ class SkillDocumentContractTests(unittest.TestCase):
         self.assertIn("references/examples.md", skill)
 
     def test_spec_audit_is_read_only_but_outer_fix_request_can_continue(self) -> None:
-        text = (ROOT / "skills/converge-to-spec/SKILL.md").read_text(
+        text = (ROOT / "skills/review/SKILL.md").read_text(
             encoding="utf-8"
         )
-        self.assertIn("including a draft or partially implemented Spec", text)
-        self.assertIn("audit is read-only", text)
-        self.assertIn("audit and fix", text)
-        self.assertIn("For every material `AC-NN`", text)
+        self.assertIn("read-only by default", text)
+        self.assertIn("review and repair", text)
+        self.assertIn("`AC-NN`", text)
+        self.assertIn("references/cross-agent-review.md", text)
 
     def test_docs_check_is_strictly_read_only_and_modes_can_combine(self) -> None:
         text = (ROOT / "skills/docs-maintenance/SKILL.md").read_text(

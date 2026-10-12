@@ -121,15 +121,14 @@ HISTORICAL_V3_PRODUCT_SKILLS = (
     ("landing", "skills/landing"),
 )
 EXPECTED_CURRENT_PRODUCT_SKILLS = (
-    ("converge-to-spec", "skills/converge-to-spec"),
-    ("crash-audit", "skills/crash-audit"),
     ("docs-maintenance", "skills/docs-maintenance"),
     ("grilling", "skills/grilling"),
     ("handoff", "skills/handoff"),
-    ("landing", "skills/landing"),
     ("manage-specs", "skills/manage-specs"),
+    ("ponytail", "skills/ponytail"),
     ("record-experiment", "skills/record-experiment"),
-    ("takeoff", "skills/takeoff"),
+    ("review", "skills/review"),
+    ("synthesize", "skills/synthesize"),
 )
 EXPECTED_FORMAL_BASELINE_BATCH_IDS = (
     LEGACY_V3_BATCH_ID,
