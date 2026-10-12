@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="hello-scholar 本次 Skill 集合修改说明：入口重组、主 Agent 职责、设计与实验记录、表达、安装迁移及验证状态。">
+  <title>hello-scholar · 本次修改说明</title>
+  <style>
+    :root { color-scheme: light; --paper:#f6f5f0; --surface:#fff; --ink:#172b2a; --muted:#566562; --line:#d8dfd9; --green:#17614e; --tint:#e8f0e9; --amber:#795315; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:90px; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.8 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    a { color:var(--green); text-underline-offset:4px; }
+    a:hover { text-decoration-thickness:2px; }
+    a:focus-visible, summary:focus-visible { outline:3px solid var(--green); outline-offset:5px; }
+    .skip { position:absolute; top:-100px; left:20px; background:var(--surface); padding:10px; z-index:10; }
+    .skip:focus { top:10px; }
+    .wrap { width:min(1120px,calc(100% - 64px)); margin-inline:auto; }
+    header { border-bottom:1px solid var(--line); }
+    .masthead { display:flex; justify-content:space-between; gap:20px; align-items:center; min-height:78px; }
+    .brand { font-weight:750; font-size:20px; letter-spacing:-.6px; }
+    .brand span { color:var(--green); }
+    .edition { color:var(--muted); font-size:13px; text-align:right; }
+    .hero { display:grid; grid-template-columns:1.7fr 1fr; gap:64px; padding-block:70px 60px; align-items:center; }
+    .eyebrow { font-size:12px; font-weight:700; letter-spacing:2px; color:var(--green); margin:0 0 18px; }
+    h1 { margin:0 0 24px; font-size:clamp(36px,5.5vw,62px); line-height:1.22; letter-spacing:-2px; font-weight:750; }
+    h1 span { display:block; color:var(--green); }
+    .lead { font-size:18px; color:var(--muted); margin:0; max-width:650px; }
+    .hero-note { margin:22px 0 0; color:var(--muted); font-size:13px; }
+    .change-count { border-top:3px solid var(--green); border-bottom:1px solid var(--line); padding:22px 0; }
+    .count-line { display:flex; align-items:baseline; gap:20px; }
+    .count { font-size:84px; line-height:1.1; letter-spacing:-5px; font-weight:650; }
+    .old { color:var(--muted); font-size:48px; }
+    .arrow { color:var(--muted); font-size:28px; }
+    .count-label { margin:10px 0 20px; font-size:14px; color:var(--muted); }
+    .count-copy { margin:0; font-size:15px; }
+    nav { border-block:1px solid var(--line); background:var(--paper); }
+    .nav-links { display:flex; flex-wrap:wrap; gap:8px 28px; padding-block:15px; }
+    .nav-links a { font-size:14px; text-decoration:none; color:var(--ink); padding-block:5px; }
+    .nav-links a span { color:var(--green); margin-right:7px; font-size:12px; }
+    section { padding-block:55px; border-bottom:1px solid var(--line); }
+    .section-head { display:grid; grid-template-columns:64px 1fr; gap:8px; margin-bottom:28px; }
+    .section-number { font-size:14px; color:var(--green); padding-top:8px; font-weight:700; }
+    h2 { font-size:29px; line-height:1.4; margin:0 0 10px; letter-spacing:-.7px; }
+    .section-head p { color:var(--muted); margin:0; max-width:810px; }
+    h3 { margin:0 0 9px; font-size:18px; line-height:1.5; }
+    p { margin:0 0 14px; }
+    p:last-child { margin-bottom:0; }
+    code { font: .9em/1.5 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+    .skill-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .skill { background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:22px 24px; }
+    .skill-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .skill-top a { font-size:18px; font-weight:650; text-decoration:none; overflow-wrap:anywhere; }
+    .tag { flex-shrink:0; padding:2px 8px; background:var(--tint); color:var(--green); border-radius:4px; font-size:12px; }
+    .tag.retained { background:#f1f2ef; color:var(--muted); }
+    .skill p { font-size:15px; }
+    .skill .result { color:var(--muted); font-size:13px; margin-top:13px; padding-top:11px; border-top:1px solid var(--line); }
+    .subheading { margin:30px 0 14px; }
+    .migration { display:grid; grid-template-columns:1fr 1fr; gap:0 32px; }
+    .migration-row { padding:14px 0; border-bottom:1px solid var(--line); display:grid; grid-template-columns:145px 20px 1fr; gap:10px; align-items:baseline; font-size:14px; }
+    .migration-row .to { color:var(--muted); }
+    .owner { background:var(--tint); padding:22px 26px; border-radius:8px; margin-bottom:24px; }
+    .owner strong { color:var(--green); }
+    .changes { display:grid; grid-template-columns:1fr 1fr; gap:26px 38px; }
+    .change { border-top:1px solid var(--line); padding-top:19px; }
+    .change p { font-size:15px; }
+    .before { color:var(--muted); }
+    .label { color:var(--green); font-weight:650; }
+    details { margin-top:22px; border-block:1px solid var(--line); padding:15px 0; }
+    summary { cursor:pointer; font-size:15px; font-weight:650; }
+    .methods { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 28px; padding:20px 0 6px; margin:0; }
+    .methods dt { color:var(--green); font-weight:650; font-size:15px; }
+    .methods dd { margin:3px 0 0; color:var(--muted); font-size:14px; }
+    .document-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .document { padding:24px; background:var(--surface); border:1px solid var(--line); border-radius:8px; }
+    .document h3 { font-size:21px; }
+    .document ul { padding-left:20px; margin:14px 0 0; }
+    .document li { padding:5px 0; font-size:15px; }
+    .path { display:block; color:var(--muted); font-size:12px; margin-top:16px; }
+    .note { font-size:14px; color:var(--muted); margin-top:20px; }
+    .review-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:25px; }
+    .flow-step { border-top:3px solid var(--green); padding-top:16px; }
+    .flow-step h3 { font-size:16px; }
+    .flow-step p { font-size:14px; color:var(--muted); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:14px; text-align:left; }
+    th { font-size:13px; color:var(--muted); font-weight:600; background:var(--tint); }
+    th,td { padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th:first-child,td:first-child { width:24%; }
+    .status { display:inline-block; color:var(--green); font-weight:650; }
+    .status.partial { color:var(--amber); }
+    .evidence-intro { font-size:14px; color:var(--muted); margin-bottom:18px; }
+    .evidence-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:24px; }
+    .evidence-grid h3 { font-size:16px; }
+    .evidence-grid p { color:var(--muted); font-size:14px; }
+    .boundary { margin-top:25px; border-left:3px solid var(--amber); padding:2px 0 2px 19px; font-size:14px; }
+    footer { padding-block:35px 45px; color:var(--muted); font-size:13px; }
+    .source-links { display:flex; flex-wrap:wrap; gap:10px 22px; margin:14px 0 20px; }
+    @media (max-width:760px) {
+      .wrap { width:calc(100% - 36px); }
+      .hero { grid-template-columns:1fr; gap:30px; padding-block:42px 34px; }
+      h1 { letter-spacing:-1px; }
+      .lead { font-size:16px; }
+      .change-count { padding-block:15px; }
+      .count { font-size:58px; }
+      .old { font-size:36px; }
+      .count-label { margin-bottom:10px; }
+      .nav-links { gap:4px 18px; }
+      section { padding-block:35px; }
+      .section-head { grid-template-columns:30px 1fr; }
+      h2 { font-size:24px; }
+      .skill-grid,.changes,.document-grid,.migration,.review-flow,.evidence-grid,.methods { grid-template-columns:1fr; }
+      .skill,.document { padding:20px; }
+      .migration-row { grid-template-columns:130px 15px 1fr; gap:6px; }
+      th,td { padding:12px 9px; }
+      .edition { font-size:12px; }
+      .owner { padding:20px; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+    @media print {
+      body { background:#fff; font-size:11pt; }
+      .wrap { width:100%; }
+      nav,.skip { display:none; }
+      .hero { padding-block:20px; gap:25px; }
+      h1 { font-size:32pt; }
+      section { padding-block:22px; }
+      .skill,.document,.change,.flow-step,tr { break-inside:avoid; }
+      details > :not(summary) { display:grid !important; }
+      a { color:inherit; }
+      .skill-grid,.document-grid,.changes { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header>
+    <div class="wrap masthead">
+      <div class="brand">hello<span>–</span>scholar</div>
+      <div class="edition">本次修改说明<br><time datetime="2026-10-12">2026.10.12</time> · Revision 4</div>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap hero">
+      <div>
+        <p class="eyebrow">SKILL COLLECTION / CHANGE NOTES</p>
+        <h1>八个独立能力，<span>由主 Agent 串起工作。</span></h1>
+        <p class="lead">这次重组了 Skill 入口，明确方案、实施、审查与科研记录的职责，并把“如何判断、如何解释、何时保存”写进共同规则和各个 Skill。</p>
+        <p class="hero-note">基于 2026-10-12 工作区与本轮修改说明整理。本页是讲解快照，当前进度以项目总览为准。</p>
+      </div>
+      <aside class="change-count" aria-label="Skill 数量由九个调整为八个">
+        <div class="count-line" aria-hidden="true"><span class="count old">9</span><span class="arrow">→</span><span class="count">8</span></div>
+        <p class="count-label">上一版入口 → 当前默认安装的独立 Skill</p>
+        <p class="count-copy">保留并改写 5 个，扩展更名 1 个，新增 2 个，移除 3 个。主 Agent 负责整体目标、实施、验证和事实同步。</p>
+      </aside>
+    </div>
+    <nav aria-label="修改说明目录">
+      <div class="wrap nav-links">
+        <a href="#skills"><span>01</span>Skill 重组</a>
+        <a href="#rules"><span>02</span>主规则</a>
+        <a href="#documents"><span>03</span>设计与实验</a>
+        <a href="#collaboration"><span>04</span>审查与表达</a>
+        <a href="#installation"><span>05</span>安装迁移</a>
+        <a href="#evidence"><span>06</span>验证状态</a>
+      </div>
+    </nav>
+    <div class="wrap">
+      <section id="skills" aria-labelledby="skills-title">
+        <div class="section-head"><span class="section-number">01</span><div><h2 id="skills-title">Skill 按具体问题分工</h2><p>八个能力可以独立调用。通用设计与实施由主 Agent 承担，按任务需要选择 Skill，没有固定调用顺序。</p></div></div>
+        <div class="skill-grid">
+          <article class="skill"><div class="skill-top"><a href="../../skills/grilling/SKILL.zh_CN.md">grilling</a><span class="tag retained">保留 · 改写</span></div><h3>澄清会改变选择的未知</h3><p>先查可查事实，再沿决定之间的依赖追问。剩余答案不再影响方案或验收时停止，不要求穷尽所有分支。</p><p class="result">交付明确选择、理由与关键未决项；独立使用无需项目或 Spec。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/manage-specs/SKILL.zh_CN.md">manage-specs</a><span class="tag retained">保留 · 深化</span></div><h3>把设计和验收依据连起来</h3><p>先找到设计的已有归属，再连接决定、具体改法、取舍和验收标准。有未决问题也可以先保存 Draft。</p><p class="result">维护 Spec；范围或判断标准变化时修订，补证据不虚增 Revision。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/record-experiment/SKILL.zh_CN.md">record-experiment</a><span class="tag retained">保留 · 收紧边界</span></div><h3>按证据价值保留一次运行</h3><p>记录实际生效条件与单次解释，区分执行状态、比较有效性和采用结论。是否记录取决于研究、复现、恢复或决策价值。</p><p class="result">维护 Run Record；普通连接检查、启动 smoke 和轮询通常不新建 Run。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/review/SKILL.zh_CN.md">review</a><span class="tag">扩展 · 更名</span></div><h3>从验收对照扩展到独立审查</h3><p>承接 converge-to-spec，可检查方案、代码、实现与研究证据。Draft 和部分实现也可审查，没有 Spec 同样可用。</p><p class="result">默认只读；返回问题、触发条件、证据、后果和最小处理方向。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/ponytail/SKILL.zh_CN.md">ponytail</a><span class="tag">新增</span></div><h3>实际清理非必要复杂性</h3><p>沿调用关系确认机制保护什么真实需求，在指定范围删除或合并多余结构，保留公共契约和有科学用途的控制条件。</p><p class="result">清理请求下实施并验证；仅要求评估时保持只读。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/synthesize/SKILL.zh_CN.md">synthesize</a><span class="tag">新增</span></div><h3>让材料形成可理解的判断</h3><p>围绕读者的问题组织思路、实验结果、研究笔记或周报。解释证据关系与认识变化，保留能指导后续选择的有条件经验。</p><p class="result">交付可直接使用的正文；汇总已有材料本身不产生新的 Run。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/docs-maintenance/SKILL.zh_CN.md">docs-maintenance</a><span class="tag retained">保留 · 深化</span></div><h3>按事实归属维护文档</h3><p>区分源事实、当前解释与生成导航。Architecture 只写已核实、已采用的结构；Index 用于定位，不替代来源。</p><p class="result">按授权检查、同步或修复文档；docs check 只读，docs sync 写入生成索引。</p></article>
+          <article class="skill"><div class="skill-top"><a href="../../skills/handoff/SKILL.zh_CN.md">handoff</a><span class="tag retained">保留 · 深化</span></div><h3>只补接手者缺少的上下文</h3><p>从下一步行动倒推信息缺口，补充尚未解决的选择、在运行任务或具体阻塞；已有文件与 Git 能恢复的内容直接引用。</p><p class="result">保存可接续的 Handoff，不复制整段聊天或另一份设计文档。</p></article>
+        </div>
+        <h3 class="subheading">退出的入口，职责去了哪里？</h3>
+        <div class="migration">
+          <div class="migration-row"><code>converge-to-spec</code><span aria-hidden="true">→</span><span class="to"><code>review</code>：保留验收对照，扩大审查对象。</span></div>
+          <div class="migration-row"><code>takeoff</code><span aria-hidden="true">→</span><span class="to">主 Agent：目标重判与假设辨认。</span></div>
+          <div class="migration-row"><code>landing</code><span aria-hidden="true">→</span><span class="to">主规则：资源、约束与停止判断；代码精简归 ponytail。</span></div>
+          <div class="migration-row"><code>crash-audit</code><span aria-hidden="true">→</span><span class="to"><code>review</code>：反例、实际影响与证据缺口。</span></div>
+        </div>
+      </section>
+
+      <section id="rules" aria-labelledby="rules-title">
+        <div class="section-head"><span class="section-number">02</span><div><h2 id="rules-title">主规则承担连续工作的责任</h2><p>共同规则明确谁推进任务、何时保存设计、如何查状态，减少专项能力之间的责任遗漏。</p></div></div>
+        <div class="owner"><strong>主 Agent 的责任：</strong>围绕当前目标形成方案，完成已授权实施与验证，整合审查发现和运行证据，并把受影响的项目事实更新回原归属。</div>
+        <div class="changes">
+          <article class="change"><h3>工程目标更加具体</h3><p class="before">原来强调“编写无需推倒重来的代码”，容易引向对未来变化的过度预防。</p><p><span class="label">现在：</span>完成当前目标所需的最小完整改动，保留可信证据与可接续事实；复杂性由实际需求和契约支撑。</p></article>
+          <article class="change"><h3>设计形成后及时保存</h3><p class="before">原来对纯讨论边界较清楚，但持续研发中的保存衔接不足。</p><p><span class="label">现在：</span>形成可审阅方案后，保存到已有归属或创建 Draft，连同关键未知一起保存。独立质询、临时解释和明确不保存的请求仍可在对话完成。</p></article>
+          <article class="change"><h3>小改动也判断是否影响已有设计</h3><p class="before">“小改动无需新建 Spec”容易被误解为无需维护任何设计文档。</p><p><span class="label">现在：</span>分别判断新建和更新。已有范围、行为、接口、约束或验收受影响时，本轮更新对应设计。</p></article>
+          <article class="change"><h3>按问题查正确的事实源</h3><p class="before">原来“查任务状态先查 Run Record”的范围过宽。</p><p><span class="label">现在：</span>设计进度查 Spec，科研运行查 Record，系统结构查 Architecture；普通开发查任务入口、代码、Git 和验证证据。</p></article>
+        </div>
+        <details><summary>五个思考方法怎样落实到工作中</summary><dl class="methods">
+          <div><dt>第一性原理</dt><dd>方向可能有误时，区分真实目标、已知事实与继承假设，重新推导选择。</dd></div>
+          <div><dt>对抗性审查</dt><dd>核心假设有疑点时，寻找具体反例、触发条件与实际后果。</dd></div>
+          <div><dt>消融实验</dt><dd>机制贡献不清时，设计可比条件；存在相互作用时允许多条件比较。</dd></div>
+          <div><dt>奥卡姆剃刀</dt><dd>机制增加时，判断删除它会损害哪个当前目标或真实契约。</dd></div>
+          <div><dt>高内聚、低耦合</dt><dd>明确行为、状态、决定与文件的负责人，让依赖符合职责。</dd></div>
+        </dl></details>
+      </section>
+
+      <section id="documents" aria-labelledby="documents-title">
+        <div class="section-head"><span class="section-number">03</span><div><h2 id="documents-title">总体设计与单次执行各有归属</h2><p>一个科研增量围绕会影响下一步选择的不确定性展开，可以包含多次 Run。主 Agent 负责总体问题与跨 Run 判断，运行者保留实际执行事实。</p></div></div>
+        <div class="document-grid">
+          <article class="document"><h3>Spec：决定做什么、怎样判断</h3><ul><li>连接当前选择、具体设计、必要实施步骤和验收标准。</li><li>科研比较交代对照、数据与评价条件、重复策略、预算和停止条件。</li><li>保留稳定的 <code>AC-NN</code>，在旁边记录有效证据与缺口。</li><li>范围或判断标准变化才递增 Revision；补证据或变更生命周期不递增。</li></ul><code class="path">hello-scholar/specs/&lt;topic&gt;/SPEC-NNN-&lt;name&gt;/spec.md</code></article>
+          <article class="document"><h3>Run Record：实际运行了什么</h3><ul><li>保留影响研究判断、复现、恢复或资源决策的执行，即使很小或结果为负。</li><li>普通 import、连接、配置、启动 smoke 与重复轮询通常留在任务验证中。</li><li>已有 Run 的新事实更新同一 Record，不因轮询建立新身份。</li><li>模板由 12 段收拢成 5 组信息：发现与解释、问题与比较、执行信息、产物位置、重要事件。</li></ul><code class="path">runs/&lt;run-id&gt;/record.md</code></article>
+        </div>
+        <p class="note">执行完成、比较有效、研究问题得到回答、满足采用条件分别判断。例如，OOM 说明资源限制；有效负结果可以完成调查，但不一定支持采用方法。</p>
+        <p class="note">Spec schema 1、新 Record schema 2 及历史读取兼容保持不变。过去 Run 的实际条件和原结论继续保留。</p>
+      </section>
+
+      <section id="collaboration" aria-labelledby="collaboration-title">
+        <div class="section-head"><span class="section-number">04</span><div><h2 id="collaboration-title">审查有明确边界，交付解释判断依据</h2><p>审查者提供独立发现，主 Agent 负责核对和处理。共同表达规则让读者从交付物理解变化、证据与后果。</p></div></div>
+        <div class="changes">
+          <article class="change"><h3>审查从设计阶段就可开始</h3><p>方案、代码、部分实现和研究证据都可审查。默认保持被审查材料不变；要求“审查并修复”时，先确认发现，再继续授权内的修复与验证。</p><p class="before">指定另一模型但客户端不可用时，交付可转交的审查请求，并明确该模型尚未执行。</p></article>
+          <article class="change"><h3>正文说明结果与关键理由</h3><p>方案交代改哪里、怎样改、必要步骤、取舍和验证办法；结果说明实际变化、本次证据及剩余问题。链接供追溯，关键解释留在正文。</p><p class="before">按理解需要选择文字、表格、图示或交互；避免在多个章节重复同一判断，也不强制每次产出方法论总结。</p></article>
+        </div>
+        <div class="review-flow" aria-label="审查记录与处理关系">
+          <article class="flow-step"><h3>确定本轮审查对象</h3><p>交代 Spec Revision、代码范围、输入与 Run 状态，让审查者检查稳定的材料。</p></article>
+          <article class="flow-step"><h3>返回发现，按需保存</h3><p>默认在对话返回。保存属于任务范围时，Spec 审查写入同目录 <code>review.md</code>，按轮次保留对象、发现和覆盖范围。</p></article>
+          <article class="flow-step"><h3>主 Agent 处理并整合</h3><p>记录采用、不采用及理由或待核实事实。输入变化后，复查受影响判断；旧审查仍只覆盖原状态。</p></article>
+        </div>
+      </section>
+
+      <section id="installation" aria-labelledby="installation-title">
+        <div class="section-head"><span class="section-number">05</span><div><h2 id="installation-title">安装升级同步到八个入口</h2><p>当前默认安装全部八个 Skill。安装器在识别旧资产归属和本地修改后处理退休入口，保留用户内容与历史项目材料。</p></div></div>
+        <div class="table-wrap"><table><caption class="skip">安装和维护文件的变化</caption><thead><tr><th scope="col">修改对象</th><th scope="col">本次变化</th><th scope="col">使用上的影响</th></tr></thead><tbody>
+          <tr><td>根规则与双语入口</td><td><code>AGENTS.md</code>、中文镜像、八个 Skill 及相关模板和参考同步修改。</td><td>Codex 与 Claude 安装使用同一规则源，保留各自客户端安装位置。</td></tr>
+          <tr><td>退休入口清单</td><td>加入 <code>converge-to-spec</code>、<code>takeoff</code>、<code>landing</code>、<code>crash-audit</code>。</td><td>只清理归属明确且未修改的旧资产；用户修改、未知来源和其他来源链接仍受保护。</td></tr>
+          <tr><td>说明与测试</td><td>更新 README、贡献指南、维护说明、安装及 npm 包测试、Skill 目录和文档契约检查。</td><td>安装说明、入口集合与验证约定对齐；历史案例继续保留原义。</td></tr>
+          <tr><td>命令与数据契约</td><td>安装命令、schema 和版本号没有额外变化。</td><td>项目 Spec、Run 和历史材料不因升级被删除；版本仍为 <code>0.1.0 / private</code>。</td></tr>
+        </tbody></table></div>
+        <p class="note">默认 <code>link</code> 模式依赖 Skill 来源路径；<code>copy</code> 模式保存独立副本。已安装项目中的规则正文需要重新安装才能更新。</p>
+      </section>
+
+      <section id="evidence" aria-labelledby="evidence-title">
+        <div class="section-head"><span class="section-number">06</span><div><h2 id="evidence-title">实现已修改，验收仍保留证据边界</h2><p>项目总览记录本次源文件、模板和安装迁移已实现，Spec 保持 accepted，尚未把未覆盖的行为验收标为完成。</p></div></div>
+        <p class="evidence-intro">以下结果引用已有的 <a href="workflow-revision-changes.zh_CN.md">2026-10-12 修改与验证记录</a>，不是制作本 HTML 时重新运行的测试。</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">已有检查</th><th scope="col">记录结果</th><th scope="col">支持的范围</th></tr></thead><tbody>
+          <tr><td>Skill 结构</td><td><span class="status">8 个入口通过</span></td><td>身份与结构可用。</td></tr>
+          <tr><td>Skill 定向检查</td><td><span class="status">60 项通过</span></td><td>目录、产物契约与资源引用。</td></tr>
+          <tr><td>JavaScript 回归</td><td><span class="status">97 项通过</span></td><td>文档、安装、升级、真实 npm 包，以及 Codex / Claude 的 link / copy 安装组合。</td></tr>
+          <tr><td>Python 回归</td><td><span class="status partial">148 项通过 · 1 项环境错误</span></td><td>失败项调用 <code>claude</code> 时出现 <code>FileNotFoundError</code>，没有声称全套通过。</td></tr>
+          <tr><td>独立集成审查</td><td><span class="status">未发现实质缺陷</span></td><td>入口、模板、参考、安装保护和有限产物的一致性；不代表原生跨模型验证。</td></tr>
+        </tbody></table></div>
+        <p class="note">提交前补充复核：本机安装 Claude Code 2.1.296 后，原插件校验单测通过，随后全量 <code>npm test</code> 的 97 项 JavaScript 与 149 项 Python 全部通过；八个 Skill 结构校验通过。上表保留较早一次运行的真实结果，本次仍未调用 Claude 模型。</p>
+        <div class="evidence-grid">
+          <article><h3>设计保存案例</h3><p>批量评分设计请求未点名 Spec，仍保存了 Draft 和验收标准；保持只设计、不修改代码的范围。</p></article>
+          <article><h3>代码精简案例</h3><p>将仅作内部转发的 7 个类收拢为直接函数，保留两种预处理语义；原有 5 项行为测试前后通过。</p></article>
+          <article><h3>综合表达案例</h3><p>从构造材料生成研究笔记与周报，保留不可比结果、正负证据和成本限制；未创建 Run 或发送飞书。</p></article>
+        </div>
+        <div class="boundary"><p>三个案例各执行一次，没有旧版或无 Skill 对照，也没有原生 Claude 调用，因此不能量化整体质量提升。纯解释／不保存、相邻 Run 触发、跨会话科研等分支仍缺本版完整证据。</p><p>后续针对重复表达的文字细化只做了一致性与结构检查，没有追加模型效果验证。源码交付、行为验收和版本发布分别判断。</p></div>
+      </section>
+    </div>
+  </main>
+  <footer class="wrap">
+    <strong>说明依据</strong>
+    <div class="source-links"><a href="workflow-revision-changes.zh_CN.md">中文修改对比</a><a href="spec-driven-skill-design.md">项目总览与当前进度</a><a href="../../AGENTS-zh.md">主工程规则</a><a href="../../README.md">使用与安装说明</a><a href="../maintenance/skill-authoring.md">参考来源与采用范围</a></div>
+    <p>本页用于讲解 2026-10-12 的修改快照，引用已有事实，不另行维护项目状态。八个 Skill 标题链接到各自中文规则；本页正文与样式可离线阅读，来源链接需要保留仓库目录。</p>
+  </footer>
+</body>
+</html>
