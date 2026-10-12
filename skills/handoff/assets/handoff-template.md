@@ -1,23 +1,17 @@
 # Handoff: [Topic]
 
-## Summary
+## Resume From Here
 
-[Briefly summarize what happened and why the next agent is being handed this work.]
+[State the current objective, the first useful next action, and why it is next. Link the design, code, or Run that supplies the durable context.]
 
-## Current Status
+## Context the Sources Cannot Recover
 
-- [Completed or known state]
-- [What has not been done yet]
+[Preserve only temporary choices and their reasons, unfinished-work ownership, unresolved user decisions, or blockers needed for continuation. Reference recoverable facts rather than copying them.]
 
-## Next Steps
+## Continuation Conditions
 
-1. [Next action]
-2. [Next action]
-
-## Risks And Notes
-
-- [Risk, constraint, or important context]
+[Include a prerequisite, existing authorization limit, active job identifier, or concrete path/command only when it affects the next action. Distinguish observations from proposed work.]
 
 ## Verification State
 
-- [Command or check actually run, its result, or why it remains unverified]
+[Link verification already preserved elsewhere. Add the actual command, result, coverage limit, or remaining unverified question only when the linked sources do not contain it.]

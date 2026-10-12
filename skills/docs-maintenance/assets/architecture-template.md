@@ -14,19 +14,19 @@ updated: YYYY-MM-DD
 
 ## 2. Project Structure
 
-<Describe the principal directories and their responsibilities.>
+<Locate the principal responsibilities in the project. Include directories when they help readers find their owners; avoid a complete file listing.>
 
 ## 3. Current Modules
 
-<List modules, paths, responsibilities, and dependencies that exist now.>
+<Explain which existing module owns each important behavior or state, how modules depend on one another, and where to verify those responsibilities.>
 
 ## 4. Current Technical Choices
 
-<List adopted technical choices and cite supporting code, tests, adoption evidence, or an existing Spec for each important choice. Do not create a Spec merely to fill this section.>
+<Explain adopted technical choices and the constraints or tradeoffs they address. Cite supporting code, tests, adoption evidence, or an existing Spec for important claims. Leave an unknown historical rationale unknown; do not invent a reason or create a Spec merely to fill this section.>
 
 ## 5. Key Runtime Flows
 
-<Describe implemented data and call flows.>
+<Explain the implemented path from an important input or user action to its outcome, including ownership transitions and failure behavior needed to understand the system.>
 
 ## 6. File and Run Artifact Locations
 

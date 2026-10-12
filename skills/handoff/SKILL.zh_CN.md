@@ -5,8 +5,20 @@ description: 用户要求交接，或工作需要跨会话继续时，保存下�
 
 # Handoff
 
-在当前项目根目录写入 `hello-scholar/handoffs/YYYY-MM-DD-<topic>-handoff.md`。英文使用 [assets/handoff-template.md](assets/handoff-template.md)，中文使用 [assets/handoff-template.zh_CN.md](assets/handoff-template.zh_CN.md)；优先使用当前任务指定语言，否则沿用项目语言。
+给下一次会话足够的上下文，使其无需重放对话就能采取正确的下一步。从这个动作倒推：下一 Agent 必须知道、却不能从持久来源可靠恢复的信息是什么？
 
-只保存新 Agent 无法从 Spec、验收证据、代码、测试、Git、Record、issue 或其他已链接产物可靠恢复的状态。包括当前目标、已完成与剩余工作、未决决定、阻塞与风险、相关路径或命令，以及下一项有价值的动作。说明所列验证是否真实运行及其结果。
+## 保存缺失的上下文
 
-不要复制整份持久文档、会话全文、secret、credential 或个人数据。Handoff 不属于 Spec Bundle，也不进入 Index。写入后报告准确路径和下一次会话可以接续的内容。
+利用 Spec、验收证据、代码、测试、Git、Record、issue 和其他产物，区分可恢复事实与仅存在于会话的状态。简要交代当前目标并链接相关归属。只保留会影响接续的额外信息：用户尚未决定的选择、尚未保存的局部约束、未完成工作的归属、阻塞，或下一会话不能重复启动的在运行 job。
+
+通过理由和后果解释临时选择，不按时间罗列尝试。被放弃的方法，其证据能够避免下一 Agent 重复无效动作时才值得保留。有用的负结果引用原来源，不为显得交接完整而改写成失败。
+
+区分已执行动作、观察与建议步骤。已有验证通过引用提供；命令、真实结果和覆盖范围无法从其他来源获得时才补写。正在进行的外部工作，记录真实 job 或进程标识及查询位置，不猜测最终结果。任务原有授权与尚未解决的限制随交接保留，Handoff 不授予新权限。
+
+## 让接续动作具体可行
+
+说明第一个有价值的动作、它的前提或阻塞，以及应产生什么证据。已知路径或精确命令时直接提供。下一会话应能理解为什么先做它，不必遍查历史。不因换了 Agent 就要求完整重查未变化的证据。
+
+在当前项目根目录写入 `hello-scholar/handoffs/YYYY-MM-DD-<topic>-handoff.md`；不同交接使用未占用后缀，或更新已明确的当前交接文件。英文使用 [assets/handoff-template.md](assets/handoff-template.md)，中文使用 [assets/handoff-template.zh_CN.md](assets/handoff-template.zh_CN.md)；优先采用指定语言，否则沿用项目语言。没有有效信息的模板分节可以合并或省略。
+
+不要复制整份持久文档、会话全文、secret、credential 或个人数据。交接不成为另一份设计归属或实验总结。Handoff 不属于 Spec Bundle，也不进入 Index。以接手者视角读回：删去从链接归属中容易恢复的事实，补齐会阻碍下一步的关键理由。报告准确路径和下一会话可以接续的内容。

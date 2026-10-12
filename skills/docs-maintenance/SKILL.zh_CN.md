@@ -5,15 +5,29 @@ description: 用户要求文档维护，或实施改变了已采用的架构事�
 
 # Docs Maintenance
 
-维护文档完整性，不把生成导航变成事实源。用户授权已经覆盖多个操作时，可以按合理顺序组合。
+使项目知识与它所声称描述的事实一致。让读者分清已采用系统、拟议变化、实际运行证据和导航，不必自行调和互相冲突的副本。
+
+## 识别事实及其归属
+
+从用户指定文档或实施改变的事实出发。先判断什么内容不更新会误导读者，再沿相关引用检查。产物移动可能需要修正路径，模块职责变化可能需要更新 Architecture。改动文件数量或一次新提交本身不能证明需要其中任何一种维护。
+
+每项判断使用其归属来源：Spec 保存目标设计和判断标准，Record 保存单次执行事实，Architecture 保存已实现且已采用的结构，Index 定位这些来源。代码与 draft Spec 不同时，先判断设计是否仍待实现，不以假装方案已经采用来消除差异。Spec 只部分实现时，只把已核实且已采用的部分写为当前架构。
+
+文档正文解释重要的职责、依赖和运行关系，再引用代码与证据供读者核对。避免用文件清单替代有效解释、将同一事实抄入多个归属，或把生成导航提升为权威来源。
 
 ## 操作
 
+用户授权已经覆盖多个操作时，可以按合理顺序组合。根据真实知识缺口选择操作：
+
 - **检查：** 运行 `hello-scholar docs check`，报告退出码、errors、notices 和相对路径。该操作严格只读：不运行 sync，也不修复内容。
 - **同步：** 运行 `hello-scholar docs sync`。只有 CLI 可以更新全局、Topic 和 Run `INDEX.md`。失败时报告 diagnostics，不手工重建 Index。
-- **Architecture：** 用户要求更新，或已授权实施对项目结构、模块归属、运行流程、公共契约或持久位置产生实质影响时，根据已验证且已采用的事实更新 `hello-scholar/architecture.md`。英文读取 [assets/architecture-template.md](assets/architecture-template.md)，中文读取 [assets/architecture-template.zh_CN.md](assets/architecture-template.zh_CN.md)。保留未受影响内容，排除未来设计和未采用实验，并明确未决事实。
+- **Architecture：** 用户要求更新，或已授权实施对项目结构、模块归属、运行流程、公共契约或持久位置产生实质影响时，根据已验证且已采用的事实更新 `hello-scholar/architecture.md`。英文读取 [assets/architecture-template.md](assets/architecture-template.md)，中文读取 [assets/architecture-template.zh_CN.md](assets/architecture-template.zh_CN.md)。保留未受影响内容，排除未来设计和未采用实验，并明确未决事实。缺少 Architecture 的 notice 本身不授权重建或采用它。
 - **恢复：** 先 check；源文档可以解析时再 sync。盘点孤立或历史材料，并从代码、Git、已完成验收证据和有效 Record 重建可审核 Architecture 草稿。解析失败时不猜测；请求未授权正式写入时只返回草稿。
 
-写入前记录已有 Git 变化，并完整读取每份受影响文档。并发编辑触及相同事实时，重新读取并合并已验证事实，不覆盖对方。完成后检查本次事务，确保生成 Index、Architecture 和明确授权的恢复编辑仍各归其主。
+## 修复受影响的知识
+
+写入前检查已有 Git 变化，并完整读取每份受影响文档。依据当前来源和已知采用决定解决矛盾。证据不足以确定一项判断时，指出缺失事实及其影响，不选择看起来更整齐的叙述。明确获授权的恢复可以修复源文档结构，但须保留历史来源与真实不确定性。
+
+并发编辑触及相同事实时，重新读取并合并已验证变化，不覆盖对方。完成后检查 diff、相关链接或文档检查。解释哪些项目事实或导航发生变化、为什么现在有依据，以及什么仍待确定。结构检查验证文档契约，不能证明架构决定已经采用。
 
 恢复时可以报告历史 `plan.md` 和 `tasks.md`，但它们不是当前执行状态，也不阻止 sync。更新已有项目事实源，不创建竞争来源。
