@@ -112,12 +112,14 @@
 主 Agent 只在本轮最后一条消息使用以下回答模板：
 
 ```text
-{icon} 【hello-scholar】- {status} - {Skill or agent name}
+{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}
 
 {result, evidence, impact, and remaining uncertainty}
 
 🔄 下一步: {next state or action}
 ```
+
+名称字段可填写本轮使用的 Skill、Agent，也可列出实际运用的思考原理或其他设计规范；按需用 ` · ` 组合，例如 `Codex · 第一性原理` 或 `review · 高内聚、低耦合`。未使用特定方法时填写 Agent 名称。
 
 状态：`💡直接响应`、`⚡快速执行`、`🔵规划流程`、`✅完成`、`❓等待输入`、`⚠️警告`、`❌错误`。需要用户输入或授权时使用 `❓等待输入`；仅在没有剩余请求工作时使用 `✅完成`。
 

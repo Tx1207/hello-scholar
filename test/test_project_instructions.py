@@ -37,7 +37,10 @@ class ProjectInstructionsTests(unittest.TestCase):
             self.assertIn("hello-scholar docs sync", text)
             self.assertIn("plan.md", text)
             self.assertIn("tasks.md", text)
-            self.assertIn("{icon} 【hello-scholar】- {status} - {Skill or agent name}", text)
+            self.assertIn(
+                "{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}",
+                text,
+            )
             self.assertIn("🔄 下一步: {next state or action}", text)
             self.assertIn("❓等待输入", text)
             self.assertIn("✅完成", text)

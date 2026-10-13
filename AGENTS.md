@@ -112,12 +112,14 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 The main agent's final message uses this wrapper only as the last message of a turn:
 
 ```text
-{icon} 【hello-scholar】- {status} - {Skill or agent name}
+{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}
 
 {result, evidence, impact, and remaining uncertainty}
 
 🔄 下一步: {next state or action}
 ```
+
+The name field may include Skills or agents used in this turn, as well as thinking principles or other design standards actually applied. Combine relevant names with ` · ` when useful, for example `Codex · First principles` or `review · High cohesion, low coupling`; if no specific method applies, use the agent name.
 
 Statuses: `💡直接响应`, `⚡快速执行`, `🔵规划流程`, `✅完成`, `❓等待输入`, `⚠️警告`, `❌错误`. Use `❓等待输入` whenever input or authorization is required; use `✅完成` only when no requested work remains.
 
