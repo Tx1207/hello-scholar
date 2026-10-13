@@ -5,7 +5,7 @@
 | Situation | Decision | Reason |
 |---|---|---|
 | Fix one invalid row, prepare a manifest, or print a future launch command | No record | Ordinary preparation is task work; record a later execution when its evidence has preservation value |
-| `--help`, import check, config parse, unit test, static check, or startup smoke | No record | Preserve relevant verification in the task or existing logs |
+| `--help`, import check, config parse, unit test, static check, or startup smoke | No separate record | Preserve verification in the task, existing logs, or the planned Record of the experiment it prepares |
 | An authorized GPU or remote smoke only checks connectivity or startup | No record | Cost and hardware do not by themselves give the result research or recovery value |
 | A tiny controlled comparison will determine the next research choice | Full record | The comparison needs traceable conditions and results regardless of its size |
 | Training, Benchmark, Eval, or prediction export supplies research or adoption evidence | Full record | Preserve evidence that later conclusions or experiments will depend on |
@@ -48,7 +48,7 @@ An existing `runs/20260803-0900-baseline-eval-s0/record.md` already records its 
 
 ## 5. Same-minute identity collisions
 
-When authorized to maintain a Run, append a newly observed event from the same actual process or remote job, with matching identity, inputs, and key configuration, to the existing `runs/20260803-1100-router-ablation-s0/record.md`. A new execution of the command is a new Run even when its arguments are identical.
+When authorized to maintain a Run, append a newly observed event from the same actual research process or remote job, with matching identity, inputs, and key configuration, to the existing `runs/20260803-1100-router-ablation-s0/record.md`. A new research execution is a new Run even when its arguments are identical; ordinary startup checks and repairs before that execution may be appended to its planned Record.
 
 For a different identity that collides in that minute, keep the existing directory untouched and allocate the first unused suffix:
 
@@ -98,3 +98,9 @@ Use `Unknown` with a reason for unrecoverable upstream facts; cite original evid
 ## 9. Remote job evidence
 
 For a remote submission, retain local submission stdout/stderr and its exit status under the local Run, plus the remote job ID or URI. Link remote logs and artifacts by their actual URI. Add local paths only after intentional download; do not imply that remote files were captured locally.
+
+## 10. Startup preparation and a later research retry
+
+An agreed data-size A/B comparison deserves a Record. Three ordinary startup checks fail because of a scheduler step setting, a DDP rank bug, and a validation process-group conflict; the A/B execution has not started. Keep one planned Record with `started: null` and `completed: null`, append the errors and fixes, and retain each check's command, timestamps, exit status, and separate logs under `logs/` or at their existing locations. After checks pass, update the launch conditions and continue the same Record with the actual research start and outcome. This is one research Run with preparation history.
+
+If the formal A/B execution instead starts and fails, close that Run as `failed` with its real evidence. If another execution is authorized, create a new planned Run and cite the earlier failure, even when the arguments are unchanged. Keep a valid negative comparison as `completed`. A startup check that itself tests a consequential research or resource hypothesis can independently deserve a Run; its name and hardware do not decide that.

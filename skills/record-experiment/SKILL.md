@@ -11,13 +11,15 @@ Make one execution understandable and recoverable: what question it addressed, w
 
 Judge by how the evidence will be used, not the command's name, runtime, hardware, or presence of output files. Preserve a comparison, ablation, or other calculation that informs a research conclusion or subsequent choice, even if it is tiny or negative. Preserve preparation or failure evidence when it materially supports reproduction, recovery, or a resource-boundary decision.
 
-Ordinary imports, connectivity checks, configuration checks, startup smoke, static checks, and repeated polling remain task verification or existing logs. A remote or GPU smoke does not become a Run merely because it costs money. A check named `smoke` can deserve a Record when it actually tests a consequential hypothesis. Summarizing existing material or writing a weekly report creates no new Run; a new calculation that produces research evidence may.
+Ordinary imports, connectivity checks, configuration checks, startup smoke, static checks, and repeated polling create no separate Run; keep them in task verification, existing logs, or the planned Record of the experiment they prepare. A remote or GPU smoke does not become a Run merely because it costs money. A check named `smoke` can deserve a Record when it actually tests a consequential hypothesis. Summarizing existing material or writing a weekly report creates no new Run; a new calculation that produces research evidence may.
 
 Create a planned Record before a new Run that deserves preservation. For an existing Run, update the same identity only with material new facts within the authorized maintenance scope. For retrospective recording, preserve the available evidence and its gaps without rerunning. A read-only query remains read-only even when it discovers a new fact. Read [references/status-and-fields.md](references/status-and-fields.md) before creating or closing a Record; read [references/examples.md](references/examples.md) for boundary cases.
 
 ## Create one identity
 
 Use `runs/<run-id>/record.md`, where `<run-id>` is `YYYYMMDD-HHMM-<short-topic>` with a seed suffix when useful. The directory, `run_id`, and Run-owned paths must agree. Never overwrite or repurpose an existing or ambiguous directory; add a numeric suffix for a distinct run.
+
+A Run identifies one research execution worth preserving. Its ordinary startup checks, errors, fixes, and retries may be appended to the same planned Record, which continues when the research execution starts. If that research execution fails or ends, an authorized new execution gets a new Run even when its arguments are unchanged; preserve the earlier evidence.
 
 A new Record uses `schema: 2`. `spec` and `spec_revision` must both be null or both identify an existing Spec revision; association with a draft Spec is allowed. Do not add `plan_revision`. Preserve historical schema 1 Records as evidence; when an active historical Run must be updated, it may be converted in place to schema 2 while retaining the old Plan provenance in the body.
 
@@ -27,7 +29,7 @@ Use [assets/run-record-template.md](assets/run-record-template.md) for English o
 
 ## Follow the evidence from execution to interpretation
 
-Execute only when the existing authorization covers the command and its resources. If cancelled before launch, close the schema 2 Record with `started: null` and the actual cancellation time; do not execute or invent process evidence. Otherwise, execute the documented command once with stdout and stderr captured separately to the recorded paths. Never run bare and repeat merely to collect logs. For remote work, retain submission output and actual remote job and artifact URIs; claim local evidence only after it is downloaded.
+Execute only when the existing authorization covers the command and its resources. If cancelled before the research execution starts, close the schema 2 Record with `started: null` and the actual cancellation time; distinguish any startup-check evidence from the unexecuted research command. Otherwise, execute the documented research command once with stdout and stderr captured separately to the recorded paths. Never run bare and repeat merely to collect logs. For remote work, retain submission output and actual remote job and artifact URIs; claim local evidence only after it is downloaded.
 
 Reconstruct what actually took effect, including deviations from the launch plan. Record real timestamps, process status, artifacts, measurements, and failures. Append observations when they change interpretation or recovery, rather than turning every polling result into an event.
 

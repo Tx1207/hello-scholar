@@ -33,12 +33,12 @@ summary: <current known facts only>
 
 Use exactly one status:
 
-- `planned`: the reproducible launch record exists and the command has not started.
-- `running`: the process or job actually started.
+- `planned`: the reproducible launch record exists and the research execution has not started; ordinary startup checks may already have run.
+- `running`: the research process or job actually started; `started` is that real start time.
 - `completed`: the run ended with usable evidence, including a valid negative result.
 - `failed`: a crash, OOM, missing required output, or other failure prevented the intended usable evidence, even if the failure establishes an operational limit worth retaining.
 - `interrupted`: work stopped before completion and retained evidence explains the interruption.
-- `cancelled`: the Run was intentionally cancelled before completion, including before launch in schema 2. For a prelaunch cancellation, state that the command never started and why; no process output or exit code exists, so do not fabricate them or launch merely to obtain them.
+- `cancelled`: the Run was intentionally cancelled before completion, including before the research execution starts in schema 2. For a prelaunch cancellation, state that the research command never started and why; any startup-check logs belong to preparation, not that command. Do not fabricate research output or launch merely to obtain it.
 
 A valid negative result is not failed: keep `status: completed` and explain the result and its limits. State a non-adoption decision when one was made; otherwise retain the pending decision. Preserve failures, interruptions, and cancellations with their evidence and any known next action. Do not interpret an invalid comparison as evidence against the scientific hypothesis.
 
@@ -49,6 +49,8 @@ Begin with the current finding, decisive evidence, interpretation limit, and any
 The template groups findings, question and comparison, execution information, artifacts, and material events. These are an aid to locating information, not mandatory headings or a request to repeat facts. Merge or rename sections while retaining applicable launch facts, evidence, and interpretation. Existing Records need no template-only reformatting; preserve headings required by a confirmed external consumer.
 
 Use Artifact Locations for paths under the same Run: `outputs/`, `results/`, `logs/`, and `checkpoints/` when they exist. Every launched Recorded Run uses `logs/stdout.log` and `logs/stderr.log` for raw process output. Prelaunch cancellation retains intended paths as intended, not as existing evidence. Keep full logs and bulky metrics in artifacts; the Record stores concise evidence, paths, and exit status.
+
+For an experiment worth preserving, append ordinary startup errors, fixes, and retries to its planned Record. Keep separate logs such as `logs/startup-01.stdout.log` and `logs/startup-01.stderr.log`, or cite their existing locations; retain each check's actual command, time, and exit status without overwriting earlier evidence. Keep `started` and `completed` null until the research execution starts. If an outer launcher includes checks and research, identify that boundary and use the research stage's actual start, not the launcher's start. Refresh the formal launch conditions after fixes while preserving the preparation history.
 
 ## Execution Information
 
@@ -73,7 +75,7 @@ When the user requests a Record of an already executed experiment, preserve its 
 
 Create a Record when actual evidence will inform a research conclusion, an acceptance or adoption judgment, or a later experiment; or when reconstructing the execution matters to reproduction, recovery, or resource planning. Size is not a useful dividing line. A tiny controlled comparison can qualify; an expensive remote startup check with no such use can remain ordinary verification.
 
-Hardware, duration, remote execution, command names, and retained temporary files are not sufficient triggers. Ordinary preparation, imports, configuration checks, unit tests, static checks, polling, and disposable observations need no Record. Keep their relevant verification in the task or existing logs. Planning a study without executing it, summarizing existing results, and writing a weekly report produce no Run.
+Hardware, duration, remote execution, command names, and retained temporary files are not sufficient triggers. Ordinary preparation, imports, configuration checks, unit tests, static checks, polling, and disposable observations need no independent Record. Keep their relevant verification in the task, existing logs, or the planned Record of the experiment they prepare. Planning a study without executing it, summarizing existing results, and writing a weekly report produce no executed Run.
 
 For low-risk work with no indicated preservation need, proceed within the original task without asking for a recording preference. Ask only when unresolved cost, production-data use, or irreversible effects change the execution authorization. An explicit request to preserve an existing experiment uses the retrospective rules; lack of a Record does not create an automatic obligation to backfill history.
 
@@ -81,7 +83,7 @@ Within authorized Run maintenance, append only facts that matter to interpretati
 
 ## Process capture invariant
 
-When launched, a Recorded Run's documented command executes once. Capture raw stdout and raw stderr during that execution without changing its effective command or CWD, then retain its exit code or signal. Never rerun an experiment merely to collect missing process output.
+When the research execution starts, a Recorded Run's documented research command executes once. Capture raw stdout and raw stderr during that execution without changing its effective command or CWD, then retain its exit code or signal. Ordinary startup retries before that boundary remain preparation in the same Record. An authorized new research execution after failure or completion gets a new Run even if the command is unchanged. Never rerun an experiment merely to collect missing process output.
 
 ## Provenance and derived artifacts
 

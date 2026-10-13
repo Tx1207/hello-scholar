@@ -1,6 +1,6 @@
 # hello-scholar 项目改进总览与设计
 
-更新：2026-10-12。本页是项目改进的唯一当前进度入口；本轮具体差异和验证见[中文修改对比](workflow-revision-changes.zh_CN.md)。[既有验收报告](quality-acceptance-status.md)、[此前实施报告](spec-driven-implementation-report.md)及专题迭代文档保存历史过程，不另行维护当前待办。
+更新：2026-10-13。本页是项目改进的唯一当前进度入口；本轮具体差异和验证见[中文修改对比](workflow-revision-changes.zh_CN.md)。[既有验收报告](quality-acceptance-status.md)、[此前实施报告](spec-driven-implementation-report.md)及专题迭代文档保存历史过程，不另行维护当前待办。
 
 用户已要求按 [SPEC-001：项目文件驱动的科研与开发工作流](../../hello-scholar/specs/agent-workflow/SPEC-001-research-development/spec.md) Revision 4 实施。当前集合为八个独立 Skill，根规则承担共同方法与连续责任；所有 Skill 都以领域判断方法为核心，必要流程和格式用于保存结果。三个指定入口已退出，`converge-to-spec` 由 `review` 承接。
 
@@ -22,6 +22,16 @@
 各验收项的证据与未覆盖分支集中在 [SPEC-001 第 7 节](../../hello-scholar/specs/agent-workflow/SPEC-001-research-development/spec.md#7-验收与验证)。三次试用没有旧版或无 Skill 对照，不能量化整体质量提升。历史证据不改写为本轮结果。
 
 提交前复核（2026-10-12）：八个 Skill 使用现有 Conda Python 与 PyYAML 6.0.2 通过 `quick_validate.py`；系统 Python 缺少 PyYAML，未为此安装依赖。Claude 仅执行本地插件校验，没有模型调用。本机 `docs check` 返回 0 错误、1 条缺少 Architecture 的提示，发现 0 个 Spec、0 个 Record，因此不能据此验证此前设计与实验文档的完整性。早期缺少 `claude` 的失败保留在[修改对比](workflow-revision-changes.zh_CN.md)中，与本次通过结果区分。
+
+### 试用反馈：启动准备与 Run 身份（2026-10-13）
+
+已确认的边界：同一次正式实验的普通启动检查、错误、修复和重试，追加到对应 planned Record，不因每次预检报错另建 Run。错误摘要与修复留在 `record.md`，各次原始日志独立保留在 `logs/` 或引用已有位置。正式执行开始后才填写 `started` 并转为 `running`；正式执行失败后的重新运行另建 Run，保留此前真实条件和失败证据。
+
+本次只澄清现有规则的适用范围，沿用 schema 2 和既有状态，不新增记录类型或自动重试。中英文入口、生命周期参考、示例、根规则和 README 已同步。
+
+当前工作树验证：`record-experiment` 通过 `skill-creator` 的结构检查；5 项 Skill 文档契约、4 项根规则、37 项生命周期/文档 CLI/索引及 2 项安装回归检查全部通过。临时 CPU 构造案例通过真实 `docs check/sync` 验证：三次预检失败与修复保留在一条 planned → completed Run 中，旧日志不变；正式失败后相同命令重新执行使用新 Run，原失败记录及两次日志均保留。该构造检查可由 `/tmp/hello-scholar-startup-boundary-check-20261013.py` 重放，临时项目运行后自动清理。
+
+仓库 `docs check` 为 0 错误、1 条既有缺少 Architecture 的提示，发现 0 个 Spec/Record；实际记录布局由上述临时案例验证。本次检查证明现有 schema 与 CLI 支持该方式，未新增模型行为评估，不能据此宣称 Agent 自动选择建档边界已稳定改善。
 
 ## 上一版九技能基线与历史验收
 
