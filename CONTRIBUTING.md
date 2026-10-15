@@ -8,7 +8,7 @@ Maintain hello-scholar as a small, portable set of project instructions, Skills,
 - `skills/<name>/SKILL.md` is the installed English entrypoint. Keep its `SKILL.zh_CN.md` mirror semantically aligned in the same change.
 - Root `AGENTS.md` owns the portable rules; `CLAUDE.md` is the existing symlink to it. Keep this single source and the `AGENTS-zh.md` semantic mirror aligned. Both tools read `AGENTS.md` and write standalone text, not a symlink, into the target project. The npm package does not require `CLAUDE.md`. Installation does not infer a language.
 - This contributor guide contains repository-only instructions and is not installed. Its Chinese mirror is `docs/maintenance/repository-guide.zh_CN.md`.
-- `docs/` owns product design, migration, and maintenance references. Historical evaluation artifacts under `docs/specs/` and `test/skill-activation-evals/` are evidence, not current runtime instructions.
+- `docs/` owns product design, migration, and maintenance references. Historical evaluation artifacts under `docs/specs/` are evidence, not current runtime instructions.
 - Generated `INDEX.md` files are CLI-owned. Do not hand-edit them.
 
 ## Development Practice
@@ -35,7 +35,6 @@ Maintain hello-scholar as a small, portable set of project instructions, Skills,
 - Current Architecture lives at `hello-scholar/architecture.md` and describes implemented, adopted facts.
 - New experiment Records live at `runs/<run-id>/record.md`, use `schema: 2`, and do not contain `plan_revision`. Historical schema 1 Records remain readable evidence.
 - Handoffs live at `hello-scholar/handoffs/` and contain only context not recoverable from durable documents, code, tests, or Git.
-- New work does not create `plan.md` or `tasks.md`. Historical files may be inspected during an explicit migration but do not control current execution.
 
 ## Verification Commands
 

@@ -8,7 +8,7 @@
 - `skills/<name>/SKILL.md` 是安装时使用的英文入口；同一变更必须让 `SKILL.zh_CN.md` 保持语义一致。
 - 根目录 `AGENTS.md` 负责通用规则，`CLAUDE.md` 沿用指向它的符号链接。保留单一正文，并同步中文核对版 `AGENTS-zh.md`。两种工具均读取 `AGENTS.md`，在目标项目写入可独立使用的完整文本，不复制符号链接，也不推断语言。npm 包不依赖 `CLAUDE.md`。
 - `CONTRIBUTING.md` 是本仓库专用维护说明，不安装到其他项目；本文件是其中文镜像。
-- `docs/` 保存产品设计、迁移和维护参考。`docs/specs/` 与 `test/skill-activation-evals/` 下的历史评估材料是证据，不是当前运行时说明。
+- `docs/` 保存产品设计、迁移和维护参考。`docs/specs/` 下的历史评估材料是证据，不是当前运行时说明。
 - 生成的 `INDEX.md` 由 CLI 负责，不手工修改。
 
 ## 开发原则
@@ -35,7 +35,6 @@
 - Current Architecture 位于 `hello-scholar/architecture.md`，只描述已实现且已采用的事实。
 - 新实验 Record 位于 `runs/<run-id>/record.md`，使用 `schema: 2`，不含 `plan_revision`。历史 schema 1 Record 仍是可读证据。
 - Handoff 位于 `hello-scholar/handoffs/`，只保存无法从持久文档、代码、测试或 Git 恢复的上下文。
-- 新工作不创建 `plan.md` 或 `tasks.md`。显式迁移时可以检查历史文件，但它们不控制当前执行。
 
 ## 验证命令
 

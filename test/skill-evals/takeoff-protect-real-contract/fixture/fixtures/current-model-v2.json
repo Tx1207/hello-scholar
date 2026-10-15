@@ -1,7 +1,0 @@
-{
-  "schemaVersion": 2,
-  "model": "research-large",
-  "limits": {
-    "maxTokens": 8192
-  }
-}

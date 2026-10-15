@@ -7,7 +7,7 @@ These rules apply to the project being worked on, regardless of its language, fr
 ## Read Before You Write
 
 - Before changing a project, read its existing README and contribution guide (such as CONTRIBUTING.md), then any relevant scoped instructions. Follow the current project's commands and constraints.
-- Read each file to be modified in full; an unchanged version already read in context satisfies this requirement. Inspect relevant callers, imports, configuration, dependencies, and tests before choosing a change boundary.
+- Read the parts of each file that the change depends on, and the whole file when it is small or the change affects its structure; an unchanged version already read in context counts. Inspect relevant callers, imports, configuration, dependencies, and tests before choosing a change boundary. The cost of reading an existing entry point never justifies writing a parallel one.
 - Reuse confirmed project patterns. Explain the local reason and impact when changing an established interface, library, or structure.
 
 ## Think Before Coding
@@ -33,10 +33,10 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 
 ## Simplicity and Scope
 
-- Deliver the smallest end-to-end change that meets the current requirement. Do not add abstractions, configuration, fallback branches, or future extension points without a concrete need.
+- Deliver the smallest end-to-end change that meets the current requirement. Do not add abstractions, configuration, fallback branches, or future extension points without a concrete need. Adding an argument or config option to an existing entry point for a variant needed now is a concrete need.
 - Preserve unrelated user changes. Do not reset, overwrite, or reformat them.
 - Keep each component's responsibility clear. Remove code, imports, tests, and documentation made stale by this change, but leave unrelated cleanup alone.
-- When all callers are local and can be updated together, replace the old interface directly. Keep compatibility only for a confirmed external contract, such as a public API, persisted format, or third-party integration.
+- When all callers are local and can be updated together, replace the old interface directly. Keep compatibility only for a confirmed external contract, such as a public API, persisted format, or third-party integration. A past Run's exact command is not such a contract; its Record keeps it reproducible through the recorded code version.
 - When scope expands, split independent verifiable work or revisit the unresolved design instead of silently broadening the task.
 - Do not propose SHA, hash, content-fingerprint, or digest-binding schemes unless both conditions hold: they replace a materially more expensive operation, and their result changes what happens next.
 - Where judgment is needed, make the judgment. Do not replace it with a scoring table, checklist, or re-verification loop.
@@ -45,12 +45,15 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 ## Research in Useful Increments
 
 - Frame each increment around an uncertainty whose answer changes the next choice. One increment may use several Runs; an exploratory question need not start with a mature hypothesis. Keep the overall research design and cross-Run judgment in the Spec or its existing project owner.
-- Before a comparison, define the question, baseline and intervention, observation and comparison units, data and evaluation conditions, repeat strategy, interpretation criteria, resource budget, and stopping conditions to the extent needed for a valid judgment. Reuse a baseline only when its conditions support the intended comparison.
+- Before designing or launching any execution, search existing Runs (`runs/INDEX.md`, then search `record.md`, entry scripts, configs, and `results/` with `rg` or `grep`) for work that answers the same or an overlapping question. In the plan, state which prior Run and artifacts are reused, what differs, and why any new execution is needed.
+- Prefer, in order: reuse an existing result (no run) > run only the missing cells (e.g. a new checkpoint step, one extra dataset) > rerun an existing entry point with changed arguments or config > modify the existing entry point > write a new script. Choosing a lower option requires a concrete reason, such as incompatible conditions or a changed code path.
+- A completed Run with intact artifacts is valid research evidence. The fresh-evidence rule applies to verifying code changes, not to reproducing prior research results. Rerun only when code, data, or evaluation conditions changed, or a concrete doubt exists.
+- Express variations (step, lambda, dataset, seed) as arguments or config of an existing entry point; never copy a script to change constants. Editing a shared script is allowed: a Run stays reproducible through its recorded code version and config, not by freezing scripts.
+- Before a comparison, define the question, baseline and intervention, observation and comparison units, data and evaluation conditions, repeat strategy, interpretation criteria, resource budget, and stopping conditions to the extent needed for a valid judgment. Reuse an existing baseline when its conditions match; when they differ, rerun only the differing part and state the difference.
 - Choose controls that can distinguish the proposed explanations. Ablation is useful for a contribution question; interactions may require multiple conditions. Do not impose a universal single-factor sequence on research.
 - Separate code executability, execution completion, evidence validity, and support for the research claim. A useful negative result can complete an investigation; it does not satisfy a separate adoption target. An OOM establishes a resource limitation, not that the algorithmic hypothesis is false.
 - Keep planned comparable results, meaningful failures, and negative evidence. Report relevant comparisons and variation, not only the best Run. Record changes to the design before the next execution; new conclusions do not rewrite past conditions.
-- Preserve Runs for research evidence, reproducibility, recovery, or a consequential resource decision. Ordinary import, connection, configuration, launch smoke, and polling create no separate Run; keep them in task verification, existing logs, or the planned Record of the experiment they prepare. Startup errors and fixes may be appended there; a new research execution after failure gets a new Run. Cost, duration, remote execution, GPU use, or temporary outputs alone do not justify a Record; a small decision-bearing comparison can.
-- The main agent owns the research question, overall design, budget, and integration. A Run owner records the agreed execution and its bounded interpretation; they do not independently redefine the question or launch the next round. Summarizing existing evidence does not create a new Run.
+- Preserve a Run when its evidence serves a research conclusion, reproduction, recovery, or a consequential resource decision; ordinary checks and polling create none. `record-experiment` owns the detailed boundary, Record fields, and retry rules.
 
 ## Verification and Execution
 
@@ -58,12 +61,11 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 - Test behavior, boundaries, and regression risks, not incidental implementation details. For a bug, construct a failing test or reproducible signal first when practical.
 - Verify important user journeys through the real entry point, such as a CLI, API, or UI, and inspect the resulting state or logs as needed. Report unavailable entry points and what narrower checks establish.
 - Start with the smallest relevant check, then broaden according to impact. Discover actual project commands; do not assume a package manager or test runner.
-- Use fresh evidence from the current worktree before claiming success. Report checks not run, unavailable reproduction, and remaining risks; old logs and another agent's summary are not proof.
+- Use fresh evidence from the current worktree before claiming code changes are verified. Report checks not run, unavailable reproduction, and remaining risks; old logs and another agent's summary are not proof that the current code changes work.
 - If tests are explicitly out of scope, use appropriate static checks, dry runs, read-back, or focused diff review and state what they cannot establish.
 - Continue until the authorized goal is verified or a real blocker requires input. Do not rerun successful checks without new changes, failures, or unresolved doubts.
 - Parallelize work only when prerequisites are resolved and write ownership is clear. The main agent integrates the results and verifies the combined behavior.
-- Request independent review when it can resolve a material uncertainty, or when the user asks. Use the specified model only through an available, authorized capability; otherwise prepare a portable review request and report what remains unexecuted. The `review` Skill owns the detailed review protocol; a Spec is optional.
-- Give reviewers a clear object, version or working-tree scope, evidence state, and write boundary. Integrate supported findings and record their disposition. Review agreement is not experimental proof; changed code or evidence can invalidate coverage even without a Spec revision change.
+- Request independent review when it can resolve a material uncertainty or the user asks; `review` owns the protocol, including cross-model requests. Integrate supported findings and record their disposition. Review agreement is not experimental proof.
 
 ## Debugging and Dependencies
 
@@ -82,20 +84,16 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 ## Durable Design and Evidence
 
 - Find the existing owner before saving a decision. Use `manage-specs` when design, interfaces, invariants, or research and acceptance criteria must persist. Ordinary small changes usually need no new Spec, but still update an existing design they affect.
-- When using hello-scholar documents, Specs live at `hello-scholar/specs/<topic>/SPEC-NNN-<name>/spec.md`; implemented and adopted architecture facts live at `hello-scholar/architecture.md`; formal experiment Records live at `runs/<run-id>/record.md`; handoffs live at `hello-scholar/handoffs/`.
-- For research execution status or results, start with the Run Record; for design or acceptance progress, the Spec; for adopted structure, Architecture; for ordinary development, the existing task entry, code, Git, and verification evidence. Use known paths first, otherwise existing Indexes or targeted searches. Indexes are navigation only; verify against sources, broaden when evidence is insufficient, and keep queries read-only.
+- Look up research status and results in Run Records (`runs/<run-id>/record.md`), design and acceptance in Specs (`hello-scholar/specs/<topic>/SPEC-NNN-<name>/spec.md`), adopted structure in `hello-scholar/architecture.md`, handoffs in `hello-scholar/handoffs/`, and ordinary development state in code, Git, and verification evidence. Use known paths first, then Indexes or targeted searches; Indexes are navigation only, so verify against sources. Queries stay read-only.
 - Update existing affected facts rather than creating competing sources. Do not relocate established project documents merely to match these defaults; resolve ownership before creating a new source.
 - Apply the following synchronization within the original task's write scope. Established authorization covers its necessary documentation; do not add a separate save approval.
 
 | Event | Main agent responsibility |
 | --- | --- |
 | Ongoing development or research has a reviewable design | Save it in its existing owner, or create a Draft Spec. Include settled decisions and material unknowns; do not wait for every question to be resolved. |
-| Standalone questioning, temporary explanation, or an explicit request not to save | Deliver the answer without requiring project files. Independent `grilling` does not require a Spec. |
 | Scope, behavior, interfaces, constraints, or judgment criteria change | Revise affected design before finishing the turn, even when the code diff is small. Mark unresolved choices as unresolved. |
 | New execution evidence or review disposition changes the current judgment | Update the relevant Spec's evidence and conclusion; preserve each Run's actual conditions and original Spec revision. |
-| A read-only review or query finds stale documentation | Return the finding; read-only work does not gain write authority. |
 
-- Temporary sequencing does not require `plan.md` or `tasks.md`. Do not create or approve those files as new hello-scholar workflow gates. Preserve historical files and inspect their unique constraints when migrating.
 - `hello-scholar docs check` is read-only. `hello-scholar docs sync` owns generated Indexes and writes files: run it only when the CLI is available and those writes are within the user's authorized scope. Do not install tools or expand scope just to satisfy this convention.
 - Keep Spec lifecycle, identity, and template details in `manage-specs`, and actual command, inputs, environment, raw output, results, and single-run interpretation in `record-experiment`. Handoff preserves only what the next agent cannot recover from these sources, code, or Git.
 

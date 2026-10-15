@@ -25,4 +25,4 @@ Stop when remaining answers would not change the choice, implementation, or acce
 
 Summarize the current choice, its decisive reasons, meaningful constraints, and unresolved questions with their consequences. Separate accepted decisions from recommendations. Include a concrete next action when it follows from the discussion; a generic promise to investigate is not a decision.
 
-Standalone questioning writes no project files and requires no project, Spec, tracker, or subagent. In an ongoing authorized project task, return these findings to the main agent, which preserves durable decisions in the existing design owner and continues the original task. Questioning does not add a new save-approval phase or authorize implementation that the user did not request.
+Standalone questioning writes no project files and requires no project, Spec, tracker, or subagent.

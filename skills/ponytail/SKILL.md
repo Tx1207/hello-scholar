@@ -28,9 +28,7 @@ Implement the selected simplification across every affected local caller, import
 
 Preserve confirmed external contracts, required error handling and validation, and meaningful behavior at boundaries. In research code, judge controls by their scientific purpose: a baseline, ablation switch, seed, calibration step, or recorded run condition may be necessary even when it appears repetitive. Preserve negative results and original evidence. Do not remove a research control merely because current tests pass without it.
 
-If a mechanism's contribution is uncertain and matters to the decision, use existing evidence or identify a bounded comparison that could resolve it. Running an experiment still requires its normal authorization and evidence handling; a cleanup request does not expand the research budget. Keep the mechanism or state the unresolved choice when evidence is insufficient.
-
-Ordinary cleanup needs no new Spec. When a change affects an existing documented design, let the main Agent integrate the changed semantics into that document under the original task authorization. Do not create a separate cleanup plan or duplicate experiment record.
+If a mechanism's contribution is uncertain and matters to the decision, use existing evidence or identify a bounded comparison that could resolve it. Keep the mechanism or state the unresolved choice when evidence is insufficient.
 
 ## Verify and explain the result
 

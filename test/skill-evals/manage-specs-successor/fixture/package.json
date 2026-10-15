@@ -1,8 +1,0 @@
-{
-  "name": "session-token-service-fixture",
-  "private": true,
-  "type": "commonjs",
-  "scripts": {
-    "test": "node --test test/*.test.js"
-  }
-}

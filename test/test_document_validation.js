@@ -401,3 +401,34 @@ test("converts discovery safety, legacy, and misplaced findings into sorted diag
     "hello-scholar/specs/orphan/spec.md", "runs/demo/README.md", "runs/linked",
   ]);
 });
+
+test("Record reuse lineage is optional, typed, and reports unknown parents", () => {
+  const result = validateDocumentSet(discovery([
+    document("runs/base/record.md", recordV2Attributes({
+      run_id: "base", spec: null, spec_revision: null, entry: "scripts/eval.py",
+    })),
+    document("runs/child/record.md", recordV2Attributes({
+      run_id: "child", spec: null, spec_revision: null,
+      entry: "scripts/eval.py", derived_from: ["base", "gone"],
+    })),
+    document("runs/legacy/record.md", recordV2Attributes({ run_id: "legacy", spec: null, spec_revision: null })),
+  ]));
+
+  assert.deepEqual(result.errors, []);
+  const child = result.records.find((record) => record.runId === "child");
+  assert.deepEqual(child.derivedFrom, ["base", "gone"]);
+  assert.equal(child.entry, "scripts/eval.py");
+  assert.equal(result.records.find((record) => record.runId === "legacy").entry, null);
+  const unknown = result.notices.filter((notice) => notice.code === "unknown-derived-from");
+  assert.equal(unknown.length, 1);
+  assert.match(unknown[0].message, /gone/);
+
+  const invalid = validateDocumentSet(discovery([
+    document("runs/bad/record.md", recordV2Attributes({
+      run_id: "bad", spec: null, spec_revision: null, entry: "", derived_from: [],
+    })),
+  ]));
+  const codes = new Set(invalid.errors.map((error) => error.code));
+  assert.ok(codes.has("invalid-string"));
+  assert.ok(codes.has("invalid-derived-from"));
+});

@@ -1,5 +1,0 @@
-{
-  "version": 2,
-  "endpoint": "https://west.internal.example",
-  "retries": 2
-}

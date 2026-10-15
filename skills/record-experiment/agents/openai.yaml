@@ -1,0 +1,4 @@
+interface:
+  display_name: "Record Experiment"
+  short_description: "Reuse prior Runs and preserve experiment evidence"
+  default_prompt: "Use $record-experiment to check prior Runs for reuse, then record this execution's actual conditions, results, and interpretation."

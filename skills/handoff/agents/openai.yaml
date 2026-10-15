@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Leave the context the next session cannot recover"
+  default_prompt: "Use $handoff to write a handoff with the next action, unresolved choices, active jobs, and reusable Runs."

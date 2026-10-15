@@ -26,8 +26,6 @@ Modes may be combined in a sensible order when the user's authorization already 
 
 ## Repair the affected knowledge
 
-Before writing, inspect existing Git changes and read every affected document in full. Resolve contradictions from current source evidence and known adoption decisions. When the evidence cannot settle a claim, identify the missing fact and its consequence instead of selecting the tidier narrative. Explicitly authorized recovery may repair source structure, but must preserve historical provenance and real uncertainty.
+Before writing, inspect existing Git changes. Resolve contradictions from current source evidence and known adoption decisions. When the evidence cannot settle a claim, identify the missing fact and its consequence instead of selecting the tidier narrative. Explicitly authorized recovery may repair source structure, but must preserve historical provenance and real uncertainty.
 
 If a concurrent edit touches the same facts, reread and merge verified changes rather than overwriting them. Afterward, inspect the diff and relevant links or document checks. Explain which project facts or navigation changed, why they are now supported, and what remains unresolved. Structural checks verify document contracts; they do not prove an architecture decision has been adopted.
-
-Historical `plan.md` and `tasks.md` may be reported during recovery, but they are not current execution state and do not block sync. Update existing sources of project facts rather than creating competing ones.

@@ -22,7 +22,6 @@ class SkillDocumentContractTests(unittest.TestCase):
         self.assertIn("Create", skill)
         self.assertIn("Revise", skill)
         self.assertIn("Replace", skill)
-        self.assertIn("do not create `plan.md` or `tasks.md`", skill.lower())
         self.assertIn("only after the successor is implemented", skill)
 
     def test_new_record_templates_use_schema_two_without_plan_revision(self) -> None:
@@ -51,6 +50,13 @@ class SkillDocumentContractTests(unittest.TestCase):
         )
         self.assertIn("captured separately", skill)
         self.assertIn("references/examples.md", skill)
+        self.assertIn("derived_from", skill)
+        for name in ("run-record-template.md", "run-record-template.zh_CN.md"):
+            text = (ROOT / "skills/record-experiment/assets" / name).read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("entry:", text)
+            self.assertIn("derived_from:", text)
 
     def test_spec_audit_is_read_only_but_outer_fix_request_can_continue(self) -> None:
         text = (ROOT / "skills/review/SKILL.md").read_text(

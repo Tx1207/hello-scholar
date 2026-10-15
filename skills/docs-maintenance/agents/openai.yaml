@@ -1,0 +1,4 @@
+interface:
+  display_name: "Docs Maintenance"
+  short_description: "Check docs, sync Indexes, and update Architecture"
+  default_prompt: "Use $docs-maintenance to check project documents and update adopted Architecture facts."

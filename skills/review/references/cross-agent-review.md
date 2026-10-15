@@ -1,6 +1,6 @@
 # Cross-Agent Review
 
-Give the reviewer a stable object and enough evidence to form an independent judgment. Use another model when the user asks for it or when an authorized independent perspective will resolve a material uncertainty. Do not require a second model for every task.
+Give the reviewer a stable object and enough evidence to form an independent judgment.
 
 ## Prepare the review
 
@@ -34,4 +34,4 @@ Record the object and input state, date, actual reviewer, findings, and coverage
 
 If multiple Agents work concurrently, keep one writer per file at a time. Read the latest contents before merging another Agent's completed output. A reviewer can return findings for the main Agent to save when both would otherwise edit the same review file.
 
-A later Spec revision does not change which revision an earlier review examined. Even when the Spec revision is unchanged, changes to code, input data, or Run results can narrow earlier review coverage. Revisit the affected judgments using the changed evidence; do not repeat unrelated checks by default. Agreement across reviewers supports discussion, not an adoption claim or proof of experimental validity.
+A later Spec revision does not change which revision an earlier review examined. Even when the Spec revision is unchanged, changes to code, input data, or Run results can narrow earlier review coverage. Revisit the affected judgments using the changed evidence; do not repeat unrelated checks by default.

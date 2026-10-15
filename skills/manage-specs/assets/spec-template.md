@@ -16,40 +16,28 @@ superseded_by: null
 
 # <Clear design title>
 
-## 1. Value and Current Decision
+## 1. Current Decision and Value
 
-<State the current recommendation or accepted decision, the concrete objects and behavior that change, and the decisive reason. Explain how this addresses the user's problem. Keep material open choices visible.>
+<State the current recommendation or accepted decision, the concrete objects and behavior that change, and the decisive reason. Keep material open choices visible.>
 
-## 2. Problem and Current Facts
+## 2. Problem, Facts, and Scope
 
-<Explain the gap between the required outcome and current behavior. Cite the relevant facts and distinguish them from assumptions; show which choice depends on an unresolved fact.>
+<Explain the gap between the required outcome and current behavior. Distinguish cited facts from assumptions, say which choice depends on an unresolved fact, and name the scope deliberately left out.>
 
-## 3. Goals and Non-goals
+## 3. Target Design
 
-<Define the required outcome and the scope deliberately left out.>
+<Explain responsibility and state owners, data and control flow, caller-visible behavior, failure cases, and the interfaces, data formats, compatibility commitments, and invariants that callers rely on. Connect decisions to their tradeoffs.>
 
-## 4. Target Design
+<For research: the question, baseline and intervention, data and evaluation conditions, controls, repetitions, interpretation rules, budget, stop conditions, and which prior Runs or artifacts are reused and how this design differs. Omit for designs without a research question.>
 
-<Explain the approach concretely: responsibility and state owners, data and control flow, caller-visible behavior, and meaningful failure cases. Connect important decisions to their reasons and tradeoffs.>
+## 4. Change Sequence
 
-<For research, state the question, baseline and intervention, data and evaluation conditions, relevant controls or interactions, repetitions, interpretation rules, budget, and stop conditions. Link existing protocol details instead of copying them. Omit this paragraph for designs without a research question.>
+<Name the affected modules or artifacts, how each changes, the necessary order, and how each meaningful step will be checked.>
 
-## 5. Interfaces, Data, and Invariants
-
-<Define inputs, outputs, public interfaces, data formats, compatibility commitments, and invariants.>
-
-## 6. Change Sequence and Boundaries
-
-<Name the affected modules or artifacts, how each changes, the necessary order or dependencies, and how each meaningful step will be checked. Describe material boundaries and unresolved prerequisites. Do not replace concrete steps with promises to analyze or optimize, or add a separate Plan/Tasks approval.>
-
-## 7. Acceptance and Validation
-
-Derive observable requirements from the user's goal, confirmed business rules, and real external contracts. Keep material unknown rules explicit; do not use current implementation output to settle them. Use stable identifiers and record current evidence in place. Do not infer completion from a task list.
+## 5. Acceptance and Validation
 
 | Acceptance | Requirement | Current conclusion | Evidence |
 | --- | --- | --- | --- |
 | AC-01 | <Observable required outcome> | Pending | None |
 
-<Identify relevant checks and the actual user or consumer entry point for key behavior. For research, separate answering the question from meeting adoption criteria; report comparable results, including negative findings and relevant limitations.>
-
-<Explain what current evidence supports and how it affects the next choice, then cite supporting checks, reviews, or Runs. Name the Spec revision and implementation or working-tree state covered, what was actually exercised, and unverified boundaries. Do not infer a measured outcome from a planned test.>
+<Derive requirements from the user's goal, confirmed rules, and real external contracts. Explain what current evidence supports and its coverage: the Spec revision and code state checked, the real entry point exercised, and what remains unverified. For research, separate answering the question from meeting adoption criteria.>

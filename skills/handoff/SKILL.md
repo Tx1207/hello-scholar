@@ -9,7 +9,7 @@ Give the next session enough context to take the right next action without repla
 
 ## Preserve the missing context
 
-Use the Spec, acceptance evidence, code, tests, Git, Records, issues, and other artifacts to distinguish recoverable facts from session-only state. Briefly orient the reader to the current objective and link the relevant owners. Preserve only additional context that changes continuation: an unresolved user choice, a local constraint not yet captured, the ownership of unfinished work, a blocker, or an active job the next session must not duplicate.
+Use the Spec, acceptance evidence, code, tests, Git, Records, issues, and other artifacts to distinguish recoverable facts from session-only state. Briefly orient the reader to the current objective and link the relevant owners. Preserve only additional context that changes continuation: an unresolved user choice, a local constraint not yet captured, the ownership of unfinished work, a blocker, an active job the next session must not duplicate, or Runs, caches, and checkpoints it should reuse rather than recompute.
 
 Explain a temporary choice through its reason and consequence, not a chronology of attempts. A discarded approach matters when its evidence would prevent the next agent from repeating an unproductive action. Preserve useful negative results through their source; do not rewrite them as failure to make the handoff sound complete.
 

@@ -92,6 +92,8 @@ function sampleValidation() {
       {
         runId: "20260801-1000-zeta",
         status: "failed",
+        entry: "scripts/eval.py",
+        derivedFrom: ["20260801-0900-alpha", "20260701-0000-gone"],
         spec: null,
         specRevision: null,
         started: "2026-08-01T09:00:00Z",
@@ -156,11 +158,11 @@ test("renders global, Topic, and Run indexes with exact stable bytes", () => {
     GENERATED_MARKER,
     "# Runs",
     "",
-    "| Run | Status | Spec | Spec Revision | Decision | Summary | Record |",
-    "| --- | --- | --- | --- | --- | --- | --- |",
-    "| 20260801-1000-zeta | failed | - | - | reject | Zeta result | [record.md](20260801-1000-zeta/record.md) |",
-    "| 20260801-0900-alpha | completed | [SPEC-010](../hello-scholar/specs/alpha/SPEC-010-later/spec.md) | 2 | adopt | Alpha \\| result | [record.md](20260801-0900-alpha/record.md) |",
-    "| planned | planned | - | - | pending | Planned | [record.md](planned/record.md) |",
+    "| Run | Status | Entry | Derived From | Spec | Spec Revision | Decision | Summary | Record |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| 20260801-1000-zeta | failed | scripts/eval.py | [20260801-0900-alpha](20260801-0900-alpha/record.md), 20260701-0000-gone | - | - | reject | Zeta result | [record.md](20260801-1000-zeta/record.md) |",
+    "| 20260801-0900-alpha | completed | - | - | [SPEC-010](../hello-scholar/specs/alpha/SPEC-010-later/spec.md) | 2 | adopt | Alpha \\| result | [record.md](20260801-0900-alpha/record.md) |",
+    "| planned | planned | - | - | - | - | pending | Planned | [record.md](planned/record.md) |",
     "",
   ].join("\n"));
   for (const content of files.values()) {

@@ -214,6 +214,8 @@ sequenceDiagram
 | 已有 Run 的新状态或结果 | 更新同一 Record，保留该次执行的真实条件。 |
 | 汇总已有材料、撰写研究笔记或周报 | 引用来源，生成文字本身不创建 Run。 |
 
+**开跑前先找可复用的 Run。** Agent 先查 `runs/INDEX.md` 和已有 Record：能直接引用的结果不重跑，只缺部分条件时只补跑缺失部分，变化用已有入口的参数或配置表达，不复制脚本改常量。Record 的 `entry` 写执行入口，`derived_from` 写所复用或修改的 Run，`runs/INDEX.md` 会显示这两列，下次就能按入口找到相似实验。
+
 昂贵、远程、GPU 或临时产物本身不足以说明值得建 Record。正式运行由 `record-experiment` 保存事实，主 Agent 负责总体设计与跨 Run 判断。补记已有实验依据真实材料完成，不为补文档重跑。
 
 启动准备可以在同一 planned Run 中续写：错误摘要和修复写入 `record.md`，各次原始日志分别保存到 `logs/` 或引用已有位置。正式实验开始后继续维护该记录；正式执行失败后重新运行则另建 Run，并保留原失败证据。
@@ -280,7 +282,7 @@ hello-scholar docs check
 hello-scholar docs sync
 ```
 
-`check` 只读；`sync` 更新生成索引，不改写源 Spec 或 Record。新任务不依赖 `plan.md`、`tasks.md` 或另一平台的私有任务状态。
+`check` 只读；`sync` 更新生成索引，不改写源 Spec 或 Record。
 
 ### 交付内容怎样组织
 

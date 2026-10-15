@@ -226,6 +226,8 @@ function validateDocumentSet(discoveryResult) {
       runId: attributes.run_id,
       title: attributes.title,
       status: attributes.status,
+      entry: attributes.entry ?? null,
+      derivedFrom: derivedFromList(attributes.derived_from),
       spec: attributes.spec,
       specRevision: attributes.spec_revision,
       ...(attributes.schema === 1 ? { planRevision: attributes.plan_revision } : {}),
@@ -238,6 +240,16 @@ function validateDocumentSet(discoveryResult) {
       body: entry.document.body,
     };
   }).sort((left, right) => String(left.runId).localeCompare(String(right.runId)));
+
+  // A dangling lineage link hides the Run a reader should reuse, but the Record itself stays usable.
+  const runIds = new Set(records.map((record) => record.runId));
+  for (const record of records) {
+    for (const parent of record.derivedFrom) {
+      if (!runIds.has(parent)) {
+        addNotice("unknown-derived-from", record.relativePath, `derived_from ${parent} is not a known Run`);
+      }
+    }
+  }
 
   let architecture = null;
   if (architectureEntries.length === 0) {
@@ -348,6 +360,17 @@ function validateRecordFields(attributes, path, addError) {
     addError("unexpected-record-field", path, "schema 2 Record must not contain plan_revision");
   }
 
+  // entry and derived_from are optional so Records written before reuse lineage stay valid.
+  if (attributes.entry !== undefined && attributes.entry !== null && !isNonemptyString(attributes.entry)) {
+    addError("invalid-string", path, "entry must be a non-empty string or null");
+  }
+  const derivedFrom = attributes.derived_from;
+  if (derivedFrom !== undefined && derivedFrom !== null
+      && !isNonemptyString(derivedFrom)
+      && !(Array.isArray(derivedFrom) && derivedFrom.length > 0 && derivedFrom.every(isNonemptyString))) {
+    addError("invalid-derived-from", path, "derived_from must be null, a Run ID, or a non-empty list of Run IDs");
+  }
+
   const association = attributes.schema === 1
     ? [attributes.spec, attributes.spec_revision, attributes.plan_revision]
     : [attributes.spec, attributes.spec_revision];
@@ -440,6 +463,14 @@ function validateSpecId(value, field, path, addError) {
       && (typeof value !== "string" || !SPEC_ID_PATTERN.test(value))) {
     addError("invalid-spec-id", path, `${field} must match SPEC-[0-9]{3,}`);
   }
+}
+
+function derivedFromList(value) {
+  // Purpose: normalize Record lineage; Input: derived_from attribute; Output: array of Run IDs, empty when absent or invalid.
+  if (isNonemptyString(value)) {
+    return [value];
+  }
+  return Array.isArray(value) ? value.filter(isNonemptyString) : [];
 }
 
 function validateStringFields(attributes, fields, path, addError) {

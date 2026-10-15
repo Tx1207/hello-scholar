@@ -35,8 +35,8 @@ class ProjectInstructionsTests(unittest.TestCase):
         for text in (english, chinese):
             self.assertIn("hello-scholar docs check", text)
             self.assertIn("hello-scholar docs sync", text)
-            self.assertIn("plan.md", text)
-            self.assertIn("tasks.md", text)
+            self.assertNotIn("plan.md", text)
+            self.assertNotIn("tasks.md", text)
             self.assertIn(
                 "{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}",
                 text,

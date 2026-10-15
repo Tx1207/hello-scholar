@@ -141,11 +141,19 @@ function renderTopicIndex(topic, specs, specsById) {
 function renderRunIndex(records, specsById) {
   // Purpose: render the root Run Index; Input: normalized Records and Spec map; Output: generated Markdown bytes.
   const indexPath = "runs/INDEX.md";
+  const recordsById = new Map(records.map((record) => [record.runId, record]));
   const rows = records.map((record) => {
     const spec = record.spec === null ? null : specsById.get(record.spec);
+    // Entry and lineage let an agent find a Run to reuse before writing a new experiment.
+    const derivedFrom = (record.derivedFrom || []).map((runId) => {
+      const parent = recordsById.get(runId);
+      return parent ? markdownLink(runId, indexPath, parent.relativePath) : escapeCell(runId);
+    });
     return [
       escapeCell(record.runId),
       escapeCell(record.status),
+      record.entry ? escapeCell(record.entry) : "-",
+      derivedFrom.length > 0 ? derivedFrom.join(", ") : "-",
       spec ? markdownLink(record.spec, indexPath, spec.relativePath) : "-",
       record.specRevision === null ? "-" : escapeCell(record.specRevision),
       escapeCell(record.decision),
@@ -158,7 +166,7 @@ function renderRunIndex(records, specsById) {
     "# Runs",
     "",
     ...table(
-      ["Run", "Status", "Spec", "Spec Revision", "Decision", "Summary", "Record"],
+      ["Run", "Status", "Entry", "Derived From", "Spec", "Spec Revision", "Decision", "Summary", "Record"],
       rows
     ),
     "",

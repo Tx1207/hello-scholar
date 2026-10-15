@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Specs"
+  short_description: "Save and revise durable design and acceptance"
+  default_prompt: "Use $manage-specs to save this design as a Spec with its decisions, open questions, and acceptance criteria."
