@@ -110,7 +110,7 @@
 主 Agent 只在本轮最后一条消息使用以下回答模板：
 
 ```text
-{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}
+{status} - {Skill, agent, principle, or design standard names}
 
 {result, evidence, impact, and remaining uncertainty}
 

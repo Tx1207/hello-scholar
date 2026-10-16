@@ -54,7 +54,7 @@ Report the result, affected scope, fresh verification, and any remaining uncerta
 The main agent's final message uses this wrapper only as the last message of a turn:
 
 ```text
-{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}
+{status} - {Skill, agent, principle, or design standard names}
 
 {result, evidence, impact, and remaining uncertainty}
 
@@ -64,6 +64,8 @@ The main agent's final message uses this wrapper only as the last message of a t
 The name field may include Skills or agents used in this turn, as well as thinking principles or other design standards actually applied. Combine relevant names with ` · ` when useful, for example `Codex · First principles` or `review · High cohesion, low coupling`; if no specific method applies, use the agent name.
 
 Statuses: `💡直接响应`, `⚡快速执行`, `🔵规划流程`, `✅完成`, `❓等待输入`, `⚠️警告`, `❌错误`. Use `❓等待输入` whenever input or authorization is required; use `✅完成` only when no requested work remains.
+
+Exception: when the turn's deliverable is `synthesize` output, send that text as the entire final message without this wrapper, so it can be copied directly. Every other turn keeps the wrapper.
 
 ## Repository Preferences
 

@@ -22,8 +22,8 @@ class ProjectInstructionsTests(unittest.TestCase):
             self.assertIn("quick_validate.py", text)
         self.assertIn("Current repository language: Chinese", english)
         self.assertIn("当前仓库语言：中文", chinese)
-        self.assertIn("【hello-scholar】", english)
-        self.assertIn("【hello-scholar】", chinese)
+        self.assertNotIn("【hello-scholar】", english)
+        self.assertNotIn("【hello-scholar】", chinese)
 
     def test_portable_roots_include_wrapper_without_repository_specific_commands(self) -> None:
         english = (ROOT / "AGENTS.md").read_text(
@@ -38,9 +38,10 @@ class ProjectInstructionsTests(unittest.TestCase):
             self.assertNotIn("plan.md", text)
             self.assertNotIn("tasks.md", text)
             self.assertIn(
-                "{icon} 【hello-scholar】- {status} - {Skill, agent, principle, or design standard names}",
+                "{status} - {Skill, agent, principle, or design standard names}",
                 text,
             )
+            self.assertNotIn("【hello-scholar】", text)
             self.assertIn("🔄 下一步: {next state or action}", text)
             self.assertIn("❓等待输入", text)
             self.assertIn("✅完成", text)
