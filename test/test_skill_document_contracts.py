@@ -76,6 +76,14 @@ class SkillDocumentContractTests(unittest.TestCase):
         self.assertIn("CLI alone may update", text)
         self.assertIn("assets/architecture-template.md", text)
 
+    def test_synthesize_output_is_exempt_from_the_response_wrapper(self) -> None:
+        skill = (ROOT / "skills/synthesize/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("without the hello-scholar response wrapper", skill)
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("deliverable is `synthesize` output", agents)
+        chinese = (ROOT / "AGENTS-zh.md").read_text(encoding="utf-8")
+        self.assertIn("`synthesize` 产出的文字", chinese)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(
