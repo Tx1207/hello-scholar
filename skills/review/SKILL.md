@@ -29,6 +29,6 @@ For each material `AC-NN`, decide whether it is satisfied, partial, missing, con
 
 ## Report
 
-Lead with material findings. For each, explain the problem, its trigger, its practical consequence, the direct evidence, and the smallest repair or verification direction; use stable identifiers when findings will be discussed. State the reviewed object and state, the checks performed, and the limits of the judgment. If nothing material is supported, say so within that scope; no findings is not proof of correctness. A recommendation does not itself revise the design.
+Lead with material findings. For each, explain the problem, its trigger, its practical consequence, the direct evidence, and the smallest repair or verification direction; use stable identifiers when findings will be discussed. State the reviewed object and state, the checks performed, and the limits of the judgment. If nothing material is supported, say so within that scope; no findings is not proof of correctness. If the same turn also revises the design, map each finding to the change it caused or the reason it was not adopted; otherwise a recommendation does not itself revise the design.
 
 For review by another Agent or model, or a review that will be resumed later, read [Cross-Agent review](references/cross-agent-review.md).

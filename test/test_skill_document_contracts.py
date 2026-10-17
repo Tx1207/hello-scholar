@@ -84,6 +84,19 @@ class SkillDocumentContractTests(unittest.TestCase):
         chinese = (ROOT / "AGENTS-zh.md").read_text(encoding="utf-8")
         self.assertIn("`synthesize` 产出的文字", chinese)
 
+    def test_design_turns_explain_changes_and_hand_off_execution(self) -> None:
+        specs = (ROOT / "skills/manage-specs/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("ready-to-paste execution request", specs)
+        self.assertIn("Revision Notes", specs)
+        english = (ROOT / "skills/manage-specs/assets/spec-template.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "skills/manage-specs/assets/spec-template.zh_CN.md").read_text(encoding="utf-8")
+        self.assertIn("## 6. Revision Notes", english)
+        self.assertIn("## 6. 修订说明", chinese)
+        review = (ROOT / "skills/review/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("map each finding", review)
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("the final message carries the substance on its own", agents)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(

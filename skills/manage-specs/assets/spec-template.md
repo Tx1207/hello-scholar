@@ -41,3 +41,9 @@ superseded_by: null
 | AC-01 | <Observable required outcome> | Pending | None |
 
 <Derive requirements from the user's goal, confirmed rules, and real external contracts. Explain what current evidence supports and its coverage: the Spec revision and code state checked, the real entry point exercised, and what remains unverified. For research, separate answering the question from meeting adoption criteria.>
+
+## 6. Revision Notes
+
+| Revision | Change | Reason and evidence |
+| --- | --- | --- |
+| 1 | Initial design | <User goal or triggering evidence> |

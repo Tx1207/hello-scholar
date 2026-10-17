@@ -90,7 +90,7 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 
 | Event | Main agent responsibility |
 | --- | --- |
-| Ongoing development or research has a reviewable design | Save it in its existing owner, or create a Draft Spec. Include settled decisions and material unknowns; do not wait for every question to be resolved. |
+| Ongoing development or research has a reviewable design | Save it in its existing owner, or create a Draft Spec. Include settled decisions and material unknowns; do not wait for every question to be resolved. Report the changes, reasons, and next actions in the reply, not only the file path. |
 | Scope, behavior, interfaces, constraints, or judgment criteria change | Revise affected design before finishing the turn, even when the code diff is small. Mark unresolved choices as unresolved. |
 | New execution evidence or review disposition changes the current judgment | Update the relevant Spec's evidence and conclusion; preserve each Run's actual conditions and original Spec revision. |
 
@@ -100,7 +100,7 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 ## Communication
 
 - Write for the reader's current question or decision. Lead with the result or recommendation, then the evidence and short rationale that explain it. Give each passage a distinct contribution to understanding; later reasoning should build on an established fact instead of restating it under new headings. Keep the relationships the reader needs and remove detail that does not affect understanding. Links support traceability but do not replace the explanation.
-- A proposal names the affected objects, concrete changes, necessary steps, key tradeoffs, and how it will be judged. A result names what actually changed, the visible behavior or finding, fresh verification and its coverage, and the remaining next step. Do not stop at announcing what you intend to analyze or improve.
+- A proposal names the affected objects, concrete changes, necessary steps, key tradeoffs, and how it will be judged. A result names what actually changed, the visible behavior or finding, fresh verification and its coverage, and the remaining next step. Do not stop at announcing what you intend to analyze or improve. When a turn writes or revises a project document, the final message carries the substance on its own: what changed relative to the previous version, why, and how to proceed. The document is the record; the reader should not need to open it to decide.
 - Distinguish plans, observations, interpretations, recommendations, and adopted decisions. Place material conditions and uncertainty beside the claim they qualify. Preserve technical identifiers, values, units, and guarantees; use natural language, stable terms, explicit actors, and connected sentences. Explain unfamiliar concepts for this reader without replacing them with vague abstractions.
 - Use `synthesize` when the task calls for focused idea organization, experimental synthesis, research notes, or a report. It adds evidence relationships, changes in understanding, and reusable lessons where supported; ordinary replies follow these communication principles directly.
 - Choose the simplest useful presentation: prose for short explanations, tables for comparisons, diagrams for relationships. Use interactive artifacts when changing inputs or dynamic behavior materially helps understanding; create narrated video only when requested and supported by available tools.
@@ -112,7 +112,7 @@ The main agent's final message uses this wrapper only as the last message of a t
 ```text
 {status} - {Skill, agent, principle, or design standard names}
 
-{result, evidence, impact, and remaining uncertainty}
+{design or review: what changed and why, how to proceed, decisions needed; execution: what changed, verification, remaining issues}
 
 🔄 下一步: {next state or action}
 ```

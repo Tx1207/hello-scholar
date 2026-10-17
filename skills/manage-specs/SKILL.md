@@ -25,7 +25,7 @@ A new Spec takes the next global number (counting rejected and superseded IDs, a
 
 Lead with the current recommendation or accepted decision, the objects and behavior that change, and the decisive reason. Connect the problem to a concrete design: who owns each decision and state, how data and control move, what callers observe, and what failures mean. Include the necessary implementation sequence with the check for each meaningful step. Explain a material alternative through the tradeoff that ruled it out.
 
-Separate confirmed facts, assumptions, accepted decisions, and unresolved choices, and say which part of the approach depends on each uncertainty. When revising, keep still-valid constraints; do not replace a complete design with a patch note or quietly turn a suggestion into a requirement.
+Separate confirmed facts, assumptions, accepted decisions, and unresolved choices, and say which part of the approach depends on each uncertainty. When revising, keep still-valid constraints and keep the body as the current design; record what changed and why in Revision Notes instead of stacking old revisions in the body. Do not quietly turn a suggestion into a requirement.
 
 For research, connect the question to a comparison that could change the next choice: baseline and intervention, data and evaluation conditions, controls, repetitions, interpretation rules, budget, and stop conditions. Name the prior Runs and artifacts the design reuses and what differs from them. Keep the cross-Run conclusion here, with links to the Runs.
 
@@ -43,4 +43,13 @@ Use [assets/spec-template.md](assets/spec-template.md) for English or [assets/sp
 
 ## Finish
 
-Read back the changed design for contradictions, missing consequences, and unsupported completion claims, and run `hello-scholar docs check` when available. Return the current choice, concrete changes, revision and status, key evidence, and any decision still blocking progress.
+Read back the changed design for contradictions, missing consequences, and unsupported completion claims, and run `hello-scholar docs check` when available.
+
+The reply, not the Spec file, is what the user reads now. Make it understandable without opening the Spec:
+
+- the decisions that changed relative to the previous revision, stated as decisions rather than section numbers, each with the evidence, review finding, or user decision that caused it;
+- how to proceed: ordered steps, how each is judged, and the budget and stop conditions;
+- choices the user still has to make;
+- the Spec path, revision, and status, last.
+
+When another agent will implement, end with a ready-to-paste execution request in a fenced block: the Spec path and revision, ordered steps, prior Runs and artifacts to reuse, acceptance checks, stop conditions, and what is out of scope.
