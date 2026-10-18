@@ -97,6 +97,14 @@ class SkillDocumentContractTests(unittest.TestCase):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         self.assertIn("the final message carries the substance on its own", agents)
 
+    def test_grilling_deepens_requests_without_enlarging_them(self) -> None:
+        english = (ROOT / "skills/grilling/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Deepen a request instead of enlarging it", english)
+        self.assertIn("rewritten request in a fenced block", english)
+        self.assertIn("deepening a request authorizes no work", english)
+        chinese = (ROOT / "skills/grilling/SKILL.zh_CN.md").read_text(encoding="utf-8")
+        self.assertIn("加深请求，而不是扩大请求", chinese)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(

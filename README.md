@@ -242,7 +242,7 @@ sequenceDiagram
 
 | Skill | 何时使用 | 交付什么 |
 | --- | --- | --- |
-| [grilling](skills/grilling/SKILL.zh_CN.md) | 目标、约束或取舍需要互动澄清 | 已明确的决定、理由和关键未决项，可用于项目之外的想法。 |
+| [grilling](skills/grilling/SKILL.zh_CN.md) | 目标、约束或取舍需要互动澄清，或开工前想把请求挖深 | 已明确的决定、理由和关键未决项；或一份更深入、可直接粘贴的改写请求。可用于项目之外的想法。 |
 | [manage-specs](skills/manage-specs/SKILL.zh_CN.md) | 设计需要长期保存、修订或替代 | 具体方案、约束、判断标准和证据清楚连接的 Spec。 |
 | [record-experiment](skills/record-experiment/SKILL.zh_CN.md) | 一次执行需要作为证据保留，或维护已有运行 | 真实的 Run Record 及有边界的单次解释。 |
 | [review](skills/review/SKILL.zh_CN.md) | 需要独立检查方案、代码或研究证据 | 有实质影响的发现、依据、触发条件和处理方向。 |
