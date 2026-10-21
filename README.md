@@ -40,7 +40,7 @@ Git 项目以仓库根目录为安装目标，其他目录使用当前目录。�
 | Codex | `AGENTS.md` | `.agents/skills/` |
 | Claude Code | `CLAUDE.md` | `.claude/skills/` |
 
-两种安装使用同一份通用规则。安装器保留管理块之外的项目内容，安装本身不创建 Spec 或实验记录。
+两种安装使用同一份通用规则。安装器保留管理块之外的项目内容，安装本身不创建 Spec 或实验记录。安装器还会在项目的 `.gitignore` 中维护一个管理块，忽略 `/artifacts/` 和 `/runs/*/logs/`，让 Run Record 可以进 Git，而 checkpoint 和原始日志不会被误提交；两个客户端共用这一块，最后一个卸载时才移除。
 
 默认 `link` 模式需要保留 CLI 来源及路径。想让项目拥有独立的 Skill 副本时，加上 `--mode copy`：
 
@@ -261,6 +261,24 @@ sequenceDiagram
 ## 项目文件
 
 项目文件保存可被不同 Agent 读取的设计、事实与判断。先沿用已有文档归属；没有既有约定时，使用以下位置。
+
+新项目按生命周期和是否进 Git 安排目录，已有项目沿用原结构，并把实际布局写进 Architecture 第 6 节：
+
+```text
+project/
+├── src/<pkg>/            # 可复用代码
+├── scripts/              # 少量带参数的入口
+├── configs/              # 实验变体用配置表达，不复制脚本
+├── tests/
+├── hello-scholar/        # Spec、Architecture、Handoff（进 Git）
+├── runs/<run-id>/        # record.md、生效配置、小结果汇总（进 Git）
+│   └── logs/             #   原始日志（不进 Git）
+├── data/                 # 数据集（不进 Git，可软链接到数据盘）
+├── artifacts/<run-id>/   # checkpoint、预测结果等大产物（不进 Git，可软链接）
+└── tmp/                  # 临时文件（不进 Git）
+```
+
+Run 目录只放小文件；checkpoint 放在同名的 `artifacts/<run-id>/` 下，Record 写实际路径，派生 Run 引用上游路径而不复制。
 
 | 材料 | 负责保存的内容 | 默认位置 |
 | --- | --- | --- |

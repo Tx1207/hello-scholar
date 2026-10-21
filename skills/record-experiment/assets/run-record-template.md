@@ -48,7 +48,7 @@ summary: <condition and current known facts>
 - stdout:
 - stderr:
 - Results:
-- Checkpoints:
+- Checkpoints (actual path under the artifact root):
 - Exit code / signal:
 - Dashboard / tracking URL:
 

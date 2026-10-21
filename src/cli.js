@@ -77,6 +77,9 @@ function formatSummary(summary) {
       parts.push(`${key} ${summary[key]}`);
     }
   }
+  if (summary.gitignore !== undefined) {
+    parts.push(`gitignore ${summary.gitignore}`);
+  }
   return `${summary.action} ${summary.tool}: ${parts.join(", ")}`;
 }
 

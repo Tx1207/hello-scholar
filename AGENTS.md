@@ -81,6 +81,12 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 - Near complex stages and branches, explain the purpose, ordering, invariant, or fallback that matters to correctness. Do not replace local explanations with a generic entry-point summary.
 - Keep comments short, accurate, and nonduplicative. Review them for missing rationale and stale claims before finishing; do not require a mechanical comment template on every function.
 
+## Project Layout
+
+- Follow the layout recorded in Architecture or the project's established structure. For a new project without one, separate files by lifecycle: reusable code in `src/`, a few parameterized entry points in `scripts/`, experiment variants in `configs/`, project facts in `hello-scholar/` and `runs/`, datasets in `data/`, large outputs in `artifacts/<run-id>/`, and disposable files in `tmp/`. Keep `data/` and `tmp/` out of Git with project ignore rules.
+- Keep `runs/<run-id>/` small: the Record, effective config, raw logs, and small result summaries. Checkpoints, predictions, and other large outputs go under `artifacts/<run-id>/`, and the Record lists their actual paths; a derived Run points to its parent's artifacts instead of copying them.
+- `data/` and `artifacts/` may be symlinks to larger storage. Do not move an established project's files only to match this layout.
+
 ## Durable Design and Evidence
 
 - Find the existing owner before saving a decision. Use `manage-specs` when design, interfaces, invariants, or research and acceptance criteria must persist. Ordinary small changes usually need no new Spec, but still update an existing design they affect.

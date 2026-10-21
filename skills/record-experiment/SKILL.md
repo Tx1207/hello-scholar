@@ -21,7 +21,7 @@ Use `runs/<run-id>/record.md`, where `<run-id>` is `YYYYMMDD-HHMM-<short-topic>`
 
 One Run is one research execution. Startup errors, fixes, and retries before it starts are appended to its planned Record. After a research execution fails or ends, another execution is a new Run that sets `derived_from` to the earlier one, reuses its launch plan, and resumes from completed stages or checkpoints when conditions allow. For an already executed experiment, record the available evidence and its gaps afterward without rerunning.
 
-Before an authorized launch, capture what reproduction needs: exact command and CWD, entry point, effective config and overrides, seed, data and input artifacts, code version, environment and hardware, model or checkpoint, intended stdout, stderr, and result paths, expected and failure signals, and the stop rule. Write `Unknown` with a reason instead of guessing. Use [assets/run-record-template.md](assets/run-record-template.md) for English or [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md) for Chinese, following the requested or project language.
+Before an authorized launch, capture what reproduction needs: exact command and CWD, entry point, effective config and overrides, seed, data and input artifacts, code version, environment and hardware, model or checkpoint, intended stdout, stderr, and result paths and the checkpoint location under the artifact root, expected and failure signals, and the stop rule. Write `Unknown` with a reason instead of guessing. Use [assets/run-record-template.md](assets/run-record-template.md) for English or [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md) for Chinese, following the requested or project language.
 
 ## Execute and interpret
 

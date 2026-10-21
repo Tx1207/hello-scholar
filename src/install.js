@@ -16,6 +16,7 @@ const {
   upsertInstructionBlock,
   wrapBlock,
 } = require("./instruction-blocks");
+const { inspectGitignore, removeGitignoreBlock, writeGitignore } = require("./gitignore-block");
 const { resolveHelloScholarRoot, resolveProjectRoot } = require("./project-root");
 const { discoverSkills } = require("./skill-discovery");
 
@@ -209,6 +210,7 @@ function inspectInstall(options) {
     };
   });
   const instruction = inspectInstruction(projectRoot, repoRoot, tool);
+  const gitignore = inspectGitignore(projectRoot);
   const conflicts = parentConflicts.map((inspected) =>
     conflictFor(projectRoot, inspected.targetPath, inspected)
   );
@@ -220,6 +222,9 @@ function inspectInstall(options) {
   if (instruction.state === "managed-conflict" || instruction.state === "unowned") {
     conflicts.push(conflictFor(projectRoot, instruction.targetPath, instruction));
   }
+  if (gitignore.state === "managed-conflict" || gitignore.state === "unowned") {
+    conflicts.push(conflictFor(projectRoot, gitignore.targetPath, gitignore));
+  }
 
   return {
     tool,
@@ -230,6 +235,7 @@ function inspectInstall(options) {
     skillTargets,
     retiredTargets,
     instruction,
+    gitignore,
     conflicts,
   };
 }
@@ -312,6 +318,7 @@ function install(options) {
     summary[result] += 1;
   }
   writeInstruction(plan);
+  summary.gitignore = writeGitignore(plan.gitignore);
   return summary;
 }
 
@@ -332,6 +339,11 @@ function removeInstruction(projectRoot, repoRoot, tool) {
   return "removed";
 }
 
+function otherToolInstalled(projectRoot, tool) {
+  const other = tool === "codex" ? "claude" : "codex";
+  return hasInstructionBlock(readFileIfExists(instructionPath(projectRoot, other)), other);
+}
+
 function uninstall(options) {
   // Purpose: uninstall only unchanged, provably owned current and retired assets; modified copies, instruction blocks, and foreign targets remain untouched.
   const tool = options.tool;
@@ -349,6 +361,8 @@ function uninstall(options) {
   }
   const instructionResult = removeInstruction(projectRoot, repoRoot, tool);
   summary[instructionResult] += 1;
+  // Both tools share one .gitignore block, so it stays while the other tool is still installed.
+  summary.gitignore = otherToolInstalled(projectRoot, tool) ? "kept" : removeGitignoreBlock(projectRoot);
   for (const name of names) {
     const targetDir = path.join(projectRoot, config.skillRoot, name);
     const sourceDir = sources.get(name) || path.join(repoRoot, "skills", name);

@@ -21,6 +21,7 @@ const {
   uninstall,
 } = require("../src/install");
 const { discoverSkills, parseSkillName } = require("../src/skill-discovery");
+const { gitignoreBlock } = require("../src/gitignore-block");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
 const CURRENT_SKILLS = [
@@ -814,5 +815,78 @@ test("linked managed parents block installation and obsolete state files are unt
     fs.rmSync(linkedParentProject, { recursive: true, force: true });
     fs.rmSync(linkedStateProject, { recursive: true, force: true });
     fs.rmSync(externalRoot, { recursive: true, force: true });
+  }
+});
+
+test("gitignore block is shared by both tools and preserves user lines", () => {
+  const projectRoot = makeTempProject();
+  const gitignorePath = path.join(projectRoot, ".gitignore");
+  try {
+    fs.writeFileSync(gitignorePath, "node_modules/\r\n", "utf8");
+    const first = install({ tool: "codex", mode: "link", projectRoot, repoRoot: REPO_ROOT });
+    assert.equal(first.gitignore, "updated");
+    const expected = `node_modules/\r\n\r\n${gitignoreBlock("\r\n")}\r\n`;
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), expected);
+
+    assert.equal(install({ tool: "codex", mode: "link", projectRoot, repoRoot: REPO_ROOT }).gitignore, "unchanged");
+    assert.equal(install({ tool: "claude", mode: "link", projectRoot, repoRoot: REPO_ROOT }).gitignore, "unchanged");
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), expected);
+
+    assert.equal(uninstall({ tool: "codex", projectRoot, repoRoot: REPO_ROOT }).gitignore, "kept");
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), expected);
+    assert.equal(uninstall({ tool: "claude", projectRoot, repoRoot: REPO_ROOT }).gitignore, "removed");
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), "node_modules/\r\n");
+  } finally {
+    fs.rmSync(projectRoot, { recursive: true, force: true });
+  }
+});
+
+test("fresh install creates gitignore and uninstall deletes a file it alone owns", () => {
+  const projectRoot = makeTempProject();
+  const gitignorePath = path.join(projectRoot, ".gitignore");
+  try {
+    assert.equal(install({ tool: "claude", mode: "copy", projectRoot, repoRoot: REPO_ROOT }).gitignore, "created");
+    const text = fs.readFileSync(gitignorePath, "utf8");
+    assert.equal(text, `${gitignoreBlock()}\n`);
+    assert.match(text, /^\/artifacts\/$/m);
+    assert.match(text, /^\/runs\/\*\/logs\/$/m);
+    assert.doesNotMatch(text, /record\.md|^\/runs\/$/m);
+    uninstall({ tool: "claude", projectRoot, repoRoot: REPO_ROOT });
+    assert.equal(fs.existsSync(gitignorePath), false);
+  } finally {
+    fs.rmSync(projectRoot, { recursive: true, force: true });
+  }
+});
+
+test("edited gitignore block needs approval and malformed markers block install", async () => {
+  const projectRoot = makeTempProject();
+  const gitignorePath = path.join(projectRoot, ".gitignore");
+  try {
+    install({ tool: "codex", mode: "link", projectRoot, repoRoot: REPO_ROOT });
+    const edited = fs.readFileSync(gitignorePath, "utf8").replace("/artifacts/\n", "");
+    fs.writeFileSync(gitignorePath, edited, "utf8");
+
+    const declined = makeCliIo("no\n");
+    await main(["install", "codex"], {
+      projectRoot, repoRoot: REPO_ROOT, stdin: declined.stdin, stdout: declined.stdout,
+    });
+    assert.match(declined.getOutput(), /conflict managed-content-conflict \.gitignore/);
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), edited);
+    assert.equal(uninstall({ tool: "codex", projectRoot, repoRoot: REPO_ROOT }).gitignore, "skipped");
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), edited);
+
+    const approved = makeCliIo("yes\n");
+    await main(["install", "codex"], {
+      projectRoot, repoRoot: REPO_ROOT, stdin: approved.stdin, stdout: approved.stdout,
+    });
+    assert.equal(fs.readFileSync(gitignorePath, "utf8"), `${gitignoreBlock()}\n`);
+
+    fs.writeFileSync(gitignorePath, "# HELLO-SCHOLAR:BEGIN\n/artifacts/\n", "utf8");
+    const plan = inspectInstall({ tool: "codex", mode: "link", projectRoot, repoRoot: REPO_ROOT });
+    const conflict = plan.conflicts.find((item) => item.path === ".gitignore");
+    assert.equal(conflict.code, "unowned-target");
+    assert.equal(conflict.approvable, false);
+  } finally {
+    fs.rmSync(projectRoot, { recursive: true, force: true });
   }
 });

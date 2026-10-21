@@ -44,7 +44,7 @@ summary: <问题或条件，加上当前已知事实>
 
 正文顺序：当前发现与解释、问题与比较（包括相对 `derived_from` 的差异）、执行信息、产物位置、重要事件。这些分区只为便于查找，可按内容合并或改名；已有 Record 不必为匹配新模板而重排。
 
-原始进程输出写入 Run 下的 `logs/stdout.log` 和 `logs/stderr.log`。启动检查使用独立日志，例如 `logs/startup-01.stdout.log`，或引用其已有位置。大型指标留在 `results/` 或 `outputs/`；Record 保存精简数值、路径和退出码或 signal。远程任务在下载产物前使用真实远程 URI。
+原始进程输出写入 Run 下的 `logs/stdout.log` 和 `logs/stderr.log`。启动检查使用独立日志，例如 `logs/startup-01.stdout.log`，或引用其已有位置。Run 目录只放 Record、原始日志、实际生效的配置和小的结果汇总。Checkpoint、预测结果和其他大产物放在项目的产物根目录下，通常是 `artifacts/<run-id>/`，或入口本来写入的位置；Record 记录其实际路径。不要把它们复制进 Run 目录。派生 Run 引用上游 Run 的 checkpoint 路径，不复制。远程任务在下载产物前使用真实远程 URI。
 
 ## 历史与事后补记 Record
 

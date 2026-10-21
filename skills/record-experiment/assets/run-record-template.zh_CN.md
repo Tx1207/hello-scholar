@@ -48,7 +48,7 @@ summary: <条件与当前已知事实>
 - stdout:
 - stderr:
 - 结果:
-- Checkpoint:
+- Checkpoint（产物根目录下的实际路径）:
 - 退出码 / signal:
 - Dashboard / tracking URL:
 

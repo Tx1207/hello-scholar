@@ -105,6 +105,19 @@ class SkillDocumentContractTests(unittest.TestCase):
         chinese = (ROOT / "skills/grilling/SKILL.zh_CN.md").read_text(encoding="utf-8")
         self.assertIn("加深请求，而不是扩大请求", chinese)
 
+    def test_large_artifacts_stay_out_of_run_directories(self) -> None:
+        for name in ("AGENTS.md", "AGENTS-zh.md"):
+            text = (ROOT / name).read_text(encoding="utf-8")
+            self.assertIn("artifacts/<run-id>/", text)
+        reference = (
+            ROOT / "skills/record-experiment/references/status-and-fields.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("Do not copy them into the Run directory", reference)
+        architecture = (
+            ROOT / "skills/docs-maintenance/assets/architecture-template.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("artifact root", architecture)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(

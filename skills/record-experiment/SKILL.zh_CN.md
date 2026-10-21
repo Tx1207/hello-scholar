@@ -21,7 +21,7 @@ description: 启动科研执行前，查找可复用或可派生的已有 Run；
 
 一个 Run 对应一次科研执行。正式启动前的错误、修复和重试追加到它的 planned Record。正式执行失败或结束后，再次执行另建 Run，`derived_from` 指向前一次，复用其启动计划，条件允许时从已完成阶段或 checkpoint 继续。已经执行过的实验事后补记现有证据及缺口，不重跑。
 
-获授权的运行启动前，记录复现所需信息：精确命令与 CWD、入口、实际生效的配置与覆盖参数、seed、数据与输入产物、代码版本、环境与硬件、model 或 checkpoint、预期 stdout、stderr 与结果路径、预期与失败信号、停止规则。无法获得的写 `Unknown` 并说明原因，不猜测。英文使用 [assets/run-record-template.md](assets/run-record-template.md)，中文使用 [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md)，按指定语言或项目语言选择。
+获授权的运行启动前，记录复现所需信息：精确命令与 CWD、入口、实际生效的配置与覆盖参数、seed、数据与输入产物、代码版本、环境与硬件、model 或 checkpoint、预期 stdout、stderr 与结果路径以及产物根目录下的 checkpoint 位置、预期与失败信号、停止规则。无法获得的写 `Unknown` 并说明原因，不猜测。英文使用 [assets/run-record-template.md](assets/run-record-template.md)，中文使用 [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md)，按指定语言或项目语言选择。
 
 ## 执行与解释
 
