@@ -118,6 +118,21 @@ class SkillDocumentContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("artifact root", architecture)
 
+    def test_release_code_exports_one_way_and_stops_before_publishing(self) -> None:
+        skill = (ROOT / "skills/release-code/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("never developed in parallel", skill)
+        self.assertIn("orphan branch", skill)
+        self.assertIn("refs/heads/release:refs/heads/main", skill)
+        self.assertIn("compare each result with the value reported in the paper", skill)
+        self.assertIn("not every Run Record", skill)
+        self.assertIn("requires the user's explicit authorization", skill)
+        self.assertIn("references/release-checks.md", skill)
+        self.assertIn("assets/readme-template.md", skill)
+        for name in ("readme-template.md", "readme-template.zh_CN.md"):
+            template = (ROOT / "skills/release-code/assets" / name).read_text(encoding="utf-8")
+            self.assertIn("```bibtex", template)
+            self.assertIn("± 0.002", template)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(

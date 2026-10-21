@@ -10,7 +10,7 @@ const ROOT = path.resolve(__dirname, "..");
 const MARKER = ".hello-scholar-install.json";
 const CURRENT_SKILLS = [
   "docs-maintenance", "grilling", "handoff", "manage-specs",
-  "ponytail", "record-experiment", "review", "synthesize",
+  "ponytail", "record-experiment", "release-code", "review", "synthesize",
 ];
 
 // Keep paths and bytes, including empty directories, independent of the source lifetime.

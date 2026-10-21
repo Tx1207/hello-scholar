@@ -65,7 +65,7 @@ class ProjectInstructionsTests(unittest.TestCase):
 
     def test_readme_presents_one_default_catalog_without_optional_groups(self) -> None:
         text = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn("全部 8 个 Skills", text)
+        self.assertIn("全部 9 个 Skills", text)
         self.assertNotIn("hello-scholar install codex --with", text)
 
 

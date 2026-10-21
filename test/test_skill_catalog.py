@@ -18,6 +18,7 @@ CURRENT = {
     "grilling",
     "ponytail",
     "synthesize",
+    "release-code",
 }
 RETIRED = {
     "converge-to-spec",
@@ -47,7 +48,7 @@ def frontmatter_name(text: str) -> str:
 
 
 class SkillCatalogTests(unittest.TestCase):
-    def test_catalog_contains_exactly_eight_default_skills(self) -> None:
+    def test_catalog_contains_exactly_nine_default_skills(self) -> None:
         discovered = {
             path.parent.name for path in SKILLS.glob("*/SKILL.md") if path.is_file()
         }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Code"
+  short_description: "Derive a reproducible public release from research code"
+  default_prompt: "Use $release-code to prepare a public release that reproduces the results reported in the paper, without leaking internal code or history."

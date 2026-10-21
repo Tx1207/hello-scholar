@@ -31,6 +31,7 @@ const CURRENT_SKILLS = [
   "manage-specs",
   "ponytail",
   "record-experiment",
+  "release-code",
   "review",
   "synthesize",
 ];
@@ -229,7 +230,7 @@ test("instruction replacement and removal preserve text beside blocks at file bo
   }
 });
 
-test("discovery returns exactly the eight independent Skills and no retired name", () => {
+test("discovery returns exactly the nine independent Skills and no retired name", () => {
   const names = listSkillNames();
   assert.deepEqual(names, CURRENT_SKILLS);
   assert.deepEqual(names.filter((name) => RETIRED_SKILLS.includes(name)), []);
@@ -592,7 +593,7 @@ test("CLI upgrade retires all four replaced names and retains grilling, Spec and
           repoRoot, projectRoot, stdin: io.stdin, stdout: io.stdout,
         });
         assert.doesNotMatch(io.getOutput(), /Type "yes"/);
-        assert.match(io.getOutput(), /installed 3, updated 5, removed 4, skipped 0/);
+        assert.match(io.getOutput(), /installed 4, updated 5, removed 4, skipped 0/);
         assert.deepEqual(fs.readdirSync(skillRoot).sort(), CURRENT_SKILLS);
         for (const name of CURRENT_SKILLS) {
           const target = path.join(skillRoot, name);
