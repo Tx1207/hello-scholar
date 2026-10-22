@@ -37,7 +37,7 @@ summary: <条件与当前已知事实>
 - 数据版本 / 划分:
 - 输入产物:
 - Model / checkpoint:
-- 代码版本（Git 提交与工作区状态，或快照路径）:
+- 代码版本（Git 提交；正式执行从已提交的代码启动）:
 - 机器 / GPU / 环境:
 - 预期信号:
 - 失败信号:
@@ -48,7 +48,7 @@ summary: <条件与当前已知事实>
 - stdout:
 - stderr:
 - 结果:
-- Checkpoint（产物根目录下的实际路径）:
+- Checkpoint（实际路径，默认在 artifacts/<run-id>/ 下）:
 - 退出码 / signal:
 - Dashboard / tracking URL:
 

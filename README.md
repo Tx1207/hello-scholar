@@ -2,11 +2,11 @@
 
 **让开发方案、科研实验和协作上下文留在项目中。**
 
-hello-scholar 是面向科研与开发的 Agent 工作流，提供[通用工程规则](AGENTS-zh.md)、九个独立 Skills 和文档 CLI。你用自然语言描述目标，Codex、Claude Code 等 Agent 根据任务选择方法，把具体方案、实际执行和关键判断保存为可接续的项目文件。
+hello-scholar 是面向科研与开发的 Agent 工作流，提供[通用工程规则](AGENTS-zh.md)、十个独立 Skills 和文档 CLI。你用自然语言描述目标，Codex、Claude Code 等 Agent 根据任务选择方法，把具体方案、实际执行和关键判断保存为可接续的项目文件。
 
 它适合需要持续迭代的开发项目、需要比较与复现的科研实验，以及经常切换会话或协作 Agent 的工作。日常小修改直接完成；需要长期保留的设计和证据按各自用途保存。
 
-[快速开始](#快速开始) · [开发工作流](#开发工作流) · [五种思考原则](#五种思考原则) · [跨 Agent 协作](#跨-agent-协作) · [科研工作流](#科研工作流) · [九个 Skills](#九个-skills) · [项目文件](#项目文件) · [安装与维护](#安装与维护)
+[快速开始](#快速开始) · [开发工作流](#开发工作流) · [五种思考原则](#五种思考原则) · [跨 Agent 协作](#跨-agent-协作) · [科研工作流](#科研工作流) · [十个 Skills](#十个-skills) · [项目文件](#项目文件) · [安装与维护](#安装与维护)
 
 ## 快速开始
 
@@ -33,7 +33,7 @@ hello-scholar install codex
 hello-scholar install claude
 ```
 
-Git 项目以仓库根目录为安装目标，其他目录使用当前目录。安装默认包含**全部 9 个 Skills**。
+Git 项目以仓库根目录为安装目标，其他目录使用当前目录。安装默认包含**全部 10 个 Skills**。
 
 | 客户端 | 项目规则 | Skill 目录 |
 | --- | --- | --- |
@@ -218,7 +218,7 @@ sequenceDiagram
 
 昂贵、远程、GPU 或临时产物本身不足以说明值得建 Record。正式运行由 `record-experiment` 保存事实，主 Agent 负责总体设计与跨 Run 判断。补记已有实验依据真实材料完成，不为补文档重跑。
 
-启动准备可以在同一 planned Run 中续写：错误摘要和修复写入 `record.md`，各次原始日志分别保存到 `logs/` 或引用已有位置。正式实验开始后继续维护该记录；正式执行失败后重新运行则另建 Run，并保留原失败证据。
+启动准备可以在同一 planned Run 中续写：错误摘要和修复写入 `record.md`，各次原始日志分别保存为 `runs/<run-id>/logs/startup-NN.*`，或引用已有位置。正式实验开始后继续维护该记录；正式执行失败后，获得授权再另建 Run，`derived_from` 指向失败的那次，并保留原失败证据。
 
 ### 从结果形成认识，再决定下一步
 
@@ -246,9 +246,9 @@ sequenceDiagram
 做完停在本地，告诉我复现情况和推送命令。
 ```
 
-## 九个 Skills
+## 十个 Skills
 
-全部 9 个 Skills 随安装提供，可以独立使用。主 Agent 负责整体目标、通用设计、普通实现、科研设计、验证与事实同步；专项 Skill 提供对应工作的判断方法。
+全部 10 个 Skills 随安装提供，可以独立使用。主 Agent 负责整体目标、通用设计、普通实现、科研设计、验证与事实同步；专项 Skill 提供对应工作的判断方法。
 
 | Skill | 何时使用 | 交付什么 |
 | --- | --- | --- |
@@ -258,6 +258,7 @@ sequenceDiagram
 | [review](skills/review/SKILL.zh_CN.md) | 需要独立检查方案、代码或研究证据 | 有实质影响的发现、依据、触发条件和处理方向。 |
 | [ponytail](skills/ponytail/SKILL.zh_CN.md) | 指定改动或模块出现非必要复杂性 | 实际简化、保留行为的依据及相关验证。 |
 | [synthesize](skills/synthesize/SKILL.zh_CN.md) | 整理思路、实验结果、研究笔记或周报 | 有证据支撑的认识、影响和有条件的可复用经验。 |
+| [remote-run](skills/remote-run/SKILL.zh_CN.md) | AI 工具在本地，代码要在通过 SSH 访问的 GPU 服务器（例如离线服务器）上运行 | 同步、前后台运行、日志、停止和拉回结果的脚本，写入项目的远程执行规则，以及真实服务器上的验收结果。 |
 | [release-code](skills/release-code/SKILL.zh_CN.md) | 把研究代码整理成可复现的开源版本，或在研究代码变化后更新它 | 在独立分支上组装好的公开版本、泄漏检查结果，以及逐条对照论文报告结果的复现结论；推送需另行授权。 |
 | [docs-maintenance](skills/docs-maintenance/SKILL.zh_CN.md) | 检查文档、同步导航或维护已采用架构 | 一致的项目说明、检查结果或生成索引。 |
 | [handoff](skills/handoff/SKILL.zh_CN.md) | 换会话、换 Agent 或交接未完成任务 | 能从具体入口继续工作的交接文件。 |
@@ -283,7 +284,7 @@ project/
 ├── tests/
 ├── hello-scholar/        # Spec、Architecture、Handoff（进 Git）
 ├── runs/<run-id>/        # record.md、生效配置、小结果汇总（进 Git）
-│   └── logs/             #   原始日志（不进 Git）
+│   └── logs/             #   原始日志，含启动检查 startup-NN（不进 Git）
 ├── data/                 # 数据集（不进 Git，可软链接到数据盘）
 ├── artifacts/<run-id>/   # checkpoint、预测结果等大产物（不进 Git，可软链接）
 └── tmp/                  # 临时文件（不进 Git）

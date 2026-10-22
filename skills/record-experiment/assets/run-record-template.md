@@ -37,7 +37,7 @@ summary: <condition and current known facts>
 - Data version / split:
 - Input artifacts:
 - Model / checkpoint:
-- Code version (Git commit and working-tree state, or snapshot path):
+- Code version (Git commit; a research execution starts from a committed tree):
 - Machine / GPU / environment:
 - Expected signal:
 - Failure signal:
@@ -48,7 +48,7 @@ summary: <condition and current known facts>
 - stdout:
 - stderr:
 - Results:
-- Checkpoints (actual path under the artifact root):
+- Checkpoints (actual path, by default under artifacts/<run-id>/):
 - Exit code / signal:
 - Dashboard / tracking URL:
 

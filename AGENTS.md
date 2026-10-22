@@ -45,7 +45,7 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 ## Research in Useful Increments
 
 - Frame each increment around an uncertainty whose answer changes the next choice. One increment may use several Runs; an exploratory question need not start with a mature hypothesis. Keep the overall research design and cross-Run judgment in the Spec or its existing project owner.
-- Before designing or launching any execution, search existing Runs (`runs/INDEX.md`, then search `record.md`, entry scripts, configs, and `results/` with `rg` or `grep`) for work that answers the same or an overlapping question. In the plan, state which prior Run and artifacts are reused, what differs, and why any new execution is needed.
+- Before designing or launching any execution, search existing Runs (`runs/INDEX.md`, then search `runs/*/record.md`, entry scripts, configs, `runs/*/results/`, and `artifacts/` with `rg` or `grep`) for work that answers the same or an overlapping question. In the plan, state which prior Run and artifacts are reused, what differs, and why any new execution is needed.
 - Prefer, in order: reuse an existing result (no run) > run only the missing cells (e.g. a new checkpoint step, one extra dataset) > rerun an existing entry point with changed arguments or config > modify the existing entry point > write a new script. Choosing a lower option requires a concrete reason, such as incompatible conditions or a changed code path.
 - A completed Run with intact artifacts is valid research evidence. The fresh-evidence rule applies to verifying code changes, not to reproducing prior research results. Rerun only when code, data, or evaluation conditions changed, or a concrete doubt exists.
 - Express variations (step, lambda, dataset, seed) as arguments or config of an existing entry point; never copy a script to change constants. Editing a shared script is allowed: a Run stays reproducible through its recorded code version and config, not by freezing scripts.
@@ -83,7 +83,7 @@ Use a method only when it resolves a live uncertainty. Stop clarifying when rema
 
 ## Project Layout
 
-- Follow the layout recorded in Architecture or the project's established structure. For a new project without one, separate files by lifecycle: reusable code in `src/`, a few parameterized entry points in `scripts/`, experiment variants in `configs/`, project facts in `hello-scholar/` and `runs/`, datasets in `data/`, large outputs in `artifacts/<run-id>/`, and disposable files in `tmp/`. Keep `data/` and `tmp/` out of Git with project ignore rules.
+- Follow the layout recorded in Architecture or the project's established structure. For a new project without one, separate files by lifecycle: reusable code in `src/`, a few parameterized entry points in `scripts/`, experiment variants in `configs/`, project facts in `hello-scholar/` and `runs/`, datasets in `data/`, large outputs under the artifact root, `artifacts/<run-id>/` by default, and disposable files in `tmp/`. Keep `data/` and `tmp/` out of Git with project ignore rules. When a new project adopts this layout, record it in section 6, File and Run Artifact Locations, of `hello-scholar/architecture.md` as part of setting up the project.
 - Keep `runs/<run-id>/` small: the Record, effective config, raw logs, and small result summaries. Checkpoints, predictions, and other large outputs go under `artifacts/<run-id>/`, and the Record lists their actual paths; a derived Run points to its parent's artifacts instead of copying them.
 - `data/` and `artifacts/` may be symlinks to larger storage. Do not move an established project's files only to match this layout.
 
@@ -132,5 +132,6 @@ Exception: when the turn's deliverable is `synthesize` output, send that text as
 ## Language and Data Safety
 
 - Follow the language explicitly requested for the task, otherwise the target file or project's established language. Preserve technical identifiers and required template fields.
-- Never commit secrets. Do not add large binaries, model weights, datasets, checkpoints, experiment outputs/results/logs, build artifacts, or archives to Git by default.
+- Never commit secrets. Do not add large binaries, model weights, datasets, checkpoints, raw experiment logs, large outputs, build artifacts, or archives to Git by default. Run Records, effective configs, and the small result summaries a Record cites under `runs/<run-id>/` may be tracked.
 - Before staging or committing, inspect new file sizes and the intended diff. Exclude unnecessary generated files with precise ignore rules; ask before tracking a required large artifact or changing history.
+- Write commit messages in the Conventional Commits form `<type>(<optional scope>): <summary>`, following the repository's existing message language. Use `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`, or `chore`, and `exp` for experiment code and configs. Keep the summary imperative, under 72 characters, and about what changed; add a body for why when it is not obvious, and mark a breaking change with `!` after the type, such as `feat(eval)!: report DISTS per sequence`.

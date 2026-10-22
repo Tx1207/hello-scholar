@@ -9,7 +9,7 @@ Make one execution understandable, recoverable, and reusable: what question it a
 
 ## Start from prior Runs
 
-Before planning a new execution, scan `runs/INDEX.md` by entry point and topic, then search Records, configs, and `results/` for the same or an overlapping question. Prefer reusing a result, running only the missing cells, or rerunning an existing entry point with changed arguments over writing a new script. When a new Run builds on an earlier one, set `derived_from` to that Run and state what differs and which artifacts are reused, so a reader sees the change without comparing two Records.
+Before planning a new execution, scan `runs/INDEX.md` by entry point and topic, then search Records, configs, `runs/*/results/`, and `artifacts/` for the same or an overlapping question. Prefer reusing a result, running only the missing cells, or rerunning an existing entry point with changed arguments over writing a new script. When a new Run builds on an earlier one, set `derived_from` to that Run and state what differs and which artifacts are reused, so a reader sees the change without comparing two Records.
 
 ## Decide what is worth preserving
 
@@ -21,7 +21,7 @@ Use `runs/<run-id>/record.md`, where `<run-id>` is `YYYYMMDD-HHMM-<short-topic>`
 
 One Run is one research execution. Startup errors, fixes, and retries before it starts are appended to its planned Record. After a research execution fails or ends, another execution is a new Run that sets `derived_from` to the earlier one, reuses its launch plan, and resumes from completed stages or checkpoints when conditions allow. For an already executed experiment, record the available evidence and its gaps afterward without rerunning.
 
-Before an authorized launch, capture what reproduction needs: exact command and CWD, entry point, effective config and overrides, seed, data and input artifacts, code version, environment and hardware, model or checkpoint, intended stdout, stderr, and result paths and the checkpoint location under the artifact root, expected and failure signals, and the stop rule. Write `Unknown` with a reason instead of guessing. Use [assets/run-record-template.md](assets/run-record-template.md) for English or [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md) for Chinese, following the requested or project language.
+Before an authorized launch, capture what reproduction needs: exact command and CWD, entry point, effective config and overrides, seed, data and input artifacts, code version, environment and hardware, model or checkpoint, intended stdout, stderr, and result paths and the checkpoint location under the artifact root (`artifacts/<run-id>/` by default, or the root recorded in Architecture), expected and failure signals, and the stop rule. Write `Unknown` with a reason instead of guessing. Start the research execution from a committed tree: check the diff for large or secret files, commit the pending changes with a message about what changed in the project's commit convention, and record that commit as the code version. This commit is part of launching the authorized execution and needs no separate approval; startup checks and ordinary jobs may run on uncommitted code. Use [assets/run-record-template.md](assets/run-record-template.md) for English or [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md) for Chinese, following the requested or project language.
 
 ## Execute and interpret
 

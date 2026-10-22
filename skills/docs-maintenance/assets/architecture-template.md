@@ -30,7 +30,7 @@ updated: YYYY-MM-DD
 
 ## 6. File and Run Artifact Locations
 
-<Record the project's actual layout: where reusable code, entry points, and experiment configs live; the data root and the artifact root, including where any symlink points; what each `runs/<run-id>/` directory contains; and which paths are tracked in Git and which are ignored. Agents read this section to decide where new files go.>
+<Record the project's actual layout: where reusable code, entry points, and experiment configs live; the data root (default `data/`) and the artifact root for large outputs (default `artifacts/`), including where any symlink points; what each `runs/<run-id>/` directory contains; and which paths are tracked in Git and which are ignored. Agents read this section to decide where new files go.>
 
 ## 7. Current Constraints
 

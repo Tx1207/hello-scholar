@@ -9,7 +9,7 @@ A public release lets others reproduce the paper's results and understand the me
 
 ## Define what the release must support
 
-Start from the claims the release backs: the results reported in the paper, or a subset of Runs the user selects. The release reproduces those claims, not every Run Record in the project. For each claim, record the reported value, the tolerance within which a reproduction counts, and the Run that produced it when one exists; the Run supplies the exact conditions, such as config, checkpoint, and data. Keep this scope in a release Spec through `manage-specs`: one `AC-NN` per claim with its reported value, tolerance, and Run IDs, the code paths included, explicit exclusions, the license, third-party code and its licenses, and the public repository. A claim whose producing conditions cannot be found is reported as such, not released on trust.
+Start from the claims the release backs: the results reported in the paper, or a subset of Runs the user selects. The release reproduces those claims, not every Run Record in the project. For each claim, record the reported value, the tolerance within which a reproduction counts, and the Run that produced it when one exists; the Run supplies the exact conditions, such as config, checkpoint, and data. Keep this scope in a release Spec of type `capability` through `manage-specs`: one `AC-NN` per claim with its reported value, tolerance, and Run IDs, the code paths included, explicit exclusions, the license, third-party code and its licenses, and the public repository. A claim whose producing conditions cannot be found is reported as such, not released on trust.
 
 ## Trace the minimal code path
 
@@ -33,7 +33,7 @@ Before committing, search the assembled tree for secrets and tokens, internal ho
 
 ## Verify reproduction
 
-In a fresh clone with a fresh environment, run the README commands with the recorded checkpoints, data, and configs, and compare each result with the value reported in the paper, or with the selected Run Record, within the Spec's tolerance. Record each comparison as evidence on its `AC-NN`. When a claim does not reproduce, report the gap and its cause; do not drop the claim or loosen the tolerance. Evaluation from released weights is usually the first check; full retraining needs its own authorization because of its cost.
+In a fresh clone with a fresh environment, run the README commands with the recorded checkpoints, data, and configs, and compare each result with the value reported in the paper, or with the selected Run Record, within the Spec's tolerance. Record each comparison as evidence on its `AC-NN`. When a claim does not reproduce, report the gap and its cause; do not drop the claim or loosen the tolerance. Evaluation from released weights is usually the first check, and its comparison is acceptance evidence in the release Spec. Full retraining needs its own authorization because of its cost, and it is a new Run through `record-experiment` with `derived_from` pointing to the original Run. When the server cannot reach the internet, verify the installation steps on a networked machine or package the environment for offline use, such as with conda-pack, and state which verification was actually done.
 
 ## Commit and stop
 

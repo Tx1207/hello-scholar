@@ -133,6 +133,36 @@ class SkillDocumentContractTests(unittest.TestCase):
             self.assertIn("```bibtex", template)
             self.assertIn("± 0.002", template)
 
+    def test_skills_agree_on_run_outputs_retries_and_releases(self) -> None:
+        for name in ("AGENTS.md", "AGENTS-zh.md"):
+            text = (ROOT / name).read_text(encoding="utf-8")
+            self.assertIn("`runs/*/results/`", text)
+            self.assertNotIn("experiment outputs/results/logs", text)
+            self.assertNotIn("实验 outputs/results/logs", text)
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("small result summaries a Record cites under `runs/<run-id>/` may be tracked", agents)
+        self.assertIn("`runs/*/record.md`", agents)
+        self.assertIn("section 6, File and Run Artifact Locations", agents)
+        record = (ROOT / "skills/record-experiment/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Start the research execution from a committed tree", record)
+        self.assertIn("Conventional Commits", agents)
+        self.assertIn("`exp` for experiment code and configs", agents)
+        for name in ("AGENTS.md", "AGENTS-zh.md"):
+            self.assertNotIn("runs/<run-id>/code/", (ROOT / name).read_text(encoding="utf-8"))
+        self.assertIn("`runs/*/results/`, and `artifacts/`", record)
+        release = (ROOT / "skills/release-code/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("type `capability`", release)
+        self.assertIn("new Run through `record-experiment`", release)
+        self.assertIn("conda-pack", release)
+        for name in ("remote-rules.md", "remote-rules.zh_CN.md"):
+            rules = (ROOT / "skills/remote-run/assets" / name).read_text(encoding="utf-8")
+            self.assertIn("--startup", rules)
+            self.assertIn("REMOTE_SERVER_DIRS", rules)
+            self.assertIn("runs/<run-id>/results/", rules)
+            self.assertIn("derived_from", rules)
+            self.assertNotIn("A failed formal Run is rerun under a new Run ID", rules)
+            self.assertNotIn("失败的正式 Run 用新的 Run ID 重跑", rules)
+
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")
         template = (ROOT / "skills/handoff/assets/handoff-template.md").read_text(

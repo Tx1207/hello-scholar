@@ -9,7 +9,7 @@ description: 启动科研执行前，查找可复用或可派生的已有 Run；
 
 ## 从已有 Run 出发
 
-规划新执行前，先按入口和主题查看 `runs/INDEX.md`，再搜索 Record、配置和 `results/`，寻找回答相同或重叠问题的工作。优先复用已有结果、只补跑缺失部分、或用改动后的参数重跑已有入口，而不是写新脚本。新 Run 基于已有 Run 时，把 `derived_from` 设为该 Run，并写明差异和复用的产物，让读者不必比对两份 Record 就能看出变化。
+规划新执行前，先按入口和主题查看 `runs/INDEX.md`，再搜索 Record、配置、`runs/*/results/` 和 `artifacts/`，寻找回答相同或重叠问题的工作。优先复用已有结果、只补跑缺失部分、或用改动后的参数重跑已有入口，而不是写新脚本。新 Run 基于已有 Run 时，把 `derived_from` 设为该 Run，并写明差异和复用的产物，让读者不必比对两份 Record 就能看出变化。
 
 ## 判断什么值得保留
 
@@ -21,7 +21,7 @@ description: 启动科研执行前，查找可复用或可派生的已有 Run；
 
 一个 Run 对应一次科研执行。正式启动前的错误、修复和重试追加到它的 planned Record。正式执行失败或结束后，再次执行另建 Run，`derived_from` 指向前一次，复用其启动计划，条件允许时从已完成阶段或 checkpoint 继续。已经执行过的实验事后补记现有证据及缺口，不重跑。
 
-获授权的运行启动前，记录复现所需信息：精确命令与 CWD、入口、实际生效的配置与覆盖参数、seed、数据与输入产物、代码版本、环境与硬件、model 或 checkpoint、预期 stdout、stderr 与结果路径以及产物根目录下的 checkpoint 位置、预期与失败信号、停止规则。无法获得的写 `Unknown` 并说明原因，不猜测。英文使用 [assets/run-record-template.md](assets/run-record-template.md)，中文使用 [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md)，按指定语言或项目语言选择。
+获授权的运行启动前，记录复现所需信息：精确命令与 CWD、入口、实际生效的配置与覆盖参数、seed、数据与输入产物、代码版本、环境与硬件、model 或 checkpoint、预期 stdout、stderr 与结果路径以及产物根目录下的 checkpoint 位置（默认 `artifacts/<run-id>/`，以 Architecture 中记录的产物根目录为准）、预期与失败信号、停止规则。无法获得的写 `Unknown` 并说明原因，不猜测。正式执行从已提交的代码启动：检查 diff 中有无大文件或密钥，按项目的提交说明规则提交待提交的改动、说明改了什么，并把这个提交记为代码版本。这次提交属于启动已授权执行的一部分，不需要另行审批；启动检查和普通任务可以在未提交的代码上运行。英文使用 [assets/run-record-template.md](assets/run-record-template.md)，中文使用 [assets/run-record-template.zh_CN.md](assets/run-record-template.zh_CN.md)，按指定语言或项目语言选择。
 
 ## 执行与解释
 
