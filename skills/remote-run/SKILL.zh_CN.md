@@ -15,12 +15,15 @@ AI 工具留在本地机器上，服务器只负责执行代码。代码用 rsyn
 
 ## 安装脚本
 
-把 `assets/scripts/remote/` 中的文件复制到项目的 `scripts/remote/`，保持 `.sh` 文件可执行，并填好 [remote.env](assets/scripts/remote/remote.env)。`REMOTE_SERVER_DIRS` 要列出所有只存在于服务器上的顶层目录，通常是 `data artifacts tmp`，已有项目还要加上旧的输出目录；以 Architecture 中记录的布局为准。同步从不发送或删除这些目录，任务在 `runs/` 下写入的文件也不会被同步删掉。
+把 `assets/scripts/remote/` 中的文件复制到项目的 `scripts/remote/`，保持 `.sh` 文件可执行，并填好 [remote.env](assets/scripts/remote/remote.env)。填写前先只读盘点两边：列出服务器上的顶层条目及其大小，以及本地的顶层条目，包括被 Git 忽略的目录和体积大的目录。推荐 `REMOTE_SERVER_DIRS`：只存在于服务器上、或存放数据和输出的目录，通常是 `data artifacts tmp`，加上 `outputs/`、`checkpoints/`、`wandb/` 等旧输出目录；推荐 `REMOTE_LOCAL_EXCLUDES`：必须只留在本地的目录，例如 `.venv/`、`node_modules/`。把推荐整理成表格请用户确认；以 Architecture 中记录的布局为准。
+
+同步先只增加和更新文件、不删除任何东西，并且从不发送 `REMOTE_SERVER_DIRS`、`REMOTE_LOCAL_EXCLUDES` 以及匹配 `REMOTE_PROTECTED_PATTERNS` 的文件（默认是 `*.pt`、`*.safetensors` 等权重格式），因此本地文件永远不会覆盖它们。随后清理过时代码，让服务器上的代码与本地一致：只删除匹配 `REMOTE_CODE_PATTERNS`（如 `*.py`、`*.yaml`）、由之前的同步推送过、而本地已经没有的文件。同步依据服务器 `.remote-run-synced` 中记录的 Git 代码文件清单判断哪些是自己推送的，因此服务器上原有的或在服务器上新建的代码永远不会被删；不在 Git 中的项目不做清理。每删一个文件都会输出，被清空的目录也一并删除，删除经过 `delete.sh`。其余过时路径一律保留并报告数量，`--list-stale` 可以列出，`REMOTE_PRUNE_CODE=0` 可以关闭清理。要删除被保留的路径，向用户提议用 `delete.sh`；它只接受明确指定的路径，并拒绝 `REMOTE_SERVER_DIRS`、`runs/`、`.git`、受保护的文件以及含有受保护文件的目录。`run.sh` 拒绝 `rm`、`mv` 等命令，删除只能走 `delete.sh`；权重、数据和 Run 产物由用户在服务器上自行删除。第一次同步到非空的服务器目录时，只预演会发送的内容（会覆盖服务器上同路径的文件），并以退出码 3 结束。把预演结果给用户看，用户同意后才加 `--confirm-first-sync`。
 
 | 脚本 | 用途 |
 | --- | --- |
-| `sync.sh` | 把本地代码镜像到服务器；只在服务器上的目录和 Run 产出从不被删除。 |
-| `run.sh` | 先同步，再在前台运行，或用 `--bg --name NAME` 在 tmux 中运行；`--run RUN_ID` 把正式 Run 唯一一次正式执行的日志写到 `runs/<run-id>/logs/`；`--run RUN_ID --startup` 把可反复运行的启动检查记在同一目录，编号为 `startup-NN`。 |
+| `sync.sh` | 把本地代码增加和更新到服务器，再删除之前由同步推送、现已过时的代码文件；其余过时路径保留并报告，`--list-stale` 可以列出；`--dry-run` 只预演；第一次同步到非空目录需要 `--confirm-first-sync`。 |
+| `delete.sh` | 删除明确指定的服务器路径，删除目录需加 `--recursive`；拒绝通配符、项目外的路径、受保护的目录、权重文件以及含有权重文件的目录。 |
+| `run.sh` | 先同步，再在前台运行，或用 `--bg --name NAME` 在 tmux 中运行；拒绝删除和移动命令；`--run RUN_ID` 把正式 Run 唯一一次正式执行的日志写到 `runs/<run-id>/logs/`；`--run RUN_ID --startup` 把可反复运行的启动检查记在同一目录，编号为 `startup-NN`。 |
 | `logs.sh` | 任务状态、带来源提交和退出行的任务日志、最近的 stdout 和 stderr、GPU 使用情况。 |
 | `stop.sh` | 停止后台任务，并在任务日志中记一笔。 |
 | `pull.sh` | 把 `runs/<run-id>/results/` 拉回本地，供 Record 引用数值。 |
@@ -38,7 +41,7 @@ AI 工具留在本地机器上，服务器只负责执行代码。代码用 rsyn
 使用几秒内就能结束的命令，逐项报告实际结果：
 
 1. 免密登录能返回主机名，不出现提示。
-2. 运行 `sync.sh` 后，服务器代码与本地一致，本地删除的文件在服务器上也消失，只在服务器上的目录和 `runs/` 下的文件保留。
+2. 第一次同步到非空目录时先预演并停下，不做任何修改；确认后，本地文件同步到服务器，只留在本地的目录不会发送，之前由同步推送、随后在本地删除的代码文件会从服务器删除，只存在于服务器上的代码文件被保留并报告，本地的权重文件不会覆盖服务器上的同名文件，`delete.sh` 能删除指定的过时文件，并拒绝 `data/` 或 `runs/` 下的路径、权重文件和含有权重文件的目录；`run.sh rm ...` 会被拒绝。
 3. 前台 GPU 检查输出 `True`，退出码为 0。
 4. 运行一个会报错的脚本，本地能看到完整 Traceback，退出码非 0。
 5. 后台任务立即返回，SSH 命令结束后仍在运行，`logs.sh` 能看到进度和最后的 `[exit 0 ...]`。

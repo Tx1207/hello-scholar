@@ -158,6 +158,8 @@ class SkillDocumentContractTests(unittest.TestCase):
             rules = (ROOT / "skills/remote-run/assets" / name).read_text(encoding="utf-8")
             self.assertIn("--startup", rules)
             self.assertIn("REMOTE_SERVER_DIRS", rules)
+            self.assertIn("--confirm-first-sync", rules)
+            self.assertIn("scripts/remote/delete.sh", rules)
             self.assertIn("runs/<run-id>/results/", rules)
             self.assertIn("derived_from", rules)
             self.assertNotIn("A failed formal Run is rerun under a new Run ID", rules)

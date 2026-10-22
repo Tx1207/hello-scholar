@@ -21,18 +21,244 @@ class RemoteRunScriptTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertTrue(os.access(path, os.X_OK))
 
-    def test_sync_never_deletes_server_only_paths_or_run_outputs(self) -> None:
+    def test_sync_never_deletes_on_the_server(self) -> None:
         text = (SCRIPTS / "sync.sh").read_text(encoding="utf-8")
-        rsync_lines = [line for line in text.splitlines() if line.strip().startswith("rsync")]
-        self.assertEqual(len(rsync_lines), 2)
-        for line in rsync_lines:
-            self.assertNotIn("--delete-excluded", line)
-            self.assertIn("--no-owner --no-group", line)
-        code_sync, runs_sync = rsync_lines
-        self.assertIn("--delete", code_sync)
-        self.assertIn('"${excludes[@]}"', code_sync)
-        self.assertNotIn("--delete", runs_sync)
-        self.assertIn("--exclude '/runs/'", text)
+        code = [line for line in text.splitlines() if not line.lstrip().startswith("#")]
+        self.assertFalse(any("--delete-excluded" in line for line in code))
+        self.assertIn("opts=(-az --no-owner --no-group)", text)
+        # --delete appears only in the read-only stale preview, which always carries -n.
+        for line in code:
+            if "--delete" in line:
+                self.assertIn(" -n ", line)
+
+    def _sync_project(self, root: Path, server_state: str, stale: str = "", prune: str = "1") -> Path:
+        project = root / "project"
+        (project / "scripts/remote").mkdir(parents=True)
+        for name in ("sync.sh", "delete.sh"):
+            shutil.copy(SCRIPTS / name, project / "scripts/remote" / name)
+        (project / "scripts/remote/remote.env").write_text(
+            'REMOTE_HOST=fake\nREMOTE_DIR=project\nREMOTE_SERVER_DIRS="data tmp"\n'
+            'REMOTE_LOCAL_EXCLUDES=".venv node_modules"\nREMOTE_PROTECTED_PATTERNS="*.pt *.safetensors"\n'
+            f'REMOTE_PRUNE_CODE={prune}\nREMOTE_CODE_PATTERNS="*.py *.yaml"\n',
+            encoding="utf-8",
+        )
+        (project / "src").mkdir()
+        (project / "src/model.py").write_text("x = 1\n", encoding="utf-8")
+        # A local weight file must not stop the pattern from reaching rsync unexpanded.
+        (project / "local.pt").write_text("placeholder\n", encoding="utf-8")
+        bin_dir = root / "bin"
+        bin_dir.mkdir()
+        (root / "state.txt").write_text(server_state, encoding="utf-8")
+        (root / "stale.txt").write_text(stale, encoding="utf-8")
+        # The ssh stand-in answers the state query from state.txt, saves the manifest write to
+        # manifest.txt, and swallows other input; the rsync stand-in reports stale files on a
+        # deletion preview. Both log their calls.
+        (bin_dir / "ssh").write_text(
+            f'#!/bin/sh\necho "ssh $*" >> "{root}/calls.log"\n'
+            f'case "$*" in\n'
+            f'  *dir=*"bash -s"*) cat > /dev/null; cat "{root}/state.txt" ;;\n'
+            f'  *"cat > "*) cat > "{root}/manifest.txt" ;;\n'
+            f'  *) cat > /dev/null ;;\n'
+            f'esac\n', encoding="utf-8"
+        )
+        (bin_dir / "rsync").write_text(
+            f'#!/bin/sh\necho "rsync $*" >> "{root}/calls.log"\n'
+            f'case "$*" in *--delete*) cat "{root}/stale.txt" ;; esac\n', encoding="utf-8"
+        )
+        for tool in ("ssh", "rsync"):
+            (bin_dir / tool).chmod(0o755)
+        return project
+
+    def _sync(self, root: Path, project: Path, *args: str) -> subprocess.CompletedProcess:
+        env = dict(os.environ, PATH=f"{root / 'bin'}{os.pathsep}{os.environ['PATH']}")
+        return subprocess.run(["bash", "scripts/remote/sync.sh", *args], cwd=project, env=env, capture_output=True, text=True)
+
+    def _rsync_calls(self, root: Path) -> list:
+        return [line for line in (root / "calls.log").read_text().splitlines() if line.startswith("rsync")]
+
+    def test_first_sync_into_a_populated_directory_only_previews(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "new\nnonempty\n")
+            result = self._sync(root, project)
+            self.assertEqual(result.returncode, 3)
+            self.assertIn("--confirm-first-sync", result.stderr)
+            code_sync = self._rsync_calls(root)[0]
+            self.assertIn(" -n ", code_sync)
+            self.assertNotIn("--delete", code_sync)
+            for pattern in ("--exclude /data", "--exclude .venv/", "--exclude node_modules/", "--exclude *.pt", "--exclude *.safetensors"):
+                self.assertIn(pattern, code_sync)
+            self.assertNotIn("--exclude local.pt", code_sync)
+            self.assertFalse(any("touch" in line for line in (root / "calls.log").read_text().splitlines()))
+
+    def test_confirmed_and_later_syncs_send_without_deleting(self) -> None:
+        for state, args in (("new\nnonempty\n", ("--confirm-first-sync",)), ("synced\nnonempty\n", ()), ("new\nempty\n", ())):
+            with self.subTest(state=state.split(), args=args), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                project = self._sync_project(root, state)
+                result = self._sync(root, project, *args)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                calls = self._rsync_calls(root)
+                self.assertNotIn(" -n ", calls[0])
+                self.assertNotIn("--delete", calls[0])
+                self.assertIn("--delete", calls[-1])
+                self.assertIn(" -n ", calls[-1])
+
+    def test_stale_files_are_reported_and_listed_but_kept(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "synced\nnonempty\n", stale="deleting src/old.py\ndeleting legacy/\n")
+            summary = self._sync(root, project)
+            self.assertEqual(summary.returncode, 0, summary.stderr)
+            self.assertIn("2 path(s) on the server are not in the local tree and were kept", summary.stderr)
+            listed = self._sync(root, project, "--list-stale")
+            self.assertIn("src/old.py\nlegacy/", listed.stdout)
+
+    def _ssh_calls(self, root: Path) -> list:
+        return [line for line in (root / "calls.log").read_text().splitlines() if line.startswith("ssh")]
+
+    STALE = (
+        "deleting src/old.py\ndeleting src/server_only.py\ndeleting src/cache.npy\n"
+        "deleting outputs/x.py\ndeleting src/legacy/\ndeleting stale_top.py\n"
+    )
+
+    def test_sync_removes_only_stale_code_it_pushed_earlier(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\nsrc/model.py\n", stale=self.STALE)
+            result = self._sync(root, project)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            delete_calls = [line for line in self._ssh_calls(root) if "bash -s --" in line]
+            self.assertEqual(len(delete_calls), 1)
+            self.assertIn("src/old.py", delete_calls[0])
+            for kept in ("server_only.py", "cache.npy", "outputs/x.py", "stale_top.py"):
+                self.assertNotIn(kept, delete_calls[0])
+            self.assertTrue(any("rmdir" in line for line in self._ssh_calls(root)))
+            self.assertIn("4 path(s) on the server are not in the local tree and were kept", result.stderr)
+            listed = self._sync(root, project, "--list-stale")
+            self.assertIn("src/server_only.py", listed.stdout)
+            self.assertNotIn("src/old.py\n", listed.stdout.split("(kept):", 1)[-1])
+
+    def test_pruning_can_be_turned_off_and_previewed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\n", stale=self.STALE, prune="0")
+            off = self._sync(root, project)
+            self.assertEqual(off.returncode, 0, off.stderr)
+            self.assertFalse(any("bash -s --" in line for line in self._ssh_calls(root)))
+            self.assertIn("6 path(s)", off.stderr)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\n", stale=self.STALE)
+            preview = self._sync(root, project, "--dry-run")
+            self.assertEqual(preview.returncode, 0, preview.stderr)
+            self.assertIn("would remove stale code src/old.py", preview.stdout)
+            ssh = self._ssh_calls(root)
+            self.assertFalse(any("bash -s --" in line or "rmdir" in line or "cat > " in line for line in ssh))
+
+    def test_manifest_lists_git_code_files_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "new\nempty\n")
+            (project / "configs").mkdir()
+            (project / "configs/a.yaml").write_text("lr: 1\n", encoding="utf-8")
+            (project / "notes.md").write_text("n\n", encoding="utf-8")
+            (project / ".gitignore").write_text("ignored.py\n", encoding="utf-8")
+            (project / "ignored.py").write_text("x\n", encoding="utf-8")
+            subprocess.run(["git", "init", "-q"], cwd=project, check=True)
+            result = self._sync(root, project)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            manifest = (root / "manifest.txt").read_text().splitlines()
+            self.assertIn("src/model.py", manifest)
+            self.assertIn("configs/a.yaml", manifest)
+            self.assertNotIn("notes.md", manifest)
+            self.assertNotIn("ignored.py", manifest)
+            self.assertNotIn("local.pt", manifest)
+
+    def test_state_query_succeeds_on_a_fresh_server_directory(self) -> None:
+        text = (SCRIPTS / "sync.sh").read_text(encoding="utf-8")
+        script = text.split("<<'EOF'\n", 1)[1].split("\nEOF\n", 1)[0]
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "fresh"
+            result = subprocess.run(["bash", "-c", script], env=dict(os.environ, dir=str(target)), capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.splitlines(), ["new", "empty"])
+
+    def test_dry_run_never_changes_the_server(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._sync_project(root, "synced\nnonempty\n")
+            result = self._sync(root, project, "--dry-run")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(all(" -n " in line for line in self._rsync_calls(root)))
+
+    def _delete_project(self, root: Path) -> Path:
+        """Project whose ssh stand-in runs the remote command locally against root/server."""
+        project = root / "project"
+        (project / "scripts/remote").mkdir(parents=True)
+        shutil.copy(SCRIPTS / "delete.sh", project / "scripts/remote/delete.sh")
+        server = root / "server"
+        (project / "scripts/remote/remote.env").write_text(
+            f'REMOTE_HOST=fake\nREMOTE_DIR={server}\nREMOTE_SERVER_DIRS="data tmp"\n'
+            'REMOTE_PROTECTED_PATTERNS="*.pt *.safetensors"\n', encoding="utf-8"
+        )
+        for rel in ("src/old.py", "legacy/a.py", "outputs/exp1/model.pt", "outputs/exp1/log.txt", "data/d.txt", "w.pt"):
+            path = server / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("x\n", encoding="utf-8")
+        bin_dir = root / "bin"
+        bin_dir.mkdir()
+        (bin_dir / "ssh").write_text('#!/bin/sh\nshift\nexec bash -c "$*"\n', encoding="utf-8")
+        (bin_dir / "ssh").chmod(0o755)
+        return project
+
+    def _delete(self, root: Path, project: Path, *args: str) -> subprocess.CompletedProcess:
+        env = dict(os.environ, PATH=f"{root / 'bin'}{os.pathsep}{os.environ['PATH']}")
+        return subprocess.run(["bash", "scripts/remote/delete.sh", *args], cwd=project, env=env, capture_output=True, text=True)
+
+    def test_delete_refuses_protected_paths_and_weights(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._delete_project(root)
+            for path in ("data/d.txt", "runs/r1/record.md", "../x", "/etc/hosts", "src/*.py", "w.pt", "outputs/exp1/model.pt"):
+                with self.subTest(path=path):
+                    result = self._delete(root, project, path)
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("refusing", result.stderr)
+            self.assertTrue((root / "server/w.pt").exists())
+            self.assertTrue((root / "server/data/d.txt").exists())
+
+    def test_delete_removes_named_files_but_not_directories_holding_weights(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._delete_project(root)
+            server = root / "server"
+            self.assertEqual(self._delete(root, project, "legacy").returncode, 1)
+            self.assertTrue((server / "legacy/a.py").exists())
+            misplaced = self._delete(root, project, "./src/old.py", "--recursive")
+            self.assertEqual(misplaced.returncode, 2)
+            self.assertTrue((server / "src/old.py").exists())
+            removed = self._delete(root, project, "./src/old.py")
+            self.assertEqual(removed.returncode, 0, removed.stderr)
+            self.assertIn("removed src/old.py", removed.stdout)
+            self.assertFalse((server / "src/old.py").exists())
+            self.assertEqual(self._delete(root, project, "--recursive", "legacy").returncode, 0)
+            self.assertFalse((server / "legacy").exists())
+            kept = self._delete(root, project, "--recursive", "outputs")
+            self.assertEqual(kept.returncode, 1)
+            self.assertIn("contains protected file", kept.stderr)
+            self.assertTrue((server / "outputs/exp1/model.pt").exists())
+
+    def test_run_refuses_direct_deletion_commands(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._launcher_project(root, git=False)
+            for command in (["rm", "-rf", "outputs"], ["mv", "a.pt", "b.pt"], ["sudo", "rm", "x"], ["find", ".", "-name", "*.pt", "-delete"]):
+                with self.subTest(command=command):
+                    result = self._launch(root, project, *command)
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("delete.sh", result.stderr)
+            self.assertFalse((root / "calls.log").exists())
 
     def test_tmux_names_are_matched_exactly(self) -> None:
         for name in ("run.sh", "logs.sh", "stop.sh"):

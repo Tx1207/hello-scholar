@@ -26,6 +26,18 @@ if [ $# -eq 0 ]; then
   echo "usage: run.sh [--bg] [--name NAME] [--run RUN_ID [--startup]] <command...>" >&2
   exit 2
 fi
+# Deleting or moving server files goes through delete.sh, which protects weights and data.
+# This catches direct use only; a deletion wrapped in another program is not detected.
+blocked=0
+case "$1" in
+  rm|rmdir|mv|shred|unlink) blocked=1 ;;
+  sudo) case "${2:-}" in rm|rmdir|mv|shred|unlink) blocked=1 ;; esac ;;
+  find) for a in "$@"; do [ "$a" = -delete ] && blocked=1; done ;;
+esac
+if [ "$blocked" -eq 1 ]; then
+  echo "run.sh does not delete or move server files; remove specific paths with scripts/remote/delete.sh" >&2
+  exit 2
+fi
 if [ "$startup" -eq 1 ] && [ -z "$run_id" ]; then
   echo "--startup needs --run RUN_ID: startup checks are logged in that Run's planned Record" >&2
   exit 2
