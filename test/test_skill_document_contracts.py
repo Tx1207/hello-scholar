@@ -159,7 +159,8 @@ class SkillDocumentContractTests(unittest.TestCase):
         for name in ("remote-rules.md", "remote-rules.zh_CN.md"):
             rules = (ROOT / "skills/remote-run/assets" / name).read_text(encoding="utf-8")
             self.assertIn("--startup", rules)
-            self.assertIn("REMOTE_SERVER_DIRS", rules)
+            self.assertNotIn("model provider", rules)
+            self.assertNotIn("模型厂商", rules)
             self.assertIn("--confirm-first-sync", rules)
             self.assertIn("scripts/remote/delete.sh", rules)
             self.assertIn("runs/<run-id>/results/", rules)

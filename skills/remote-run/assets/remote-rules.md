@@ -10,4 +10,3 @@
 - Copy a Run's small results in `runs/<run-id>/results/` back with `scripts/remote/pull.sh <run-id>` before writing them into the Record. Logs in `runs/<run-id>/logs/` and checkpoints in `artifacts/<run-id>/` stay on the server; the Record cites them as `<alias>:<path>` and keeps the output of the `run.sh` that started the job.
 - While a long job runs, do not edit files it still reads, such as its configs or the evaluation script it calls at the end; copy them under a new name instead.
 - Stop a job with `scripts/remote/stop.sh <name>`.
-- Do not read or print raw data from the server-only directories listed in `REMOTE_SERVER_DIRS` in `scripts/remote/remote.env`, such as `data/`; anything printed is sent to the model provider.

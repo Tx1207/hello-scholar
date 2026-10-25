@@ -10,4 +10,3 @@
 - 写入 Record 前，用 `scripts/remote/pull.sh <run-id>` 把 `runs/<run-id>/results/` 中的小结果拉回本地。`runs/<run-id>/logs/` 中的日志和 `artifacts/<run-id>/` 中的 checkpoint 留在服务器上，Record 以 `<别名>:<路径>` 引用它们，并保留启动任务时 `run.sh` 的输出。
 - 长任务运行期间，不要修改它还会读取的文件，例如它的配置或结束时调用的评测脚本；需要改时复制成新文件再改。
 - 停止任务：`scripts/remote/stop.sh <任务名>`。
-- 不要读取或打印只在服务器上的目录（`scripts/remote/remote.env` 中 `REMOTE_SERVER_DIRS` 列出的目录，例如 `data/`）中的原始数据；打印出来的内容都会发给模型厂商。
