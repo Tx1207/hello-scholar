@@ -21,159 +21,164 @@ class RemoteRunScriptTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertTrue(os.access(path, os.X_OK))
 
-    def test_sync_never_deletes_on_the_server(self) -> None:
-        text = (SCRIPTS / "sync.sh").read_text(encoding="utf-8")
-        code = [line for line in text.splitlines() if not line.lstrip().startswith("#")]
-        self.assertFalse(any("--delete-excluded" in line for line in code))
-        self.assertIn("opts=(-az --no-owner --no-group)", text)
-        # --delete appears only in the read-only stale preview, which always carries -n.
-        for line in code:
-            if "--delete" in line:
-                self.assertIn(" -n ", line)
+    GIT_ENV = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
 
-    def _sync_project(self, root: Path, server_state: str, stale: str = "", prune: str = "1") -> Path:
+    def _env(self, root: Path) -> dict:
+        # GIT_SSH_VARIANT=simple makes git call the ssh stand-in as "ssh <host> <command>".
+        return dict(os.environ, PATH=f"{root / 'bin'}{os.pathsep}{os.environ['PATH']}", GIT_SSH_VARIANT="simple", **self.GIT_ENV)
+
+    def _git(self, root: Path, cwd: Path, *args: str) -> str:
+        return subprocess.run(["git", *args], cwd=cwd, env=self._env(root), check=True, capture_output=True, text=True).stdout.strip()
+
+    def _git_project(self, root: Path, scripts=("sync.sh",), commit: bool = True) -> Path:
+        """Git project whose ssh stand-in runs remote commands locally against root/server."""
         project = root / "project"
         (project / "scripts/remote").mkdir(parents=True)
-        for name in ("sync.sh", "delete.sh"):
+        for name in scripts:
             shutil.copy(SCRIPTS / name, project / "scripts/remote" / name)
         (project / "scripts/remote/remote.env").write_text(
-            'REMOTE_HOST=fake\nREMOTE_DIR=project\nREMOTE_SERVER_DIRS="data tmp"\n'
-            'REMOTE_LOCAL_EXCLUDES=".venv node_modules"\nREMOTE_PROTECTED_PATTERNS="*.pt *.safetensors"\n'
-            f'REMOTE_PRUNE_CODE={prune}\nREMOTE_CODE_PATTERNS="*.py *.yaml"\n',
-            encoding="utf-8",
+            f'REMOTE_HOST=fake\nREMOTE_DIR={root / "server"}\nREMOTE_CONDA_ACTIVATE=\nREMOTE_SERVER_DIRS="data tmp"\n'
+            'REMOTE_LOCAL_EXCLUDES=".venv"\nREMOTE_PROTECTED_PATTERNS="*.pt *.safetensors"\n', encoding="utf-8"
         )
         (project / "src").mkdir()
         (project / "src/model.py").write_text("x = 1\n", encoding="utf-8")
-        # A local weight file must not stop the pattern from reaching rsync unexpanded.
-        (project / "local.pt").write_text("placeholder\n", encoding="utf-8")
+        (project / "src/old.py").write_text("old\n", encoding="utf-8")
         bin_dir = root / "bin"
         bin_dir.mkdir()
-        (root / "state.txt").write_text(server_state, encoding="utf-8")
-        (root / "stale.txt").write_text(stale, encoding="utf-8")
-        # The ssh stand-in answers the state query from state.txt, saves the manifest write to
-        # manifest.txt, and swallows other input; the rsync stand-in reports stale files on a
-        # deletion preview. Both log their calls.
         (bin_dir / "ssh").write_text(
-            f'#!/bin/sh\necho "ssh $*" >> "{root}/calls.log"\n'
-            f'case "$*" in\n'
-            f'  *dir=*"bash -s"*) cat > /dev/null; cat "{root}/state.txt" ;;\n'
-            f'  *"cat > "*) cat > "{root}/manifest.txt" ;;\n'
-            f'  *) cat > /dev/null ;;\n'
-            f'esac\n', encoding="utf-8"
+            '#!/bin/sh\nshift\ncmd="$*"\n'
+            'case "$cmd" in git-receive-pack*|git-upload-pack*) cmd="git ${cmd#git-}" ;; esac\n'
+            'exec bash -c "$cmd"\n', encoding="utf-8"
         )
-        (bin_dir / "rsync").write_text(
-            f'#!/bin/sh\necho "rsync $*" >> "{root}/calls.log"\n'
-            f'case "$*" in *--delete*) cat "{root}/stale.txt" ;; esac\n', encoding="utf-8"
-        )
-        for tool in ("ssh", "rsync"):
-            (bin_dir / tool).chmod(0o755)
+        (bin_dir / "ssh").chmod(0o755)
+        self._git(root, project, "init", "-q")
+        if commit:
+            self._git(root, project, "add", "-A")
+            self._git(root, project, "commit", "-qm", "feat: init")
         return project
 
     def _sync(self, root: Path, project: Path, *args: str) -> subprocess.CompletedProcess:
-        env = dict(os.environ, PATH=f"{root / 'bin'}{os.pathsep}{os.environ['PATH']}")
-        return subprocess.run(["bash", "scripts/remote/sync.sh", *args], cwd=project, env=env, capture_output=True, text=True)
+        return subprocess.run(["bash", "scripts/remote/sync.sh", *args], cwd=project, env=self._env(root), capture_output=True, text=True)
 
-    def _rsync_calls(self, root: Path) -> list:
-        return [line for line in (root / "calls.log").read_text().splitlines() if line.startswith("rsync")]
-
-    def test_first_sync_into_a_populated_directory_only_previews(self) -> None:
+    def test_sync_deploys_commits_and_mirrors_deletions_and_renames(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._sync_project(root, "new\nnonempty\n")
-            result = self._sync(root, project)
-            self.assertEqual(result.returncode, 3)
-            self.assertIn("--confirm-first-sync", result.stderr)
-            code_sync = self._rsync_calls(root)[0]
-            self.assertIn(" -n ", code_sync)
-            self.assertNotIn("--delete", code_sync)
-            for pattern in ("--exclude /data", "--exclude .venv/", "--exclude node_modules/", "--exclude *.pt", "--exclude *.safetensors"):
-                self.assertIn(pattern, code_sync)
-            self.assertNotIn("--exclude local.pt", code_sync)
-            self.assertFalse(any("touch" in line for line in (root / "calls.log").read_text().splitlines()))
+            project = self._git_project(root)
+            server = root / "server"
+            first = self._sync(root, project)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            self.assertEqual(first.stdout.strip(), self._git(root, project, "rev-parse", "--short", "HEAD"))
+            self.assertEqual((server / "src/model.py").read_text(), "x = 1\n")
+            (server / "data").mkdir()
+            (server / "data/d.txt").write_text("D\n", encoding="utf-8")
+            (server / "w.pt").write_text("REAL\n", encoding="utf-8")
+            self._git(root, project, "mv", "src/old.py", "src/new.py")
+            self._git(root, project, "commit", "-qm", "refactor: rename old")
+            second = self._sync(root, project)
+            self.assertEqual(second.returncode, 0, second.stderr)
+            self.assertFalse((server / "src/old.py").exists())
+            self.assertTrue((server / "src/new.py").exists())
+            self.assertEqual((server / "data/d.txt").read_text(), "D\n")
+            self.assertEqual((server / "w.pt").read_text(), "REAL\n")
 
-    def test_confirmed_and_later_syncs_send_without_deleting(self) -> None:
-        for state, args in (("new\nnonempty\n", ("--confirm-first-sync",)), ("synced\nnonempty\n", ()), ("new\nempty\n", ())):
-            with self.subTest(state=state.split(), args=args), tempfile.TemporaryDirectory() as tmp:
-                root = Path(tmp)
-                project = self._sync_project(root, state)
-                result = self._sync(root, project, *args)
-                self.assertEqual(result.returncode, 0, result.stderr)
-                calls = self._rsync_calls(root)
-                self.assertNotIn(" -n ", calls[0])
-                self.assertNotIn("--delete", calls[0])
-                self.assertIn("--delete", calls[-1])
-                self.assertIn(" -n ", calls[-1])
-
-    def test_stale_files_are_reported_and_listed_but_kept(self) -> None:
+    def test_sync_deploys_uncommitted_work_without_touching_local_git(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._sync_project(root, "synced\nnonempty\n", stale="deleting src/old.py\ndeleting legacy/\n")
-            summary = self._sync(root, project)
-            self.assertEqual(summary.returncode, 0, summary.stderr)
-            self.assertIn("2 path(s) on the server are not in the local tree and were kept", summary.stderr)
-            listed = self._sync(root, project, "--list-stale")
-            self.assertIn("src/old.py\nlegacy/", listed.stdout)
-
-    def _ssh_calls(self, root: Path) -> list:
-        return [line for line in (root / "calls.log").read_text().splitlines() if line.startswith("ssh")]
-
-    STALE = (
-        "deleting src/old.py\ndeleting src/server_only.py\ndeleting src/cache.npy\n"
-        "deleting outputs/x.py\ndeleting src/legacy/\ndeleting stale_top.py\n"
-    )
-
-    def test_sync_removes_only_stale_code_it_pushed_earlier(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\nsrc/model.py\n", stale=self.STALE)
+            project = self._git_project(root)
+            server = root / "server"
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            (project / "src/model.py").write_text("x = 2\n", encoding="utf-8")
+            (project / "src/extra.py").write_text("e\n", encoding="utf-8")
+            (project / "local.pt").write_text("FAKE\n", encoding="utf-8")
+            (project / ".venv").mkdir()
+            (project / ".venv/v.py").write_text("v\n", encoding="utf-8")
+            (project / "data").mkdir()
+            (project / "data/sample.txt").write_text("s\n", encoding="utf-8")
+            status = self._git(root, project, "status", "--porcelain")
+            head = self._git(root, project, "rev-parse", "HEAD")
             result = self._sync(root, project)
             self.assertEqual(result.returncode, 0, result.stderr)
-            delete_calls = [line for line in self._ssh_calls(root) if "bash -s --" in line]
-            self.assertEqual(len(delete_calls), 1)
-            self.assertIn("src/old.py", delete_calls[0])
-            for kept in ("server_only.py", "cache.npy", "outputs/x.py", "stale_top.py"):
-                self.assertNotIn(kept, delete_calls[0])
-            self.assertTrue(any("rmdir" in line for line in self._ssh_calls(root)))
-            self.assertIn("4 path(s) on the server are not in the local tree and were kept", result.stderr)
-            listed = self._sync(root, project, "--list-stale")
-            self.assertIn("src/server_only.py", listed.stdout)
-            self.assertNotIn("src/old.py\n", listed.stdout.split("(kept):", 1)[-1])
+            self.assertIn("working tree on", result.stdout)
+            self.assertEqual(self._git(root, project, "status", "--porcelain"), status)
+            self.assertEqual(self._git(root, project, "rev-parse", "HEAD"), head)
+            self.assertEqual((server / "src/model.py").read_text(), "x = 2\n")
+            self.assertTrue((server / "src/extra.py").exists())
+            for kept_out in ("local.pt", ".venv", "data"):
+                self.assertFalse((server / kept_out).exists(), kept_out)
 
-    def test_pruning_can_be_turned_off_and_previewed(self) -> None:
+    def test_sync_refuses_modified_tracked_files_on_the_server(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\n", stale=self.STALE, prune="0")
-            off = self._sync(root, project)
-            self.assertEqual(off.returncode, 0, off.stderr)
-            self.assertFalse(any("bash -s --" in line for line in self._ssh_calls(root)))
-            self.assertIn("6 path(s)", off.stderr)
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            project = self._sync_project(root, "synced\nnonempty\nsrc/old.py\n", stale=self.STALE)
-            preview = self._sync(root, project, "--dry-run")
-            self.assertEqual(preview.returncode, 0, preview.stderr)
-            self.assertIn("would remove stale code src/old.py", preview.stdout)
-            ssh = self._ssh_calls(root)
-            self.assertFalse(any("bash -s --" in line or "rmdir" in line or "cat > " in line for line in ssh))
-
-    def test_manifest_lists_git_code_files_only(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            project = self._sync_project(root, "new\nempty\n")
-            (project / "configs").mkdir()
-            (project / "configs/a.yaml").write_text("lr: 1\n", encoding="utf-8")
-            (project / "notes.md").write_text("n\n", encoding="utf-8")
-            (project / ".gitignore").write_text("ignored.py\n", encoding="utf-8")
-            (project / "ignored.py").write_text("x\n", encoding="utf-8")
-            subprocess.run(["git", "init", "-q"], cwd=project, check=True)
+            project = self._git_project(root)
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            (root / "server/src/model.py").write_text("edited on server\n", encoding="utf-8")
+            (project / "src/model.py").write_text("x = 3\n", encoding="utf-8")
             result = self._sync(root, project)
+            self.assertEqual(result.returncode, 4)
+            self.assertIn("modified tracked files", result.stderr)
+            self.assertEqual((root / "server/src/model.py").read_text(), "edited on server\n")
+
+    def test_sync_replaces_identical_untracked_files_and_stops_on_differing_ones(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root)
+            server = root / "server"
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            # Results pulled from the server and committed locally are identical to the server copy.
+            for base in (project, server):
+                (base / "runs/r1/results").mkdir(parents=True)
+                (base / "runs/r1/results/eval.json").write_text('{"dists": 0.081}\n', encoding="utf-8")
+            self._git(root, project, "add", "-A")
+            self._git(root, project, "commit", "-qm", "exp: add r1 results")
+            same = self._sync(root, project)
+            self.assertEqual(same.returncode, 0, same.stderr)
+            (server / "src/notes.py").write_text("server version\n", encoding="utf-8")
+            (project / "src/notes.py").write_text("local version\n", encoding="utf-8")
+            differs = self._sync(root, project)
+            self.assertEqual(differs.returncode, 5)
+            self.assertIn("src/notes.py", differs.stderr)
+            self.assertEqual((server / "src/notes.py").read_text(), "server version\n")
+
+    def test_first_deployment_into_existing_directory_previews_then_backs_up(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root)
+            server = root / "server"
+            (server / "src").mkdir(parents=True)
+            (server / "src/model.py").write_text("x = 1\n", encoding="utf-8")
+            (server / "src/old.py").write_text("server copy\n", encoding="utf-8")
+            (server / "src/server_only.py").write_text("s\n", encoding="utf-8")
+            preview = self._sync(root, project)
+            self.assertEqual(preview.returncode, 3)
+            self.assertIn("src/old.py", preview.stderr)
+            self.assertFalse((server / ".git").exists())
+            confirmed = self._sync(root, project, "--confirm-first-sync")
+            self.assertEqual(confirmed.returncode, 0, confirmed.stderr)
+            self.assertEqual((server / "src/old.py").read_text(), "old\n")
+            backups = list((server / "tmp/remote-run-backup").glob("*/src/old.py"))
+            self.assertEqual(len(backups), 1)
+            self.assertEqual(backups[0].read_text(), "server copy\n")
+            self.assertTrue((server / "src/server_only.py").exists())
+
+    def test_dry_run_changes_nothing_on_the_server(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root)
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            (project / "src/model.py").write_text("x = 9\n", encoding="utf-8")
+            result = self._sync(root, project, "--dry-run")
             self.assertEqual(result.returncode, 0, result.stderr)
-            manifest = (root / "manifest.txt").read_text().splitlines()
-            self.assertIn("src/model.py", manifest)
-            self.assertIn("configs/a.yaml", manifest)
-            self.assertNotIn("notes.md", manifest)
-            self.assertNotIn("ignored.py", manifest)
-            self.assertNotIn("local.pt", manifest)
+            self.assertIn("would deploy", result.stderr)
+            self.assertEqual((root / "server/src/model.py").read_text(), "x = 1\n")
+
+    def test_sync_requires_git(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root)
+            shutil.rmtree(project / ".git")
+            result = self._sync(root, project)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("git init", result.stderr)
 
     def test_state_query_succeeds_on_a_fresh_server_directory(self) -> None:
         text = (SCRIPTS / "sync.sh").read_text(encoding="utf-8")
@@ -182,15 +187,7 @@ class RemoteRunScriptTests(unittest.TestCase):
             target = Path(tmp) / "fresh"
             result = subprocess.run(["bash", "-c", script], env=dict(os.environ, dir=str(target)), capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(result.stdout.splitlines(), ["new", "empty"])
-
-    def test_dry_run_never_changes_the_server(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            project = self._sync_project(root, "synced\nnonempty\n")
-            result = self._sync(root, project, "--dry-run")
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertTrue(all(" -n " in line for line in self._rsync_calls(root)))
+            self.assertEqual(result.stdout.splitlines(), ["empty"])
 
     def _delete_project(self, root: Path) -> Path:
         """Project whose ssh stand-in runs the remote command locally against root/server."""
@@ -249,16 +246,15 @@ class RemoteRunScriptTests(unittest.TestCase):
             self.assertIn("contains protected file", kept.stderr)
             self.assertTrue((server / "outputs/exp1/model.pt").exists())
 
-    def test_run_refuses_direct_deletion_commands(self) -> None:
+    def test_delete_refuses_paths_tracked_by_the_deployment(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._launcher_project(root, git=False)
-            for command in (["rm", "-rf", "outputs"], ["mv", "a.pt", "b.pt"], ["sudo", "rm", "x"], ["find", ".", "-name", "*.pt", "-delete"]):
-                with self.subTest(command=command):
-                    result = self._launch(root, project, *command)
-                    self.assertEqual(result.returncode, 2)
-                    self.assertIn("delete.sh", result.stderr)
-            self.assertFalse((root / "calls.log").exists())
+            project = self._git_project(root, scripts=("sync.sh", "delete.sh"))
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            result = subprocess.run(["bash", "scripts/remote/delete.sh", "src/model.py"], cwd=project, env=self._env(root), capture_output=True, text=True)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("tracked by the deployed code", result.stderr)
+            self.assertTrue((root / "server/src/model.py").exists())
 
     def test_tmux_names_are_matched_exactly(self) -> None:
         for name in ("run.sh", "logs.sh", "stop.sh"):
@@ -357,59 +353,50 @@ class RemoteRunScriptTests(unittest.TestCase):
             self.assertIn("v1\nDATA\n", output)
             self.assertEqual(Path(output.splitlines()[-1]).resolve(), project.resolve())
 
-    def _launcher_project(self, root: Path, git: bool) -> Path:
-        project = self._project(root)
-        for name in ("run.sh", "sync.sh"):
-            shutil.copy(SCRIPTS / name, project / "scripts/remote" / name)
-        (project / "scripts/remote/remote.env").write_text(
-            'REMOTE_HOST=fake\nREMOTE_DIR=project\nREMOTE_SERVER_DIRS="data tmp"\n', encoding="utf-8"
-        )
-        # Stand-ins for ssh and rsync record their calls instead of reaching a server.
-        bin_dir = root / "bin"
-        bin_dir.mkdir()
-        for tool in ("ssh", "rsync"):
-            stub = bin_dir / tool
-            stub.write_text(f'#!/bin/sh\necho "{tool} $*" >> "{root}/calls.log"\n', encoding="utf-8")
-            stub.chmod(0o755)
-        if git:
-            env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
-            for args in (["init", "-q"], ["add", "-A"], ["commit", "-qm", "init"]):
-                subprocess.run(["git", *args], cwd=project, env=env, check=True)
-        return project
-
     def _launch(self, root: Path, project: Path, *args: str) -> subprocess.CompletedProcess:
-        env = dict(os.environ, PATH=f"{root / 'bin'}{os.pathsep}{os.environ['PATH']}")
-        return subprocess.run(["bash", "scripts/remote/run.sh", *args], cwd=project, env=env, capture_output=True, text=True)
+        return subprocess.run(["bash", "scripts/remote/run.sh", *args], cwd=project, env=self._env(root), capture_output=True, text=True)
 
-    def test_research_execution_requires_a_committed_tree(self) -> None:
+    def test_run_refuses_direct_deletion_commands(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._launcher_project(root, git=True)
-            (project / "code.txt").write_text("v2\n", encoding="utf-8")
-            dirty = self._launch(root, project, "--bg", "--run", "r1", "python", "train.py")
+            project = self._git_project(root, scripts=("run.sh", "sync.sh", "_job.sh"))
+            for command in (["rm", "-rf", "outputs"], ["mv", "a.pt", "b.pt"], ["sudo", "rm", "x"], ["find", ".", "-name", "*.pt", "-delete"]):
+                with self.subTest(command=command):
+                    result = self._launch(root, project, *command)
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("delete.sh", result.stderr)
+            self.assertFalse((root / "server").exists())
+
+    def test_research_execution_requires_a_committed_tree_and_logs_the_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root, scripts=("run.sh", "sync.sh", "_job.sh"))
+            server = root / "server"
+            (project / "src/model.py").write_text("x = 2\n", encoding="utf-8")
+            dirty = self._launch(root, project, "--run", "r1", "sh", "-c", "echo trained")
             self.assertEqual(dirty.returncode, 2)
             self.assertIn("commit the pending changes", dirty.stderr)
-            self.assertFalse((root / "calls.log").exists())
+            self.assertFalse(server.exists())
 
-            startup = self._launch(root, project, "--run", "r1", "--startup", "python", "train.py")
+            startup = self._launch(root, project, "--run", "r1", "--startup", "sh", "-c", "echo checked")
             self.assertEqual(startup.returncode, 0, startup.stderr)
+            self.assertIn("working tree on", (server / "runs/r1/logs/startup-01.job.log").read_text())
 
-            env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
-            subprocess.run(["git", "commit", "-qam", "exp: switch code to v2"], cwd=project, env=env, check=True)
-            rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=project, capture_output=True, text=True).stdout.strip()
-            clean = self._launch(root, project, "--bg", "--run", "r1", "python", "train.py")
-            self.assertEqual(clean.returncode, 0, clean.stderr)
-            launch = (root / "calls.log").read_text().splitlines()[-1]
-            self.assertIn(f"SOURCE_REV={rev}\\ ", launch)
-            self.assertNotIn("+uncommitted", launch)
+            self._git(root, project, "commit", "-qam", "exp: switch model to x = 2")
+            rev = self._git(root, project, "rev-parse", "--short", "HEAD")
+            formal = self._launch(root, project, "--run", "r1", "sh", "-c", "echo trained")
+            self.assertEqual(formal.returncode, 0, formal.stderr)
+            meta = (server / "runs/r1/logs/job.log").read_text()
+            self.assertIn(f"[source {rev}]", meta)
+            self.assertIn("[research execution]", meta)
 
-    def test_research_execution_requires_git(self) -> None:
+    def test_research_execution_requires_a_commit(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            project = self._launcher_project(root, git=False)
-            result = self._launch(root, project, "--run", "r1", "python", "train.py")
+            project = self._git_project(root, scripts=("run.sh", "sync.sh", "_job.sh"), commit=False)
+            result = self._launch(root, project, "--run", "r1", "sh", "-c", "true")
             self.assertEqual(result.returncode, 2)
-            self.assertIn("needs the project in Git", result.stderr)
+            self.assertIn("needs a committed project", result.stderr)
 
 
 if __name__ == "__main__":

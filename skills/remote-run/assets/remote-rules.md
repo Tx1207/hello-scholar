@@ -1,9 +1,8 @@
 ## Remote Execution
 
-- Edit code locally; it runs on `<alias>`. Reach the server only through `scripts/remote/*.sh`, never with direct `ssh`.
-- If a sync stops with a first-sync preview, show the preview to the user; pass `--confirm-first-sync` only after they approve it.
-- Sync removes only stale code files that an earlier sync pushed and that are gone locally, and prints each one; it keeps every other path. When it reports kept stale files, list them with `scripts/remote/sync.sh --list-stale` and ask whether a kept data or output directory belongs in `REMOTE_SERVER_DIRS`.
-- Delete server files only with `scripts/remote/delete.sh <path>`, one path at a time and only paths the user approved. Never delete or move server files through `run.sh` or code; weights, data, and Run outputs are removed by the user on the server.
+- Edit code locally; it runs on `<alias>`. Reach the server only through `scripts/remote/*.sh`, never with direct `ssh`, and never edit code on the server: sync deploys the local commit or working tree with Git.
+- If a sync stops with a first-sync preview, show the preview to the user; pass `--confirm-first-sync` only after they approve it. If it stops because server files were modified or differ from the commit, show the listed files to the user instead of working around it.
+- Remove code by deleting it locally; the next sync removes it on the server. Delete untracked server leftovers only with `scripts/remote/delete.sh <path>`, one path at a time and only paths the user approved. Never delete or move server files through `run.sh` or code; weights, data, and Run outputs are removed by the user on the server.
 - Tasks expected to finish within 5 minutes, such as unit tests, small debugging runs, and data checks: `scripts/remote/run.sh <command>`.
 - Training, evaluation, and anything that may run longer: `scripts/remote/run.sh --bg --name <name> <command>`. For a formal Run, create the planned Record first, run its startup checks with `--run <run-id> --startup` (repeatable, logged as `startup-NN` in that Run), then commit the pending changes in the project's commit convention and start the one research execution with `--bg --run <run-id>`; `run.sh` refuses a research execution on uncommitted code.
 - Check progress with `scripts/remote/logs.sh <name>` at intervals matched to the job's expected length, not in a tight loop.

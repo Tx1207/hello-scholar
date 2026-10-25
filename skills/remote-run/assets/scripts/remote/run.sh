@@ -54,28 +54,21 @@ case "$name" in
   *[!A-Za-z0-9_-]*) echo "job name may contain only letters, digits, _ and -: $name" >&2; exit 2 ;;
 esac
 
-# The server copy has no .git, so the job log records which local commit was synced.
-if rev=$(git rev-parse --short HEAD 2>/dev/null); then
-  dirty=$(git status --porcelain 2>/dev/null)
-  [ -z "$dirty" ] || rev="$rev+uncommitted"
-else
-  rev=unknown
-  dirty=""
-fi
-
-# A research execution must map to one commit so the Run can be reproduced and its code reused.
+# A research execution must map to a real commit so the Run can be reproduced and its code reused;
+# other jobs may deploy the working tree as a temporary commit.
 if [ -n "$run_id" ] && [ "$startup" -eq 0 ]; then
-  if [ "$rev" = unknown ]; then
-    echo "a research execution needs the project in Git so the Run records its exact code version" >&2
+  if ! git rev-parse --verify -q HEAD >/dev/null; then
+    echo "a research execution needs a committed project so the Run records its exact code version" >&2
     exit 2
   fi
-  if [ -n "$dirty" ]; then
+  if [ -n "$(git status --porcelain)" ]; then
     echo "commit the pending changes before the research execution of $run_id; startup checks and ordinary jobs may run on uncommitted code" >&2
     exit 2
   fi
 fi
 
-bash scripts/remote/sync.sh
+# sync.sh prints the deployed commit, which the job log records as the code version.
+rev=$(bash scripts/remote/sync.sh)
 
 dir=$(printf '%q' "$REMOTE_DIR")
 job="cd $dir && SOURCE_REV=$(printf '%q' "$rev") RUN_ID=$(printf '%q' "$run_id") STARTUP=$startup bash scripts/remote/_job.sh $(printf '%q' "$name") $(printf '%q ' "$@")"
