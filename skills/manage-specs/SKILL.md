@@ -47,7 +47,7 @@ Read back the changed design for contradictions, missing consequences, and unsup
 
 The reply, not the Spec file, is what the user reads now. Make it understandable without opening the Spec:
 
-- the decisions that changed relative to the previous revision, stated as decisions rather than section numbers, each with the evidence, review finding, or user decision that caused it;
+- each decision that changed relative to the previous revision, one line as before → after, with the evidence, review finding, or user decision that caused it; take the list from the Spec's actual diff and its Revision Notes rather than from memory, and state decisions rather than section numbers;
 - how to proceed: ordered steps, how each is judged, and the budget and stop conditions;
 - choices the user still has to make;
 - the Spec path, revision, and status, last.
