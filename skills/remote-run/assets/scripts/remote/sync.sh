@@ -99,8 +99,8 @@ case "$kind" in
     server_head=$(printf '%s\n' "$state" | sed -n 2p)
     modified=$(printf '%s\n' "$state" | sed -n '3,$p')
     if [ -n "$modified" ]; then
-      # A server edit that already equals what this commit deploys loses nothing, which is common
-      # right after switching from a copy-based sync. Only edits that differ stop the deployment.
+      # A server edit that already equals what this commit deploys loses nothing, for example the
+      # same change applied on the server by hand. Only edits that differ stop the deployment.
       # Renames are always treated as differing.
       check=$(printf '%s\n' "$modified" | cut -c4- | while IFS= read -r path; do
         if [ "${path#* -> }" != "$path" ]; then

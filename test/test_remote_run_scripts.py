@@ -119,8 +119,8 @@ class RemoteRunScriptTests(unittest.TestCase):
             self.assertEqual((root / "server/src/model.py").read_text(), "edited on server\n")
 
     def test_sync_accepts_server_edits_and_files_that_match_the_deployment(self) -> None:
-        # Right after switching from a copy-based sync, the server already holds the same edits and
-        # new files as the local working tree, including non-ASCII file names.
+        # The server already holds the same edits and new files as the local working tree, for
+        # example after the same change was applied there by hand, including non-ASCII file names.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             project = self._git_project(root)

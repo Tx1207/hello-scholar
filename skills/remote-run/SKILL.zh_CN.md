@@ -17,7 +17,7 @@ AI 工具留在本地机器上，服务器只负责执行代码。代码通过 S
 
 把 `assets/scripts/remote/` 中的文件复制到项目的 `scripts/remote/`，保持 `.sh` 文件可执行，提交它们，并填好 [remote.env](assets/scripts/remote/remote.env)。填写前先只读盘点两边：列出服务器上的顶层条目及其大小，以及本地的顶层条目，包括被 Git 忽略的目录和体积大的目录。推荐 `REMOTE_SERVER_DIRS`：存放服务器数据和输出的目录，通常是 `data artifacts tmp`，加上 `outputs/`、`checkpoints/`、`wandb/` 等旧输出目录；推荐 `REMOTE_LOCAL_EXCLUDES`：必须只留在本地的目录，例如 `.venv/`、`node_modules/`。把推荐整理成表格请用户确认；以 Architecture 中记录的布局为准。数据、权重和输出不纳入 Git 跟踪。
 
-服务器上的 `REMOTE_DIR` 会成为一个 Git 工作区。每次同步把一个提交推送到 `refs/remote-run/deploy` 并在服务器上检出：本地工作区干净时用 `HEAD`，否则用工作区内容生成一个临时提交，它从不改动本地分支或暂存区。Git 只修改被跟踪的文件，所以服务器上未跟踪的数据、权重、日志和输出永远不会被修改或删除；本地删除或改名的代码，服务器上也会相应删除或改名。临时提交不包含 `REMOTE_SERVER_DIRS`、`REMOTE_LOCAL_EXCLUDES` 以及匹配 `REMOTE_PROTECTED_PATTERNS` 的文件（默认是 `*.pt`、`*.safetensors` 等权重格式）。服务器上被修改的跟踪文件，或位于提交新增路径上的未跟踪文件，只要与要部署的内容不同，同步就停下、不改动服务器代码；已经与部署内容一致的服务器改动和未跟踪文件（例如复制式同步留下的状态，或拉回本地后提交的结果）会被接受。从 rsync 版 remote-run 升级时，服务器上旧的 `scripts/remote/` 文件与新版本不同：经用户确认后，用 `delete.sh` 删除它们再同步。子模块的内容不会部署，项目有子模块时同步会提示。
+服务器上的 `REMOTE_DIR` 会成为一个 Git 工作区。每次同步把一个提交推送到 `refs/remote-run/deploy` 并在服务器上检出：本地工作区干净时用 `HEAD`，否则用工作区内容生成一个临时提交，它从不改动本地分支或暂存区。Git 只修改被跟踪的文件，所以服务器上未跟踪的数据、权重、日志和输出永远不会被修改或删除；本地删除或改名的代码，服务器上也会相应删除或改名。临时提交不包含 `REMOTE_SERVER_DIRS`、`REMOTE_LOCAL_EXCLUDES` 以及匹配 `REMOTE_PROTECTED_PATTERNS` 的文件（默认是 `*.pt`、`*.safetensors` 等权重格式）。服务器上被修改的跟踪文件，或位于提交新增路径上的未跟踪文件，只要与要部署的内容不同，同步就停下、不改动服务器代码；已经与部署内容一致的服务器改动和未跟踪文件（例如拉回本地后提交的结果）会被接受。子模块的内容不会部署，项目有子模块时同步会提示。
 
 第一次部署到一个非空、且还不是 Git 工作区的目录（接入已有项目时的常见情况）时，只做预演：统计已经一致的文件，列出内容不同、将被覆盖的文件，然后以退出码 3 结束，不创建任何东西。把预演结果给用户看，用户同意后才加 `--confirm-first-sync`；被覆盖的服务器文件会先备份到 `tmp/remote-run-backup/`。
 
