@@ -37,7 +37,7 @@ In a fresh clone with a fresh environment, run the README commands with the reco
 
 ## Commit and stop
 
-Commit the release as one snapshot whose message names the source development commit, the claims it reproduces with their Run IDs, and the release Spec revision. Then stop and report the reproduced and unreproduced claims, the leak-check result, and the push command. Pushing, making a repository public, or uploading weights requires the user's explicit authorization.
+Commit the release as one snapshot. Write the message in the project's commit convention, such as `chore(release): export Table 2 claims from 69f0ed0`, and name in its body the source development commit, the claims it reproduces with their Run IDs, and the release Spec revision. Then stop and report the reproduced and unreproduced claims, the leak-check result, and the push command. Pushing, making a repository public, or uploading weights requires the user's explicit authorization.
 
 ## Keep the release in sync
 

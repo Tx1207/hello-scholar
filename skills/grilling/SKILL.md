@@ -28,7 +28,7 @@ When the user asks for a deeper version of a task or a better prompt, answer fro
 - what a top practitioner would do here that the request does not ask for;
 - the rawest material they would start from, such as raw data, logs, source code, or original papers, instead of summaries already digested for the user;
 - the specific methods and tools they would use;
-- what evidence other than the agents or the users judgment would show the result is right, such as a baseline, benchmark, held-out data, an independent measurement, or a real entry point.
+- what evidence other than the agent's or the user's judgment would show the result is right, such as a baseline, benchmark, held-out data, an independent measurement, or a real entry point.
 
 Keep each addition only when it raises the quality of the same goal; drop anything that adds a new goal, deliverable, or budget. Then give the rewritten request in a fenced block, ready to paste, and stop. The user decides whether to use it; deepening a request authorizes no work.
 
