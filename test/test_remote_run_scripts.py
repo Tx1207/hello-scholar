@@ -118,6 +118,30 @@ class RemoteRunScriptTests(unittest.TestCase):
             self.assertIn("modified tracked files", result.stderr)
             self.assertEqual((root / "server/src/model.py").read_text(), "edited on server\n")
 
+    def test_sync_accepts_server_edits_and_files_that_match_the_deployment(self) -> None:
+        # Right after switching from a copy-based sync, the server already holds the same edits and
+        # new files as the local working tree, including non-ASCII file names.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = self._git_project(root)
+            server = root / "server"
+            self.assertEqual(self._sync(root, project).returncode, 0)
+            for base in (project, server):
+                (base / "src/model.py").write_text("x = 2\n", encoding="utf-8")
+                (base / "实验报告.md").write_text("报告\n", encoding="utf-8")
+            result = self._sync(root, project)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("already match", result.stderr)
+            self.assertEqual(self._git(root, server, "status", "--porcelain", "--untracked-files=no"), "")
+            self.assertEqual((server / "实验报告.md").read_text(encoding="utf-8"), "报告\n")
+            # A differing untracked file with a non-ASCII name must still be detected, not overwritten.
+            (server / "笔记.md").write_text("服务器版本\n", encoding="utf-8")
+            (project / "笔记.md").write_text("本地版本\n", encoding="utf-8")
+            differs = self._sync(root, project)
+            self.assertEqual(differs.returncode, 5)
+            self.assertIn("笔记.md", differs.stderr)
+            self.assertEqual((server / "笔记.md").read_text(encoding="utf-8"), "服务器版本\n")
+
     def test_sync_replaces_identical_untracked_files_and_stops_on_differing_ones(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

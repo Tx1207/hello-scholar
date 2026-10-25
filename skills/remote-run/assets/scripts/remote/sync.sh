@@ -83,7 +83,7 @@ if [ -d "$dir/.git" ]; then
   cd "$dir" || exit 1
   echo git
   git rev-parse --verify -q HEAD || echo none
-  git status --porcelain --untracked-files=no
+  git -c core.quotePath=false status --porcelain --untracked-files=no
 elif [ -d "$dir" ] && [ -n "$(ls -A "$dir")" ]; then
   echo plain
 else
@@ -99,10 +99,30 @@ case "$kind" in
     server_head=$(printf '%s\n' "$state" | sed -n 2p)
     modified=$(printf '%s\n' "$state" | sed -n '3,$p')
     if [ -n "$modified" ]; then
-      echo "the server has modified tracked files; deploying would overwrite them, so nothing was changed:" >&2
-      printf '%s\n' "$modified" >&2
-      echo "copy wanted changes into the local project, then discard them on the server yourself" >&2
-      exit 4
+      # A server edit that already equals what this commit deploys loses nothing, which is common
+      # right after switching from a copy-based sync. Only edits that differ stop the deployment.
+      # Renames are always treated as differing.
+      check=$(printf '%s\n' "$modified" | cut -c4- | while IFS= read -r path; do
+        if [ "${path#* -> }" != "$path" ]; then
+          echo "rename $path"
+        else
+          echo "$(git rev-parse -q --verify "$commit:$path" || echo none) $path"
+        fi
+      done)
+      compare='while IFS=" " read -r sha path; do
+  if [ "$sha" = rename ]; then echo "$path"
+  elif [ "$sha" = none ]; then [ -e "$path" ] && echo "$path"
+  elif [ ! -f "$path" ] || [ -L "$path" ] || [ "$(git hash-object -- "$path")" != "$sha" ]; then echo "$path"
+  fi
+done'
+      lost=$(printf '%s\n' "$check" | ssh "$REMOTE_HOST" "cd $dir && bash -c $(printf '%q' "$compare")")
+      if [ -n "$lost" ]; then
+        echo "the server has modified tracked files that differ from what this sync deploys, so nothing was changed:" >&2
+        printf '%s\n' "$lost" | sed 's/^/  /' >&2
+        echo "copy wanted changes into the local project, then discard them on the server yourself" >&2
+        exit 4
+      fi
+      echo "the server's modified tracked files already match what this sync deploys" >&2
     fi
     if [ "$dry_run" -eq 1 ]; then
       if [ "$server_head" != none ] && git cat-file -e "$server_head^{commit}" 2>/dev/null; then
@@ -157,8 +177,8 @@ git push -q -f "$REMOTE_HOST:$REMOTE_DIR" "$commit:refs/remote-run/deploy"
 # when results pulled and committed locally already sit on the server. Compare each untracked server
 # file the new commit would replace: identical ones are safe to replace; differing ones stop the
 # deployment, unless the user confirmed a first deployment, which backs them up first.
-conflicts='git ls-tree -r --name-only "$commit" | sort > "$tmp_new"
-git ls-files | sort > "$tmp_cur"
+conflicts='git -c core.quotePath=false ls-tree -r --name-only "$commit" | sort > "$tmp_new"
+git -c core.quotePath=false ls-files | sort > "$tmp_cur"
 comm -23 "$tmp_new" "$tmp_cur" | while IFS= read -r path; do
   if [ -L "$path" ] || [ -d "$path" ]; then echo "$path"
   elif [ -f "$path" ] && [ "$(git hash-object -- "$path")" != "$(git rev-parse "$commit:$path")" ]; then echo "$path"
