@@ -158,15 +158,13 @@ class SkillDocumentContractTests(unittest.TestCase):
         self.assertIn("conda-pack", release)
         for name in ("remote-rules.md", "remote-rules.zh_CN.md"):
             rules = (ROOT / "skills/remote-run/assets" / name).read_text(encoding="utf-8")
-            self.assertIn("--startup", rules)
             self.assertNotIn("model provider", rules)
             self.assertNotIn("模型厂商", rules)
-            self.assertIn("--confirm-first-sync", rules)
-            self.assertIn("scripts/remote/delete.sh", rules)
+            self.assertIn("scripts/remote/sync.sh pull", rules)
+            self.assertIn("git rebase refs/remote-run/server", rules)
             self.assertIn("runs/<run-id>/results/", rules)
-            self.assertIn("derived_from", rules)
-            self.assertNotIn("A failed formal Run is rerun under a new Run ID", rules)
-            self.assertNotIn("失败的正式 Run 用新的 Run ID 重跑", rules)
+            self.assertIn("record-experiment", rules)
+            self.assertNotIn("run.sh", rules)
 
     def test_handoff_stores_only_nonrecoverable_context(self) -> None:
         skill = (ROOT / "skills/handoff/SKILL.md").read_text(encoding="utf-8")

@@ -1,4 +1,4 @@
 interface:
   display_name: "Remote Run"
-  short_description: "Run code on a GPU server over SSH from a local AI tool"
-  default_prompt: "Use $remote-run to set up remote execution for this project on my GPU server and verify it with the acceptance checks."
+  short_description: "Sync a local copy and a GPU server copy with Git"
+  default_prompt: "Use $remote-run to set up two-way Git sync between this project and its copy on my GPU server and verify it with the acceptance checks."

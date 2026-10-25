@@ -258,7 +258,7 @@ sequenceDiagram
 | [review](skills/review/SKILL.zh_CN.md) | 需要独立检查方案、代码或研究证据 | 有实质影响的发现、依据、触发条件和处理方向。 |
 | [ponytail](skills/ponytail/SKILL.zh_CN.md) | 指定改动或模块出现非必要复杂性 | 实际简化、保留行为的依据及相关验证。 |
 | [synthesize](skills/synthesize/SKILL.zh_CN.md) | 整理思路、实验结果、研究笔记或周报 | 有证据支撑的认识、影响和有条件的可复用经验。 |
-| [remote-run](skills/remote-run/SKILL.zh_CN.md) | AI 工具在本地，代码要在通过 SSH 访问的 GPU 服务器（例如离线服务器）上运行 | 同步、前后台运行、日志、停止和拉回结果的脚本，写入项目的远程执行规则，以及真实服务器上的验收结果。 |
+| [remote-run](skills/remote-run/SKILL.zh_CN.md) | 一个 Agent 在本地改代码，另一个 Agent 在通过 SSH 访问的 GPU 服务器上修改和运行代码 | 只做快进的双向 Git 同步脚本，写入本地和服务器两边的规则，以及真实服务器上的验收结果。 |
 | [release-code](skills/release-code/SKILL.zh_CN.md) | 把研究代码整理成可复现的开源版本，或在研究代码变化后更新它 | 在独立分支上组装好的公开版本、泄漏检查结果，以及逐条对照论文报告结果的复现结论；推送需另行授权。 |
 | [docs-maintenance](skills/docs-maintenance/SKILL.zh_CN.md) | 检查文档、同步导航或维护已采用架构 | 一致的项目说明、检查结果或生成索引。 |
 | [handoff](skills/handoff/SKILL.zh_CN.md) | 换会话、换 Agent 或交接未完成任务 | 能从具体入口继续工作的交接文件。 |

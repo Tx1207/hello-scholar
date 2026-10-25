@@ -1,12 +1,19 @@
 ## 远程执行
 
-- 代码在本地修改，在 `<别名>` 上运行。只通过 `scripts/remote/*.sh` 访问服务器，不要直接 `ssh`，也不要在服务器上改代码：同步会用 Git 部署本地的提交或工作区内容。
-- 同步因第一次同步预演而停下时，把预演结果给用户看，用户同意后才加 `--confirm-first-sync`。同步因服务器文件被修改、或与提交内容不同而停下时，把列出的文件给用户看，不要绕过。
-- 要删除代码，就在本地删除，下次同步时服务器上会相应删除。服务器上未跟踪的残留文件只用 `scripts/remote/delete.sh <路径>` 删除，每次一个路径，且只删用户同意的路径。不要通过 `run.sh` 或代码删除、移动服务器上的文件；权重、数据和 Run 产物由用户在服务器上自行删除。
-- 预计 5 分钟内结束的任务，例如单元测试、小规模调试和数据检查：`scripts/remote/run.sh <命令>`。
-- 训练、评测以及任何可能更久的任务：`scripts/remote/run.sh --bg --name <任务名> <命令>`。正式 Run 先建 planned Record，用 `--run <run-id> --startup` 跑启动检查（可反复运行，日志在该 Run 中记为 `startup-NN`），再按项目的提交说明规则提交待提交的改动，用 `--bg --run <run-id>` 启动唯一一次正式执行；代码有未提交改动时 `run.sh` 会拒绝正式执行。
-- 用 `scripts/remote/logs.sh <任务名>` 查看进度，间隔与任务预计时长相称，不要高频轮询。
-- 任务日志中 `[exit N ...]` 的 N 不为 0 表示失败：读 stderr 并修复原因。启动检查直接重跑即可。正式执行失败时，这个 Run 以 `failed` 关闭；获得授权后重跑另建新 Run，`derived_from` 指向它，并从已完成的阶段继续。
-- 写入 Record 前，用 `scripts/remote/pull.sh <run-id>` 把 `runs/<run-id>/results/` 中的小结果拉回本地。`runs/<run-id>/logs/` 中的日志和 `artifacts/<run-id>/` 中的 checkpoint 留在服务器上，Record 以 `<别名>:<路径>` 引用它们，并保留启动任务时 `run.sh` 的输出。
-- 长任务运行期间，不要修改它还会读取的文件，例如它的配置或结束时调用的评测脚本；需要改时复制成新文件再改。
-- 停止任务：`scripts/remote/stop.sh <任务名>`。
+本地副本和服务器副本 `<别名>:<路径>` 是本项目在同一分支上的两个 Git 工作区。改动只以提交的形式在两边之间移动，通过本地副本上的 `scripts/remote/sync.sh`，而且只做快进。
+
+在本地副本上：
+
+- 开始修改前先运行 `scripts/remote/sync.sh pull`。服务器需要某个改动时，按项目的提交说明规则提交，再运行 `scripts/remote/sync.sh push`。`sync.sh status` 显示两边各自缺少的提交、服务器上未提交的文件，以及服务器上的 tmux 任务。
+- 不要修改服务器上的文件，也不要在服务器上运行任务；任务由服务器上的 Agent 运行。通过 `ssh` 查看服务器上的日志和文件没有问题。
+- 同步因服务器有未提交的改动而停下时，告诉用户，让服务器上的 Agent 先提交。两边都有新提交时，用 `git rebase refs/remote-run/server` 把本地提交变基上去，重新运行受影响的检查，再推送；出现冲突就停下，把冲突给用户看。
+
+在服务器上：
+
+- 在这里修改、运行和排查；本地副本的改动由它的 `sync.sh` 带过来。留在当前检出的分支上，不要 push、pull、fetch、reset、rebase，也不要修改已有的提交。
+- 结束一轮工作前，按项目的提交说明规则提交改动，让本地副本能拉回；未提交的改动会让两个方向的同步都停下。
+- 可能超过几分钟的任务放在 tmux 中运行，stdout 和 stderr 分别写入不同文件，最后记下退出码，例如 `tmux new -d -s <任务名> '<命令> > <目录>/stdout.log 2> <目录>/stderr.log; echo "[exit $? at $(date)]" >> <目录>/job.log'`。正式 Run 的 `<目录>` 是 `runs/<run-id>/logs`；启动检查按 `record-experiment` 执行，研究执行前先提交，并把 `git rev-parse HEAD` 记为它的代码版本。长任务按预计时长间隔查看进度。
+- 不要删除或移动数据、权重、checkpoint 和 Run 产物，这些由用户自己删除；它们不进 Git。
+- 提交 Run 的 Record 和 `runs/<run-id>/results/` 中的小结果。日志和 `artifacts/<run-id>/` 留在服务器上不进 Git，Record 用路径引用它们。
+
+两边共同遵守：长任务运行期间，不要修改它还会读取的文件，例如它的配置或结束时调用的评测脚本；推送会在任务运行中更新这些文件。需要改时复制成新文件再改。
