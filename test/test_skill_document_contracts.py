@@ -97,6 +97,7 @@ class SkillDocumentContractTests(unittest.TestCase):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         self.assertIn("the final message carries the substance on its own", agents)
         self.assertIn("before → after", agents)
+        self.assertIn("not by labels such as \"Option B\"", agents)
         self.assertIn("before → after", specs)
 
     def test_grilling_deepens_requests_without_enlarging_them(self) -> None:
